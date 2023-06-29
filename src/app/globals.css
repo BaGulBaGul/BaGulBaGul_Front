@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
+/* :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
@@ -24,4 +24,67 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+} */
+
+
+.slick-arrow {
+  display: none;
+}
+
+.slick-arrow:before {
+  content: "" !important;
+  width: 100% !important;
+  height: 100% !important;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* .slick-arrow:before{
+  content:""!important;
+  width: 100%!important;
+  height: 100%!important;
+  position: absolute;
+  top: 0;
+  left: 0;
+}*/
+.slick-next {
+  background: url(../../public/arrow_next.svg) !important;
+  background-size: contain !important;
+  right: 24px !important;
+  z-index: 1;
+  top: 106px !important;
+}
+
+.slick-prev {
+  background: url(../../public/arrow_prev.svg) !important;
+  background-size: contain !important;
+  left: 24px !important;
+  z-index: 1;
+  top: 106px !important;
+}
+
+.MuiToggleButton-standard+.MuiToggleButton-standard {
+  margin-left: 10px;
+}
+
+.cateBtns {
+  -webkit-overflow-scrolling: touch;
+}
+
+.cateInfo, 
+.cateInfo:disabled, .cateInfo[disabled] {
+  font-size: 14px !important;
+  color: #1E1E1E !important;
+  border: 0.5px solid #C1C1C1 !important;
+  border-radius: 20px !important;
+  padding: 2px 8px;
+}
+
+.slick-track {
+  display: flex !important;
+}
+
+.slick-slide {
+  height: inherit !important;
 }

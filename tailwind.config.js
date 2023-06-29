@@ -6,6 +6,23 @@ module.exports = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    colors: {
+      'primary-blue': '#4A6AFE',
+      'secondary-yellow': '#FFF27E',
+      'grad-blue': '#A4B4FF',
+      'grad-yellow': '#FFFACA',
+      'success-green': '#4BDF59',
+      'warning-orange': '#FCA522',
+      'danger-red': '#FC3D36',
+      'danger-lighten': '#FC5B55',
+      'danger-darken': '#E4231C',
+      'danger-disabled': '#FAA8A5',
+      'white-text': '#FCFCFC',
+      'gray1-text': '#ECECEC',
+      'gray2-text': '#C1C1C1',
+      'gray3-text': '#6C6C6C',
+      'black-text': '#1E1E1E'
+    },
     extend: {
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
