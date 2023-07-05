@@ -11,21 +11,21 @@ export const postData = [
     name: 'PEAK FESTIVAL 2023',
     date: '23.05.27 - 05.28',
     content: '일반 티켓은 2023년 4월 18일(화) 오후 6시부터 예매 가능하며, 한정 수량 소진 시 예매가 조기종료될 수 있습니다. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    tags: ['Hashtag', 'Hashtag', 'Tag', 'Tag', 'Tag']
+    tags: ['Hashtag', 'Hashtag', 'Tag', 'Tag', 'Tag', '태그']
   },
   {
     posterSrc: '/images/rec3.jpg',
     name: 'SEOUL JAZZ FESTIVAL 2023',
     date: '23.05.26 - 05.28',
     content: '일반 티켓은 2023년 4월 18일(화) 오후 6시부터 예매 가능하며, 한정 수량 소진 시 예매가 조기종료될 수 있습니다. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    tags: ['Hashtag', 'Hashtag', 'Tag', 'Tag', 'Tag', '태그', '해시태그', '태그']
+    tags: ['Hashtag', 'Hashtag', 'Tag', 'Tag', 'Tag', '해시태그']
   },
   {
     posterSrc: '/images/rec4.jpg',
     name: '2023 WORLD DJ FESTIVAL',
     date: '23.06.02 - 06.04',
     content: '일반 티켓은 2023년 4월 18일(화) 오후 6시부터 예매 가능하며, 한정 수량 소진 시 예매가 조기종료될 수 있습니다. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    tags: ['Hashtag', 'Hashtag', 'Tag', 'Tag', 'Tag', '태그', '해시태그', '태그']
+    tags: ['Hashtag', 'Hashtag', 'Tag', 'Tag', 'Tag', '태그', '해시태그']
   },
   {
     posterSrc: '/images/rec5.jpg',

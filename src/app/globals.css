@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+html, body,	
+.MuiTypography-root, .MuiButtonBase-root {
+  font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif !important;
+}
+
 /* :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -74,8 +79,10 @@ body {
 
 .cateInfo, 
 .cateInfo:disabled, .cateInfo[disabled] {
-  font-size: 14px !important;
-  color: #1E1E1E !important;
+  /* font-size: 14px !important; */
+  font-size: 12px !important;
+  line-height: 150%;
+  color: #1E1E1E;
   border: 0.5px solid #C1C1C1 !important;
   border-radius: 20px !important;
   padding: 2px 8px;
@@ -87,4 +94,33 @@ body {
 
 .slick-slide {
   height: inherit !important;
+}
+
+.container {
+  width: 100%;
+}
+.container-shrink {
+  overflow: hidden;
+  width: calc(100% - 41px);
+  height: 25px;
+}
+
+.container-expand {
+  white-space: normal;
+  word-wrap:break-word;
+  width: calc(100% - 35px);
+}
+
+.tagBtn {
+  font-size: 12px !important;
+  line-height: 150%;
+  color: #1E1E1E !important;
+  border-radius: 2px !important;
+  background-color: #ECECEC;
+  padding: 2px 4px;
+  min-width: unset;
+}
+
+.tagBtn:not(:last-child) {
+  margin-right: 10px;
 }

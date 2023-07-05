@@ -1,17 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useLayoutEffect, createRef } from 'react';
 import Image from 'next/image'
 import { postData, categories } from '../components/common/Data'
 import Slider from "react-slick";
 import {
-  styled, Tabs, Tab, Box, Typography,
-  createTheme, ThemeProvider, Button,
-  ToggleButtonGroup, ToggleButton, Divider
+  styled, Tabs, Tab, Box, Typography, Button,
+  ToggleButtonGroup, ToggleButton, Divider, IconButton, IconButtonProps
 } from '@mui/material';
-
-// import "slick-carousel/slick/slick.css";
-// import "slick-carousel/slick/slick-theme.css";
 
 // - carousel
 interface PostProps {
@@ -78,8 +74,6 @@ export function RecCarousel() {
   )
 }
 
-
-
 // - tabs
 const AntTabs = styled(Tabs)({
   "& .MuiTabs-indicator": { backgroundColor: "#1E1E1E" }
@@ -109,7 +103,7 @@ function TabPanel(props: TabPanelProps) {
       aria-labelledby={`simple-tab-${index}`} {...other} >
       {value === index && (
         <Box>
-          <Typography>{children}</Typography>
+          <Typography component={"div"}>{children}</Typography>
         </Box>
       )}
     </div>
@@ -123,9 +117,9 @@ export function PostTab() {
   };
 
   return (
-    <Box className='w-full px-[24px] pt-[10px]'>
+    <Box className='w-full px-0 pt-[10px]'>
       <Box>
-        <AntTabs value={value} onChange={handleChange} aria-label="ant example">
+        <AntTabs value={value} onChange={handleChange} aria-label="ant example" className='px-[16px]'>
           <AntTab label="페스티벌" />
           <AntTab label="지역행사" />
           <AntTab label="파티" />
@@ -175,10 +169,10 @@ function CategoryButtons() {
 
   return (
     <div className='overflow-hidden	h-[46px]'>
-      <div className='h-[76px] py-[10px] overflow-x-scroll overflow-y-hide whitespace-nowrap cateBtns'>
+      <div className='h-[76px] py-[10px] px-[16px] overflow-x-scroll overflow-y-hide whitespace-nowrap cateBtns'>
         <SToggleButtonGroup value={selectedCate} onChange={handleCate}>
           {categories.map((cate, idx) =>
-            <ToggleButton value={cate} className='cateBtn'>{cate}</ToggleButton>
+            <ToggleButton value={cate} className='cateInfo' key={`cate-${cate}`}>{cate}</ToggleButton>
           )}
         </SToggleButtonGroup>
       </div>
@@ -191,9 +185,9 @@ function PostBlock(props: PostProps) {
   return (
     <div>
       <Divider />
-      <div className='flex flex-col py-[18px]'>
-        <div className='flex flex-row justify-between'>
-          <div className='flex flex-col justify-between w-[230px] h-[140px]'>
+      <div className='flex flex-col py-[18px] px-[16px]'>
+        <div className='flex flex-row justify-between  h-[140px]'>
+          <div className='flex flex-col justify-between w-[230px]'>
             <div className='flex flex-col'>
               <div className='flex flex-row pb-[10px]'>
                 <Image className='me-[8px]' src="/main_profile.svg" alt="마이페이지 아이콘" width={24} height={24} />
@@ -207,12 +201,77 @@ function PostBlock(props: PostProps) {
           <Image className='rounded-lg' width={110} height={136}
             src={props.posterSrc} alt='rec poster' style={{ objectFit: "cover" }} />
         </div>
-        {/* <HashtagAccordion/> */}
+        {
+          props.tags ? <HashtagAccordion tag={props.tags} /> : <></>
+        }
       </div>
     </div>
   )
 }
 
-function HashtagAccordion() {
-  
+// -- hashtags
+interface ExpandMoreProps extends IconButtonProps { expand: boolean; }
+const ExpandMore = styled((props: ExpandMoreProps) => {
+  const { expand, ...other } = props;
+  return (
+    <div className='content-start'>
+      <IconButton {...other} aria-expanded={false} />
+    </div>
+  );
+})(({ theme, expand }) => ({
+  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
+  marginLeft: 'auto', padding: '0px',
+  transition: theme.transitions.create('transform', {
+    duration: theme.transitions.duration.shortest,
+  })
+}));
+
+interface HashtagAccordionProps { tag: string[]; }
+function HashtagAccordion(props: HashtagAccordionProps) {
+  const ref = createRef<HTMLDivElement>();
+  const [expanded, setExpanded] = useState(false);
+  const [showMore, setShowMore] = useState(false);
+  useLayoutEffect(() => {
+    if (ref.current && (ref.current.clientHeight > 25)) {
+      setShowMore(true);
+    }
+  }, [ref]);
+  const handleExpandClick = () => { setExpanded(!expanded); }
+
+  return (
+    <div className='pt-[10px]'>
+      <div ref={ref} className='flex flex-row justify-between'>
+        {
+          showMore
+            ? <>
+              <div className={expanded ? "container-expand" : "container-shrink"}>
+                {
+                  (props.tag).map((tag, idx) => <HashtagButton tag={tag} key={`tag-{idx}`} />)
+                }
+              </div>
+              <ExpandMore expand={expanded} onClick={handleExpandClick} aria-expanded={expanded} aria-label="show more" >
+                <img src='/arrow_down.svg' />
+              </ExpandMore>
+            </>
+            : <div className='container'>
+              {
+                (props.tag).map((tag, idx) => <HashtagButton tag={tag} key={`tag-${idx}`} />)
+              }
+            </div>
+        }
+      </div>
+    </div>
+  )
+}
+
+interface HashtagButtonProps { tag: string; }
+function HashtagButton(props: HashtagButtonProps) {
+  return (
+    <Button className='tagBtn'>
+      <div className='flex flex-row'>
+        <span className='pe-[2px]'>#</span>
+        <span>{props.tag}</span>
+      </div>
+    </Button>
+  )
 }
