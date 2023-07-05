@@ -7,7 +7,7 @@ import Slider from "react-slick";
 import {
   styled, Tabs, Tab, Box, Typography,
   createTheme, ThemeProvider, Button,
-  ToggleButtonGroup, ToggleButton
+  ToggleButtonGroup, ToggleButton, Divider
 } from '@mui/material';
 
 // import "slick-carousel/slick/slick.css";
@@ -167,7 +167,7 @@ function CategoryButtons() {
       },
       "&.Mui-selected, &.Mui-selected:hover": {
         backgroundColor: '#4A6AFE', color: '#FCFCFC', fontWeight: '600',
-        
+
       },
       "&:not(:last-child)": { marginRight: '10px' }
     }
@@ -189,23 +189,30 @@ function CategoryButtons() {
 // - tab item 2 : PostList
 function PostBlock(props: PostProps) {
   return (
-    <div className='flex flex-col py-[18px]'>
-      <div className='flex flex-row justify-between'>
-        <div className='flex flex-col justify-between w-[230px] h-[140px]'>
-          <div className='flex flex-col'>
-            <div className='flex flex-row pb-[10px]'>
-              <Image className='me-[8px]' src="/main_profile.svg" alt="마이페이지 아이콘" width={24} height={24} />
-              <Button disabled className='cateInfo'>공연전시/행사</Button>
+    <div>
+      <Divider />
+      <div className='flex flex-col py-[18px]'>
+        <div className='flex flex-row justify-between'>
+          <div className='flex flex-col justify-between w-[230px] h-[140px]'>
+            <div className='flex flex-col'>
+              <div className='flex flex-row pb-[10px]'>
+                <Image className='me-[8px]' src="/main_profile.svg" alt="마이페이지 아이콘" width={24} height={24} />
+                <Button disabled className='cateInfo'>공연전시/행사</Button>
+              </div>
+              <p className='text-sm text-gray3-text'>{props.date}</p>
+              <p className='truncate text-base font-semibold'>{props.name}</p>
             </div>
-            <p className='text-sm text-gray3-text'>{props.date}</p>
-            <p className='truncate text-base font-semibold'>{props.name}</p>
+            <p className='text-xs text-gray3-text max-h-8 block text-ellipsis break-words overflow-hidden'>{props.content}</p>
           </div>
-          <p className='text-xs text-gray3-text max-h-8 block text-ellipsis break-words overflow-hidden'>{props.content}</p>
+          <Image className='rounded-lg' width={110} height={136}
+            src={props.posterSrc} alt='rec poster' style={{ objectFit: "cover" }} />
         </div>
-        <Image className='rounded-lg' width={110} height={136}
-          src={props.posterSrc} alt='rec poster' style={{ objectFit: "cover" }} />
+        {/* <HashtagAccordion/> */}
       </div>
-      {/* <HashtagAccordion/> */}
     </div>
   )
+}
+
+function HashtagAccordion() {
+  
 }
