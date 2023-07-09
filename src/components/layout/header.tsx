@@ -13,7 +13,7 @@ function Header() {
           <a href="/"><Image src="/main_icon_search.svg" alt="검색창 아이콘" fill /></a>
         </p>
         <p className="flex w-6 h-6 relative">
-          <a href="/"><Image src="/main_icon_edit.svg" alt="글작성 아이콘" fill /></a>
+          <a href="/post"><Image src="/main_icon_edit.svg" alt="글작성 아이콘" fill /></a>
         </p>
         <a className="flex place-items-center" href="/">
           <Image src="/main_profile.svg" alt="마이페이지 아이콘" width={24} height={24} />
