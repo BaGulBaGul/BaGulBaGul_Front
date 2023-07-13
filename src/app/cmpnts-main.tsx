@@ -157,10 +157,11 @@ function CategoryButtons() {
       borderRadius: '20px !important',
       padding: '2px 8px',
       "&:hover, &:focus": {
-        border: '0.5px solid #4A6AFE', backgroundColor: 'transparent'
+        border: '0.5px solid #4A6AFE !important', backgroundColor: 'transparent'
       },
       "&.Mui-selected, &.Mui-selected:hover": {
-        backgroundColor: '#4A6AFE', color: '#FCFCFC', fontWeight: '600',
+        backgroundColor: '#4A6AFE', color: '#FCFCFC !important', fontWeight: '600',
+        border: '0.5px solid #4A6AFE !important'
 
       },
       "&:not(:last-child)": { marginRight: '10px' }
@@ -246,7 +247,7 @@ function HashtagAccordion(props: HashtagAccordionProps) {
             ? <>
               <div className={expanded ? "container-expand" : "container-shrink"}>
                 {
-                  (props.tag).map((tag, idx) => <HashtagButton tag={tag} key={`tag-{idx}`} />)
+                  (props.tag).map((tag, idx) => <HashtagButton tag={tag} key={`tag-${idx}`} />)
                 }
               </div>
               <ExpandMore expand={expanded} onClick={handleExpandClick} aria-expanded={expanded} aria-label="show more" >
