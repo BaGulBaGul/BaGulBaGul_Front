@@ -5,9 +5,11 @@ import { HeaderNonMain } from '@/components/layout/header'; '@/components/layout
 export default function Page() {
     return (
       <>
-      <HeaderNonMain />
-      <PostHeader />
-      <Post />
+        <header className='relative z-10'>
+          <HeaderNonMain />
+          <PostHeader />
+        </header>
+        <Post />
       </>
     );
   }
