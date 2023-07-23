@@ -9,12 +9,12 @@ export default function Home() {
       <Header />
       <main className="flex min-h-screen flex-col items-center">
         {/* 메인화면 */}
-        {/* <RecCarousel />
-        <PostTab /> */}
+        <RecCarousel />
+        <PostTab />
 
         {/* 상세화면 */}
-        <PostHeader />
-        <PostDetail />
+        {/* <PostHeader />
+        <PostDetail /> */}
       </main>
     </div>
   )
