@@ -39,3 +39,41 @@ export const postData = [
 export const categories = [
   '문화/예술', '공연전시/행사', '식품/음료', '교육/체험', '스포츠/레저', '지역특색', '민속/전통', '주류', '종교', '인물/역사'
 ]
+
+export const commentData = [
+  {
+    user: 'USER 1',
+    content: '댓글을 입력하세요.',
+    date: '88.88.88 88:88',
+    liked: false,
+    likes: 0,
+  },
+  {
+    user: 'USER 2',
+    content: '댓글을 입력하세요. 댓글을 입력하세요. 댓글을 입력하세요. 댓글을 입력하세요. 댓글을 입력하세요. 댓글을 입력하세요. 댓글을 입력하세요.',
+    date: '88.88.88 88:88',
+    liked: true,
+    likes: 1,
+  },
+  {
+    user: '사용자 3',
+    content: '댓글을 입력하세요.',
+    date: '88.88.88 88:88',
+    liked: true,
+    likes: 5,
+  },
+  {
+    user: 'USER 4',
+    content: '댓글을 입력하세요. 댓글을 입력하세요. 댓글을 입력하세요.',
+    date: '88.88.88 88:88',
+    liked: false,
+    likes: 0,
+  },
+  {
+    user: '사용자 5',
+    content: '댓글을 입력하세요.',
+    date: '88.88.88 88:88',
+    liked: true,
+    likes: 20,
+  },
+]

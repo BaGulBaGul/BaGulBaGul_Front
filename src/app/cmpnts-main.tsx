@@ -246,18 +246,14 @@ function HashtagAccordion(props: HashtagAccordionProps) {
           showMore
             ? <>
               <div className={expanded ? "container-expand" : "container-shrink"}>
-                {
-                  (props.tag).map((tag, idx) => <HashtagButton tag={tag} key={`tag-${idx}`} />)
-                }
+                { (props.tag).map((tag, idx) => <HashtagButton tag={tag} key={`tag-${idx}`} />) }
               </div>
               <ExpandMore expand={expanded} onClick={handleExpandClick} aria-expanded={expanded} aria-label="show more" >
                 <img src='/arrow_down.svg' />
               </ExpandMore>
             </>
             : <div className='container'>
-              {
-                (props.tag).map((tag, idx) => <HashtagButton tag={tag} key={`tag-${idx}`} />)
-              }
+              { (props.tag).map((tag, idx) => <HashtagButton tag={tag} key={`tag-${idx}`} />) }
             </div>
         }
       </div>

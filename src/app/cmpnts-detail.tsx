@@ -18,19 +18,6 @@ export function PostDetail() {
   )
 }
 
-// ref. postHeader.tsx (needed non-fixed for now)
-export function PostHeader() {
-  return (
-    <div className="flex-row flex w-full justify-between px-[24px] py-[10px] bg-[#FFFFFF]">
-      <a href="/"><img src='/arrow_prev.svg' /></a>
-      <div>
-        페스티벌
-      </div>
-      <div className='w-[24px]'></div>
-    </div>
-  )
-}
-
 export function PostFooter() {
   return (
     <div className="fixed bottom-0 left-0 right-0 flex-row flex w-full justify-center py-[12px] bg-primary-blue">
@@ -124,7 +111,7 @@ function PostContent() {
 interface HashtagButtonProps { tag: string; }
 function HashtagButton(props: HashtagButtonProps) {
   return (
-    <Button className='tagBtn'>
+    <Button className='tagBtn' disableRipple>
       <div className='flex flex-row'>
         <span className='pe-[2px]'>#</span>
         <span>{props.tag}</span>

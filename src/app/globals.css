@@ -149,3 +149,15 @@ body {
 .tagBtn:not(:last-child) {
   margin-right: 10px;
 }
+
+.comment-input {
+  border-top: 1px solid #4A6AFE;
+  border-bottom: 1px solid #C1C1C1;
+}
+
+.comment-btn {
+  border: 0.5px solid #C1C1C1;
+  padding: 2px 4px;
+  color: #1E1E1E;
+  min-width: unset;
+}
