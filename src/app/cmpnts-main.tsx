@@ -2,12 +2,13 @@
 
 import { useState, useLayoutEffect, createRef } from 'react';
 import Image from 'next/image'
-import { postData, categories } from '../components/common/Data'
+import { postData } from '../components/common/Data'
 import Slider from "react-slick";
 import {
-  styled, Tabs, Tab, Box, Typography, Button,
-  ToggleButtonGroup, ToggleButton, Divider, IconButton, IconButtonProps
+  styled, Tabs, Tab, Box, Typography, Button, Divider, IconButton, IconButtonProps, ThemeProvider
 } from '@mui/material';
+import { CategoryButtons } from '@/components/common/CategoryButton';
+import { categoryButtonTheme, HashtagButton } from '@/components/common/Buttons'
 
 // - carousel
 interface PostProps {
@@ -30,15 +31,14 @@ function RecPost(props: PostProps) {
 }
 
 interface ArrowProps {
-  className?: any;
-  style?: any;
+  className?: any; style?: any;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
 }
-function ArrowPrev({ className, style, onClick }: ArrowProps) {
-  return (<div className={className} onClick={onClick} />)
+function ArrowPrev({ onClick }: ArrowProps) {
+  return (<div className='slick-arrow slick-prev slick-prev-main' onClick={onClick} />)
 }
-function ArrowNext({ className, style, onClick }: ArrowProps) {
-  return (<div className={className} onClick={onClick} />)
+function ArrowNext({ onClick }: ArrowProps) {
+  return (<div className='slick-arrow slick-next slick-next-main' onClick={onClick} />)
 }
 
 function RecSlide() {
@@ -99,8 +99,7 @@ interface TabPanelProps {
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
   return (
-    <div role="tabpanel" hidden={value !== index} id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`} {...other} >
+    <div role="tabpanel" hidden={value !== index} id={`simple-tabpanel-${index}`} {...other} >
       {value === index && (
         <Box>
           <Typography component={"div"}>{children}</Typography>
@@ -118,8 +117,8 @@ export function PostTab() {
 
   return (
     <Box className='w-full px-0 pt-[10px]'>
-      <Box>
-        <AntTabs value={value} onChange={handleChange} aria-label="ant example" className='px-[16px]'>
+      <Box className='sticky top-[44px] bg-white-text relative z-10'>
+        <AntTabs value={value} onChange={handleChange} className='px-[16px]'>
           <AntTab label="페스티벌" />
           <AntTab label="지역행사" />
           <AntTab label="파티" />
@@ -130,7 +129,6 @@ export function PostTab() {
         {postData.map((post, idx) =>
           <PostBlock posterSrc={post.posterSrc} name={post.name} date={post.date} content={post.content} tags={post.tags} key={`rec-${idx}`} />
         )}
-
       </TabPanel>
       <TabPanel value={value} index={1}>
         Item Two
@@ -142,46 +140,7 @@ export function PostTab() {
   )
 }
 
-// - tab item 1 : category buttons
-function CategoryButtons() {
-  const [selectedCate, setSelectedCate] = useState<string[]>([]);
-  const handleCate = (event: React.MouseEvent<HTMLElement>, newCate: string[]) => {
-    setSelectedCate(newCate);
-  }
-
-  const SToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
-    '& .MuiToggleButtonGroup-grouped': { border: '0px' },
-    '& .MuiToggleButton-standard': {
-      fontSize: '14px', color: '#1E1E1E',
-      border: '0.5px solid #C1C1C1 !important',
-      borderRadius: '20px !important',
-      padding: '2px 8px',
-      "&:hover, &:focus": {
-        border: '0.5px solid #4A6AFE !important', backgroundColor: 'transparent'
-      },
-      "&.Mui-selected, &.Mui-selected:hover": {
-        backgroundColor: '#4A6AFE', color: '#FCFCFC !important', fontWeight: '600',
-        border: '0.5px solid #4A6AFE !important'
-
-      },
-      "&:not(:last-child)": { marginRight: '10px' }
-    }
-  }));
-
-  return (
-    <div className='overflow-hidden	h-[46px]'>
-      <div className='h-[76px] py-[10px] px-[16px] overflow-x-scroll overflow-y-hide whitespace-nowrap cateBtns'>
-        <SToggleButtonGroup value={selectedCate} onChange={handleCate}>
-          {categories.map((cate, idx) =>
-            <ToggleButton value={cate} className='cateInfo' key={`cate-${cate}`}>{cate}</ToggleButton>
-          )}
-        </SToggleButtonGroup>
-      </div>
-    </div>
-  )
-}
-
-// - tab item 2 : PostList
+// - tab item : PostList
 function PostBlock(props: PostProps) {
   return (
     <div>
@@ -191,8 +150,10 @@ function PostBlock(props: PostProps) {
           <div className='flex flex-col justify-between w-[230px]'>
             <div className='flex flex-col'>
               <div className='flex flex-row pb-[10px]'>
-                <Image className='me-[8px]' src="/main_profile.svg" alt="마이페이지 아이콘" width={24} height={24} />
-                <Button disabled className='cateInfo'>공연전시/행사</Button>
+                <Image className='me-[8px]' src="/main_profile.svg" alt="프로필 사진" width={24} height={24} />
+                <ThemeProvider theme={categoryButtonTheme}>
+                  <Button disabled>공연전시/행사</Button>
+                </ThemeProvider>
               </div>
               <p className='text-sm text-gray3-text'>{props.date}</p>
               <p className='truncate text-base font-semibold'>{props.name}</p>
@@ -202,9 +163,7 @@ function PostBlock(props: PostProps) {
           <Image className='rounded-lg' width={110} height={136}
             src={props.posterSrc} alt='rec poster' style={{ objectFit: "cover" }} />
         </div>
-        {
-          props.tags ? <HashtagAccordion tag={props.tags} /> : <></>
-        }
+        { props.tags ? <HashtagAccordion tag={props.tags} /> : <></> }
       </div>
     </div>
   )
@@ -222,9 +181,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 })(({ theme, expand }) => ({
   transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
   marginLeft: 'auto', padding: '0px',
-  transition: theme.transitions.create('transform', {
-    duration: theme.transitions.duration.shortest,
-  })
+  transition: theme.transitions.create('transform', { duration: theme.transitions.duration.shortest })
 }));
 
 interface HashtagAccordionProps { tag: string[]; }
@@ -233,7 +190,7 @@ function HashtagAccordion(props: HashtagAccordionProps) {
   const [expanded, setExpanded] = useState(false);
   const [showMore, setShowMore] = useState(false);
   useLayoutEffect(() => {
-    if (ref.current && (ref.current.clientHeight > 25)) {
+    if (ref.current && (ref.current.clientHeight > 27)) {
       setShowMore(true);
     }
   }, [ref]);
@@ -246,29 +203,17 @@ function HashtagAccordion(props: HashtagAccordionProps) {
           showMore
             ? <>
               <div className={expanded ? "container-expand" : "container-shrink"}>
-                { (props.tag).map((tag, idx) => <HashtagButton tag={tag} key={`tag-${idx}`} />) }
+                {(props.tag).map((tag, idx) => <HashtagButton tag={tag} key={`tag-${idx}`} />)}
               </div>
-              <ExpandMore expand={expanded} onClick={handleExpandClick} aria-expanded={expanded} aria-label="show more" >
+              <ExpandMore expand={expanded} onClick={handleExpandClick} aria-expanded={expanded} >
                 <img src='/arrow_down.svg' />
               </ExpandMore>
             </>
             : <div className='container'>
-              { (props.tag).map((tag, idx) => <HashtagButton tag={tag} key={`tag-${idx}`} />) }
+              {(props.tag).map((tag, idx) => <HashtagButton tag={tag} key={`tag-${idx}`} />)}
             </div>
         }
       </div>
     </div>
-  )
-}
-
-interface HashtagButtonProps { tag: string; }
-function HashtagButton(props: HashtagButtonProps) {
-  return (
-    <Button className='tagBtn'>
-      <div className='flex flex-row'>
-        <span className='pe-[2px]'>#</span>
-        <span>{props.tag}</span>
-      </div>
-    </Button>
   )
 }

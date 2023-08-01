@@ -23,7 +23,7 @@ function Header() {
 export function HeaderNonMain() {
   return (
     <header className="fixed top-0 left-0 right-0
-      flex-row flex w-full justify-between px-[24px] py-[10px] bg-[#FFFFFF]">
+      flex-row flex w-full justify-between px-[24px] py-[10px] bg-[#FFFFFF] z-10">
       <p className="flex w-[120.77px] relative">
         <a href="/"><img src="/logo_s.svg" width='120.77'/></a>
       </p>

@@ -1,9 +1,10 @@
 'use client';
 import { postData } from '../components/common/Data'
 import Slider from "react-slick";
-import {
-  Button, Divider,
-} from '@mui/material';
+import Image from 'next/image'
+import { Button, Divider, } from '@mui/material';
+import { ThemeProvider } from '@mui/material/styles';
+import { categoryButtonTheme, HashtagButton } from '@/components/common/Buttons'
 
 export function PostDetail() {
   return (
@@ -27,15 +28,14 @@ export function PostFooter() {
 }
 
 interface ArrowProps {
-  className?: any;
-  style?: any;
+  className?: any; style?: any;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
 }
-function ArrowPrev({ className, style, onClick }: ArrowProps) {
-  return (<div className={className} onClick={onClick} />)
+function ArrowPrev({ onClick }: ArrowProps) {
+  return (<div className='slick-arrow slick-prev slick-prev-detail' onClick={onClick} />)
 }
-function ArrowNext({ className, style, onClick }: ArrowProps) {
-  return (<div className={className} onClick={onClick} />)
+function ArrowNext({ onClick }: ArrowProps) {
+  return (<div className='slick-arrow slick-next slick-next-detail' onClick={onClick} />)
 }
 
 function PostSlide() {
@@ -48,7 +48,7 @@ function PostSlide() {
     prevArrow: <ArrowPrev />
   }
   return (
-    <Slider {...settings} className='h-[280px]'>
+    <Slider {...settings} className='h-[280px] bg-gray1-text slider-detail'>
       {postData.map((post, idx) => <img key={`img-{idx}`} src={post.posterSrc} height="280" className='h-[280px] object-contain' />)}
     </Slider>
   )
@@ -57,10 +57,24 @@ function PostSlide() {
 function PostTitle() {
   return (
     <div className='flex flex-col px-[16px] py-[20px]'>
-      <p className='text-lg py-[10px]'>PEAK FESTIVAL 2023</p>
-      <div className='flex flex-row justify-between pt-[10px]'>
-        <p className='text-sm text-gray3-text'>88.88.88 - 88.88</p>
-        <Button disabled className='postCate'>공연전시/행사</Button>
+      <p className='text-lg pt-[10px]'>PEAK FESTIVAL 2023</p>
+      <div className='flex flex-row justify-between pt-[4px]'>
+        <p className='text-sm text-gray3-text'>23.05.27 - 05.28</p>
+        <div className='flex flex-row items-center'>
+          <a href="/"><img src='/post_views.svg' /></a>
+          <p className='text-sm text-gray3-text ps-[4px]'>2,398</p>
+        </div>
+      </div>
+      <div className='flex flex-row justify-between pt-[4px]'>
+        <div className='flex flex-row items-center'>
+          <div className='me-[4px] rounded-full overflow-hidden w-[24px] h-[24px]'>
+            <Image src="/images/profile_pic.png" alt="프로필 사진" width={24} height={24} />
+          </div>
+          <p className='text-sm text-gray3-text'>(주)SACOM</p>
+        </div>
+        <ThemeProvider theme={categoryButtonTheme}>
+          <Button disabled>공연전시/행사</Button>
+        </ThemeProvider>
       </div>
     </div>
   )
@@ -87,11 +101,10 @@ function PostContent() {
       </div>
       <div className='flex flex-col px-[16px] pt-[30px]' id='p-content'>
         <p className='text-sm'>
-          ※일반 티켓은 2023년 4월 18일(화) 오후 6시부터 예매 가능하며, 한정 수량 소진 시 예매가 조기 마감될 수 있습니다.<br />
-          ※본 공연은 일일권과 양일권 모두 구매 가능합니다.<br />
+          ※ 일반 티켓은 2023년 4월 18일(화) 오후 6시부터 예매 가능하며, 한정 수량 소진 시 예매가 조기 마감될 수 있습니다.<br />
+          ※ 본 공연은 일일권과 양일권 모두 구매 가능합니다.<br />
           ※ 양일권은 5월 27일, 28일 이틀간 자유롭게 모든 공연을 관람할 수 있는 티켓을 의미합니다.<br />
           ※ 양일권 구매자분들은 27일(토)에 손목밴드를 교환하시면 28일(일) 공연 입장 시 바로 입장이 가능합니다.<br /><br />
-
           할인정보<br />
           - 장애인 (1~3급) 30% 할인 (동반1인), 장애인 (4~6급) 30% 할인 (본인만)- 국가유공자 30% 할인 (본인만)- 국민기초생활수급자 30% 할인(본인만)*증빙 미 지참 시 차액 지불
         </p>
@@ -104,19 +117,6 @@ function PostContent() {
 
       </div>
     </>
-  )
-}
-
-// exists in main
-interface HashtagButtonProps { tag: string; }
-function HashtagButton(props: HashtagButtonProps) {
-  return (
-    <Button className='tagBtn' disableRipple>
-      <div className='flex flex-row'>
-        <span className='pe-[2px]'>#</span>
-        <span>{props.tag}</span>
-      </div>
-    </Button>
   )
 }
 

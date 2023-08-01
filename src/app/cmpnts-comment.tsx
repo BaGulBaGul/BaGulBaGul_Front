@@ -1,9 +1,10 @@
 'use client';
 import {
-  InputBase, Button
+  InputBase, InputBaseProps, Button
 } from '@mui/material';
-import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
+import { styled, ThemeProvider } from '@mui/material/styles';
 import { commentData } from '@/components/common/Data';
+import { commentButtonTheme, replyButtonTheme } from '@/components/common/Buttons';
 
 export function CommentDetail() {
   return (
@@ -18,59 +19,31 @@ export function CommentDetail() {
   )
 }
 
-const CommentInput = styled(InputBase)(({ theme }) => ({
+const CommentInput = styled(InputBase)<InputBaseProps>(({ theme }) => ({
   '& .MuiInputBase-input': {
     borderRadius: 0,
     position: 'relative',
-    backgroundColor: '#FCFCFC',
+    backgroundColor: '#FFFFFF',
     fontSize: 14,
-    padding: '12px 24px',
+    padding: '13px 24px',
     '&::placeholder': { color: '#C1C1C1' }
   },
 }));
-const commentButtonTheme = createTheme({
-  components: {
-    MuiButtonBase: {
-      defaultProps: { disableRipple: true, },
-    },
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          backgroundColor: '#4A6AFE !important',
-          color: '#FCFCFC', fontSize: 14,
-          borderRadius: 0,
-          '&:hover': {
-            backgroundColor: '#FCFCFC !important',
-            border: '1px solid #4A6AFE !important',
-            color: '#1E1E1E'
-          },
-          '&:active': {
-            backgroundColor: '#6C6C6C !important',
-            border: '1px solid #6C6C6C !important',
-            color: '#FCFCFC', fontWeight: 600,
-          }
-        }
-      }
-    }
-  },
-});
+
 export function CommentFooter() {
   return (
-    <div className="fixed bottom-0 left-0 right-0 flex-row flex h-[48px]">
-      <div className='flex grow comment-input'>
-        <CommentInput placeholder='댓글을 입력해주세요.' fullWidth />
-      </div>
+    <div className="fixed bottom-0 left-0 right-0 flex-row flex min-h-[48px] comment-input bg-[#FFF]">
+      <CommentInput placeholder='댓글을 입력해주세요.' fullWidth multiline className='py-0' />
       <ThemeProvider theme={commentButtonTheme}>
-        <Button className='text-sm w-[70px]'>등록</Button>
+        <Button className='text-sm w-[70px] h-[48px]'>등록</Button>
       </ThemeProvider>
     </div>
   )
 }
 
 interface CommentBlockProps {
-  idx: number; user: string;
-  content: string; date: string;
-  liked: boolean; likes: number;
+  idx: number; user: string; content: string;
+  date: string; liked: boolean; likes: number;
 }
 export function CommentBlock(props: CommentBlockProps) {
   return (
@@ -89,7 +62,10 @@ export function CommentBlock(props: CommentBlockProps) {
       </div>
       <div className='text-xs text-gray3-text' id='comment-datetime'>{props.date}</div>
       <div className='flex flex-row justify-between items-center pt-[8px]' id='comment-foot'>
-        <Button className='comment-btn text-xs font-normal' disableRipple>답글</Button>
+        <ThemeProvider theme={replyButtonTheme}>
+          <Button className='text-xs font-normal'>답글</Button>
+        </ThemeProvider>
+        
         <div className='flex flex-row items-center' id='comment-likes'>
           {
             props.liked
@@ -98,8 +74,8 @@ export function CommentBlock(props: CommentBlockProps) {
           }
           {
             props.likes !== 0
-            ? <p className='text-xs text-gray3-text ps-[2px]'>{props.likes}</p>
-            : <></>
+              ? <p className='text-xs text-gray3-text ps-[2px]'>{props.likes}</p>
+              : <></>
           }
         </div>
       </div>

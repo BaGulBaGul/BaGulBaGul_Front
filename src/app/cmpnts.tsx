@@ -7,7 +7,7 @@ interface PostHeaderProps {
 }
 export function PostHeader(props: PostHeaderProps) {
   return (
-    <div className="flex-row flex w-full justify-between px-[24px] py-[10px] bg-[#FFFFFF]">
+    <div className="flex-row flex w-full justify-between px-[24px] py-[18px] bg-[#FFFFFF]">
       <a href="/"><img src='/arrow_prev.svg' /></a>
       <div className="flex flex-row items-center text-lg">
         <div>{props.title}</div>
@@ -21,16 +21,3 @@ export function PostHeader(props: PostHeaderProps) {
     </div>
   )
 }
-
-// const hashTagTheme = createTheme({
-//   components: {
-//     // Name of the component
-//     MuiButtonBase: {
-//       defaultProps: {
-//         // The props to change the default for.
-//         disableRipple: true, // No more ripple, on the whole application 💣!
-//       },
-//     },
-//   },
-// });
-

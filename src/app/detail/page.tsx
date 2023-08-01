@@ -6,12 +6,13 @@ import { PostHeader } from "../cmpnts";
 export default function Page() {
   return (
     <div>
-      <div className="relative z-10">
+      <div className='relative z-10'>
         <HeaderNonMain />
       </div>
-      <main className="flex min-h-screen flex-col items-center">
-        {/* 상세화면 */}
-        <PostHeader title='페스티벌' />
+      <main className="relative z-0 flex min-h-screen flex-col items-center">
+        <div className="sticky top-[44px] relative z-10 mt-[44px] w-full">
+          <PostHeader title="페스티벌" />
+        </div>
         <PostDetail />
       </main>
     </div>
