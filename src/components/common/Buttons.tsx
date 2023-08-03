@@ -123,3 +123,34 @@ export const replyButtonTheme = createTheme({
     }
   },
 });
+
+export const writeFabTheme = createTheme({
+  components: {
+    MuiButtonBase: {
+      defaultProps: { disableRipple: true, },
+    },
+    MuiFab: {
+      styleOverrides: {
+        root: {
+          padding: '12.5px 12px !important',
+          backgroundColor: '#4A6AFE !important',
+          fontWeight: 600,
+          fontSize: '18px',
+          lineHeight: '140%',
+          color: '#FCFCFC',
+          height: 'auto !important',
+          borderRadius: '50px !important',
+          boxShadow: 'none',
+          '&:hover': {
+            border: '0.5px solid #4A6AFE',
+            backgroundColor: 'transparent'
+          },
+          '&:active': {
+            border: '0.5px solid #4A6AFE',
+            backgroundColor: '#4A6AFE !important', color: '#FCFCFC'
+          }
+        }
+      }
+    }
+  },
+});

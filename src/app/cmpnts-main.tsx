@@ -2,13 +2,14 @@
 
 import { useState, useLayoutEffect, createRef } from 'react';
 import Image from 'next/image'
-import { postData } from '../components/common/Data'
+import { postData, partyData } from '../components/common/Data'
 import Slider from "react-slick";
 import {
-  styled, Tabs, Tab, Box, Typography, Button, Divider, IconButton, IconButtonProps, ThemeProvider
+  styled, Tabs, Tab, Box, Typography, Button, Divider,
+  IconButton, IconButtonProps, ThemeProvider, Fab,
 } from '@mui/material';
 import { CategoryButtons } from '@/components/common/CategoryButton';
-import { categoryButtonTheme, HashtagButton } from '@/components/common/Buttons'
+import { categoryButtonTheme, HashtagButton, writeFabTheme } from '@/components/common/Buttons'
 
 // - carousel
 interface PostProps {
@@ -108,7 +109,6 @@ function TabPanel(props: TabPanelProps) {
     </div>
   );
 }
-
 export function PostTab() {
   const [value, setValue] = useState(0);
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -131,10 +131,25 @@ export function PostTab() {
         )}
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Item Two
+        Item 2
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Item Three
+        <CategoryButtons />
+        <div className='contents'>
+          <ThemeProvider theme={writeFabTheme}>
+            <Fab variant="extended" size="small" color="primary" className='fixed bottom-[55px] right-[16px]'>
+              <div className='flex flex-row items-center'>
+                <img src='/main_add.svg' />
+                <span className='ps-[4px]'>글작성</span>
+              </div>
+            </Fab>
+          </ThemeProvider>
+          {partyData.map((post, idx) =>
+            <PostBlock posterSrc={post.posterSrc} name={post.name} date={post.date} content={post.content} tags={post.tags} key={`party-${idx}`} />
+          )}
+          
+        </div>
+
       </TabPanel>
     </Box>
   )
@@ -163,7 +178,7 @@ function PostBlock(props: PostProps) {
           <Image className='rounded-lg' width={110} height={136}
             src={props.posterSrc} alt='rec poster' style={{ objectFit: "cover" }} />
         </div>
-        { props.tags ? <HashtagAccordion tag={props.tags} /> : <></> }
+        {props.tags ? <HashtagAccordion tag={props.tags} /> : <></>}
       </div>
     </div>
   )
