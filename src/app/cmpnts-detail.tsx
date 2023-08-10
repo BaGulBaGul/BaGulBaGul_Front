@@ -1,20 +1,25 @@
 'use client';
+import { useState } from 'react';
 import { postData } from '../components/common/Data'
 import Slider from "react-slick";
 import Image from 'next/image'
-import { Button, Divider, } from '@mui/material';
-import { ThemeProvider } from '@mui/material/styles';
-import { categoryButtonTheme, HashtagButton } from '@/components/common/Buttons'
+import { ThemeProvider, Button, Divider, IconButton, Dialog, DialogTitle, DialogContent } from '@mui/material';
+import { categoryButtonTheme, HashtagButton, shareDialogTheme } from '@/components/common/Buttons'
 
 export function PostDetail() {
+  const [popopen, setPopopen] = useState(false);
+  const handleOpen = () => { setPopopen(true) }
+  const handleClose = () => { setPopopen(false) }
+
   return (
     <div className='flex flex-col w-full pb-[76px]'>
       <PostSlide />
       <PostTitle />
       <Divider />
       <PostContent />
+      <ShareDialog handleClose={handleClose} popopen={popopen} />
       <PostFooter />
-      <PostTools />
+      <PostTools handleOpen={handleOpen} />
     </div>
   )
 }
@@ -120,7 +125,8 @@ function PostContent() {
   )
 }
 
-function PostTools() {
+interface PostToolsProps { handleOpen: any }
+function PostTools(props: PostToolsProps) {
   return (
     <div className='flex flex-row justify-between pt-[30px] px-[16px]'>
       <div className='flex flex-row'>
@@ -141,8 +147,34 @@ function PostTools() {
         <div className='pe-[10px]'>
           <a href="/"><img src='/post_calendar.svg' /></a>
         </div>
-        <a href="/"><img src='/post_share.svg' /></a>
+        <IconButton onClick={props.handleOpen} className='p-0'><img src='/post_share.svg' /></IconButton>
       </div>
     </div>
   )
 }
+
+interface ShareDialogProps { handleClose: any, popopen: boolean }
+function ShareDialog(props: ShareDialogProps) {
+  return (
+    <ThemeProvider theme={shareDialogTheme}>
+      <Dialog onClose={props.handleClose} open={props.popopen} >
+        <DialogTitle className='flex flex-row justify-between'>
+          <div className='w-[24px] h-[24px]' />
+          <span>공유하기</span>
+          <IconButton onClick={props.handleClose}><img src='/popup_close.svg' /></IconButton>
+        </DialogTitle>
+        <DialogContent className='flex flex-row gap-[48px] justify-center'>
+          <div className='flex flex-col items-center'>
+            <img className='w-[50px] h-[50.74px]' src='/kakaotalk_sharing_btn.png' />
+            <span className='select-none px-[4px] pt-[4px]'>카카오톡</span>
+          </div>
+          <div className='flex flex-col items-center'>
+            <img className='w-[50px] h-[50.74px]' src='/url_sharing_btn.png' />
+            <span className='select-none px-[4px] pt-[4px]'>URL 복사</span>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </ThemeProvider>
+
+  )
+} 

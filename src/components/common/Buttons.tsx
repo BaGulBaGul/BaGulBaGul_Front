@@ -208,3 +208,36 @@ export const viewRadioTheme = createTheme({
     }
   },
 });
+
+export const shareDialogTheme = createTheme({
+  components: {
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          margin: 0, borderRadius: '8px',
+          maxHeight: 'unset', maxWidth: 'unset', height: '180px', width: '250px'
+        }
+      }
+    },
+    MuiDialogTitle: {
+      styleOverrides: {
+        root: {
+          padding: '22px 18px 31.5px', 
+          fontWeight: '600', fontSize: '18px', lineHeight: '140%',
+        }
+      }
+    },
+    MuiDialogContent: {
+      styleOverrides: {
+        root: {
+          fontSize: '12px'
+        }
+      }
+    },
+    MuiIconButton: {
+      styleOverrides: {
+        root: { padding: 0, }
+      }
+    }
+  }
+})
