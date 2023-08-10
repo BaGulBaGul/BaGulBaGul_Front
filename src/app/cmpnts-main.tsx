@@ -5,11 +5,12 @@ import Image from 'next/image'
 import { postData, partyData } from '../components/common/Data'
 import Slider from "react-slick";
 import {
-  styled, Tabs, Tab, Box, Typography, Button, Divider,
+  styled, Box, Button, Divider,
   IconButton, IconButtonProps, ThemeProvider, Fab,
 } from '@mui/material';
 import { CategoryButtons } from '@/components/common/CategoryButton';
 import { categoryButtonTheme, HashtagButton, writeFabTheme } from '@/components/common/Buttons'
+import { AntTabs, AntTab, TabPanel } from './cmpnts';
 
 // - carousel
 interface PostProps {
@@ -75,40 +76,6 @@ export function RecCarousel() {
   )
 }
 
-// - tabs
-const AntTabs = styled(Tabs)({
-  "& .MuiTabs-indicator": { backgroundColor: "#1E1E1E" }
-});
-
-const AntTab = styled((props: StyledTabProps) => (
-  <Tab disableRipple {...props} />
-))(({ theme }) => ({
-  fontWeight: theme.typography.fontWeightRegular,
-  marginRight: theme.spacing(2),
-  fontSize: "1.125rem", color: "1E1E1E",
-  padding: 0, minWidth: "min-content",
-  "&.Mui-selected": { color: "#1E1E1E", fontWeight: 600 }
-}));
-
-interface StyledTabProps { label: string; }
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
-
-function TabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
-  return (
-    <div role="tabpanel" hidden={value !== index} id={`simple-tabpanel-${index}`} {...other} >
-      {value === index && (
-        <Box>
-          <Typography component={"div"}>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
 export function PostTab() {
   const [value, setValue] = useState(0);
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -116,16 +83,16 @@ export function PostTab() {
   };
 
   return (
-    <Box className='w-full px-0 pt-[10px]'>
-      <Box className='sticky top-[44px] bg-white-text relative z-10'>
-        <AntTabs value={value} onChange={handleChange} className='px-[16px]'>
+    <Box className='w-full px-0'>
+      <Box className='sticky top-[44px] bg-[#FFF] relative z-10'>
+        <AntTabs value={value} onChange={handleChange} className='px-[16px] pt-[20px] pb-[10px]'>
           <AntTab label="페스티벌" />
           <AntTab label="지역행사" />
           <AntTab label="파티" />
         </AntTabs>
       </Box>
       <TabPanel value={value} index={0}>
-        <CategoryButtons />
+        <div className='sticky top-[102px] bg-[#FFF] relative z-10'><CategoryButtons /></div>
         {postData.map((post, idx) =>
           <PostBlock posterSrc={post.posterSrc} name={post.name} date={post.date} content={post.content} tags={post.tags} key={`rec-${idx}`} />
         )}
@@ -134,7 +101,7 @@ export function PostTab() {
         Item 2
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <CategoryButtons />
+        <div className='sticky top-[102px] bg-[#FFF] relative z-10'><CategoryButtons /></div>
         <div className='contents'>
           <ThemeProvider theme={writeFabTheme}>
             <Fab variant="extended" size="small" color="primary" className='fixed bottom-[55px] right-[16px]'>
@@ -147,9 +114,7 @@ export function PostTab() {
           {partyData.map((post, idx) =>
             <PostBlock posterSrc={post.posterSrc} name={post.name} date={post.date} content={post.content} tags={post.tags} key={`party-${idx}`} />
           )}
-          
         </div>
-
       </TabPanel>
     </Box>
   )

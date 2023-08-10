@@ -154,3 +154,57 @@ export const writeFabTheme = createTheme({
     }
   },
 });
+
+export const likeButtonTheme1 = createTheme({
+  components: {
+    // MuiButtonBase: { defaultProps: { disableRipple: true, }, },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          fontSize: '12px !important', fontWeight: '400', lineHeight: '160%',
+          color: '#000', backgroundColor: '#EAEAEA !important',
+          borderRadius: '2px!important', padding: '2px 4px', minWidth: 'unset',
+          "&.Mui-disabled": { color: '#000', },
+        }
+      }
+    }
+  },
+});
+export const likeButtonTheme2 = createTheme({
+  components: {
+    // MuiButtonBase: { defaultProps: { disableRipple: true, }, },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          fontSize: '12px !important', fontWeight: '400', lineHeight: '160%',
+          color: '#000', backgroundColor: '#C1C1C1 !important',
+          borderRadius: '2px!important', padding: '2px 4px', minWidth: 'unset',
+          "&.Mui-disabled": { color: '#000', },
+        }
+      }
+    }
+  },
+});
+
+export const viewRadioTheme = createTheme({
+  components: {
+    MuiFormControlLabel: {
+      defaultProps: {  labelPlacement: 'start', },
+      styleOverrides: {
+        root: { margin: 0, marginRight: '8px !important', },
+        label: { fontSize: '12px !important' }
+      }
+    },
+    MuiRadio: {
+      defaultProps: {
+        checkedIcon: <img src="/checkbox_1.svg" width={16} height={16} />,
+        icon: <img src="/checkbox.svg" width={16} height={16} />,
+      }
+    },
+    MuiButtonBase: {
+      styleOverrides: {
+        root: { padding: '0 !important', paddingLeft: '4px !important' }
+      }
+    }
+  },
+});

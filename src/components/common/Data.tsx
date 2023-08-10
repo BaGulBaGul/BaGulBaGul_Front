@@ -101,3 +101,43 @@ export const commentData = [
     likes: 20,
   },
 ]
+
+export const likeEvents = ['피크페스티벌', '서울재즈페스티벌']
+export const likeData = [
+  {
+    title: 'PEAK FESTIVAL 2023',
+    date: '23.05.27 - 05.28',
+    type: 'EVENT',
+    eventId: 0,
+  },
+  {
+    title: '피크페스티벌 같이 가실 분',
+    date: '23.05.27 - 05.28',
+    type: 'GATHERING',
+    eventId: 0,
+  },
+  {
+    title: '피크페스티벌 2일차 동행 구해요',
+    date: '23.05.27 - 05.28',
+    type: 'GATHERING',
+    eventId: 0,
+  },
+  {
+    title: '핔페 갈 사람 있나요?',
+    date: '23.05.27 - 05.28',
+    type: 'GATHERING',
+    eventId: 0,
+  },
+  {
+    title: 'SEOUL JAZZ FESTIVAL 2023, 15th',
+    date: '23.05.27 - 05.28',
+    type: 'EVENT',
+    eventId: 1,
+  },
+  {
+    title: '서재패 2일차 동행 구해요',
+    date: '23.05.27 - 05.28',
+    type: 'GATHERING',
+    eventId: 1,
+  },
+]
