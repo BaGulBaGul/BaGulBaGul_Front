@@ -62,17 +62,20 @@ html, body,
 
 .container {
   width: 100%;
+  display: flex; flex-wrap: wrap; gap: 10px;
 }
 .container-shrink {
   overflow: hidden;
   width: calc(100% - 41px);
   height: 25px;
+  display: flex; flex-wrap: wrap; gap: 10px;
 }
 
 .container-expand {
   white-space: normal;
   word-wrap:break-word;
   width: calc(100% - 35px);
+  display: flex; flex-wrap: wrap; gap: 10px;
 }
 
 .comment-input {

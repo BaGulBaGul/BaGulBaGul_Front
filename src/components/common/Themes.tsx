@@ -51,9 +51,9 @@ export const hashtagButtonTheme = createTheme({
             backgroundColor: '#6C6C6C !important', color: '#FCFCFC !important',
             border: '0.5px solid #6C6C6C !important',
           },
-          '&:not(:last-child)': {
-            marginRight: '10px'
-          }
+          // '&:not(:last-child)': {
+          //   marginRight: '10px'
+          // }
         }
       }
     }

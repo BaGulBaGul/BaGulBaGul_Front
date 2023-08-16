@@ -1,16 +1,12 @@
 'use client';
 
-import { useState, useLayoutEffect, createRef } from 'react';
-import Image from 'next/image'
+import { useState } from 'react';
 import { postData, partyData } from '../components/common/Data'
 import Slider from "react-slick";
-import {
-  styled, Box, Button, Divider,
-  IconButton, IconButtonProps, ThemeProvider, Fab,
-} from '@mui/material';
+import { Box, Button, Divider, ThemeProvider, Fab } from '@mui/material';
 import { CategoryButtons } from '@/components/common/CategoryButton';
-import { categoryButtonTheme, HashtagButton, writeFabTheme } from '@/components/common/Buttons'
-import { AntTabs, AntTab, TabPanel } from './cmpnts';
+import { categoryButtonTheme, writeFabTheme } from '@/components/common/Themes'
+import { AntTabs, AntTab, TabPanel, HashtagAccordion } from './cmpnts';
 
 // - carousel
 interface PostProps {
@@ -21,8 +17,7 @@ function RecPost(props: PostProps) {
   return (
     <div className="flex flex-col w-[188px] lg:w-[480px] px-[9px]">
       <div>
-        <Image className='rounded-lg h-[210px] lg:w-[480px]' width={170} height={210}
-          src={props.posterSrc} alt='rec poster' style={{ objectFit: "cover" }} />
+        <img className='rounded-lg h-[210px] w-[170px] lg:w-[480px] object-cover' src={props.posterSrc} />
       </div>
       <div className='flex flex-col pt-[12px] pb-[13px]'>
         <p className='truncate text-base text-center'>{props.name}</p>
@@ -126,73 +121,28 @@ function PostBlock(props: PostProps) {
     <div>
       <Divider />
       <div className='flex flex-col py-[18px] px-[16px]'>
-        <div className='flex flex-row justify-between  h-[140px]'>
-          <div className='flex flex-col justify-between w-[230px]'>
-            <div className='flex flex-col'>
-              <div className='flex flex-row pb-[10px]'>
-                <Image className='me-[8px]' src="/main_profile.svg" alt="프로필 사진" width={24} height={24} />
-                <ThemeProvider theme={categoryButtonTheme}>
-                  <Button disabled>공연전시/행사</Button>
-                </ThemeProvider>
-              </div>
-              <p className='text-sm text-gray3-text'>{props.date}</p>
-              <p className='truncate text-base font-semibold'>{props.name}</p>
+        <div className='flex flex-col justify-between'>
+          <div className='flex flex-row justify-between items-center pb-[10px]'>
+            <div className='flex flex-row'>
+            <img className='me-[8px] w-[24px] h-[24px]' src="/main_profile.svg" />
+              <p className='text-sm text-gray3-text self-center'>(주)SACOM</p>
             </div>
-            <p className='text-xs text-gray3-text max-h-8 block text-ellipsis break-words overflow-hidden'>{props.content}</p>
+            <ThemeProvider theme={categoryButtonTheme}>
+              <Button disabled>공연전시/행사</Button>
+            </ThemeProvider>
           </div>
-          <Image className='rounded-lg' width={110} height={136}
-            src={props.posterSrc} alt='rec poster' style={{ objectFit: "cover" }} />
-        </div>
-        {props.tags ? <HashtagAccordion tag={props.tags} /> : <></>}
-      </div>
-    </div>
-  )
-}
-
-// -- hashtags
-interface ExpandMoreProps extends IconButtonProps { expand: boolean; }
-const ExpandMore = styled((props: ExpandMoreProps) => {
-  const { expand, ...other } = props;
-  return (
-    <div className='content-start'>
-      <IconButton {...other} aria-expanded={false} />
-    </div>
-  );
-})(({ theme, expand }) => ({
-  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-  marginLeft: 'auto', padding: '0px',
-  transition: theme.transitions.create('transform', { duration: theme.transitions.duration.shortest })
-}));
-
-interface HashtagAccordionProps { tag: string[]; }
-function HashtagAccordion(props: HashtagAccordionProps) {
-  const ref = createRef<HTMLDivElement>();
-  const [expanded, setExpanded] = useState(false);
-  const [showMore, setShowMore] = useState(false);
-  useLayoutEffect(() => {
-    if (ref.current && (ref.current.clientHeight > 27)) {
-      setShowMore(true);
-    }
-  }, [ref]);
-  const handleExpandClick = () => { setExpanded(!expanded); }
-
-  return (
-    <div className='pt-[10px]'>
-      <div ref={ref} className='flex flex-row justify-between'>
-        {
-          showMore
-            ? <>
-              <div className={expanded ? "container-expand" : "container-shrink"}>
-                {(props.tag).map((tag, idx) => <HashtagButton tag={tag} key={`tag-${idx}`} />)}
+          <div className='flex flex-row justify-between gap-[68px]'>
+            <div className='flex flex-col justify-between'>
+              <div className='flex flex-col gap-[2px]'>
+                <p className='text-sm text-gray3-text'>{props.date}</p>
+                <p className='truncate text-base font-semibold'>{props.name}</p>
               </div>
-              <ExpandMore expand={expanded} onClick={handleExpandClick} aria-expanded={expanded} >
-                <img src='/arrow_down.svg' />
-              </ExpandMore>
-            </>
-            : <div className='container'>
-              {(props.tag).map((tag, idx) => <HashtagButton tag={tag} key={`tag-${idx}`} />)}
+              <p className='text-xs text-gray3-text max-h-8 block text-ellipsis break-words overflow-hidden'>{props.content}</p>
             </div>
-        }
+            <img className='rounded-lg w-[84px] h-[104px] object-cover' src={props.posterSrc} />
+          </div>
+          {props.tags ? <HashtagAccordion tag={props.tags} /> : <></>}
+        </div>
       </div>
     </div>
   )

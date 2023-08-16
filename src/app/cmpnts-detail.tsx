@@ -4,7 +4,8 @@ import { postData } from '../components/common/Data'
 import Slider from "react-slick";
 import Image from 'next/image'
 import { ThemeProvider, Button, Divider, IconButton, Dialog, DialogTitle, DialogContent } from '@mui/material';
-import { categoryButtonTheme, HashtagButton, shareDialogTheme } from '@/components/common/Buttons'
+import { categoryButtonTheme, HashtagButton, shareDialogTheme } from '@/components/common/Themes'
+import { PostFooter } from './cmpnts';
 
 export function PostDetail() {
   const [popopen, setPopopen] = useState(false);
@@ -18,16 +19,8 @@ export function PostDetail() {
       <Divider />
       <PostContent />
       <ShareDialog handleClose={handleClose} popopen={popopen} />
-      <PostFooter />
+      <PostFooter title='모집글 보러가기' path='/accompany' />
       <PostTools handleOpen={handleOpen} />
-    </div>
-  )
-}
-
-export function PostFooter() {
-  return (
-    <div className="fixed bottom-0 left-0 right-0 flex-row flex w-full justify-center py-[12px] bg-primary-blue">
-      <a href="/" className='text-sm text-white-text'>모집글 보러가기</a>
     </div>
   )
 }

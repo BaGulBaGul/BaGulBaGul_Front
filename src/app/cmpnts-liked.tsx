@@ -5,7 +5,7 @@ import {
 } from '@mui/material';
 import { AntTabs, AntTab, TabPanel } from './cmpnts';
 import { likeEvents, likeData } from '@/components/common/Data';
-import { likeButtonTheme1, likeButtonTheme2, viewRadioTheme } from '@/components/common/Buttons';
+import { likeButtonTheme1, likeButtonTheme2, viewRadioTheme } from '@/components/common/Themes';
 
 export function LikedDetail() {
   return (
@@ -30,7 +30,7 @@ function LikedTab() {
               <RadioGroup row value={view} onChange={handleView}>
                 <FormControlLabel value="ALL" control={<Radio />} label="전체" />
                 <FormControlLabel value="EVENT" control={<Radio />} label="게시글" />
-                <FormControlLabel value="GATHERING" control={<Radio />} label="모집글" />
+                <FormControlLabel value="ACCOMPANY" control={<Radio />} label="모집글" />
               </RadioGroup>
             </FormControl>
           </ThemeProvider>
@@ -51,7 +51,7 @@ function LikedTab() {
             <Button disabled>{likeEvents[props.eventId]}</Button>
           </ThemeProvider>
           {
-            props.type === 'GATHERING'
+            props.type === 'ACCOMPANY'
               ? <ThemeProvider theme={likeButtonTheme2}><Button disabled>모집글</Button></ThemeProvider>
               : <></>
           }

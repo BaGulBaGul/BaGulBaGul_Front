@@ -4,7 +4,7 @@ import {
 } from '@mui/material';
 import { styled, ThemeProvider } from '@mui/material/styles';
 import { commentData } from '@/components/common/Data';
-import { commentButtonTheme, replyButtonTheme } from '@/components/common/Buttons';
+import { commentButtonTheme, replyButtonTheme } from '@/components/common/Themes';
 
 export function CommentDetail() {
   return (

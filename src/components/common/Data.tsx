@@ -60,6 +60,39 @@ export const partyData = [
   },
 ]
 
+export const accompanyData = [
+  {
+    name: '피크페스티벌 2일차 동행 구해요',
+    date: '23.05.27 - 05.28',
+    tags: ['피크페스티벌', '10cm', '넬', '볼빨간사춘기']
+  },
+  {
+    name: '피크페스티벌 1,2일차 모두 동행할 분 구합니다',
+    date: '23.05.27 - 05.28',
+    tags: ['피크페스티벌', '10cm', '넬', '볼빨간사춘기', '실리카겔',]
+  },
+  {
+    name: '피크페스티벌 1일차 동행 구해요',
+    date: '23.05.27 - 05.28',
+    tags: ['피크페스티벌', '10cm', '넬', '볼빨간사춘기', '실리카겔', '난지한강공원', '5월']
+  },
+  {
+    name: '피크페스티벌 같이 가실 분',
+    date: '23.05.27 - 05.28',
+    tags: ['피크페스티벌', '10cm', '넬', '볼빨간사춘기']
+  },
+  {
+    name: '피크페스티벌 2일차 동행 구해요',
+    date: '23.05.27 - 05.28',
+    tags: ['피크페스티벌', '10cm', '넬', '볼빨간사춘기']
+  },
+  {
+    name: '피크페스티벌 1,2일차 모두 동행할 분 구합니다',
+    date: '23.05.27 - 05.28',
+    tags: ['피크페스티벌', '10cm', '넬', '볼빨간사춘기', '실리카겔',]
+  },
+]
+
 export const categories = [
   '문화/예술', '공연전시/행사', '식품/음료', '교육/체험', '스포츠/레저', '지역특색', '민속/전통', '주류', '종교', '인물/역사'
 ]
@@ -113,19 +146,19 @@ export const likeData = [
   {
     title: '피크페스티벌 같이 가실 분',
     date: '23.05.27 - 05.28',
-    type: 'GATHERING',
+    type: 'ACCOMPANY',
     eventId: 0,
   },
   {
     title: '피크페스티벌 2일차 동행 구해요',
     date: '23.05.27 - 05.28',
-    type: 'GATHERING',
+    type: 'ACCOMPANY',
     eventId: 0,
   },
   {
     title: '핔페 갈 사람 있나요?',
     date: '23.05.27 - 05.28',
-    type: 'GATHERING',
+    type: 'ACCOMPANY',
     eventId: 0,
   },
   {
@@ -137,7 +170,7 @@ export const likeData = [
   {
     title: '서재패 2일차 동행 구해요',
     date: '23.05.27 - 05.28',
-    type: 'GATHERING',
+    type: 'ACCOMPANY',
     eventId: 1,
   },
 ]
