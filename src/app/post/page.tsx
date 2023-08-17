@@ -1,5 +1,5 @@
 import Post from '@/components/pages/post'
-import PostHeader from '@/components/layout/postHeader'
+import SubHeader from '@/components/layout/subHeader'
 import { HeaderNonMain } from '@/components/layout/header'; '@/components/layout/header';
 
 export default function Page() {
@@ -9,7 +9,7 @@ export default function Page() {
       <>
         <header className='relative z-10'>
           <HeaderNonMain />
-          <PostHeader name={name} url={"/"} />
+          <SubHeader name={name} url={"/"} />
         </header>
         <Post />
       </>

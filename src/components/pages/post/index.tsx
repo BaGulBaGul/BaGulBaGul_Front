@@ -15,7 +15,7 @@ export default function index() {
     };
 
     return (
-        <div className='mt-[88px]'>
+        <div className='mt-[94px]'>
             <div className='relative w-full h-[240px] bg-[#D9D9D9]'>
                 {/* 이미지 들어갈 곳 */}
                 <button>
