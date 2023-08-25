@@ -1,11 +1,12 @@
 'use client';
-import { useState, createRef } from 'react';
+import { useState } from 'react';
 import {
-  Box, Button, ThemeProvider, Checkbox, RadioGroup, Radio, useRadioGroup, FormControl, FormControlLabel
+  Box, Button, ThemeProvider, Checkbox, FormControl, FormControlLabel,
+  FormGroup,
 } from '@mui/material';
 import { AntTabs, AntTab, TabPanel } from './cmpnts';
 import { likeEvents, likeData } from '@/components/common/Data';
-import { likeButtonTheme1, likeButtonTheme2, viewRadioTheme } from '@/components/common/Themes';
+import { likeButtonTheme1, likeButtonTheme2, viewCheckTheme } from '@/components/common/Themes';
 
 export function LikedDetail() {
   return (
@@ -18,20 +19,26 @@ export function LikedDetail() {
 function LikedTab() {
   const [value, setValue] = useState(0);
   const handleChange = (event: React.SyntheticEvent, newValue: number) => { setValue(newValue); };
-  const [view, setView] = useState('ALL');
-  const handleView = (event: any, value: any) => { setView(value); }
 
-  function ViewsRadio() {
+  const [view, setView] = useState({ festival: true, accompany: true });
+  const handleView = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if ((view.festival !== view.accompany) && !e.target.checked) {
+      setView({ festival: true, accompany: true })
+    } else {
+      setView({ ...view, [e.target.value]: e.target.checked });
+    }
+  }
+
+  function ViewsCheck() {
     return (
       <div className='sticky top-[108px] bg-[#FFF] relative z-10'>
         <div className='flex flex-row justify-end gap-[8px] px-[16px] pb-[10px]'>
-          <ThemeProvider theme={viewRadioTheme}>
+          <ThemeProvider theme={viewCheckTheme}>
             <FormControl>
-              <RadioGroup row value={view} onChange={handleView}>
-                <FormControlLabel value="ALL" control={<Radio />} label="전체" />
-                <FormControlLabel value="EVENT" control={<Radio />} label="게시글" />
-                <FormControlLabel value="ACCOMPANY" control={<Radio />} label="모집글" />
-              </RadioGroup>
+              <FormGroup row>
+                <FormControlLabel control={<Checkbox checked={view.festival} value='festival' onChange={handleView} />} label="게시글" />
+                <FormControlLabel control={<Checkbox checked={view.accompany} value='accompany' onChange={handleView} />} label="모집글" />
+              </FormGroup>
             </FormControl>
           </ThemeProvider>
         </div>
@@ -79,22 +86,21 @@ function LikedTab() {
         </AntTabs>
       </Box>
       <TabPanel value={value} index={0}>
-        <ViewsRadio />
+        <ViewsCheck />
         {
           likeData.map((item, idx) => {
-            if (view === 'ALL') {
+            if (view.festival && view.accompany) {
               return (
                 <LikePostBlock title={item.title} date={item.date} type={item.type} eventId={item.eventId} key={`like-${idx}`} />
               )
             } else {
+              let checkedView = view.festival === true ? 'FESTIVAL' : 'ACCOMPANY'
               return (
-                <>
-                {
-                  view === item.type
+                <>{
+                  checkedView === item.type
                   ? <LikePostBlock title={item.title} date={item.date} type={item.type} eventId={item.eventId} key={`like-${idx}`} />
                   : <></>
-                }
-                </>
+                }</>
               )
             }
           })

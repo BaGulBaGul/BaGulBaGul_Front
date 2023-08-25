@@ -209,6 +209,29 @@ export const viewRadioTheme = createTheme({
   },
 });
 
+export const viewCheckTheme = createTheme({
+  components: {
+    MuiFormControlLabel: {
+      defaultProps: {  labelPlacement: 'start', },
+      styleOverrides: {
+        root: { margin: 0, marginRight: '8px !important', },
+        label: { fontSize: '12px !important' }
+      }
+    },
+    MuiCheckbox: {
+      defaultProps: {
+        checkedIcon: <img src="/checkbox_1.svg" width={16} height={16} />,
+        icon: <img src="/checkbox.svg" width={16} height={16} />,
+      }
+    },
+    MuiButtonBase: {
+      styleOverrides: {
+        root: { padding: '0 !important', paddingLeft: '4px !important' }
+      }
+    }
+  },
+});
+
 export const shareDialogTheme = createTheme({
   components: {
     MuiDialog: {
@@ -241,3 +264,56 @@ export const shareDialogTheme = createTheme({
     }
   }
 })
+
+export const selectTheme = createTheme({
+  components: {
+    MuiPaper: {
+      styleOverrides: {
+        root: { 
+          marginTop: '5px !important', 
+          border: '0.5px solid #C1C1C1', borderRadius: '2px !important', 
+        }
+      }
+    },
+    MuiButtonBase: {
+      defaultProps: { disableRipple: true, },
+    },
+    MuiInputBase: {
+      styleOverrides: {
+        root: {
+          width: '70px', padding: '3px 8px', cursor: 'pointer',
+          fontSize: '14px !important', fontWeight: '400', lineHeight: '160%',
+          color: '#6C6C6C!important', borderRadius: '2px!important',
+          '&:before, &:after': { border: 'none !important' },
+          '&:hover, &:focus, &:active': {
+            backgroundColor: '#ECECEC', color: '#1E1E1E !important'
+          },
+        },
+        input: {
+          padding: '0 !important',
+          '&:focus': { backgroundColor: 'transparent' }
+        }
+      }
+    },
+    MuiMenuItem: {
+      styleOverrides: {
+        root: {
+          fontSize: '14px !important', padding: '3px 8px', minHeight: 'unset',
+          '&.Mui-selected, &.Mui-selected:hover': { backgroundColor: '#ECECEC' },
+          '&+&': {borderTop: '0.5px solid #C1C1C1 !important'}
+        }
+      }
+    },
+    MuiList: {
+      styleOverrides: {
+        root: { padding: '0 !important', }
+      }
+    },
+    MuiTabs: {
+      styleOverrides: {
+        root: { },
+        flexContainer: { justifyContent: 'space-between !important' }
+      }
+    }
+  },
+});

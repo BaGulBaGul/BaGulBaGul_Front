@@ -140,7 +140,7 @@ export const likeData = [
   {
     title: 'PEAK FESTIVAL 2023',
     date: '23.05.27 - 05.28',
-    type: 'EVENT',
+    type: 'FESTIVAL',
     eventId: 0,
   },
   {
@@ -164,7 +164,7 @@ export const likeData = [
   {
     title: 'SEOUL JAZZ FESTIVAL 2023, 15th',
     date: '23.05.27 - 05.28',
-    type: 'EVENT',
+    type: 'FESTIVAL',
     eventId: 1,
   },
   {
