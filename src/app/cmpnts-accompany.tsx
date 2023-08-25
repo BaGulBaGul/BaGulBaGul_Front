@@ -4,7 +4,7 @@ import { ThemeProvider, Button, Divider } from '@mui/material';
 import { categoryButtonTheme } from '@/components/common/Themes'
 import { PostFooter, HashtagAccordion } from './cmpnts';
 
-export function AccompanyDetail() {
+export function AccompanyList() {
   return (
     <div className='flex flex-col w-full pb-[76px]'>
       {accompanyData.map((post, idx) => {

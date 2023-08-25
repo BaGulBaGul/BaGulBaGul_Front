@@ -1,6 +1,6 @@
 
 import { HeaderNonMain } from "@/components/layout/header";
-import { AccompanyDetail } from "../cmpnts-accompany";
+import { AccompanyList } from "../cmpnts-accompany";
 import { PostHeader } from "../cmpnts";
 
 export default function Page() {
@@ -13,7 +13,7 @@ export default function Page() {
         <div className="sticky top-[44px] relative z-10 mt-[44px] w-full">
           <PostHeader title="모집글" />
         </div>
-        <AccompanyDetail />
+        <AccompanyList />
       </main>
     </div>
   );

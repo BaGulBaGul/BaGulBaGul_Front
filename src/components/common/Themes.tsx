@@ -1,20 +1,15 @@
 import { Button } from '@mui/material';
-import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 export const categoryButtonTheme = createTheme({
   components: {
-    MuiButtonBase: {
-      defaultProps: { disableRipple: true, },
-    },
+    MuiButtonBase: { defaultProps: { disableRipple: true, }, },
     MuiButton: {
       styleOverrides: {
         root: {
-          fontSize: '14px !important', fontWeight: '400',
-          lineHeight: '150%',
-          color: '#1E1E1E!important',
-          border: '0.5px solid #C1C1C1 !important',
-          borderRadius: '20px!important',
-          padding: '2px 8px',
+          fontSize: '14px !important', fontWeight: '400', lineHeight: '150%',
+          color: '#1E1E1E!important', padding: '2px 8px',
+          border: '0.5px solid #C1C1C1 !important', borderRadius: '20px!important',
           '&:hover, &:focus': {
             border: '0.5px solid #4A6AFE !important', backgroundColor: 'transparent'
           },
@@ -30,20 +25,14 @@ export const categoryButtonTheme = createTheme({
 
 export const hashtagButtonTheme = createTheme({
   components: {
-    MuiButtonBase: {
-      defaultProps: { disableRipple: true, },
-    },
+    MuiButtonBase: { defaultProps: { disableRipple: true, }, },
     MuiButton: {
       styleOverrides: {
         root: {
-          fontSize: '14px !important', fontWeight: '400',
-          lineHeight: '150%',
-          color: '#1E1E1E!important',
-          border: '0.5px solid #ECECEC !important',
-          borderRadius: '2px !important',
-          backgroundColor: '#ECECEC !important',
-          padding: '2px 4px',
-          minWidth: 'unset',
+          fontSize: '14px !important', fontWeight: '400', lineHeight: '150%',
+          color: '#1E1E1E!important', backgroundColor: '#ECECEC !important',
+          border: '0.5px solid #ECECEC !important', borderRadius: '2px !important',
+          padding: '2px 4px', minWidth: 'unset',
           '&:hover, &:focus': {
             border: '0.5px solid #6C6C6C !important', backgroundColor: '#FCFCFC !important'
           },
@@ -76,15 +65,12 @@ export function HashtagButton(props: HashtagButtonProps) {
 
 export const commentButtonTheme = createTheme({
   components: {
-    MuiButtonBase: {
-      defaultProps: { disableRipple: true, },
-    },
+    MuiButtonBase: { defaultProps: { disableRipple: true, }, },
     MuiButton: {
       styleOverrides: {
         root: {
-          backgroundColor: '#FFFFFF !important',
-          color: '#4A6AFE', fontSize: 14,
-          borderRadius: 0,
+          backgroundColor: '#FFFFFF !important', color: '#4A6AFE', 
+          fontSize: '14px', borderRadius: 0,
           '&:hover': {
             backgroundColor: '#FFFFFF !important', color: '#1E1E1E'
           },
@@ -99,20 +85,14 @@ export const commentButtonTheme = createTheme({
 
 export const replyButtonTheme = createTheme({
   components: {
-    MuiButtonBase: {
-      defaultProps: { disableRipple: true, },
-    },
+    MuiButtonBase: { defaultProps: { disableRipple: true, }, },
     MuiButton: {
       styleOverrides: {
         root: {
-          border: '0.5px solid #C1C1C1',
-          padding: '2px 4px',
-          color: '#1E1E1E',
-          minWidth: 'unset',
-          fontWeight: 400,
+          border: '0.5px solid #C1C1C1', padding: '2px 4px',
+          color: '#1E1E1E', minWidth: 'unset', fontWeight: 400,
           '&:hover': {
-            border: '0.5px solid #4A6AFE',
-            backgroundColor: 'transparent'
+            border: '0.5px solid #4A6AFE', backgroundColor: 'transparent'
           },
           '&:active': {
             border: '0.5px solid #4A6AFE',
@@ -126,24 +106,16 @@ export const replyButtonTheme = createTheme({
 
 export const writeFabTheme = createTheme({
   components: {
-    MuiButtonBase: {
-      defaultProps: { disableRipple: true, },
-    },
+    MuiButtonBase: { defaultProps: { disableRipple: true, }, },
     MuiFab: {
       styleOverrides: {
         root: {
-          padding: '12.5px 12px !important',
-          backgroundColor: '#4A6AFE !important',
-          fontWeight: 600,
-          fontSize: '18px',
-          lineHeight: '140%',
-          color: '#FCFCFC',
-          height: 'auto !important',
-          borderRadius: '50px !important',
-          boxShadow: 'none',
+          padding: '12.5px 12px !important', height: 'auto !important',
+          backgroundColor: '#4A6AFE !important', color: '#FCFCFC',
+          fontWeight: 600, fontSize: '18px', lineHeight: '140%',
+          borderRadius: '50px !important', boxShadow: 'none',
           '&:hover': {
-            border: '0.5px solid #4A6AFE',
-            backgroundColor: 'transparent'
+            border: '0.5px solid #4A6AFE', backgroundColor: 'transparent'
           },
           '&:active': {
             border: '0.5px solid #4A6AFE',
@@ -181,29 +153,6 @@ export const likeButtonTheme2 = createTheme({
           borderRadius: '2px!important', padding: '2px 4px', minWidth: 'unset',
           "&.Mui-disabled": { color: '#000', },
         }
-      }
-    }
-  },
-});
-
-export const viewRadioTheme = createTheme({
-  components: {
-    MuiFormControlLabel: {
-      defaultProps: {  labelPlacement: 'start', },
-      styleOverrides: {
-        root: { margin: 0, marginRight: '8px !important', },
-        label: { fontSize: '12px !important' }
-      }
-    },
-    MuiRadio: {
-      defaultProps: {
-        checkedIcon: <img src="/checkbox_1.svg" width={16} height={16} />,
-        icon: <img src="/checkbox.svg" width={16} height={16} />,
-      }
-    },
-    MuiButtonBase: {
-      styleOverrides: {
-        root: { padding: '0 !important', paddingLeft: '4px !important' }
       }
     }
   },
@@ -252,9 +201,7 @@ export const shareDialogTheme = createTheme({
     },
     MuiDialogContent: {
       styleOverrides: {
-        root: {
-          fontSize: '12px'
-        }
+        root: { fontSize: '12px' }
       }
     },
     MuiIconButton: {
@@ -313,6 +260,37 @@ export const selectTheme = createTheme({
       styleOverrides: {
         root: { },
         flexContainer: { justifyContent: 'space-between !important' }
+      }
+    }
+  },
+});
+
+export const accompanyChipTheme = createTheme({
+  components: {
+    MuiChip: {
+      styleOverrides: {
+        root: {
+          fontSize: '12px !important', height: 'unset', lineHeight: '160%',
+          color: '#FCFCFC!important', backgroundColor: '#4A6AFE',
+          borderRadius: '2px!important', padding: '2px 4px',
+        },
+        label: { padding: 0 }
+      }
+    }
+  },
+});
+
+export const slideChipTheme = createTheme({
+  components: {
+    MuiChip: {
+      styleOverrides: {
+        root: {
+          position: 'absolute', top: '18px', right: '16px', zIndex: 10,
+          fontSize: '14px !important', height: 'unset', lineHeight: '160%',
+          color: '#1E1E1E!important', backgroundColor: '#ecececcc',
+          borderRadius: '20px!important', padding: '2px 8px',
+        },
+        label: { padding: 0 }
       }
     }
   },
