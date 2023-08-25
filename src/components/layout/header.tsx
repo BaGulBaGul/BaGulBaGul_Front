@@ -39,4 +39,20 @@ export function HeaderNonMain() {
   )
 }
 
+export function MypageHeader() {
+  return (
+    <header className="fixed top-0 left-0 right-0
+      flex-row flex w-full h-[60px] justify-between px-[24px] py-[10px] bg-[#FFFFFF]">
+      <p className="flex relative place-items-center text-[18px]">
+        마이페이지
+      </p>
+      <div className='flex flex-row gap-[10px]'>
+        <a className="flex place-items-center" href="/">
+          <img src="/X.svg" alt="창닫기" width={40} height={40} />
+        </a>
+      </div>
+    </header>
+  )
+}
+
 export default Header;
