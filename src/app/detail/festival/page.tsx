@@ -1,20 +1,18 @@
 
 import { HeaderNonMain } from "@/components/layout/header";
-import { FestivalDetail } from "../../cmpnts-detail";
-import { PostHeader } from "../../cmpnts";
+import { DetailFestival } from '@/components/pages/detail';
+import SubHeader from '@/components/layout/subHeader';
+import { PostFooter } from '@/components/layout/footer';
 
 export default function Page() {
   return (
     <div>
       <div className='relative z-30'>
         <HeaderNonMain />
+        <SubHeader name='페스티벌' url={"/"} />
       </div>
-      <main className="relative flex min-h-screen flex-col items-center">
-        <div className="sticky top-[44px] relative z-20 mt-[44px] w-full">
-          <PostHeader title="페스티벌" />
-        </div>
-        <FestivalDetail />
-      </main>
+      <DetailFestival />
+      <PostFooter title='모집글 보러가기' path='/accompany' />
     </div>
   );
 }

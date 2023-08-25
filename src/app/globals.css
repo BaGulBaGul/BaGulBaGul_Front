@@ -66,10 +66,6 @@ em {
   margin-left: 10px;
 }
 
-/* .cateBtns {
-  -webkit-overflow-scrolling: touch;
-} */
-
 .container {
   width: 100%;
   display: flex;
@@ -96,7 +92,10 @@ em {
 }
 
 .comment-input {
+  position: fixed; min-height: 48px;
+  bottom: 0px; left: 0px; right: 0px;
   border-top: 1px solid #4A6AFE;
+  background-color: #FFFFFF;
 }
 
 .slick-dots {

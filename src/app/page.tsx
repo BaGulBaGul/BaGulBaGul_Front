@@ -1,6 +1,5 @@
-
-import { RecCarousel, PostTab } from './cmpnts-main'
 import Header from '@/components/layout/header'
+import Main from '@/components/pages/main'
 
 export default function Home() {
   return (
@@ -8,11 +7,7 @@ export default function Home() {
       <div className='relative z-10'>
         <Header />  
       </div>
-      <main className="relative z-0 flex min-h-screen flex-col items-center pt-[44px] ">
-        {/* 메인화면 */}
-        <RecCarousel />
-        <PostTab />
-      </main>
+      <Main/>
     </div>
   )
 }

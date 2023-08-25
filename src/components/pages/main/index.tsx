@@ -1,12 +1,22 @@
-'use client';
-
+"use client";
 import { useState } from 'react';
-import { postData, partyData } from '../components/common/Data'
+import { postData, partyData } from '@/components/common/Data'
 import Slider from "react-slick";
-import { Box, Button, Divider, ThemeProvider, Fab, Select, SelectChangeEvent, MenuItem, FormControl, SvgIcon } from '@mui/material';
+import { Tab, Tabs, Box, Button, Divider, ThemeProvider, Fab, Select, SelectChangeEvent, MenuItem, FormControl } from '@mui/material';
 import { CategoryButtons } from '@/components/common/CategoryButton';
-import { categoryButtonTheme, writeFabTheme, selectTheme } from '@/components/common/Themes'
-import { AntTabs, AntTab, TabPanel, HashtagAccordion } from './cmpnts';
+import { categoryButtonTheme, writeFabTheme, selectTheme, tabTheme } from '@/components/common/Themes'
+import TabPanel from '@/components/common/TabPanel';
+import HashtagAccordion from '@/components/common/HashtagAccordion';
+
+const index = () => {
+  return (
+    <div className='flex flex-col w-full pt-[44px]'>
+      <RecCarousel />
+      <PostTab />
+    </div>
+  )
+};
+export default index;
 
 // - carousel
 interface PostProps {
@@ -16,9 +26,7 @@ interface PostProps {
 function RecPost(props: PostProps) {
   return (
     <div className="flex flex-col w-[188px] lg:w-[480px] px-[9px]">
-      <div>
-        <img className='rounded-lg h-[210px] w-[170px] lg:w-[480px] object-cover' src={props.posterSrc} />
-      </div>
+      <img className='rounded-lg h-[210px] w-[170px] lg:w-[480px] object-cover' src={props.posterSrc} />
       <div className='flex flex-col pt-[12px]'>
         <p className='truncate text-base text-center'>{props.name}</p>
         <p className='text-sm text-center'>{props.date}</p>
@@ -40,10 +48,8 @@ function ArrowNext({ onClick }: ArrowProps) {
 
 function RecSlide() {
   const settings = {
-    className: "center", infinite: true,
-    dots: true, dotsClass: 'slick-dots',
-    slidesToShow: 1, slidesToScroll: 1,
-    centerMode: true, variableWidth: true,
+    className: "center", infinite: true, dots: true, dotsClass: 'slick-dots',
+    slidesToShow: 1, slidesToScroll: 1, centerMode: true, variableWidth: true,
     nextArrow: <ArrowNext />, prevArrow: <ArrowPrev />,
   }
   return (
@@ -55,7 +61,7 @@ function RecSlide() {
   )
 }
 
-export function RecCarousel() {
+function RecCarousel() {
   return (
     <div className='flex flex-col bg-secondary-yellow w-full lg:px-[360px] lg:bg-gradient-to-b lg:from-grad-yellow lg:to-grad-blue'>
       <div className='flex flex-col pt-[22px] pb-[20px] px-[24px]'>
@@ -67,26 +73,24 @@ export function RecCarousel() {
   )
 }
 
-export function PostTab() {
+function PostTab() {
   const [value, setValue] = useState(0);
-  const handleChange = (e: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-  };
+  const handleChange = (e: React.SyntheticEvent, newValue: number) => { setValue(newValue); };
 
   const [sort, setSort] = useState('createdAt,desc');
-  const handleSort = (e: SelectChangeEvent) => {
-    setSort(e.target.value);
-  }
+  const handleSort = (e: SelectChangeEvent) => { setSort(e.target.value); }
 
   return (
     <Box className='w-full px-0'>
       <Box className='sticky top-[44px] bg-[#FFF] relative z-10 px-[16px] pt-[20px] pb-[10px]'>
         <div className='flex justify-between items-center'>
-          <AntTabs value={value} onChange={handleChange} className='items-center min-h-0'>
-            <AntTab label="페스티벌" />
-            <AntTab label="지역행사" />
-            <AntTab label="파티" />
-          </AntTabs>
+          <ThemeProvider theme={tabTheme}>
+            <Tabs value={value} onChange={handleChange} className='items-center min-h-0'>
+              <Tab label="페스티벌" />
+              <Tab label="지역행사" />
+              <Tab label="파티" />
+            </Tabs>
+          </ThemeProvider>
           <FormControl variant="standard">
             <ThemeProvider theme={selectTheme}>
               <Select labelId='sort-label' id='sort' value={sort} onChange={handleSort}
@@ -103,10 +107,10 @@ export function PostTab() {
         <div className='sticky top-[102px] bg-[#FFF] relative z-10'><CategoryButtons /></div>
         {postData.map((post, idx) => (
           idx === 0
-            ? <PostBlock posterSrc={post.posterSrc} name={post.name} date={post.date} content={post.content} tags={post.tags} key={`rec-${idx}`} />
+            ? <FestivalBlock posterSrc={post.posterSrc} name={post.name} date={post.date} content={post.content} tags={post.tags} key={`rec-${idx}`} />
             : <>
               <Divider />
-              <PostBlock posterSrc={post.posterSrc} name={post.name} date={post.date} content={post.content} tags={post.tags} key={`rec-${idx}`} />
+              <FestivalBlock posterSrc={post.posterSrc} name={post.name} date={post.date} content={post.content} tags={post.tags} key={`rec-${idx}`} />
             </>
         ))}
       </TabPanel>
@@ -138,8 +142,8 @@ export function PostTab() {
   )
 }
 
-// - tab item : PostList
-function PostBlock(props: PostProps) {
+// - tab item : 페스티벌
+function FestivalBlock(props: PostProps) {
   return (
     <div>
       <div className='flex flex-col py-[18px] px-[16px]'>
@@ -169,7 +173,7 @@ function PostBlock(props: PostProps) {
   )
 }
 
-// - tab item : PostList
+// - tab item : 파티
 function PartyBlock(props: PostProps) {
   return (
     <div>

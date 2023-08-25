@@ -1,18 +1,17 @@
 'use client';
 import { useState } from 'react';
-import { postData } from '../components/common/Data'
+import { postData } from '@/components/common/Data'
 import Slider from "react-slick";
 import { ThemeProvider, Button, Divider, IconButton, Dialog, DialogTitle, DialogContent, Chip } from '@mui/material';
 import { categoryButtonTheme, HashtagButton, shareDialogTheme, accompanyChipTheme, slideChipTheme } from '@/components/common/Themes'
-import { PostFooter } from './cmpnts';
+import { PostFooter } from '@/components/layout/footer';
 
-export function FestivalDetail() {
+export const DetailFestival = () => {
   const [popopen, setPopopen] = useState(false);
   const handleOpen = () => { setPopopen(true) }
   const handleClose = () => { setPopopen(false) }
-
   return (
-    <div className='flex flex-col w-full pb-[76px]'>
+    <div className='flex flex-col w-full pt-[104px] pb-[64px]'>
       <PostSlide />
       <PostTitle />
       <Divider />
@@ -25,13 +24,12 @@ export function FestivalDetail() {
   )
 }
 
-export function AccompanyDetail() {
+export const DetailAccompany = () => {
   const [popopen, setPopopen] = useState(false);
   const handleOpen = () => { setPopopen(true) }
   const handleClose = () => { setPopopen(false) }
-
   return (
-    <div className='flex flex-col w-full'>
+    <div className='flex flex-col w-full pt-[104px]'>
       <PostSlide />
       <PostTitle />
       <Divider />
@@ -39,7 +37,7 @@ export function AccompanyDetail() {
       <div className='pb-[30px]'><PostContent /></div>
       <Divider />
       <ShareDialog handleClose={handleClose} popopen={popopen} />
-      <div className='pb-[30px]'><PostTools handleOpen={handleOpen} /></div>
+      <div className='pb-[30px]'><PostTools handleOpen={handleOpen}/></div>
     </div>
   )
 }
@@ -81,14 +79,14 @@ function PostTitle() {
   return (
     <div className='flex flex-col px-[16px] py-[20px]'>
       <div className='flex flex-row justify-between pt-[10px]'>
-        <p className='text-lg'>PEAK FESTIVAL 2023</p>
+        <p className='text-[18px]'>PEAK FESTIVAL 2023</p>
         <IconButton disableRipple className='p-0'><img src='/detail_more.svg' /></IconButton>
       </div>
       <div className='flex flex-row justify-between pt-[4px]'>
-        <p className='text-sm text-gray3-text'>23.05.27 - 05.28</p>
+        <p className='text-[14px] text-gray3-text'>23.05.27 - 05.28</p>
         <div className='flex flex-row items-center'>
           <a href="/"><img src='/detail_views.svg' /></a>
-          <p className='text-sm text-gray3-text ps-[4px]'>2,398</p>
+          <p className='text-[14px] text-gray3-text ps-[4px]'>2,398</p>
         </div>
       </div>
       <div className='flex flex-row justify-between items-center pt-[4px]'>
@@ -96,7 +94,7 @@ function PostTitle() {
           <div className='me-[4px] rounded-full overflow-hidden w-[24px] h-[24px]'>
             <img className='w-[24px] h-[24px]' src="/images/profile_pic.png" />
           </div>
-          <p className='text-sm text-gray3-text'>(주)SACOM</p>
+          <p className='text-[14px] text-gray3-text'>(주)SACOM</p>
         </div>
         <ThemeProvider theme={categoryButtonTheme}>
           <Button disabled>공연전시/행사</Button>
@@ -108,20 +106,18 @@ function PostTitle() {
 
 function PostInfoF() {
   return (
-    <div className='flex flex-col px-[16px] pt-[30px]' id='p-info'>
+    <div className='flex flex-col px-[16px] pt-[30px] text-[14px]' id='p-info'>
       <div className='flex flex-row pb-[6px]'>
-        <p className='text-sm font-semibold pe-[20px]'>시작일</p>
-        <p className='text-sm pe-[10px]'>88.88.88(목)</p>
-        <p className='text-sm'>99:88</p>
+        <p className='font-semibold pe-[20px]'>시작일</p>
+        <p className='pe-[10px]'>88.88.88(목)</p><p>99:88</p>
       </div>
       <div className='flex flex-row pb-[6px]'>
-        <p className='text-sm font-semibold pe-[20px]'>종료일</p>
-        <p className='text-sm pe-[10px]'>88.88.88(목)</p>
-        <p className='text-sm'>99:88</p>
+        <p className='font-semibold pe-[20px]'>종료일</p>
+        <p className='pe-[10px]'>88.88.88(목)</p><p>99:88</p>
       </div>
       <div className='flex flex-row'>
-        <p className='text-sm font-semibold pe-[10px]'>인원(명)</p>
-        <p className='text-sm pe-[10px]'>88명</p>
+        <p className='font-semibold pe-[10px]'>인원(명)</p>
+        <p>88명</p>
       </div>
     </div>
   )
@@ -133,7 +129,6 @@ function PostInfoA() {
       <p className='text-[14px] leading-[160%] font-semibold pe-[10px]'>인원(명)</p>
       <p className='text-[14px] leading-[160%] pe-[6px]'>88명</p>
       <ThemeProvider theme={accompanyChipTheme}><Chip label="모집 중" /></ThemeProvider>
-
     </div>
   )
 }
@@ -167,13 +162,13 @@ function PostTools(props: PostToolsProps) {
     <div className='flex flex-row justify-between pt-[30px] px-[16px]'>
       <div className='flex flex-row'>
         <div className='flex flex-row items-center pe-[10px]'>
-          <a href="/" className='flex flex-row items-center'>
-            <img src='/detail_like.svg' className='pe-[4px]' />
+          <div className='flex flex-row items-center'>
+            <IconButton disableRipple className='p-0 pe-[4px]'><img src='/detail_like.svg'/></IconButton>
             <p className='text-gray3-text text-sm'>88</p>
-          </a>
+          </div>
         </div>
         <div className='flex flex-row items-center pe-[10px]'>
-          <a href="/" className='flex flex-row items-center'>
+          <a href="/comment" className='flex flex-row items-center'>
             <img src='/detail_comment.svg' className='pe-[4px]' />
             <p className='text-gray3-text text-sm'>88</p>
           </a>
@@ -181,7 +176,7 @@ function PostTools(props: PostToolsProps) {
       </div>
       <div className='flex flex-row'>
         <div className='pe-[10px]'>
-          <a href="/"><img src='/post_calendar.svg' /></a>
+          <IconButton disableRipple className='p-0'><img src='/post_calendar.svg' /></IconButton>
         </div>
         <IconButton disableRipple onClick={props.handleOpen} className='p-0'><img src='/detail_share.svg' /></IconButton>
       </div>

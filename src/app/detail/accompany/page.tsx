@@ -1,20 +1,16 @@
 
 import { HeaderNonMain } from "@/components/layout/header";
-import { PostHeader } from "../../cmpnts";
-import { AccompanyDetail } from "@/app/cmpnts-detail";
+import { DetailAccompany } from '@/components/pages/detail';
+import SubHeader from '@/components/layout/subHeader';
 
 export default function Page() {
   return (
     <div>
       <div className='relative z-30'>
         <HeaderNonMain />
+        <SubHeader name='모집글' url={"/"} />
       </div>
-      <main className="relative flex min-h-screen flex-col items-center">
-        <div className="sticky top-[44px] relative z-20 mt-[44px] w-full">
-          <PostHeader title="모집글" />
-        </div>
-        <AccompanyDetail />
-      </main>
+      <DetailAccompany />
     </div>
   );
 }

@@ -1,12 +1,13 @@
-'use client';
-import { accompanyData } from '../components/common/Data'
+"use client";
+import React from "react";
+import { accompanyData } from '@/components/common/Data'
 import { ThemeProvider, Button, Divider } from '@mui/material';
 import { categoryButtonTheme } from '@/components/common/Themes'
-import { PostFooter, HashtagAccordion } from './cmpnts';
+import HashtagAccordion from '@/components/common/HashtagAccordion';
 
-export function AccompanyList() {
+const index = () => {
   return (
-    <div className='flex flex-col w-full pb-[76px]'>
+    <div className='flex flex-col w-full pt-[104px] pb-[44px]'>
       {accompanyData.map((post, idx) => {
         return (
           <>
@@ -16,17 +17,14 @@ export function AccompanyList() {
         )
       }
       )}
-      <PostFooter title='모집글 작성하기' path='/' />
     </div>
   )
-}
+};
+export default index;
 
-interface AccompanyProps {
-  name: string; date: string; tags?: string[];
-}
+interface AccompanyProps { name: string; date: string; tags?: string[]; }
 function AccompanyBlock(props: AccompanyProps) {
   return (
-    <div>
       <div className='flex flex-col py-[18px] px-[16px]'>
         <div className='flex flex-col justify-between'>
           <div className='flex flex-row items-center pb-[10px]'>
@@ -42,6 +40,5 @@ function AccompanyBlock(props: AccompanyProps) {
           {props.tags ? <HashtagAccordion tag={props.tags} /> : <></>}
         </div>
       </div>
-    </div>
   )
 }

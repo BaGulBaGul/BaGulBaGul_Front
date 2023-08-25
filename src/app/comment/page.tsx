@@ -1,22 +1,18 @@
-import Post from "../../components/pages/post";
+"use client";
 import { HeaderNonMain } from "@/components/layout/header";
-import { PostHeader } from "../cmpnts";
-import { CommentDetail, CommentFooter } from "../cmpnts-comment";
+import Comment, { CommentFooter } from '@/components/pages/comment'
+import SubHeaderCnt from '@/components/layout/subHeader';
 import { commentData } from '@/components/common/Data';
 
 export default function Page() {
   return (
     <div>
-      <div className='relative'>
+      <div className='relative z-50'>
         <HeaderNonMain />
+        <SubHeaderCnt name='글 댓글' url={"/"} cnt={commentData.length} />
       </div>
-      <div className="sticky top-0 mt-[44px] relative z-10">
-        <PostHeader title="글 댓글" count={commentData.length} />
-      </div>
-      <main className="flex min-h-screen flex-col items-center bg-gray1-text">
-        <CommentDetail />
-        <CommentFooter />
-      </main>
+      <Comment />
+      <CommentFooter />
     </div>
   );
 }

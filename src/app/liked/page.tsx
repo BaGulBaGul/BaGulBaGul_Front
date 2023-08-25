@@ -1,17 +1,13 @@
-
-import { HeaderNonMain } from "@/components/layout/header";
-import { LikedDetail } from "../cmpnts-liked";
-import { PostHeader } from "../cmpnts";
+import Liked from '@/components/pages/liked'
+import { SubTopHeader } from '@/components/layout/subHeader';
 
 export default function Page() {
   return (
     <div>
-      <main className="relative z-0 flex min-h-screen flex-col items-center">
-        <div className="sticky top-0 relative z-10 w-full">
-          <PostHeader title="좋아요" />
-        </div>
-        <LikedDetail />
-      </main>
+      <div className='relative z-10'>
+        <SubTopHeader name='좋아요' url={"/"} />
+      </div>
+      <Liked />
     </div>
   );
 }
