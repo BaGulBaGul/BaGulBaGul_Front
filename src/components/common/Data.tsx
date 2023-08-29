@@ -58,6 +58,48 @@ export const partyData = [
     content: '일반 티켓은 2023년 4월 18일(화) 오후 6시부터 예매 가능하며, 한정 수량 소진 시 예매가 조기종료될 수 있습니다. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     tags: ['여름', '영화', '팝콘']
   },
+  {
+    posterSrc: '/images/party1.png',
+    name: '책과 어울리는 와인파티',
+    date: '23.05.27 - 05.28',
+    content: '평소 책 읽는 것을 좋아하시는 분들을 찾습니다. 한 달마다 읽은 책과 어울리는 와인을 가져와 좋은 시간 보내려 합니다.',
+    tags: ['책', '와인', '연희동', '북카페']
+  },
+  {
+    posterSrc: '/images/party2.gif',
+    name: '종강파티 하실 분 구해요',
+    date: '23.05.27 - 05.28',
+    content: '매번 같은 동기들과 즐기는 종강파티가 지겨우신 분들은 모두 모여주세요!! 다른 대학교 친구들을 만날 수 있는 자리를 만들고자 합니다.',
+    tags: ['종강파티', '기말고사', '6월', '건대입구', '종강파티', '기말고사', '6월', '건대입구']
+  },
+  {
+    posterSrc: '/images/party3.png',
+    name: '여름에 어울리는 영화파티',
+    date: '23.05.27 - 05.28',
+    content: '일반 티켓은 2023년 4월 18일(화) 오후 6시부터 예매 가능하며, 한정 수량 소진 시 예매가 조기종료될 수 있습니다. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    tags: ['여름', '영화', '팝콘']
+  },
+  {
+    posterSrc: '/images/party1.png',
+    name: '책과 어울리는 와인파티',
+    date: '23.05.27 - 05.28',
+    content: '평소 책 읽는 것을 좋아하시는 분들을 찾습니다. 한 달마다 읽은 책과 어울리는 와인을 가져와 좋은 시간 보내려 합니다.',
+    tags: ['책', '와인', '연희동', '북카페']
+  },
+  {
+    posterSrc: '/images/party2.gif',
+    name: '종강파티 하실 분 구해요',
+    date: '23.05.27 - 05.28',
+    content: '매번 같은 동기들과 즐기는 종강파티가 지겨우신 분들은 모두 모여주세요!! 다른 대학교 친구들을 만날 수 있는 자리를 만들고자 합니다.',
+    tags: ['종강파티', '기말고사', '6월', '건대입구', '종강파티', '기말고사', '6월', '건대입구']
+  },
+  {
+    posterSrc: '/images/party3.png',
+    name: '여름에 어울리는 영화파티',
+    date: '23.05.27 - 05.28',
+    content: '일반 티켓은 2023년 4월 18일(화) 오후 6시부터 예매 가능하며, 한정 수량 소진 시 예매가 조기종료될 수 있습니다. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    tags: ['여름', '영화', '팝콘']
+  },
 ]
 
 export const accompanyData = [

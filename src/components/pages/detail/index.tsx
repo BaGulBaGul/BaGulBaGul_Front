@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { postData } from '@/components/common/Data'
 import Slider from "react-slick";
 import { ThemeProvider, Button, Divider, IconButton, Dialog, DialogTitle, DialogContent, Chip } from '@mui/material';
@@ -37,7 +37,7 @@ export const DetailAccompany = () => {
       <div className='pb-[30px]'><PostContent /></div>
       <Divider />
       <ShareDialog handleClose={handleClose} popopen={popopen} />
-      <div className='pb-[30px]'><PostTools handleOpen={handleOpen}/></div>
+      <div className='pb-[30px]'><PostTools handleOpen={handleOpen} /></div>
     </div>
   )
 }
@@ -163,7 +163,7 @@ function PostTools(props: PostToolsProps) {
       <div className='flex flex-row'>
         <div className='flex flex-row items-center pe-[10px]'>
           <div className='flex flex-row items-center'>
-            <IconButton disableRipple className='p-0 pe-[4px]'><img src='/detail_like.svg'/></IconButton>
+            <IconButton disableRipple className='p-0 pe-[4px]'><img src='/detail_like.svg' /></IconButton>
             <p className='text-gray3-text text-sm'>88</p>
           </div>
         </div>
@@ -186,6 +186,72 @@ function PostTools(props: PostToolsProps) {
 
 interface ShareDialogProps { handleClose: any, popopen: boolean }
 function ShareDialog(props: ShareDialogProps) {
+  // useEffect(() => {
+  //   if (window.Kakao !== undefined) {
+  //     window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO);
+  //     console.log(window.Kakao.isInitialized());
+  //   }
+  // }, [])
+  const sharingURL = 'http://localhost:3000/옴뇸뇸'
+  const handleURL = async () => {
+    // // - using navigator canShare api
+    // console.log('- handleURL' + navigator.canShare)
+    // const sharingData = {
+    //   text: '바글바글',
+    //   url: 'http://localhost:3000/',
+    // }
+
+    // try {
+    //   if (navigator.canShare && navigator.canShare(sharingData)) {
+    //     navigator.share(sharingData)
+    //     .then(() => {
+    //       alert('링크가 복사되었습니다.')
+    //     }).catch(() => {
+    //       console.log('취소')
+    //     })
+    //   }
+    // } catch (e) {
+    //   alert('링크 복사를 실패했습니다.')
+    // }
+
+    // - using navigator clipboard api
+    try {
+      await navigator.clipboard.writeText(sharingURL);
+      alert('클립보드에 링크가 복사되었습니다.')
+    } catch (err) {
+      // alert('링크 복사를 실패했습니다.')
+      console.log('링크 복사 실패' + err);
+    }
+  }
+
+  const handleKakao = () => {
+    alert('카카오 공유')
+    // // 배포 후 테스트 가능
+    // window.Kakao.Share.sendDefault({
+    //   objectType: 'feed',
+    //   content: {
+    //     title: 'PEAK FESTIVAL 2023',
+    //     description: '23.05.27 - 05.28\n #10cm #실리카겔 #난지한강공원',
+    //     imageUrl:
+    //       'https://pbs.twimg.com/media/Ft6VCQ6aMAI2cIC.jpg',
+    //     link: {
+    //       // [내 애플리케이션] > [플랫폼] 에서 등록한 사이트 도메인과 일치해야 함
+    //       mobileWebUrl: 'https://developers.kakao.com',
+    //       webUrl: 'https://developers.kakao.com',
+    //     },
+    //   },
+    //   buttons: [
+    //     {
+    //       title: '바글바글에서 확인하기',
+    //       link: {
+    //         mobileWebUrl: 'https://developers.kakao.com',
+    //         webUrl: 'https://developers.kakao.com',
+    //       },
+    //     },
+    //   ],
+    // });
+  }
+
   return (
     <ThemeProvider theme={shareDialogTheme}>
       <Dialog onClose={props.handleClose} open={props.popopen} >
@@ -195,11 +261,11 @@ function ShareDialog(props: ShareDialogProps) {
           <IconButton disableRipple onClick={props.handleClose}><img src='/popup_close.svg' /></IconButton>
         </DialogTitle>
         <DialogContent className='flex flex-row gap-[48px] justify-center'>
-          <div className='flex flex-col items-center'>
+          <div className='flex flex-col items-center cursor-pointer' onClick={handleKakao}>
             <img className='w-[50px] h-[50.74px]' src='/kakaotalk_sharing_btn.png' />
             <span className='select-none px-[4px] pt-[4px]'>카카오톡</span>
           </div>
-          <div className='flex flex-col items-center'>
+          <div className='flex flex-col items-center cursor-pointer' onClick={handleURL}>
             <img className='w-[50px] h-[50.74px]' src='/url_sharing_btn.png' />
             <span className='select-none px-[4px] pt-[4px]'>URL 복사</span>
           </div>

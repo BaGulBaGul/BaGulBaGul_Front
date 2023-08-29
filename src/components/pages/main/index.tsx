@@ -1,5 +1,5 @@
 "use client";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { postData, partyData } from '@/components/common/Data'
 import Slider from "react-slick";
 import { Tab, Tabs, Box, Button, Divider, ThemeProvider, Fab, Select, SelectChangeEvent, MenuItem, FormControl } from '@mui/material';
@@ -7,8 +7,17 @@ import { CategoryButtons } from '@/components/common/CategoryButton';
 import { categoryButtonTheme, writeFabTheme, selectTheme, tabTheme } from '@/components/common/Themes'
 import TabPanel from '@/components/common/TabPanel';
 import HashtagAccordion from '@/components/common/HashtagAccordion';
+import { call } from '@/service/ApiService';
 
 const index = () => {
+  const [posts, setPosts] = useState([])
+  // useEffect(() => {
+  //   call("/api/post?type=FESTIVAL", "GET", null)
+  //     .then((response) => {
+  //       console.log(response);
+  //     })
+  // }, [])
+
   return (
     <div className='flex flex-col w-full pt-[44px]'>
       <RecCarousel />
@@ -63,7 +72,7 @@ function RecSlide() {
 
 function RecCarousel() {
   return (
-    <div className='flex flex-col bg-secondary-yellow w-full lg:px-[360px] lg:bg-gradient-to-b lg:from-grad-yellow lg:to-grad-blue'>
+    <div className='flex flex-col bg-secondary-yellow w-full h-[430px] lg:px-[360px] lg:bg-gradient-to-b lg:from-grad-yellow lg:to-grad-blue'>
       <div className='flex flex-col pt-[22px] pb-[20px] px-[24px]'>
         <p className='text-2xl font-semibold'>SUMMER</p>
         <p className='text-2xl'>페스티벌 추천</p>
@@ -192,7 +201,7 @@ function PartyBlock(props: PostProps) {
                   <p className='text-[14px] text-gray3-text'>{props.date}</p>
                   <p className='truncate text-[16px] leading-[140%] font-semibold'>{props.name}</p>
                 </div>
-                <p className='text-[12px] leading-[160%] text-gray3-text block description'>{props.content}</p>
+                <p className='text-[12px] leading-[160%] text-gray3-text block description max-w-[230px]'>{props.content}</p>
               </div>
             </div>
             <img className='rounded-lg w-[110px] h-[136px] object-cover' src={props.posterSrc} />
