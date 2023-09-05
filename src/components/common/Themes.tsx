@@ -346,3 +346,43 @@ export const slideChipTheme = createTheme({
     }
   },
 });
+
+export const searchInputTheme = createTheme({
+  components: {
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          fontSize: '14px', lineHeight: '160%', height: '22px',
+        },
+        input: {
+          padding: '0 !important', width: '286px',
+        },
+        notchedOutline: {
+          border: 0,
+        }
+      }
+    }
+  }
+})
+
+export const searchFreqTheme = createTheme({
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          fontSize: '12px !important', color: '#1E1E1E', fontWeight: '400', lineHeight:'150%',
+          border: '1px solid #C1C1C1 !important', borderRadius: '14px !important',
+          padding: '1px 7px', minWidth: 'unset', height: '22px',
+          "&:hover, &:focus": {
+            border: '1px solid #4A6AFE !important', backgroundColor: 'transparent'
+          },
+          "&.Mui-selected, &.Mui-selected:hover": {
+            backgroundColor: '#4A6AFE', color: '#FCFCFC !important', fontWeight: '600',
+            border: '1px solid #4A6AFE !important'
+          },
+          "&:not(:last-child)": { marginRight: '6px' }
+        }
+      }
+    }
+  }
+})
