@@ -2,8 +2,9 @@
 import { useState, useEffect } from 'react';
 import { postData, partyData } from '@/components/common/Data'
 import Slider from "react-slick";
-import { Tab, Tabs, Box, Button, Divider, ThemeProvider, Fab, Select, SelectChangeEvent, MenuItem, FormControl } from '@mui/material';
+import { Tab, Tabs, Box, Button, Divider, ThemeProvider, Fab, Select, SelectChangeEvent, MenuItem, FormControl, Backdrop } from '@mui/material';
 import { CategoryButtons } from '@/components/common/CategoryButton';
+import { ViewButton, ViewSelect } from '@/components/common/ViewFilter'; 
 import { categoryButtonTheme, writeFabTheme, selectTheme, tabTheme } from '@/components/common/Themes'
 import TabPanel from '@/components/common/TabPanel';
 import HashtagAccordion from '@/components/common/HashtagAccordion';
@@ -89,6 +90,10 @@ function PostTab() {
   const [sort, setSort] = useState('createdAt,desc');
   const handleSort = (e: SelectChangeEvent) => { setSort(e.target.value); }
 
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => { setOpen(true) }
+  const handleClose = () => { setOpen(false) }
+
   return (
     <Box className='w-full px-0'>
       <Box className='sticky top-[44px] bg-[#FFF] relative z-10 px-[16px] pt-[20px] pb-[10px]'>
@@ -100,7 +105,7 @@ function PostTab() {
               <Tab label="파티" />
             </Tabs>
           </ThemeProvider>
-          <FormControl variant="standard">
+          {/* <FormControl variant="standard">
             <ThemeProvider theme={selectTheme}>
               <Select labelId='sort-label' id='sort' value={sort} onChange={handleSort}
                 IconComponent={() => { return (<img src='/arrow_select.svg' />) }}>
@@ -109,9 +114,13 @@ function PostTab() {
                 <MenuItem value='comment,desc'><em>댓글순</em></MenuItem>
               </Select>
             </ThemeProvider>
-          </FormControl>
+          </FormControl> */}
+          <ViewButton sort={sort} handleOpen={handleOpen} />
         </div>
       </Box>
+      <Backdrop open={open} onClick={handleClose} className='z-50'>
+          <ViewSelect sort={sort} setSort={setSort} handleClose={handleClose} />
+      </Backdrop>
       <TabPanel value={value} index={0}>
         <div className='sticky top-[102px] bg-[#FFF] relative z-10'><CategoryButtons /></div>
         {postData.map((post, idx) => (

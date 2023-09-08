@@ -105,32 +105,44 @@ export const partyData = [
 export const accompanyData = [
   {
     name: '피크페스티벌 2일차 동행 구해요',
-    date: '23.05.27 - 05.28',
+    date: '23.05.27',
+    username: 'Yumi',
+    done: false,
     tags: ['피크페스티벌', '10cm', '넬', '볼빨간사춘기']
   },
   {
     name: '피크페스티벌 1,2일차 모두 동행할 분 구합니다',
-    date: '23.05.27 - 05.28',
+    date: '23.05.27',
+    username: 'hee',
+    done: true,
     tags: ['피크페스티벌', '10cm', '넬', '볼빨간사춘기', '실리카겔',]
   },
   {
     name: '피크페스티벌 1일차 동행 구해요',
-    date: '23.05.27 - 05.28',
+    date: '23.05.27',
+    username: 'User123',
+    done: false,
     tags: ['피크페스티벌', '10cm', '넬', '볼빨간사춘기', '실리카겔', '난지한강공원', '5월']
   },
   {
     name: '피크페스티벌 같이 가실 분',
-    date: '23.05.27 - 05.28',
+    date: '23.05.27',
+    username: '먀먀',
+    done: false,
     tags: ['피크페스티벌', '10cm', '넬', '볼빨간사춘기']
   },
   {
     name: '피크페스티벌 2일차 동행 구해요',
-    date: '23.05.27 - 05.28',
+    date: '23.05.27',
+    username: '뮤뮤',
+    done: true,
     tags: ['피크페스티벌', '10cm', '넬', '볼빨간사춘기']
   },
   {
     name: '피크페스티벌 1,2일차 모두 동행할 분 구합니다',
-    date: '23.05.27 - 05.28',
+    date: '23.05.27',
+    username: '묘묘',
+    done: false,
     tags: ['피크페스티벌', '10cm', '넬', '볼빨간사춘기', '실리카겔',]
   },
 ]
@@ -190,6 +202,54 @@ export const likeData = [
     date: '23.05.27 - 05.28',
     type: 'ACCOMPANY',
     eventId: 0,
+  },
+  {
+    title: '피크페스티벌 2일차 동행 구해요',
+    date: '23.05.27 - 05.28',
+    type: 'ACCOMPANY',
+    eventId: 0,
+  },
+  {
+    title: '핔페 갈 사람 있나요?',
+    date: '23.05.27 - 05.28',
+    type: 'ACCOMPANY',
+    eventId: 0,
+  },
+  {
+    title: 'SEOUL JAZZ FESTIVAL 2023, 15th',
+    date: '23.05.27 - 05.28',
+    type: 'FESTIVAL',
+    eventId: 1,
+  },
+  {
+    title: '서재패 2일차 동행 구해요',
+    date: '23.05.27 - 05.28',
+    type: 'ACCOMPANY',
+    eventId: 1,
+  },
+  {
+    title: '피크페스티벌 2일차 동행 구해요',
+    date: '23.05.27 - 05.28',
+    type: 'ACCOMPANY',
+    eventId: 0,
+  },
+  {
+    title: '핔페 갈 사람 있나요?',
+    date: '23.05.27 - 05.28',
+    type: 'ACCOMPANY',
+    eventId: 0,
+  },
+  {
+    title: 'SEOUL JAZZ FESTIVAL 2023, 15th',
+    date: '23.05.27 - 05.28',
+    type: 'FESTIVAL',
+    eventId: 1,
+  },
+  {
+    title: '서재패 2일차 동행 구해요',
+    date: '23.05.27 - 05.28',
+    type: 'ACCOMPANY',
+    eventId: 1,
   },
   {
     title: '피크페스티벌 2일차 동행 구해요',

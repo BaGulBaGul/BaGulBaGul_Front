@@ -1,7 +1,8 @@
 "use client";
 import { useState } from 'react';
-import { IconButton, TextField, Select, SelectChangeEvent, MenuItem, ThemeProvider, FormControl, Divider, Button, } from '@mui/material';
-import { searchInputTheme, selectTheme, searchFreqTheme } from '@/components/common/Themes';
+import { IconButton, TextField, ThemeProvider, Divider, Button, Backdrop } from '@mui/material';
+import { ViewButton, ViewSelect } from '@/components/common/ViewFilter';
+import { searchInputTheme, searchFreqTheme } from '@/components/common/Themes';
 
 const index = () => {
   return (
@@ -17,9 +18,12 @@ export default index;
 
 function SearchBar() {
   const [sort, setSort] = useState('createdAt,desc');
-  const handleSort = (e: SelectChangeEvent) => { setSort(e.target.value); }
 
   const [searchDate, setSearchDate] = useState('');
+
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => { setOpen(true) }
+  const handleClose = () => { setOpen(false) }
 
   return (
     <div className='flex flex-row mx-[16px] my-[18px] gap-[16px]'>
@@ -40,7 +44,7 @@ function SearchBar() {
                 : <span className='text-[14px] text-black-text'>날짜</span>
             }
           </div>
-          <FormControl variant="standard">
+          {/* <FormControl variant="standard">
             <ThemeProvider theme={selectTheme}>
               <Select labelId='sort-label' id='sort' value={sort} onChange={handleSort}
                 IconComponent={() => { return (<img src='/arrow_select.svg' />) }}>
@@ -49,8 +53,12 @@ function SearchBar() {
                 <MenuItem value='comment,desc'><em>댓글순</em></MenuItem>
               </Select>
             </ThemeProvider>
-          </FormControl>
+          </FormControl> */}
+          <ViewButton sort={sort} handleOpen={handleOpen} />
         </div>
+        <Backdrop open={open} onClick={handleClose} className='z-50'>
+          <ViewSelect sort={sort} setSort={setSort} handleClose={handleClose} />
+        </Backdrop>
       </div>
     </div>
   )
@@ -75,17 +83,30 @@ function FrequentSearches() {
   )
 }
 
-interface RecentSearchProps { searchword: string; }
+interface RecentSearchProps { searchword: string; idx: number; }
 function RecentSearches() {
   const searchlist = ['책과 와인파티', '페스티벌1', '페스티벌2', '페스티벌3', '페스티벌4']
   const SearchBlock = (props: RecentSearchProps) => {
     return (
       <div className='flex flex-row justify-between'>
-        <div className='flex flex-row gap-[6px] items-center'>
-          <img className='h-[20px] w-[20px]' src='/search_magnifying.svg' />
-          <span className='text-[14px] text-gray3-text leading-[160%] font-normal'>{props.searchword}</span>
-        </div>
-        <IconButton className='p-0'><img src='/search_delete.svg' /></IconButton>
+        {
+          props.idx === 0
+            ? <>
+              <div className='flex flex-row gap-[6px] items-center'>
+                <img className='h-[20px] w-[20px]' src='/search_magnifying.svg' />
+                <span className='text-[14px] text-gray3-text leading-[160%] font-normal'>{props.searchword}</span>
+              </div>
+              <IconButton className='p-0'><img src='/search_delete.svg' /></IconButton>
+            </>
+            : <>
+              <div className='flex flex-row gap-[6px] items-center'>
+                <img className='h-[20px] w-[20px]' src='/search_magnifying_1.svg' />
+                <span className='text-[14px] text-gray2-text leading-[160%] font-normal'>{props.searchword}</span>
+              </div>
+              <IconButton className='p-0'><img src='/search_delete_1.svg' /></IconButton>
+            </>
+        }
+
       </div>
     )
   }
@@ -99,7 +120,7 @@ function RecentSearches() {
       <div className='flex flex-col gap-[8px]'>
         {
           searchlist.map((item, idx) => (
-            <SearchBlock searchword={item} />
+            <SearchBlock searchword={item} idx={idx} />
           ))
         }
       </div>

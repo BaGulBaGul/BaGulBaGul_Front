@@ -10,9 +10,9 @@ function Header() {
       </p>
       <div className='flex flex-row gap-[10px]'>
         <p className="flex w-6 h-6 relative">
-          <a href="/"><img src="/main_icon_search.svg" /></a>
+          <a href="/search"><img src="/main_icon_search.svg" /></a>
         </p>
-        <a className="flex place-items-center" href="/">
+        <a className="flex place-items-center" href="/mypage">
           <img src="/main_profile.svg" alt="마이페이지 아이콘" width={24} height={24} />
         </a>
       </div>
@@ -29,9 +29,27 @@ export function HeaderNonMain() {
       </p>
       <div className='flex flex-row gap-[10px]'>
         <p className="flex w-6 h-6 relative">
-          <a href="/"><img src="/main_icon_search.svg" /></a>
+          <a href="/search"><img src="/main_icon_search.svg" /></a>
         </p>
-        <a className="flex place-items-center" href="/">
+        <a className="flex place-items-center" href="/mypage">
+          <img src="/main_profile.svg" alt="마이페이지 아이콘" width={24} height={24} />
+        </a>
+      </div>
+    </header>
+  )
+}
+
+export function HeaderNotFixed() {
+  return (
+    <header className="flex-row flex w-full justify-between px-[24px] py-[10px] bg-[#FFFFFF] z-10">
+      <p className="flex w-[120.77px] relative">
+        <a href="/"><img src="/logo_s.svg" width='120.77'/></a>
+      </p>
+      <div className='flex flex-row gap-[10px]'>
+        <p className="flex w-6 h-6 relative">
+          <a href="/search"><img src="/main_icon_search.svg" /></a>
+        </p>
+        <a className="flex place-items-center" href="/mypage">
           <img src="/main_profile.svg" alt="마이페이지 아이콘" width={24} height={24} />
         </a>
       </div>

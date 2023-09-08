@@ -193,7 +193,7 @@ export const viewCheckTheme = createTheme({
       defaultProps: { labelPlacement: 'start', },
       styleOverrides: {
         root: { margin: 0, marginRight: '8px !important', },
-        label: { fontSize: '12px !important' }
+        label: { fontSize: '12px !important', color: '#6C6C6C' }
       }
     },
     MuiCheckbox: {
@@ -316,6 +316,46 @@ export const selectTheme = createTheme({
   },
 });
 
+export const viewTheme = createTheme({
+  components: {
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          borderRadius: 0, borderTopLeftRadius: '8px', borderTopRightRadius: '8px',
+        }
+      }
+    },
+    MuiButtonBase: {
+      defaultProps: { disableRipple: true, },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          width: '70px', padding: '3px 8px', cursor: 'pointer',
+          fontSize: '14px !important', fontWeight: '400', lineHeight: '160%',
+          color: '#6C6C6C!important', borderRadius: '2px!important',
+          '&:before, &:after': { border: 'none !important' },
+          '&:hover, &:focus, &:active': { backgroundColor: '#ECECEC', color: '#1E1E1E !important' },
+        },
+      }
+    },
+    MuiMenuItem: {
+      styleOverrides: {
+        root: {
+          fontSize: '14px !important', padding: '10px 16px', minHeight: 'unset',
+          '&.Mui-selected:hover': { backgroundColor: '#ECECEC' },
+          '&.Mui-selected': { backgroundColor: '#FFF27E' }
+        }
+      }
+    },
+    MuiList: {
+      styleOverrides: {
+        root: { padding: '0 !important', }
+      }
+    },
+  },
+});
+
 export const accompanyChipTheme = createTheme({
   components: {
     MuiChip: {
@@ -347,6 +387,22 @@ export const slideChipTheme = createTheme({
   },
 });
 
+export const doneChipTheme = createTheme({
+  components: {
+    MuiChip: {
+      styleOverrides: {
+        root: {
+          fontSize: '12px !important', height: 'unset', lineHeight: '160%',
+          color: '#6C6C6C!important', border: '0.5px #6C6C6C solid',
+          backgroundColor: 'transparent',
+          borderRadius: '2px!important', padding: '2px 4px',
+        },
+        label: { padding: 0 }
+      }
+    }
+  },
+});
+
 export const searchInputTheme = createTheme({
   components: {
     MuiOutlinedInput: {
@@ -370,7 +426,7 @@ export const searchFreqTheme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          fontSize: '12px !important', color: '#1E1E1E', fontWeight: '400', lineHeight:'150%',
+          fontSize: '12px !important', color: '#1E1E1E', fontWeight: '400', lineHeight: '150%',
           border: '1px solid #C1C1C1 !important', borderRadius: '14px !important',
           padding: '1px 7px', minWidth: 'unset', height: '22px',
           "&:hover, &:focus": {

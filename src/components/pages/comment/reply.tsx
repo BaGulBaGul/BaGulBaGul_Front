@@ -1,29 +1,30 @@
 "use client";
 import { Button, IconButton } from '@mui/material';
 import { ThemeProvider, TextField } from '@mui/material';
+import { CommentBlockProps, CommentBlock } from '.';
 import { commentData } from '@/components/common/Data';
 import { commentTheme, replyButtonTheme } from '@/components/common/Themes';
 
-const index = () => {
+const Reply = () => {
+  const comment = commentData[0]
   return (
-    <div className='flex flex-col w-full min-h-[100vh] pb-[76px] bg-gray1-text'>
+    <div className='flex flex-col w-full min-h-[100vh] pb-[49px] bg-gray1-text '>
+      <CommentBlock idx={0} user={comment.user} content={comment.content}
+            date={comment.date} liked={comment.liked} likes={comment.likes} />
       {
         commentData.map((comment, idx) => (
-          <CommentBlock idx={idx} user={comment.user} content={comment.content}
+          <ReplyBlock idx={idx} user={comment.user} content={comment.content}
             date={comment.date} liked={comment.liked} likes={comment.likes} />
         ))
       }
     </div>
   )
 }
+export default Reply;
 
-export interface CommentBlockProps {
-  idx: number; user: string; content: string;
-  date: string; liked: boolean; likes: number;
-}
-export function CommentBlock(props: CommentBlockProps) {
+function ReplyBlock(props: CommentBlockProps) {
   return (
-    <div className={props.idx % 2 == 0 ? 'bg-white-text px-[16px] py-[12px]' : 'bg-gray1-text px-[16px] py-[12px]'}>
+    <div className={props.idx % 2 == 0 ? 'bg-white-text ps-[48px] pe-[16px] py-[12px]' : 'bg-gray1-text ps-[48px] pe-[16px] py-[12px]'}>
       <div className='flex flex-row justify-between pb-[10px]' id='comment-head'>
         <div className='flex flex-row items-center'>
           <a className="flex place-items-center" href="/">
@@ -39,7 +40,7 @@ export function CommentBlock(props: CommentBlockProps) {
       <div className='text-xs text-gray3-text' id='comment-datetime'>{props.date}</div>
       <div className='flex flex-row justify-between items-center pt-[8px]' id='comment-foot'>
         <ThemeProvider theme={replyButtonTheme}>
-          <Button className='text-xs font-normal' href='/comment/reply'>답글</Button>
+          <Button className='text-xs font-normal'>답글</Button>
         </ThemeProvider>
         <div className='flex flex-row items-center' id='comment-likes'>
           {
@@ -55,7 +56,6 @@ export function CommentBlock(props: CommentBlockProps) {
     </div>
   )
 }
-export default index;
 
 export function CommentFooter() {
   return (

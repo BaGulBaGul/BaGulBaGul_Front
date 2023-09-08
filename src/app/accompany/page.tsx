@@ -7,9 +7,9 @@ import { PostFooter } from '@/components/layout/footer';
 export default function Page() {
   return (
     <div>
-      <div className='relative z-10'>
+      <div className='relative z-20'>
         <HeaderNonMain />
-        <SubHeader name='모집글' url={"/"} />
+        {/* <SubHeader name='모집글' url={"/"} /> */}
       </div>
       <Accompany />
       <PostFooter title='모집글 작성하기' path='/' />
