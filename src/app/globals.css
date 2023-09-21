@@ -167,3 +167,7 @@ em {
   overflow: hidden;
   word-break: keep-all;
 }
+
+.z-paper {
+  z-index: 1400;
+}

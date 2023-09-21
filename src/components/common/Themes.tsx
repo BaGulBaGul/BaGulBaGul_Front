@@ -393,8 +393,8 @@ export const doneChipTheme = createTheme({
       styleOverrides: {
         root: {
           fontSize: '12px !important', height: 'unset', lineHeight: '160%',
-          color: '#6C6C6C!important', border: '0.5px #6C6C6C solid',
-          backgroundColor: 'transparent',
+          color: '#6C6C6C!important',
+          backgroundColor: '#FFF27E',
           borderRadius: '2px!important', padding: '2px 4px',
         },
         label: { padding: 0 }

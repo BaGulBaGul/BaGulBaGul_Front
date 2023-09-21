@@ -25,6 +25,7 @@ export default function RootLayout({
           Kakao.init('259ba7c5a3c1b705d7453032900a4b16');
           console.log(Kakao.isInitialized());
         </script> */}
+        <script type="text/javascript" src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO}&libraries=services`}></script>
       </head>
       <body className={inter.className}>
         {children}

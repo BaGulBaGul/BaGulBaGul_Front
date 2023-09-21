@@ -148,10 +148,10 @@ function PostTab() {
           </ThemeProvider>
           {partyData.map((post, idx) => (
             idx === 0
-              ? <PartyBlock posterSrc={post.posterSrc} name={post.name} date={post.date} content={post.content} tags={post.tags} key={`party-${idx}`} />
+              ? <FestivalBlock posterSrc={post.posterSrc} name={post.name} date={post.date} content={post.content} tags={post.tags} key={`party-${idx}`} />
               : <>
                 <Divider />
-                <PartyBlock posterSrc={post.posterSrc} name={post.name} date={post.date} content={post.content} tags={post.tags} key={`party-${idx}`} />
+                <FestivalBlock posterSrc={post.posterSrc} name={post.name} date={post.date} content={post.content} tags={post.tags} key={`party-${idx}`} />
               </>
           ))}
         </div>

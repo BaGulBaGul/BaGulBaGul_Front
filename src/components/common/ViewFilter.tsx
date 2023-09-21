@@ -25,9 +25,9 @@ export function ViewSelect(props: ViewSelectProps) {
   }
   return (
     <ThemeProvider theme={viewTheme}>
-      <Paper className="w-screen absolute bottom-0">
+      <Paper className="w-screen absolute bottom-0 z-paper">
         <div className="flex px-[16px] py-[20px] w-full justify-between items-center border-b-[0.5px] border-gray2-text">
-          <span className="text-[14px]">공유하기</span>
+          <span className="text-[14px]">검색 필터</span>
           <IconButton disableRipple onClick={props.handleClose} className="p-0"><img src='/popup_close.svg' /></IconButton>
         </div>
         <MenuList>

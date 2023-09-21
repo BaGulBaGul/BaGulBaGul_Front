@@ -1,43 +1,61 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { postData } from '@/components/common/Data'
 import Slider from "react-slick";
-import { ThemeProvider, Button, Divider, IconButton, Dialog, DialogTitle, DialogContent, Chip } from '@mui/material';
+
+import { ThemeProvider, Button, Divider, IconButton, Dialog, DialogTitle, DialogContent, Chip, Skeleton } from '@mui/material';
 import { categoryButtonTheme, HashtagButton, shareDialogTheme, accompanyChipTheme, slideChipTheme } from '@/components/common/Themes'
 import { PostFooter } from '@/components/layout/footer';
+import { FormatDate, FormatDateTime, FormatDateRange } from '@/service/Functions';
 
-export const DetailFestival = () => {
+export const DetailFestival = (props: { data: any }) => {
   const [popopen, setPopopen] = useState(false);
   const handleOpen = () => { setPopopen(true) }
   const handleClose = () => { setPopopen(false) }
+
   return (
     <div className='flex flex-col w-full pt-[104px] pb-[64px]'>
       <PostSlide />
-      <PostTitle />
+      <PostTitle title={props.data.title} startDate={props.data.startDate} endDate={props.data.endDate}
+        type={props.data.type} views={props.data.views} userName={props.data.userName} categories={props.data.categories} />
       <Divider />
-      <PostInfoF />
-      <PostContent />
+      <PostInfoF startDate={props.data.startDate} endDate={props.data.endDate} headCount={props.data.headCount} />
+      <PostContent content={props.data.content} />
+      <PostContentMap address={props.data.address} />
+      {
+        props.data.tags !== undefined && props.data.tags.length > 0
+          ? <PostContentTag tags={props.data.tags} />
+          : <></>
+      }
       <ShareDialog handleClose={handleClose} popopen={popopen} />
       <PostFooter title='모집글 보러가기' path='/accompany' />
-      <PostTools handleOpen={handleOpen} />
+      <PostTools handleOpen={handleOpen} likeCount={props.data.likeCount} commentCount={props.data.commentCount} />
     </div>
   )
 }
 
-export const DetailAccompany = () => {
+export const DetailAccompany = (props: { data: any }) => {
   const [popopen, setPopopen] = useState(false);
   const handleOpen = () => { setPopopen(true) }
   const handleClose = () => { setPopopen(false) }
   return (
     <div className='flex flex-col w-full pt-[104px]'>
       <PostSlide />
-      <PostTitle />
+      <PostTitle title={props.data.title} startDate={props.data.startDate} endDate={props.data.endDate}
+        type={props.data.type} views={props.data.views} userName={props.data.userName} categories={props.data.categories} />
       <Divider />
-      <PostInfoA />
-      <div className='pb-[30px]'><PostContent /></div>
+      <PostInfoA headCount={props.data.headCount} />
+      <div className='pb-[30px]'>
+        <PostContent content={props.data.content} />
+        {
+          props.data.tags !== undefined && props.data.tags.length > 0
+            ? <PostContentTag tags={props.data.tags} />
+            : <></>
+        }
+      </div>
       <Divider />
       <ShareDialog handleClose={handleClose} popopen={popopen} />
-      <div className='pb-[30px]'><PostTools handleOpen={handleOpen} /></div>
+      <div className='pb-[30px]'><PostTools handleOpen={handleOpen} likeCount={props.data.likeCount} commentCount={props.data.commentCount} /></div>
     </div>
   )
 }
@@ -75,18 +93,23 @@ function PostSlide() {
   )
 }
 
-function PostTitle() {
+interface PostTitleProps {
+  title: string; startDate: any; endDate?: any; type: string;
+  views: number; userName: string; categories: string[];
+}
+function PostTitle(props: PostTitleProps) {
+  const dateString = props.type === 'FESTIVAL' ? FormatDateRange(props.startDate, props.endDate) : FormatDate(props.startDate, 0)
   return (
     <div className='flex flex-col px-[16px] py-[20px]'>
       <div className='flex flex-row justify-between pt-[10px]'>
-        <p className='text-[18px]'>PEAK FESTIVAL 2023</p>
+        <p className='text-[18px]'>{props.title}</p>
         <IconButton disableRipple className='p-0'><img src='/detail_more.svg' /></IconButton>
       </div>
       <div className='flex flex-row justify-between pt-[4px]'>
-        <p className='text-[14px] text-gray3-text'>23.05.27 - 05.28</p>
+        <p className='text-[14px] text-gray3-text'>{`${dateString}`}</p>
         <div className='flex flex-row items-center'>
           <a href="/"><img src='/detail_views.svg' /></a>
-          <p className='text-[14px] text-gray3-text ps-[4px]'>2,398</p>
+          <p className='text-[14px] text-gray3-text ps-[4px]'>{props.views.toLocaleString("en-US")}</p>
         </div>
       </div>
       <div className='flex flex-row justify-between items-center pt-[4px]'>
@@ -94,69 +117,123 @@ function PostTitle() {
           <div className='me-[4px] rounded-full overflow-hidden w-[24px] h-[24px]'>
             <img className='w-[24px] h-[24px]' src="/images/profile_pic.png" />
           </div>
-          <p className='text-[14px] text-gray3-text'>(주)SACOM</p>
+          <p className='text-[14px] text-gray3-text'>{props.userName}</p>
         </div>
-        <ThemeProvider theme={categoryButtonTheme}>
-          <Button disabled>공연전시/행사</Button>
-        </ThemeProvider>
+        <div className='flex flex-row gap-[8px]'>
+          <ThemeProvider theme={categoryButtonTheme}>
+            {
+              props.categories.map((cate, idx) => (
+                <Button disabled key={`cate-${idx}`}>{cate}</Button>
+              ))
+            }
+          </ThemeProvider>
+        </div>
+
       </div>
     </div>
   )
 }
 
-function PostInfoF() {
+function PostInfoF(props: { startDate: any; endDate: any; headCount: number; }) {
+  const startD = FormatDateTime(props.startDate)
+  const endD = FormatDateTime(props.endDate)
   return (
     <div className='flex flex-col px-[16px] pt-[30px] text-[14px]' id='p-info'>
       <div className='flex flex-row pb-[6px]'>
         <p className='font-semibold pe-[20px]'>시작일</p>
-        <p className='pe-[10px]'>88.88.88(목)</p><p>99:88</p>
+        {
+          startD !== undefined
+            ? <><p className='pe-[10px]'>{startD.date}</p><p>{startD.time}</p></>
+            : <p>—</p>
+        }
       </div>
       <div className='flex flex-row pb-[6px]'>
         <p className='font-semibold pe-[20px]'>종료일</p>
-        <p className='pe-[10px]'>88.88.88(목)</p><p>99:88</p>
+        {
+          endD !== undefined
+            ? <><p className='pe-[10px]'>{endD.date}</p><p>{endD.time}</p></>
+            : <p>—</p>
+        }
       </div>
       <div className='flex flex-row'>
         <p className='font-semibold pe-[10px]'>인원(명)</p>
-        <p>88명</p>
+        <p>{props.headCount}명</p>
       </div>
     </div>
   )
 }
 
-function PostInfoA() {
+function PostInfoA(props: { headCount: number }) {
   return (
     <div className='flex flex-row px-[16px] pt-[30px]' id='p-info'>
       <p className='text-[14px] leading-[160%] font-semibold pe-[10px]'>인원(명)</p>
-      <p className='text-[14px] leading-[160%] pe-[6px]'>88명</p>
+      <p className='text-[14px] leading-[160%] pe-[6px]'>{props.headCount}명</p>
       <ThemeProvider theme={accompanyChipTheme}><Chip label="모집 중" /></ThemeProvider>
     </div>
   )
 }
 
-function PostContent() {
+function PostContent(props: { content: string }) {
   return (
-    <>
-      <div className='flex flex-col px-[16px] pt-[30px]' id='p-content'>
-        <p className='text-[14px] leading-[140%]'>
-          ※ 일반 티켓은 2023년 4월 18일(화) 오후 6시부터 예매 가능하며, 한정 수량 소진 시 예매가 조기 마감될 수 있습니다.<br />
-          ※ 본 공연은 일일권과 양일권 모두 구매 가능합니다.<br />
-          ※ 양일권은 5월 27일, 28일 이틀간 자유롭게 모든 공연을 관람할 수 있는 티켓을 의미합니다.<br />
-          ※ 양일권 구매자분들은 27일(토)에 손목밴드를 교환하시면 28일(일) 공연 입장 시 바로 입장이 가능합니다.<br /><br />
-          할인정보<br />
-          - 장애인 (1~3급) 30% 할인 (동반1인), 장애인 (4~6급) 30% 할인 (본인만)- 국가유공자 30% 할인 (본인만)- 국민기초생활수급자 30% 할인(본인만)*증빙 미 지참 시 차액 지불
-        </p>
-      </div>
-      <div className='flex flex-col px-[16px] pt-[30px]' id='p-content'>
-        <div className='container'>
-          <HashtagButton tag='피크페스티벌' /><HashtagButton tag='10cm' />
-          <HashtagButton tag='넬' /><HashtagButton tag='볼빨간사춘기' />
-        </div>
-      </div>
-    </>
+    <div className='flex flex-col px-[16px] pt-[30px]' id='p-content'>
+      <p className='text-[14px] leading-[140%]'>{props.content}</p>
+    </div>
   )
 }
 
-interface PostToolsProps { handleOpen: any }
+// const kakao = window.Kakao;
+function PostContentMap(props: { address: string }) {
+  const [mapSuccess, setMapSuccess] = useState(true);
+
+  useEffect(() => {
+    var container = document.getElementById('map');
+    let options = { 
+      center: new window.kakao.maps.LatLng(33.450701, 126.570667), 
+      level: 4, 
+    }
+    const map = new window.kakao.maps.Map(container, options)
+    var geocoder = new window.kakao.maps.services.Geocoder();
+
+    geocoder.addressSearch(props.address, function (result:any, status:any) {
+      if (status === window.kakao.maps.services.Status.OK) {
+        setMapSuccess(true);
+        var coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
+        var marker = new window.kakao.maps.Marker({ map: map, position: coords });
+        map.setCenter(coords);
+      } else {
+        setMapSuccess(false);
+      }
+    })
+  }, [])
+
+  return (
+    <div className='pt-[30px] w-full'>
+      <div className='w-full h-[246px]' id='map'>
+        {/* {
+          mapSuccess
+          ? <></>
+          : <div className=''></div>
+        } */}
+      </div>
+    </div>
+  )
+}
+function PostContentTag(props: { tags: string[] }) {
+  return (
+    <div className='flex flex-col px-[16px] pt-[30px]' id='p-content-tag'>
+      <div className='container'>
+        {
+          props.tags.map((tag, idx) => (
+            <HashtagButton tag={tag} key={`tag-${idx}`} />
+          ))
+        }
+      </div>
+    </div>
+  )
+
+}
+
+interface PostToolsProps { handleOpen: any; likeCount: number; commentCount: number; }
 function PostTools(props: PostToolsProps) {
   return (
     <div className='flex flex-row justify-between pt-[30px] px-[16px]'>
@@ -164,13 +241,13 @@ function PostTools(props: PostToolsProps) {
         <div className='flex flex-row items-center pe-[10px]'>
           <div className='flex flex-row items-center'>
             <IconButton disableRipple className='p-0 pe-[4px]'><img src='/detail_like.svg' /></IconButton>
-            <p className='text-gray3-text text-sm'>88</p>
+            <p className='text-gray3-text text-sm'>{props.likeCount}</p>
           </div>
         </div>
         <div className='flex flex-row items-center pe-[10px]'>
           <a href="/comment" className='flex flex-row items-center'>
             <img src='/detail_comment.svg' className='pe-[4px]' />
-            <p className='text-gray3-text text-sm'>88</p>
+            <p className='text-gray3-text text-sm'>{props.commentCount}</p>
           </a>
         </div>
       </div>
@@ -194,7 +271,7 @@ function ShareDialog(props: ShareDialogProps) {
   // }, [])
   const sharingURL = 'http://localhost:3000/옴뇸뇸'
   const handleURL = async () => {
-    // // - using navigator canShare api
+    // // - using navigator canShare api : 크롬 작동 X, 사파리 작동 O
     // console.log('- handleURL' + navigator.canShare)
     // const sharingData = {
     //   text: '바글바글',
@@ -205,19 +282,19 @@ function ShareDialog(props: ShareDialogProps) {
     //   if (navigator.canShare && navigator.canShare(sharingData)) {
     //     navigator.share(sharingData)
     //     .then(() => {
-    //       alert('링크가 복사되었습니다.')
+    //       alert('URL이 복사되었습니다.\n공유할 곳에 붙여넣기 해주세요.')
     //     }).catch(() => {
     //       console.log('취소')
     //     })
     //   }
     // } catch (e) {
-    //   alert('링크 복사를 실패했습니다.')
+    //   alert('URL 복사를 실패했습니다.')
     // }
 
     // - using navigator clipboard api
     try {
       await navigator.clipboard.writeText(sharingURL);
-      alert('클립보드에 링크가 복사되었습니다.')
+      alert('클립보드에 URL이 복사되었습니다.\n공유할 곳에 붙여넣기 해주세요.')
     } catch (err) {
       // alert('링크 복사를 실패했습니다.')
       console.log('링크 복사 실패' + err);
