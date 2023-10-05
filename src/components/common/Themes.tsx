@@ -8,7 +8,7 @@ export const categoryButtonTheme = createTheme({
       styleOverrides: {
         root: {
           fontSize: '14px !important', fontWeight: '400', lineHeight: '150%',
-          color: '#1E1E1E!important', padding: '2px 8px',
+          color: '#1E1E1E!important', padding: '2px 8px', minWidth: 'unset',
           border: '0.5px solid #C1C1C1 !important', borderRadius: '20px!important',
           '&:hover, &:focus': {
             border: '0.5px solid #4A6AFE !important', backgroundColor: 'transparent'
@@ -187,24 +187,51 @@ export const likeButtonTheme2 = createTheme({
   },
 });
 
-export const viewCheckTheme = createTheme({
+// export const viewCheckTheme = createTheme({
+//   components: {
+//     MuiFormControlLabel: {
+//       defaultProps: { labelPlacement: 'start', },
+//       styleOverrides: {
+//         root: { margin: 0, marginRight: '8px !important', },
+//         label: { fontSize: '12px !important', color: '#6C6C6C' }
+//       }
+//     },
+//     MuiCheckbox: {
+//       defaultProps: {
+//         checkedIcon: <img src="/checkbox_1.svg" width={16} height={16} />,
+//         icon: <img src="/checkbox.svg" width={16} height={16} />,
+//       }
+//     },
+//     MuiButtonBase: {
+//       styleOverrides: {
+//         root: { padding: '0 !important', paddingLeft: '4px !important' }
+//       }
+//     }
+//   },
+// });
+
+export const viewToggleTheme = createTheme({
   components: {
-    MuiFormControlLabel: {
-      defaultProps: { labelPlacement: 'start', },
+    MuiButtonBase: { defaultProps: { disableRipple: true, }, },
+    MuiToggleButtonGroup: {
       styleOverrides: {
-        root: { margin: 0, marginRight: '8px !important', },
-        label: { fontSize: '12px !important', color: '#6C6C6C' }
+        root: { gap: '4px' }
       }
     },
-    MuiCheckbox: {
-      defaultProps: {
-        checkedIcon: <img src="/checkbox_1.svg" width={16} height={16} />,
-        icon: <img src="/checkbox.svg" width={16} height={16} />,
-      }
-    },
-    MuiButtonBase: {
+    MuiToggleButton: {
       styleOverrides: {
-        root: { padding: '0 !important', paddingLeft: '4px !important' }
+        root: {
+          fontSize: '14px !important', fontWeight: '400', lineHeight: '150%',
+          color: '#1E1E1E!important', padding: '2px 8px', minWidth: 'unset',
+          border: '0.5px solid #C1C1C1 !important', borderRadius: '20px!important',
+          '&:hover, &:focus': {
+            border: '0.5px solid #4A6AFE !important', backgroundColor: 'transparent'
+          },
+          '&.Mui-selected': {
+            backgroundColor: '#4A6AFE', color: '#FCFCFC !important', fontWeight: '600',
+            border: '0.5px solid #4A6AFE !important'
+          }
+        }
       }
     }
   },
