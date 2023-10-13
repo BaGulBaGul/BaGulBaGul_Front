@@ -252,97 +252,89 @@ export const likeData = [
     startDate: '2023-05-13T13:18:08.827Z',
     endDate: '2023-05-14T13:18:08.827Z',
     type: 'FESTIVAL',
-    eventId: 0,
+    content: '※일반 티켓은 2023년 4월 18일(화) 오후 6시부터 예매 가능하며, 한정 수량 소진 시 예매가 조기 마감될 수 있습니다. ※본 공연은 일일권과 양일권 모두 구매 가능합니다.',
+    address: '서울특별시 마포구',
+    img_url: '/images/rec2.jpg',
   },
   {
     title: '피크페스티벌 같이 가실 분',
     startDate: '2023-05-13T13:18:08.827Z',
-    endDate: '2023-05-14T13:18:08.827Z',
     type: 'ACCOMPANY',
-    eventId: 0,
+    event_title: 'PEAK FESTIVAL 2023'
   },
   {
     title: '피크페스티벌 2일차 동행 구해요',
     startDate: '2023-05-13T13:18:08.827Z',
-    endDate: '2023-05-14T13:18:08.827Z',
     type: 'ACCOMPANY',
-    eventId: 0,
+    event_title: 'PEAK FESTIVAL 2023'
   },
   {
     title: '핔페 갈 사람 있나요?',
     startDate: '2023-05-13T13:18:08.827Z',
-    endDate: '2023-05-14T13:18:08.827Z',
     type: 'ACCOMPANY',
-    eventId: 0,
+    event_title: 'PEAK FESTIVAL 2023'
   },
   {
     title: 'SEOUL JAZZ FESTIVAL 2023, 15th',
     startDate: '2023-05-13T13:18:08.827Z',
     endDate: '2023-05-14T13:18:08.827Z',
     type: 'FESTIVAL',
-    eventId: 1,
+    content: '- 3일권은 [제15회 서울재즈페스티벌 2023] 5월 26일(금) - 28일(일), 공연기간 모든 일자 관람이 가능한 3일권 티켓입니다.',
+    address: '서울특별시 송파구',
+    img_url: '/images/rec3.jpg',
   },
   {
     title: '서재패 2일차 동행 구해요',
     startDate: '2023-05-13T13:18:08.827Z',
-    endDate: '2023-05-14T13:18:08.827Z',
     type: 'ACCOMPANY',
-    eventId: 1,
+    event_title: 'SEOUL JAZZ FESTIVAL 2023, 15th'
   },
   {
     title: '피크페스티벌 2일차 동행 구해요',
     startDate: '2023-05-13T13:18:08.827Z',
-    endDate: '2023-05-14T13:18:08.827Z',
     type: 'ACCOMPANY',
-    eventId: 0,
+    event_title: 'PEAK FESTIVAL 2023'
   },
   {
     title: '핔페 갈 사람 있나요?',
     startDate: '2023-05-13T13:18:08.827Z',
-    endDate: '2023-05-14T13:18:08.827Z',
     type: 'ACCOMPANY',
-    eventId: 0,
+    event_title: 'PEAK FESTIVAL 2023'
   },
   {
     title: 'SEOUL JAZZ FESTIVAL 2023, 15th',
     startDate: '2023-05-13T13:18:08.827Z',
     endDate: '2023-05-14T13:18:08.827Z',
     type: 'FESTIVAL',
-    eventId: 1,
-  },
-  {
-    title: '서재패 2일차 동행 구해요',
-    startDate: '2023-05-13T13:18:08.827Z',
-    endDate: '2023-05-14T13:18:08.827Z',
-    type: 'ACCOMPANY',
-    eventId: 1,
-  },
+    content: '- 3일권은 [제15회 서울재즈페스티벌 2023] 5월 26일(금) - 28일(일), 공연기간 모든 일자 관람이 가능한 3일권 티켓입니다.',
+    address: '서울특별시 송파구',
+    img_url: '/images/rec3.jpg',
+  },,
   {
     title: '피크페스티벌 2일차 동행 구해요',
     startDate: '2023-05-13T13:18:08.827Z',
-    endDate: '2023-05-14T13:18:08.827Z',
     type: 'ACCOMPANY',
-    eventId: 0,
+    event_title: 'PEAK FESTIVAL 2023'
   },
   {
     title: '핔페 갈 사람 있나요?',
     startDate: '2023-05-13T13:18:08.827Z',
-    endDate: '2023-05-14T13:18:08.827Z',
     type: 'ACCOMPANY',
-    eventId: 0,
+    event_title: 'PEAK FESTIVAL 2023'
   },
   {
     title: 'SEOUL JAZZ FESTIVAL 2023, 15th',
     startDate: '2023-05-13T13:18:08.827Z',
     endDate: '2023-05-14T13:18:08.827Z',
     type: 'FESTIVAL',
-    eventId: 1,
+    content: '- 3일권은 [제15회 서울재즈페스티벌 2023] 5월 26일(금) - 28일(일), 공연기간 모든 일자 관람이 가능한 3일권 티켓입니다.',
+    address: '서울특별시 송파구',
+    img_url: '/images/rec3.jpg',
   },
   {
-    title: '서재패 2일차 동행 구해요',
+    title: '서재패 2일차 동행 구해욤',
     startDate: '2023-05-13T13:18:08.827Z',
-    endDate: '2023-05-14T13:18:08.827Z',
     type: 'ACCOMPANY',
-    eventId: 1,
+    event_title: 'SEOUL JAZZ FESTIVAL 2023, 15th'
   },
 ]

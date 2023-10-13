@@ -237,6 +237,33 @@ export const viewToggleTheme = createTheme({
   },
 });
 
+export const viewSwitchTheme = createTheme({
+  components: {
+    MuiButtonBase: { defaultProps: { disableRipple: true, }, },
+    MuiToggleButtonGroup: {
+      styleOverrides: {
+        root: { backgroundColor: '#ECECEC', borderRadius: '20px', }
+      }
+    },
+    MuiToggleButton: {
+      styleOverrides: {
+        root: {
+          fontSize: '14px !important', fontWeight: '400', lineHeight: '160%',
+          color: '#6C6C6C!important', padding: '2px 8px', minWidth: 'unset',
+          border: 'transparent !important', borderRadius: '20px!important',
+          '&:hover, &:focus': {
+            backgroundColor: 'transparent'
+          },
+          '&.Mui-selected, &.Mui-selected:hover': {
+            backgroundColor: '#4A6AFE', color: '#FCFCFC !important', fontWeight: '600',
+            boxShadow: '1px 0px 2px #00000033',
+          }
+        }
+      }
+    }
+  },
+});
+
 export const shareDialogTheme = createTheme({
   components: {
     MuiDialog: {
