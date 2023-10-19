@@ -4,12 +4,14 @@ import { postData, partyData } from '@/components/common/Data'
 import Slider from "react-slick";
 import { Tab, Tabs, Box, Button, Divider, ThemeProvider, Fab, Backdrop } from '@mui/material';
 import { CategoryButtons } from '@/components/common/CategoryButton';
-import { ViewButton, ViewSelect } from '@/components/common/ViewFilter'; 
+import { ViewButton, ViewSelect } from '@/components/common/ViewFilter';
 import { categoryButtonTheme, writeFabTheme, tabTheme } from '@/components/common/Themes'
 import TabPanel from '@/components/common/TabPanel';
 import HashtagAccordion from '@/components/common/HashtagAccordion';
 import { call } from '@/service/ApiService';
 import { FormatDateRange } from '@/service/Functions';
+import MoreButton from '@/components/common/MoreButton';
+import { FestivalBlock } from '@/components/common/FestivalBlock';
 
 const index = () => {
   const [posts, setPosts] = useState([])
@@ -34,7 +36,7 @@ interface PostProps {
   img_url: string; title: string; user_profile: string; userName: string;
   startDate: any; endDate: any; categories: string[]; content?: string; tags?: string[];
 }
-function RecPost(props: {data: PostProps}) {
+function RecPost(props: { data: PostProps }) {
   return (
     <div className="flex flex-col w-[188px] lg:w-[480px] px-[9px]">
       <img className='rounded-lg h-[210px] w-[170px] lg:w-[480px] object-cover' src={props.data.img_url} />
@@ -94,6 +96,10 @@ function PostTab() {
   const handleOpen = () => { setOpen(true) }
   const handleClose = () => { setOpen(false) }
 
+  const handleMore = () => {
+    alert('more')
+  }
+
   return (
     <Box className='w-full px-0'>
       <Box className='sticky top-[44px] bg-[#FFF] relative z-10 px-[16px] pt-[20px] pb-[10px]'>
@@ -109,7 +115,7 @@ function PostTab() {
         </div>
       </Box>
       <Backdrop open={open} onClick={handleClose} className='z-paper'>
-          <ViewSelect sort={sort} setSort={setSort} handleClose={handleClose} />
+        <ViewSelect sort={sort} setSort={setSort} handleClose={handleClose} />
       </Backdrop>
       <TabPanel value={value} index={0}>
         <div className='sticky top-[102px] bg-[#FFF] relative z-10'><CategoryButtons /></div>
@@ -121,6 +127,7 @@ function PostTab() {
               <FestivalBlock data={post} key={`rec-${idx}`} />
             </>
         ))}
+        <MoreButton onClick={handleMore} />
       </TabPanel>
       <TabPanel value={value} index={1}>
         Item 2
@@ -149,67 +156,3 @@ function PostTab() {
     </Box>
   )
 }
-
-// - tab item : 페스티벌
-function FestivalBlock(props: {data: PostProps}) {
-  return (
-    <div>
-      <div className='flex flex-col py-[18px] px-[16px]'>
-        <div className='flex flex-col justify-between'>
-          <div className='flex flex-row items-center justify-between pb-[10px]'>
-            <div className='flex flex-col w-[230px] gap-[20px]'>
-              <div className='flex flex-row gap-[4px]'>
-                <ThemeProvider theme={categoryButtonTheme}>
-                  {
-                    props.data.categories.map((cate, idx) => <Button disabled key={`cate-${idx}`}>{cate}</Button>)
-                  }
-                </ThemeProvider>
-              </div>
-              <div className='flex flex-col gap-[4px]'>
-                <p className='truncate text-base font-semibold'>{props.data.title}</p>
-                <p className='text-sm text-gray3-text'>{FormatDateRange(props.data.startDate, props.data.endDate)}</p>
-                <div className='flex flex-row gap-[4px]'>
-                  <img className='rounded-full w-[24px] h-[24px]' src={props.data.user_profile} />
-                  <p className='text-sm text-gray3-text self-center'>{props.data.userName}</p>
-                </div>
-              </div>
-            </div>
-            <img className='rounded-lg w-[84px] h-[104px] object-cover' src={props.data.img_url} />
-          </div>
-          {props.data.tags ? <HashtagAccordion tag={props.data.tags} /> : <></>}
-        </div>
-      </div>
-    </div>
-  )
-}
-
-// - tab item : 파티
-// function PartyBlock(props: {data: PostProps}) {
-//   return (
-//     <div>
-//       <div className='flex flex-col py-[18px] px-[16px]'>
-//         <div className='flex flex-col justify-between'>
-//           <div className='flex flex-row items-center justify-between pb-[10px]'>
-//             <div className='flex flex-col w-[230px] gap-[10px]'>
-//               <div className='flex flex-row gap-[8px]'>
-//                 <img className='w-[24px] h-[24px]' src="/main_profile.svg" />
-//                 <ThemeProvider theme={categoryButtonTheme}>
-//                   <Button disabled>공연전시/행사</Button>
-//                 </ThemeProvider>
-//               </div>
-//               <div className='flex flex-col gap-[20px]'>
-//                 <div className='flex flex-col gap-[2px]'>
-//                   <p className='text-[14px] text-gray3-text'>{props.date}</p>
-//                   <p className='truncate text-[16px] leading-[140%] font-semibold'>{props.name}</p>
-//                 </div>
-//                 <p className='text-[12px] leading-[160%] text-gray3-text block description max-w-[230px]'>{props.content}</p>
-//               </div>
-//             </div>
-//             <img className='rounded-lg w-[110px] h-[136px] object-cover' src={props.posterSrc} />
-//           </div>
-//           {props.tags ? <HashtagAccordion tag={props.tags} /> : <></>}
-//         </div>
-//       </div>
-//     </div>
-//   )
-// }

@@ -1,18 +1,38 @@
 "use client";
 import { useState } from 'react';
-import { Tab, Tabs, Box, Button, ThemeProvider, Checkbox, FormControl, FormControlLabel, FormGroup, } from '@mui/material';
+import { Tab, Tabs, Box, Button, ThemeProvider, Checkbox, FormControl, FormControlLabel, FormGroup, Divider, } from '@mui/material';
 import TabPanel from '@/components/common/TabPanel';
-import { likeEvents, likeData } from '@/components/common/Data';
-import { likeButtonTheme1, likeButtonTheme2, viewCheckTheme, tabTheme } from '@/components/common/Themes';
+import { FestivalBlock } from '@/components/common/FestivalBlock';
+import { likeEvents, postData, partyData } from '@/components/common/Data';
+import { likeButtonTheme1, likeButtonTheme2, tabTheme } from '@/components/common/Themes';
+import { krLocale } from '@/components/common/CalendarLocale';
+
+import "react-modern-calendar-datepicker/lib/DatePicker.css";
+// import { Calendar } from "react-modern-calendar-datepicker";
+import { Calendar } from 'react-modern-calendar-datepicker'
 
 const index = () => {
+  const [focusDay, setFocusDay] = useState('');
+
   return (
-    <div className='flex flex-col w-full pb-[10px]'>
+    <div className='flex flex-col w-full pb-[10px] mt-[60px]'>
+      <SearchCalendar focusDay={focusDay} setFocusDay={setFocusDay} />
       <LikedTab />
     </div>
   )
 }
 export default index;
+
+
+interface SearchCalendarProps { focusDay: any; setFocusDay: any; }
+export function SearchCalendar(props: SearchCalendarProps) {
+  return (
+    <div>
+      <Calendar value={props.focusDay} onChange={props.setFocusDay} locale={krLocale}
+        calendarClassName="MyCalendar" />
+    </div>
+  )
+}
 
 function LikedTab() {
   const [value, setValue] = useState(0);
@@ -38,56 +58,38 @@ function LikedTab() {
           </Tabs>
         </ThemeProvider>
       </Box>
-      <TabPanel value={value} index={0} classn='mt-[60px]'>
-        <ViewsCheck />
-        {
-          likeData.map((item, idx) => {
-            if (view.festival && view.accompany) {
-              return (
-                <LikePostBlock title={item.title} date={item.date} type={item.type} eventId={item.eventId} key={`like-${idx}`} />
-              )
-            } else {
-              let checkedView = view.festival === true ? 'FESTIVAL' : 'ACCOMPANY'
-              return (
-                <>{
-                  checkedView === item.type
-                    ? <LikePostBlock title={item.title} date={item.date} type={item.type} eventId={item.eventId} key={`like-${idx}`} />
-                    : <></>
-                }</>
-              )
-            }
-          })
-        }
+      <TabPanel value={value} index={0}>
+      {postData.map((post, idx) => (
+          idx === 0
+            ? <FestivalBlock data={post} key={`rec-${idx}`} />
+            : <>
+              <Divider />
+              <FestivalBlock data={post} key={`rec-${idx}`} />
+            </>
+        ))}
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Item 2<br />Item 2<br />Item 2<br />Item 2<br />Item 2<br />Item 2<br />Item 2<br />Item 2<br />Item 2<br />
-        Item 2<br />Item 2<br />Item 2<br />Item 2<br />Item 2<br />Item 2<br />Item 2<br />Item 2<br />Item 2<br />
-        Item 2<br />Item 2<br />Item 2<br />Item 2<br />Item 2<br />Item 2<br />Item 2<br />Item 2<br />Item 2<br />
+      {postData.map((post, idx) => (
+          idx === 0
+            ? <FestivalBlock data={post} key={`rec-${idx}`} />
+            : <>
+              <Divider />
+              <FestivalBlock data={post} key={`rec-${idx}`} />
+            </>
+        ))}
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Item3<br />Item3<br />Item3<br />Item3<br />Item3<br />Item3<br />Item3<br />Item3<br />Item3<br />Item3<br />
-        Item3<br />Item3<br />Item3<br />Item3<br />Item3<br />Item3<br />Item3<br />Item3<br />Item3<br />Item3<br />
-        Item3<br />Item3<br />Item3<br />Item3<br />Item3<br />Item3<br />Item3<br />Item3<br />Item3<br />Item3<br />
+      {partyData.map((post, idx) => (
+            idx === 0
+              ? <FestivalBlock data={post} key={`party-${idx}`} />
+              : <>
+                <Divider />
+                <FestivalBlock data={post} key={`party-${idx}`} />
+              </>
+          ))}
       </TabPanel>
     </Box>
   )
-
-  function ViewsCheck() {
-    return (
-      <div className='sticky top-[108px] bg-[#FFF] relative z-10'>
-        <div className='flex flex-row justify-end gap-[8px] px-[16px] pb-[10px]'>
-          <ThemeProvider theme={viewCheckTheme}>
-            <FormControl>
-              <FormGroup row>
-                <FormControlLabel control={<Checkbox checked={view.festival} value='festival' onChange={handleView} />} label="게시글" />
-                <FormControlLabel control={<Checkbox checked={view.accompany} value='accompany' onChange={handleView} />} label="모집글" />
-              </FormGroup>
-            </FormControl>
-          </ThemeProvider>
-        </div>
-      </div>
-    )
-  }
 
   interface LikePostProps { title: string; date: string; type: string; eventId: number; }
   function LikePostBlock(props: LikePostProps) {

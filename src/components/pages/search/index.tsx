@@ -1,8 +1,13 @@
 "use client";
-import { useState } from 'react';
-import { IconButton, TextField, ThemeProvider, Divider, Button, Backdrop } from '@mui/material';
+import { Dispatch, SetStateAction, useState } from 'react';
+import { IconButton, TextField, ThemeProvider, Divider, Button, Backdrop, Paper } from '@mui/material';
 import { ViewButton, ViewSelect } from '@/components/common/ViewFilter';
 import { searchInputTheme, searchFreqTheme } from '@/components/common/Themes';
+import { krLocale } from '@/components/common/CalendarLocale';
+
+import "react-modern-calendar-datepicker/lib/DatePicker.css";
+// import { Calendar } from "react-modern-calendar-datepicker";
+import { DayRange, Calendar, Day } from 'react-modern-calendar-datepicker'
 
 const index = () => {
   return (
@@ -19,11 +24,19 @@ export default index;
 function SearchBar() {
   const [sort, setSort] = useState('createdAt,desc');
 
-  const [searchDate, setSearchDate] = useState('');
-
   const [open, setOpen] = useState(false);
   const handleOpen = () => { setOpen(true) }
   const handleClose = () => { setOpen(false) }
+
+  const [openCal, setOpenCal] = useState(false);
+  const handleOpenCal = () => { setOpenCal(true) }
+  const handleCloseCal = () => { setOpenCal(false) }
+  const [dayRange, setDayRange] = useState<DayRange>({ from: null, to: null });
+  const handleDayData = (date: Day) => {
+    if (date !== null && date !== undefined) {
+      return `${date.year}.${date.month}.${date.day}`
+    }
+  }
 
   return (
     <div className='flex flex-row mx-[16px] my-[18px] gap-[16px]'>
@@ -36,28 +49,23 @@ function SearchBar() {
           <IconButton disableRipple className='p-0'><img src='/search_magnifying.svg' /></IconButton>
         </div>
         <div className='flex flex-row gap-[10px]'>
-          <div className='flex flex-row bg-gray1-text w-[250px] px-[8px] py-[4px] gap-[8px]'>
-            <IconButton disableRipple className='p-0 h-[20px] w-[20px]'><img src='/post_calendar.svg' /></IconButton>
+          <div className='flex flex-row bg-gray1-text w-[250px] px-[8px] py-[4px] gap-[8px]' onClick={handleOpenCal}>
+            <img src='/post_calendar.svg' className='h-[20px] w-[20px]' />
             {
-              searchDate === ''
-                ? <span className='text-[14px] text-gray2-text'>날짜 검색</span>
-                : <span className='text-[14px] text-black-text'>날짜</span>
+              dayRange.from === undefined || dayRange.from === null
+              ? <span className='text-[14px] text-gray2-text'>날짜 검색</span>
+              : dayRange.to === undefined || dayRange.to === null
+              ? <span className='text-[14px] text-black-text'>{handleDayData(dayRange.from)}</span>
+              : <span className='text-[14px] text-black-text'>{`${handleDayData(dayRange.from)} - ${handleDayData(dayRange.to)}`}</span>
             }
           </div>
-          {/* <FormControl variant="standard">
-            <ThemeProvider theme={selectTheme}>
-              <Select labelId='sort-label' id='sort' value={sort} onChange={handleSort}
-                IconComponent={() => { return (<img src='/arrow_select.svg' />) }}>
-                <MenuItem value='createdAt,desc'><em>최신순</em></MenuItem>
-                <MenuItem value='popular,asc'><em>인기순</em></MenuItem>
-                <MenuItem value='comment,desc'><em>댓글순</em></MenuItem>
-              </Select>
-            </ThemeProvider>
-          </FormControl> */}
           <ViewButton sort={sort} handleOpen={handleOpen} />
         </div>
         <Backdrop open={open} onClick={handleClose} className='z-50'>
-          <ViewSelect sort={sort} setSort={setSort} handleClose={handleClose} />
+          <ViewSelect sort={sort} setSort={setSort} handleClose={handleCloseCal} />
+        </Backdrop>
+        <Backdrop open={openCal} onClick={handleCloseCal} className='z-50'>
+          <SearchCalendar dayRange={dayRange} setDayRange={setDayRange} />
         </Backdrop>
       </div>
     </div>
@@ -66,7 +74,6 @@ function SearchBar() {
 
 function FrequentSearches() {
   const freqsearchlist = ['피크페스티벌', '서재페', '종강파티', '방학', '연희동', '와인파티', '볼빨간사춘기', '피크페스티벌', '서재페', '종강파티', '방학']
-
   return (
     <div className='flex flex-col my-[20px]'>
       <span className='mx-[16px] text-[14px] leading-[160%]'>자주 찾는 검색어입니다</span>
@@ -106,7 +113,6 @@ function RecentSearches() {
               <IconButton className='p-0'><img src='/search_delete_1.svg' /></IconButton>
             </>
         }
-
       </div>
     )
   }
@@ -115,16 +121,26 @@ function RecentSearches() {
     <div className='flex flex-col mx-[16px] my-[20px] gap-[16px]'>
       <div className='flex flex-row justify-between text-[12px] text-[#757575]'>
         <span>최근 검색어</span>
-        <span>전체 삭제</span>
+        <span>전체삭제</span>
       </div>
       <div className='flex flex-col gap-[8px]'>
         {
           searchlist.map((item, idx) => (
-            <SearchBlock searchword={item} idx={idx} />
+            <SearchBlock searchword={item} idx={idx} key={`recent-${idx}`} />
           ))
         }
       </div>
       <div className='flex justify-center text-[12px] text-gray3-text leading-[160%] font-normal'>검색어 더보기</div>
     </div>
+  )
+}
+
+interface SearchCalendarProps { dayRange: DayRange; setDayRange: Dispatch<SetStateAction<DayRange>>; }
+export function SearchCalendar(props: SearchCalendarProps) {
+  return (
+    <Paper className="absolute top-[93px] w-[380px] rounded-[8px]" onClick={(e) => e.stopPropagation()}>
+      <Calendar value={props.dayRange} onChange={props.setDayRange} locale={krLocale}
+        calendarClassName="SearchCalendar" />
+    </Paper>
   )
 }
