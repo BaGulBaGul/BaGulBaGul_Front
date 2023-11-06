@@ -259,11 +259,40 @@ em {
 
 .MyCalendar .Calendar__header {
   padding: 16px 36px !important;
+  display: flex; flex-direction: row;
+  justify-content: space-between;
 }
-.MyCalendar .Calendar__monthText,
-.MyCalendar .Calendar__yearText {
+
+.MyCalendar .Calendar__monthArrow {
+  width: 24px; height: 24px;
+  background-image: url(../../public/chevron-left.svg);
+}
+.MyCalendar .Calendar__monthArrowWrapper.-right {
+  order: 2;
+  transform: unset; padding: 0;
+}
+.MyCalendar .Calendar__monthArrowWrapper.-left {
+  order: 3;
+  transform: rotate(180deg); padding: 0;
+}
+
+.MyCalendar .Calendar__monthYearContainer {
+  width: 270px;
+  flex: unset !important;
+}
+.MyCalendar .Calendar__monthYear {
+  left: 20px;
+}
+
+.MyCalendar .Calendar__monthText {
+  order: 1;
   font-size: 18px !important; line-height: 140% !important;
   font-weight: 600;
+  pointer-events: none;
+}
+
+.MyCalendar .Calendar__yearText {
+  display: none;
 }
 
 .MyCalendar .Calendar__weekDays {
@@ -325,4 +354,29 @@ em {
 .MyCalendar .Calendar__day.-ltr.-selectedEnd,
 .MyCalendar .Calendar__day.-selectedBetween {
   border-radius: 100% !important;
+}
+
+.MyCalendar .Calendar__day.-today:not(.-selectedStart):not(.-selectedEnd):not(.-selectedBetween) {
+  font-weight: 400;
+  color: #4A6AFE;
+}
+
+.MyCalendar .Calendar__day.-today:not(.-selectedStart):not(.-selectedEnd):not(.-selectedBetween)::after {
+  content: unset;
+}
+
+.MyCalendar .Calendar__day.eventDay:not(.-selectedStart):not(.-selectedBetween):not(.-selectedEnd):not(.-selected) {
+  position: relative;
+}
+
+.MyCalendar .Calendar__day.eventDay:not(.-selectedStart):not(.-selectedBetween):not(.-selectedEnd):not(.-selected)::after {
+  background: #4A6AFE; opacity: 1;
+  width: 16px; height: 1px;
+  bottom: 10px;
+  content: '';
+  position: absolute;
+  display: block;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: 0.2s;
 }

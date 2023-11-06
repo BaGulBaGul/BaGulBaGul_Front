@@ -187,6 +187,19 @@ export const likeButtonTheme2 = createTheme({
   },
 });
 
+export const deleteButtonTheme = createTheme({
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          fontSize: '12px !important', fontWeight: '400', lineHeight: '160%',
+          color: '#6C6C6C', minWidth: 'unset', padding: 0,
+        }
+      }
+    }
+  }
+})
+
 // export const viewCheckTheme = createTheme({
 //   components: {
 //     MuiFormControlLabel: {

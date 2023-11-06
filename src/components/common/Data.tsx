@@ -8,7 +8,8 @@ export const postData = [
     endDate: '2023-05-14T13:18:08.827Z',
     categories: ['공연전시/행사', '문화/예술'],
     content: '일반 티켓은 2023년 4월 18일(화) 오후 6시부터 예매 가능하며, 한정 수량 소진 시 예매가 조기종료될 수 있습니다. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    tags: ['Hashtag', 'Hashtag', 'Tag', 'Tag', 'Tag']
+    tags: ['Hashtag', 'Hashtag', 'Tag', 'Tag', 'Tag'],
+    address: '서울특별시 마포구'
   },
   {
     img_url: '/images/rec2.jpg',
@@ -19,7 +20,8 @@ export const postData = [
     endDate: '2023-05-28T13:18:08.827Z',
     categories: ['공연전시/행사', '문화/예술'],
     content: '일반 티켓은 2023년 4월 18일(화) 오후 6시부터 예매 가능하며, 한정 수량 소진 시 예매가 조기종료될 수 있습니다. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    tags: ['Hashtag', 'Hashtag', 'Tag', 'Tag', 'Tag', '태그']
+    tags: ['Hashtag', 'Hashtag', 'Tag', 'Tag', 'Tag', '태그'],
+    address: '서울특별시 마포구'
   },
   {
     img_url: '/images/rec3.jpg',
@@ -30,7 +32,8 @@ export const postData = [
     endDate: '2023-05-28T13:18:08.827Z',
     categories: ['공연전시/행사', '문화/예술'],
     content: '일반 티켓은 2023년 4월 18일(화) 오후 6시부터 예매 가능하며, 한정 수량 소진 시 예매가 조기종료될 수 있습니다. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    tags: ['Hashtag', 'Hashtag', 'Tag', 'Tag', 'Tag', '해시태그']
+    tags: ['Hashtag', 'Hashtag', 'Tag', 'Tag', 'Tag', '해시태그'],
+    address: '서울특별시 송파구'
   },
   {
     img_url: '/images/rec4.jpg',
@@ -41,7 +44,8 @@ export const postData = [
     endDate: '2023-05-14T13:18:08.827Z',
     categories: ['공연전시/행사', '식품/음료'],
     content: '일반 티켓은 2023년 4월 18일(화) 오후 6시부터 예매 가능하며, 한정 수량 소진 시 예매가 조기종료될 수 있습니다. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    tags: ['Hashtag', 'Hashtag', 'Tag', 'Tag', 'Tag', '태그', '해시태그']
+    tags: ['Hashtag', 'Hashtag', 'Tag', 'Tag', 'Tag', '태그', '해시태그'],
+    address: '서울특별시 송파구'
   },
   {
     img_url: '/images/rec5.jpg',
@@ -52,7 +56,8 @@ export const postData = [
     endDate: '2023-05-14T13:18:08.827Z',
     categories: ['공연전시/행사', '문화/예술'],
     content: '일반 티켓은 2023년 4월 18일(화) 오후 6시부터 예매 가능하며, 한정 수량 소진 시 예매가 조기종료될 수 있습니다. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    tags: ['Hashtag', 'Hashtag', 'Tag', 'Tag', 'Tag', '태그', '해시태그', '태그']
+    tags: ['Hashtag', 'Hashtag', 'Tag', 'Tag', 'Tag', '태그', '해시태그', '태그'],
+    address: '서울특별시 송파구'
   },
 ]
 
@@ -309,7 +314,7 @@ export const likeData = [
     content: '- 3일권은 [제15회 서울재즈페스티벌 2023] 5월 26일(금) - 28일(일), 공연기간 모든 일자 관람이 가능한 3일권 티켓입니다.',
     address: '서울특별시 송파구',
     img_url: '/images/rec3.jpg',
-  },,
+  },
   {
     title: '피크페스티벌 2일차 동행 구해요',
     startDate: '2023-05-13T13:18:08.827Z',

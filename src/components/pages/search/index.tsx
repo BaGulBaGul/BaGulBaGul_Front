@@ -2,7 +2,7 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 import { IconButton, TextField, ThemeProvider, Divider, Button, Backdrop, Paper } from '@mui/material';
 import { ViewButton, ViewSelect } from '@/components/common/ViewFilter';
-import { searchInputTheme, searchFreqTheme } from '@/components/common/Themes';
+import { searchInputTheme, searchFreqTheme, deleteButtonTheme } from '@/components/common/Themes';
 import { krLocale } from '@/components/common/CalendarLocale';
 
 import "react-modern-calendar-datepicker/lib/DatePicker.css";
@@ -34,7 +34,7 @@ function SearchBar() {
   const [dayRange, setDayRange] = useState<DayRange>({ from: null, to: null });
   const handleDayData = (date: Day) => {
     if (date !== null && date !== undefined) {
-      return `${date.year}.${date.month}.${date.day}`
+      return `${date.year.toString().slice(2)}.${date.month}.${date.day}`
     }
   }
 
@@ -121,7 +121,7 @@ function RecentSearches() {
     <div className='flex flex-col mx-[16px] my-[20px] gap-[16px]'>
       <div className='flex flex-row justify-between text-[12px] text-[#757575]'>
         <span>최근 검색어</span>
-        <span>전체삭제</span>
+        <ThemeProvider theme={deleteButtonTheme}><Button>전체삭제</Button></ThemeProvider>
       </div>
       <div className='flex flex-col gap-[8px]'>
         {

@@ -1,10 +1,10 @@
 "use client";
 import { useState } from 'react';
-import { Tab, Tabs, Box, Button, ThemeProvider, Checkbox, FormControl, FormControlLabel, FormGroup, Divider, } from '@mui/material';
+import { Tab, Tabs, Box, Button, ThemeProvider, Checkbox, Divider } from '@mui/material';
 import TabPanel from '@/components/common/TabPanel';
-import { FestivalBlock } from '@/components/common/FestivalBlock';
+import { CalendarBlock } from '@/components/common/FestivalBlock';
 import { likeEvents, postData, partyData } from '@/components/common/Data';
-import { likeButtonTheme1, likeButtonTheme2, tabTheme } from '@/components/common/Themes';
+import { likeButtonTheme1, likeButtonTheme2, tabTheme, deleteButtonTheme } from '@/components/common/Themes';
 import { krLocale } from '@/components/common/CalendarLocale';
 
 import "react-modern-calendar-datepicker/lib/DatePicker.css";
@@ -14,9 +14,11 @@ import { Calendar } from 'react-modern-calendar-datepicker'
 const index = () => {
   const [focusDay, setFocusDay] = useState('');
 
+  const testdates = ['2023-11-08T13:18:08.827Z', '2023-11-13T13:18:08.827Z', '2023-11-23T13:18:08.827Z', '2023-11-28T13:18:08.827Z']
+
   return (
     <div className='flex flex-col w-full pb-[10px] mt-[60px]'>
-      <SearchCalendar focusDay={focusDay} setFocusDay={setFocusDay} />
+      <MyCalendar focusDay={focusDay} setFocusDay={setFocusDay} eventDays={testdates} />
       <LikedTab />
     </div>
   )
@@ -24,12 +26,18 @@ const index = () => {
 export default index;
 
 
-interface SearchCalendarProps { focusDay: any; setFocusDay: any; }
-export function SearchCalendar(props: SearchCalendarProps) {
+interface MyCalendarProps { focusDay: any; setFocusDay: any; eventDays?: any; }
+export function MyCalendar(props: MyCalendarProps) {
+  let eventDays: any = []
+  props.eventDays.forEach((date: string) => {
+    const dateD = new Date(date)
+    eventDays.push({ year: dateD.getFullYear(), month: dateD.getMonth() + 1, day: dateD.getDate(), className: 'eventDay' })
+  })
+
   return (
     <div>
       <Calendar value={props.focusDay} onChange={props.setFocusDay} locale={krLocale}
-        calendarClassName="MyCalendar" />
+        calendarClassName="MyCalendar" customDaysClassName={eventDays} />
     </div>
   )
 }
@@ -49,44 +57,47 @@ function LikedTab() {
 
   return (
     <Box className='w-full px-0'>
-      <Box className='sticky top-[60px] bg-[#FFF] relative z-10'>
-        <ThemeProvider theme={tabTheme}>
-          <Tabs value={value} onChange={handleChange} className='items-center min-h-0 px-[16px] py-[10px]'>
-            <Tab label="페스티벌" />
-            <Tab label="지역행사" />
-            <Tab label="파티" />
-          </Tabs>
-        </ThemeProvider>
+      <Box className='sticky top-[60px] bg-[#FFF] relative z-10 px-[16px] pt-[20px] pb-[10px]'>
+        <div className='flex justify-between items-center'>
+          <ThemeProvider theme={tabTheme}>
+            <Tabs value={value} onChange={handleChange} className='items-center min-h-0'>
+              <Tab label="페스티벌" />
+              <Tab label="지역행사" />
+              <Tab label="파티" />
+            </Tabs>
+          </ThemeProvider>
+          <ThemeProvider theme={deleteButtonTheme}><Button>전체삭제</Button></ThemeProvider>
+        </div>
       </Box>
       <TabPanel value={value} index={0}>
-      {postData.map((post, idx) => (
+        {postData.map((post, idx) => (
           idx === 0
-            ? <FestivalBlock data={post} key={`rec-${idx}`} />
+            ? <CalendarBlock data={post} key={`rec-${idx}`} />
             : <>
               <Divider />
-              <FestivalBlock data={post} key={`rec-${idx}`} />
+              <CalendarBlock data={post} key={`rec-${idx}`} />
             </>
         ))}
       </TabPanel>
       <TabPanel value={value} index={1}>
-      {postData.map((post, idx) => (
+        {postData.map((post, idx) => (
           idx === 0
-            ? <FestivalBlock data={post} key={`rec-${idx}`} />
+            ? <CalendarBlock data={post} key={`rec-${idx}`} />
             : <>
               <Divider />
-              <FestivalBlock data={post} key={`rec-${idx}`} />
+              <CalendarBlock data={post} key={`rec-${idx}`} />
             </>
         ))}
       </TabPanel>
       <TabPanel value={value} index={2}>
-      {partyData.map((post, idx) => (
-            idx === 0
-              ? <FestivalBlock data={post} key={`party-${idx}`} />
-              : <>
-                <Divider />
-                <FestivalBlock data={post} key={`party-${idx}`} />
-              </>
-          ))}
+        {partyData.map((post, idx) => (
+          idx === 0
+            ? <CalendarBlock data={post} key={`party-${idx}`} />
+            : <>
+              <Divider />
+              <CalendarBlock data={post} key={`party-${idx}`} />
+            </>
+        ))}
       </TabPanel>
     </Box>
   )

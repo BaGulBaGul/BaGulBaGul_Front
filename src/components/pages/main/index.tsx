@@ -15,12 +15,12 @@ import { FestivalBlock } from '@/components/common/FestivalBlock';
 
 const index = () => {
   const [posts, setPosts] = useState([])
-  // useEffect(() => {
-  //   call("/api/post?type=FESTIVAL", "GET", null)
-  //     .then((response) => {
-  //       console.log(response);
-  //     })
-  // }, [])
+  useEffect(() => {
+    call("/api/post?type=FESTIVAL", "GET", null)
+      .then((response) => {
+        console.log(response);
+      })
+  }, [])
 
   return (
     <div className='flex flex-col w-full pt-[44px]'>
