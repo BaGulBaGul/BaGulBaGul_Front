@@ -133,6 +133,27 @@ export const replyButtonTheme = createTheme({
   },
 });
 
+export const noEventButtonTheme = createTheme({
+  components: {
+    MuiButtonBase: { defaultProps: { disableRipple: true, }, },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          border: '1px solid #4A6AFE', padding: '4px 8px',
+          color: '#4A6AFE', minWidth: 'unset', fontWeight: 400,
+          '&:hover': {
+            border: '1px solid #4A6AFE', backgroundColor: 'transparent'
+          },
+          '&:active': {
+            border: '1px solid #4A6AFE',
+            backgroundColor: '#4A6AFE !important', color: '#FCFCFC'
+          }
+        }
+      }
+    }
+  },
+});
+
 export const writeFabTheme = createTheme({
   components: {
     MuiButtonBase: { defaultProps: { disableRipple: true, }, },
@@ -200,28 +221,28 @@ export const deleteButtonTheme = createTheme({
   }
 })
 
-// export const viewCheckTheme = createTheme({
-//   components: {
-//     MuiFormControlLabel: {
-//       defaultProps: { labelPlacement: 'start', },
-//       styleOverrides: {
-//         root: { margin: 0, marginRight: '8px !important', },
-//         label: { fontSize: '12px !important', color: '#6C6C6C' }
-//       }
-//     },
-//     MuiCheckbox: {
-//       defaultProps: {
-//         checkedIcon: <img src="/checkbox_1.svg" width={16} height={16} />,
-//         icon: <img src="/checkbox.svg" width={16} height={16} />,
-//       }
-//     },
-//     MuiButtonBase: {
-//       styleOverrides: {
-//         root: { padding: '0 !important', paddingLeft: '4px !important' }
-//       }
-//     }
-//   },
-// });
+export const viewCheckTheme = createTheme({
+  components: {
+    MuiFormControlLabel: {
+      defaultProps: { labelPlacement: 'start', },
+      styleOverrides: {
+        root: { margin: 0, marginRight: '8px !important', },
+        label: { fontSize: '12px !important', color: '#6C6C6C' }
+      }
+    },
+    MuiCheckbox: {
+      defaultProps: {
+        checkedIcon: <img src="/checkbox_1.svg" width={16} height={16} />,
+        icon: <img src="/checkbox.svg" width={16} height={16} />,
+      }
+    },
+    MuiButtonBase: {
+      styleOverrides: {
+        root: { padding: '0 !important', paddingLeft: '8px !important' }
+      }
+    }
+  },
+});
 
 export const viewToggleTheme = createTheme({
   components: {

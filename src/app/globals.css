@@ -365,11 +365,11 @@ em {
   content: unset;
 }
 
-.MyCalendar .Calendar__day.eventDay:not(.-selectedStart):not(.-selectedBetween):not(.-selectedEnd):not(.-selected) {
+.MyCalendar .Calendar__day.eventDay:not(.-selectedStart):not(.-selectedBetween):not(.-selectedEnd):not(.-selected):not(.-today) {
   position: relative;
 }
 
-.MyCalendar .Calendar__day.eventDay:not(.-selectedStart):not(.-selectedBetween):not(.-selectedEnd):not(.-selected)::after {
+.MyCalendar .Calendar__day.eventDay:not(.-selectedStart):not(.-selectedBetween):not(.-selectedEnd):not(.-selected):not(.-today)::after {
   background: #4A6AFE; opacity: 1;
   width: 16px; height: 1px;
   bottom: 10px;

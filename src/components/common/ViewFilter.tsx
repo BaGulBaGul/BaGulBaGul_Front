@@ -3,7 +3,7 @@ import { ThemeProvider, Button, Paper, MenuList, MenuItem, IconButton } from "@m
 import { viewTheme } from "./Themes";
 
 
-const viewVal = ['createdAt,desc', 'popular,asc', 'comment,desc']
+const viewVal = ['createdAt,desc', 'likeCount,asc', 'commentCount,desc']
 const viewLabel = ['최신순', '인기순', '댓글순']
 interface ViewButtonProps { sort: string; handleOpen: any; }
 export function ViewButton(props: ViewButtonProps) {

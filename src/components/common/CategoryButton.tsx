@@ -2,14 +2,18 @@
 
 // import styled from "@emotion/styled";
 import { styled } from '@mui/material/styles';
-import { useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { categories } from "./Data";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 
-export function CategoryButtons() {
-  const [selectedCate, setSelectedCate] = useState<string[]>([]);
-  const handleCate = (event: React.MouseEvent<HTMLElement>, newCate: string[]) => {
-    setSelectedCate(newCate);
+interface CategoryButtonProps {
+  selectedCate: string[]; setSelectedCate: Dispatch<SetStateAction<string[]>>;
+  // params: any; setParams: any;
+}
+export function CategoryButtons(props: CategoryButtonProps) {
+  const handleCate = (e: React.MouseEvent<HTMLElement>, newCate: string[]) => {
+    props.setSelectedCate(newCate);
+    // props.setParams({ ...props.params, categories: props.selectedCate });
   }
 
   const SToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
@@ -33,7 +37,7 @@ export function CategoryButtons() {
   return (
     <div className='overflow-hidden	h-[46px]'>
       <div className='h-[76px] py-[10px] px-[16px] overflow-x-scroll overflow-y-hide whitespace-nowrap cateBtns'>
-        <SToggleButtonGroup value={selectedCate} onChange={handleCate}>
+        <SToggleButtonGroup value={props.selectedCate} onChange={handleCate}>
           {categories.map((cate, idx) =>
             <ToggleButton value={cate} className='cateInfo' key={`cate-${cate}`}>{cate}</ToggleButton>
           )}

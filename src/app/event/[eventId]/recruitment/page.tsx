@@ -1,6 +1,6 @@
 "use client";
 import { HeaderNonMain } from "@/components/layout/header";
-import Accompany from '@/components/pages/accompany'
+import Recruitment from '@/components/pages/event/[eventId]/recruitment'
 import SubHeader from '@/components/layout/subHeader';
 import { PostFooter } from '@/components/layout/footer';
 
@@ -9,9 +9,8 @@ export default function Page() {
     <div>
       <div className='relative z-20'>
         <HeaderNonMain />
-        {/* <SubHeader name='모집글' url={"/"} /> */}
       </div>
-      <Accompany />
+      <Recruitment />
       <PostFooter title='모집글 작성하기' path='/' />
     </div>
   );

@@ -1,61 +1,80 @@
 'use client';
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState } from 'react';
+import { useParams, usePathname } from 'next/navigation'
 import { postData } from '@/components/common/Data'
 import Slider from "react-slick";
 
-import { ThemeProvider, Button, Divider, IconButton, Dialog, DialogTitle, DialogContent, Chip, Skeleton } from '@mui/material';
-import { categoryButtonTheme, HashtagButton, shareDialogTheme, accompanyChipTheme, slideChipTheme } from '@/components/common/Themes'
+import { ThemeProvider, Button, Divider, IconButton, Dialog, DialogTitle, DialogContent, Chip } from '@mui/material';
+import { categoryButtonTheme, HashtagButton, shareDialogTheme, slideChipTheme } from '@/components/common/Themes'
 import { PostFooter } from '@/components/layout/footer';
 import { FormatDate, FormatDateTime, FormatDateRange } from '@/service/Functions';
+import { call } from '@/service/ApiService';
+import ShareDialog from '@/components/common/ShareDialog';
 
-export const DetailFestival = (props: { data: any }) => {
-  const [popopen, setPopopen] = useState(false);
-  const handleOpen = () => { setPopopen(true) }
-  const handleClose = () => { setPopopen(false) }
+const index = (props: { setTitle: any }) => {
+  const params = useParams()
+  const [data, setData] = useState<any>({})
 
-  return (
-    <div className='flex flex-col w-full pt-[104px] pb-[64px]'>
-      <PostSlide />
-      <PostTitle title={props.data.title} startDate={props.data.startDate} endDate={props.data.endDate}
-        type={props.data.type} views={props.data.views} userName={props.data.userName} categories={props.data.categories} />
-      <Divider />
-      <PostInfoF startDate={props.data.startDate} endDate={props.data.endDate} headCount={props.data.headCount} />
-      <PostContent content={props.data.content} />
-      <PostContentMap address={props.data.address} />
-      {
-        props.data.tags !== undefined && props.data.tags.length > 0
-          ? <PostContentTag tags={props.data.tags} />
-          : <></>
-      }
-      <ShareDialog handleClose={handleClose} popopen={popopen} />
-      <PostFooter title='모집글 보러가기' path='/accompany' />
-      <PostTools handleOpen={handleOpen} likeCount={props.data.likeCount} commentCount={props.data.commentCount} />
-    </div>
-  )
+  type typeType = { [key: string]: string; }
+  const typeString: typeType = { 'FESTIVAL': '페스티벌', 'LOCAL_EVENT': '지역행사', 'PARTY': '파티' }
+
+  useEffect(() => {
+    let apiURL = `/api/event/${params.eventId}`;
+    call(apiURL, "GET", null)
+      .then((response) => {
+        console.log(response.data);
+        setData(response.data);
+        props.setTitle(typeString[data.type as string])
+      })
+  }, [])
+
+  // 페스티벌, 지역행사는 '모집글 보러가기' 버튼 배치
+  if (Object.keys(data).length === 0) {
+    return (<></>)
+  } else {
+    if (data.type === 'PARTY') {
+      return (
+        <div className='flex flex-col w-full'>
+          <DetailEvent data={data} />
+        </div>
+      )
+    } else {
+      let recruitURL = `/event/${params.eventId}/recruitment`
+      return (
+        <div className='flex flex-col w-full'>
+          <div className='pb-[46px]'><DetailEvent data={data} /></div>
+          <PostFooter title='모집글 보러가기' path={recruitURL} />
+        </div>
+      )
+    }
+  }
 }
+export default index;
 
-export const DetailAccompany = (props: { data: any }) => {
+const DetailEvent = (props: { data: any }) => {
   const [popopen, setPopopen] = useState(false);
   const handleOpen = () => { setPopopen(true) }
   const handleClose = () => { setPopopen(false) }
+
+  const pathname = usePathname();
   return (
     <div className='flex flex-col w-full pt-[104px]'>
       <PostSlide />
       <PostTitle title={props.data.title} startDate={props.data.startDate} endDate={props.data.endDate}
         type={props.data.type} views={props.data.views} userName={props.data.userName} categories={props.data.categories} />
       <Divider />
-      <PostInfoA headCount={props.data.headCount} />
-      <div className='pb-[30px]'>
-        <PostContent content={props.data.content} />
-        {
-          props.data.tags !== undefined && props.data.tags.length > 0
-            ? <PostContentTag tags={props.data.tags} />
-            : <></>
-        }
-      </div>
-      <Divider />
-      <ShareDialog handleClose={handleClose} popopen={popopen} />
-      <div className='pb-[30px]'><PostTools handleOpen={handleOpen} likeCount={props.data.likeCount} commentCount={props.data.commentCount} /></div>
+      <PostInfoF startDate={props.data.startDate} endDate={props.data.endDate} headCount={props.data.headCount} />
+      <PostContent content={props.data.content} />
+      {/* <PostContentMap address={props.data.fullLocation} lat={props.data.latitudeLocation} lng={props.data.longitudeLocation} /> */}
+      <PostContentMap address={props.data.fullLocation} lat={33.450701} lng={126.570667} />
+      {
+        props.data.tags !== undefined && props.data.tags.length > 0
+          ? <PostContentTag tags={props.data.tags} />
+          : <></>
+      }
+      <ShareDialog handleClose={handleClose} popopen={popopen} sharingURL={pathname} />
+      {/* <PostFooter title='모집글 보러가기' path='/accompany' /> */}
+      <PostTools handleOpen={handleOpen} likeCount={props.data.likeCount} commentCount={props.data.commentCount} />
     </div>
   )
 }
@@ -163,16 +182,6 @@ function PostInfoF(props: { startDate: any; endDate: any; headCount: number; }) 
   )
 }
 
-function PostInfoA(props: { headCount: number }) {
-  return (
-    <div className='flex flex-row px-[16px] pt-[30px]' id='p-info'>
-      <p className='text-[14px] leading-[160%] font-semibold pe-[10px]'>인원(명)</p>
-      <p className='text-[14px] leading-[160%] pe-[6px]'>{props.headCount}명</p>
-      <ThemeProvider theme={accompanyChipTheme}><Chip label="모집 중" /></ThemeProvider>
-    </div>
-  )
-}
-
 function PostContent(props: { content: string }) {
   return (
     <div className='flex flex-col px-[16px] pt-[30px]' id='p-content'>
@@ -182,28 +191,30 @@ function PostContent(props: { content: string }) {
 }
 
 // const kakao = window.Kakao;
-function PostContentMap(props: { address: string }) {
-  const [mapSuccess, setMapSuccess] = useState(true);
+function PostContentMap(props: { address: string; lat: number; lng: number; }) {
+  // const [mapSuccess, setMapSuccess] = useState(true);
 
   useEffect(() => {
     var container = document.getElementById('map');
-    let options = { 
-      center: new window.kakao.maps.LatLng(33.450701, 126.570667), 
-      level: 4, 
+    let options = {
+      center: new window.kakao.maps.LatLng(props.lat, props.lng),
+      level: 4,
     }
     const map = new window.kakao.maps.Map(container, options)
-    var geocoder = new window.kakao.maps.services.Geocoder();
+    var coords = new window.kakao.maps.LatLng(props.lat, props.lng);
+    var marker = new window.kakao.maps.Marker({ map: map, position: coords });
+    // var geocoder = new window.kakao.maps.services.Geocoder();
 
-    geocoder.addressSearch(props.address, function (result:any, status:any) {
-      if (status === window.kakao.maps.services.Status.OK) {
-        setMapSuccess(true);
-        var coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
-        var marker = new window.kakao.maps.Marker({ map: map, position: coords });
-        map.setCenter(coords);
-      } else {
-        setMapSuccess(false);
-      }
-    })
+    // geocoder.addressSearch(props.address, function (result: any, status: any) {
+    //   if (status === window.kakao.maps.services.Status.OK) {
+    //     setMapSuccess(true);
+    //     var coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
+    //     var marker = new window.kakao.maps.Marker({ map: map, position: coords });
+    //     map.setCenter(coords);
+    //   } else {
+    //     setMapSuccess(false);
+    //   }
+    // })
   }, [])
 
   return (
@@ -214,6 +225,11 @@ function PostContentMap(props: { address: string }) {
           ? <></>
           : <div className=''></div>
         } */}
+        <div className=''></div>
+      </div>
+      <div className='flex flex-row px-[16px] pt-[6px]' id='p-info'>
+        <p className='text-[14px] leading-[160%] font-semibold pe-[10px]'>위치</p>
+        <p className='text-[14px] leading-[160%] pe-[6px]'>{props.address}</p>
       </div>
     </div>
   )
@@ -236,7 +252,7 @@ function PostContentTag(props: { tags: string[] }) {
 interface PostToolsProps { handleOpen: any; likeCount: number; commentCount: number; }
 function PostTools(props: PostToolsProps) {
   return (
-    <div className='flex flex-row justify-between pt-[30px] px-[16px]'>
+    <div className='flex flex-row justify-between py-[30px] px-[16px]'>
       <div className='flex flex-row'>
         <div className='flex flex-row items-center pe-[10px]'>
           <div className='flex flex-row items-center'>
@@ -260,94 +276,3 @@ function PostTools(props: PostToolsProps) {
     </div>
   )
 }
-
-interface ShareDialogProps { handleClose: any, popopen: boolean }
-function ShareDialog(props: ShareDialogProps) {
-  // useEffect(() => {
-  //   if (window.Kakao !== undefined) {
-  //     window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO);
-  //     console.log(window.Kakao.isInitialized());
-  //   }
-  // }, [])
-  const sharingURL = 'http://localhost:3000/옴뇸뇸'
-  const handleURL = async () => {
-    // // - using navigator canShare api : 크롬 작동 X, 사파리 작동 O
-    // console.log('- handleURL' + navigator.canShare)
-    // const sharingData = {
-    //   text: '바글바글',
-    //   url: 'http://localhost:3000/',
-    // }
-
-    // try {
-    //   if (navigator.canShare && navigator.canShare(sharingData)) {
-    //     navigator.share(sharingData)
-    //     .then(() => {
-    //       alert('URL이 복사되었습니다.\n공유할 곳에 붙여넣기 해주세요.')
-    //     }).catch(() => {
-    //       console.log('취소')
-    //     })
-    //   }
-    // } catch (e) {
-    //   alert('URL 복사를 실패했습니다.')
-    // }
-
-    // - using navigator clipboard api
-    try {
-      await navigator.clipboard.writeText(sharingURL);
-      alert('클립보드에 URL이 복사되었습니다.\n공유할 곳에 붙여넣기 해주세요.')
-    } catch (err) {
-      // alert('링크 복사를 실패했습니다.')
-      console.log('링크 복사 실패' + err);
-    }
-  }
-
-  const handleKakao = () => {
-    alert('카카오 공유')
-    // // 배포 후 테스트 가능
-    // window.Kakao.Share.sendDefault({
-    //   objectType: 'feed',
-    //   content: {
-    //     title: 'PEAK FESTIVAL 2023',
-    //     description: '23.05.27 - 05.28\n #10cm #실리카겔 #난지한강공원',
-    //     imageUrl:
-    //       'https://pbs.twimg.com/media/Ft6VCQ6aMAI2cIC.jpg',
-    //     link: {
-    //       // [내 애플리케이션] > [플랫폼] 에서 등록한 사이트 도메인과 일치해야 함
-    //       mobileWebUrl: 'https://developers.kakao.com',
-    //       webUrl: 'https://developers.kakao.com',
-    //     },
-    //   },
-    //   buttons: [
-    //     {
-    //       title: '바글바글에서 확인하기',
-    //       link: {
-    //         mobileWebUrl: 'https://developers.kakao.com',
-    //         webUrl: 'https://developers.kakao.com',
-    //       },
-    //     },
-    //   ],
-    // });
-  }
-
-  return (
-    <ThemeProvider theme={shareDialogTheme}>
-      <Dialog onClose={props.handleClose} open={props.popopen} >
-        <DialogTitle className='flex flex-row justify-between'>
-          <div className='w-[24px] h-[24px]' />
-          <span>공유하기</span>
-          <IconButton disableRipple onClick={props.handleClose}><img src='/popup_close.svg' /></IconButton>
-        </DialogTitle>
-        <DialogContent className='flex flex-row gap-[48px] justify-center'>
-          <div className='flex flex-col items-center cursor-pointer' onClick={handleKakao}>
-            <img className='w-[50px] h-[50.74px]' src='/kakaotalk_sharing_btn.png' />
-            <span className='select-none px-[4px] pt-[4px]'>카카오톡</span>
-          </div>
-          <div className='flex flex-col items-center cursor-pointer' onClick={handleURL}>
-            <img className='w-[50px] h-[50.74px]' src='/url_sharing_btn.png' />
-            <span className='select-none px-[4px] pt-[4px]'>URL 복사</span>
-          </div>
-        </DialogContent>
-      </Dialog>
-    </ThemeProvider>
-  )
-} 

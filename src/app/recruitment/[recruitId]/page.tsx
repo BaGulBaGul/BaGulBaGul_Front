@@ -1,6 +1,6 @@
 
 import { HeaderNonMain } from "@/components/layout/header";
-import { DetailAccompany } from '@/components/pages/detail';
+import Recruitment from '@/components/pages/recruitment/[recruitId]';
 import SubHeader from '@/components/layout/subHeader';
 
 const accompanyData = {
@@ -22,7 +22,7 @@ export default function Page() {
         <HeaderNonMain />
         <SubHeader name='모집글' url={"/"} />
       </div>
-      <DetailAccompany data={accompanyData} />
+      <Recruitment data={accompanyData} />
     </div>
   );
 }
