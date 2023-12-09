@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function SubHeader({ name, url }: any) {
     return (
-        <div className="fixed top-[44px] left-0 right-0 flex-row flex w-full h-[60px] justify-between px-[24px] py-[10px] place-items-center bg-[#FFFFFF]">
+        <div className="fixed top-[44px] left-0 right-0 flex-row flex w-full h-[60px] justify-between px-[24px] py-[10px] place-items-center bg-[#FFFFFF] z-30">
             <a href={url}><img src='/arrow_prev.svg' /></a>
             <div className='text-[18px]'>
                 {name}

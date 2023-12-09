@@ -4,8 +4,8 @@ import { useParams, usePathname } from 'next/navigation';
 import { postData } from '@/components/common/Data'
 import Slider from "react-slick";
 
-import { ThemeProvider, Divider, IconButton, Dialog, DialogTitle, DialogContent, Chip } from '@mui/material';
-import { HashtagButton, shareDialogTheme, accompanyChipTheme, slideChipTheme } from '@/components/common/Themes'
+import { ThemeProvider, Divider, IconButton, Chip } from '@mui/material';
+import { HashtagButton, accompanyChipTheme, slideChipTheme } from '@/components/common/Themes'
 import { FormatDate } from '@/service/Functions';
 import { call } from '@/service/ApiService';
 import ShareDialog from '@/components/common/ShareDialog';

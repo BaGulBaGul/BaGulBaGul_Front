@@ -154,6 +154,17 @@ export const noEventButtonTheme = createTheme({
   },
 });
 
+// export const toolButtonTheme = createTheme({
+//   components: {
+//     MuiButtonBase: { defaultProps: { disableRipple: true, }, },
+//     MuiButton: {
+//       styleOverrides: {
+//         root: { padding: '0', minWidth: 'unset', }
+//       }
+//     }
+//   },
+// });
+
 export const writeFabTheme = createTheme({
   components: {
     MuiButtonBase: { defaultProps: { disableRipple: true, }, },

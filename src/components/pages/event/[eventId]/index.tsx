@@ -1,17 +1,19 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useParams, usePathname } from 'next/navigation'
+import Link from 'next/link';
 import { postData } from '@/components/common/Data'
 import Slider from "react-slick";
 
-import { ThemeProvider, Button, Divider, IconButton, Dialog, DialogTitle, DialogContent, Chip } from '@mui/material';
-import { categoryButtonTheme, HashtagButton, shareDialogTheme, slideChipTheme } from '@/components/common/Themes'
+import { ThemeProvider, Button, Divider, IconButton, Chip } from '@mui/material';
+import { categoryButtonTheme, HashtagButton, slideChipTheme } from '@/components/common/Themes'
+import SubHeader from '@/components/layout/subHeader';
 import { PostFooter } from '@/components/layout/footer';
 import { FormatDate, FormatDateTime, FormatDateRange } from '@/service/Functions';
 import { call } from '@/service/ApiService';
 import ShareDialog from '@/components/common/ShareDialog';
 
-const index = (props: { setTitle: any }) => {
+const index = () => {
   const params = useParams()
   const [data, setData] = useState<any>({})
 
@@ -24,7 +26,6 @@ const index = (props: { setTitle: any }) => {
       .then((response) => {
         console.log(response.data);
         setData(response.data);
-        props.setTitle(typeString[data.type as string])
       })
   }, [])
 
@@ -34,29 +35,36 @@ const index = (props: { setTitle: any }) => {
   } else {
     if (data.type === 'PARTY') {
       return (
-        <div className='flex flex-col w-full'>
-          <DetailEvent data={data} />
-        </div>
+        <>
+          <SubHeader name={typeString[data.type as string]} url={"/"} />
+          <div className='flex flex-col w-full'>
+            <DetailEvent data={data} eventId={params.eventId} />
+          </div>
+        </>
       )
     } else {
       let recruitURL = `/event/${params.eventId}/recruitment`
       return (
-        <div className='flex flex-col w-full'>
-          <div className='pb-[46px]'><DetailEvent data={data} /></div>
-          <PostFooter title='모집글 보러가기' path={recruitURL} />
-        </div>
+        <>
+          <SubHeader name={typeString[data.type as string]} url={"/"} />
+          <div className='flex flex-col w-full'>
+            <div className='pb-[46px]'><DetailEvent data={data} eventId={params.eventId} /></div>
+            <PostFooter title='모집글 보러가기' path={recruitURL} />
+          </div>
+        </>
       )
     }
   }
 }
 export default index;
 
-const DetailEvent = (props: { data: any }) => {
+const DetailEvent = (props: { data: any; eventId: any; }) => {
   const [popopen, setPopopen] = useState(false);
   const handleOpen = () => { setPopopen(true) }
   const handleClose = () => { setPopopen(false) }
 
   const pathname = usePathname();
+  let commentURL = `/event/${props.eventId}/comment`
   return (
     <div className='flex flex-col w-full pt-[104px]'>
       <PostSlide />
@@ -74,7 +82,7 @@ const DetailEvent = (props: { data: any }) => {
       }
       <ShareDialog handleClose={handleClose} popopen={popopen} sharingURL={pathname} />
       {/* <PostFooter title='모집글 보러가기' path='/accompany' /> */}
-      <PostTools handleOpen={handleOpen} likeCount={props.data.likeCount} commentCount={props.data.commentCount} />
+      <PostTools handleOpen={handleOpen} likeCount={props.data.likeCount} commentCount={props.data.commentCount} commentURL={commentURL} />
     </div>
   )
 }
@@ -249,28 +257,26 @@ function PostContentTag(props: { tags: string[] }) {
 
 }
 
-interface PostToolsProps { handleOpen: any; likeCount: number; commentCount: number; }
+interface PostToolsProps { handleOpen: any; likeCount: number; commentCount: number; commentURL: string; }
 function PostTools(props: PostToolsProps) {
   return (
     <div className='flex flex-row justify-between py-[30px] px-[16px]'>
-      <div className='flex flex-row'>
-        <div className='flex flex-row items-center pe-[10px]'>
-          <div className='flex flex-row items-center'>
-            <IconButton disableRipple className='p-0 pe-[4px]'><img src='/detail_like.svg' /></IconButton>
-            <p className='text-gray3-text text-sm'>{props.likeCount}</p>
+      <div className='flex flex-row gap-[10px]'>
+        <div className='flex flex-row items-center'>
+          <div className='flex flex-row items-center gap-[4px]'>
+            <IconButton disableRipple className='p-0'><img src='/detail_like.svg' /></IconButton>
+            <p className='text-gray3-text text-14'>{props.likeCount}</p>
           </div>
         </div>
-        <div className='flex flex-row items-center pe-[10px]'>
-          <a href="/comment" className='flex flex-row items-center'>
-            <img src='/detail_comment.svg' className='pe-[4px]' />
-            <p className='text-gray3-text text-sm'>{props.commentCount}</p>
-          </a>
+        <div className='flex flex-row items-center'>
+          <Link className='flex flex-row items-center gap-[4px]' href={props.commentURL}>
+            <img src='/detail_comment.svg' />
+            <p className='text-gray3-text text-14'>{props.commentCount}</p>
+          </Link>
         </div>
       </div>
-      <div className='flex flex-row'>
-        <div className='pe-[10px]'>
-          <IconButton disableRipple className='p-0'><img src='/post_calendar.svg' /></IconButton>
-        </div>
+      <div className='flex flex-row gap-[10px]'>
+        <IconButton disableRipple className='p-0'><img src='/post_calendar.svg' /></IconButton>
         <IconButton disableRipple onClick={props.handleOpen} className='p-0'><img src='/detail_share.svg' /></IconButton>
       </div>
     </div>

@@ -1,7 +1,6 @@
 "use client";
 import { HeaderNonMain } from "@/components/layout/header";
 import Recruitment from '@/components/pages/event/[eventId]/recruitment'
-import SubHeader from '@/components/layout/subHeader';
 import { PostFooter } from '@/components/layout/footer';
 
 export default function Page() {
