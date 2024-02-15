@@ -13,6 +13,11 @@ import { FormatDate, FormatDateTime, FormatDateRange } from '@/service/Functions
 import { call } from '@/service/ApiService';
 import ShareDialog from '@/components/common/ShareDialog';
 
+interface EventProps {
+  title: string; startDate: string; endDate: string; type: string; views: number;
+  userName: string; categories: any; headCount: number; content: string; fullLocation: string; 
+  latitudeLocation: any; longitudeLocation: any;
+}
 const index = () => {
   const params = useParams()
   const [data, setData] = useState<any>({})
@@ -38,7 +43,7 @@ const index = () => {
         <>
           <SubHeader name={typeString[data.type as string]} url={"/"} />
           <div className='flex flex-col w-full'>
-            <DetailEvent data={data} eventId={params.eventId} />
+            <DetailEvent data={data} />
           </div>
         </>
       )
@@ -48,7 +53,7 @@ const index = () => {
         <>
           <SubHeader name={typeString[data.type as string]} url={"/"} />
           <div className='flex flex-col w-full'>
-            <div className='pb-[46px]'><DetailEvent data={data} eventId={params.eventId} /></div>
+            <div className='pb-[46px]'><DetailEvent data={data} /></div>
             <PostFooter title='모집글 보러가기' path={recruitURL} />
           </div>
         </>
@@ -58,13 +63,13 @@ const index = () => {
 }
 export default index;
 
-const DetailEvent = (props: { data: any; eventId: any; }) => {
+const DetailEvent = (props: { data: any; }) => {
   const [popopen, setPopopen] = useState(false);
   const handleOpen = () => { setPopopen(true) }
   const handleClose = () => { setPopopen(false) }
 
   const pathname = usePathname();
-  let commentURL = `/event/${props.eventId}/comment`
+  let commentURL = `/comment/${props.data.postId}`
   return (
     <div className='flex flex-col w-full pt-[104px]'>
       <PostSlide />
@@ -150,7 +155,7 @@ function PostTitle(props: PostTitleProps) {
           <ThemeProvider theme={categoryButtonTheme}>
             {
               props.categories.map((cate, idx) => (
-                <Button disabled key={`cate-${idx}`}>{cate}</Button>
+                <Button key={`cate-${idx}`}>{cate}</Button>
               ))
             }
           </ThemeProvider>
@@ -162,8 +167,8 @@ function PostTitle(props: PostTitleProps) {
 }
 
 function PostInfoF(props: { startDate: any; endDate: any; headCount: number; }) {
-  const startD = FormatDateTime(props.startDate)
-  const endD = FormatDateTime(props.endDate)
+  let startD = FormatDateTime(props.startDate, 0)
+  let endD = FormatDateTime(props.endDate, 0)
   return (
     <div className='flex flex-col px-[16px] pt-[30px] text-[14px]' id='p-info'>
       <div className='flex flex-row pb-[6px]'>

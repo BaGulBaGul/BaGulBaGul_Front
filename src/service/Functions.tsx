@@ -12,7 +12,7 @@ export const FormatDate = (dateStr:any, type:number) => {
   }
 }
 
-export const FormatDateTime = (dateStr:any) => {
+export const FormatDateTime = (dateStr:any, type:number) => {
   const dateD = new Date(dateStr);
   let date, month, year, time, weekday;
   date = dateD.getDate();
@@ -26,7 +26,11 @@ export const FormatDateTime = (dateStr:any) => {
 
   const dayText = ['일', '월', '화', '수', '목', '금', '토']
   
-  return {date: `${year.toString().slice(2)}.${month}.${date}(${dayText[weekday]})`, time: `${time}`};
+  if (type === 0) {
+      return {date: `${year.toString().slice(2)}.${month}.${date}(${dayText[weekday]})`, time: `${time}`};
+  } else {
+    return {date: `${year.toString().slice(2)}.${month}.${date}`, time: `${time}`};
+  }
 }
 
 export const FormatDateRange = (startDate:any, endDate:any) => {

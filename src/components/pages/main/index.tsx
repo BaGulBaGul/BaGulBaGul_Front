@@ -178,7 +178,13 @@ function PostTab(props: TabProps) {
           <ViewButton sort={props.sort} handleOpen={handleOpen} />
         </div>
       </Box>
-      <Backdrop open={open} onClick={handleClose} className='z-paper'>
+      <div className='sticky top-[102px] bg-[#FFF] relative z-10'>
+        {/* <div className='flex flex-row'>
+          <
+        </div> */}
+        <CategoryButtons selectedCate={props.selectedCate} setSelectedCate={props.setSelectedCate} />
+      </div>
+      <Backdrop open={open} className='z-paper'>
         <ViewSelect sort={props.sort} setSort={props.setSort} handleClose={handleClose} />
       </Backdrop>
       <TabPanel value={props.value} index={0}>
@@ -203,9 +209,6 @@ const TabBlock = (props: TabBlockProps) => {
   if (props.opt === 0) {
     return (
       <>
-        <div className='sticky top-[102px] bg-[#FFF] relative z-10'>
-          <CategoryButtons selectedCate={props.selectedCate} setSelectedCate={props.setSelectedCate} />
-        </div>
         {
           props.events.length > 0
             ? <>
@@ -228,9 +231,6 @@ const TabBlock = (props: TabBlockProps) => {
   } else if (props.opt === 1) {
     return (
       <>
-        <div className='sticky top-[102px] bg-[#FFF] relative z-10'>
-          <CategoryButtons selectedCate={props.selectedCate} setSelectedCate={props.setSelectedCate} />
-        </div>
         <div className='contents'>
           <ThemeProvider theme={writeFabTheme}>
             <Fab variant="extended" size="small" color="primary" className='fixed bottom-[55px] right-[16px]'>
@@ -240,14 +240,31 @@ const TabBlock = (props: TabBlockProps) => {
               </div>
             </Fab>
           </ThemeProvider>
-          {props.events.map((post, idx) => (
+          {/* {props.events.map((post, idx) => (
             idx === 0
               ? <FestivalBlock data={post} key={`party-${idx}`} />
               : <div key={`party-${idx}`}>
                 <Divider />
                 <FestivalBlock data={post} />
               </div>
-          ))}
+          ))} */}
+          {
+            props.events.length > 0
+              ? <>
+                {props.events.map((post, idx) => (
+                  <div key={`party-${idx}`}>
+                    {idx === 0 ? <></> : <Divider />}
+                    <FestivalBlock data={post} />
+                  </div>
+                ))}
+                {
+                  props.page.total > 1 && props.page.current + 1 < props.page.total
+                    ? <MoreButton onClick={handleMore} />
+                    : <></>
+                }
+              </>
+              : <NoEvent text1="찾는 행사가 없어요." text2="지금 인기 있는 페스티벌을 만나보세요." buttonText={"페스티벌 인기순 보러가기"} />
+          }
         </div>
       </>
     )

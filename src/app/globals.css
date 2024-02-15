@@ -62,6 +62,15 @@ em {
   z-index: 1;
 }
 
+.cateBtns {
+  white-space: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+.cateBtns::-webkit-scrollbar {
+  display: none; }
+
 .MuiToggleButton-standard+.MuiToggleButton-standard {
   margin-left: 10px;
 }

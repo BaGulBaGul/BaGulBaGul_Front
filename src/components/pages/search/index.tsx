@@ -4,9 +4,7 @@ import { IconButton, TextField, ThemeProvider, Divider, Button, Backdrop, Paper 
 import { ViewButton, ViewSelect } from '@/components/common/ViewFilter';
 import { searchInputTheme, searchFreqTheme, deleteButtonTheme } from '@/components/common/Themes';
 import { krLocale } from '@/components/common/CalendarLocale';
-
 import "react-modern-calendar-datepicker/lib/DatePicker.css";
-// import { Calendar } from "react-modern-calendar-datepicker";
 import { DayRange, Calendar, Day } from 'react-modern-calendar-datepicker'
 
 const index = () => {
