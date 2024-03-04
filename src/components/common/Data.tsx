@@ -208,10 +208,6 @@ export const accompanyData = [
   },
 ]
 
-export const categories = [
-  '문화/예술', '공연전시/행사', '식품/음료', '교육/체험', '스포츠/레저', '지역특색', '민속/전통', '주류', '종교', '인물/역사'
-]
-
 export const commentData = [
   {
     commentChildCount: 1,

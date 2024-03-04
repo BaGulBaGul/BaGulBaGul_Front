@@ -1,5 +1,5 @@
-import { Button } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Button, createTheme, ThemeProvider } from '@mui/material';
+import { styled } from '@mui/system';
 
 // export const categoryButtonTheme = createTheme({
 //   components: {
@@ -323,6 +323,48 @@ export const viewToggleTheme = createTheme({
   },
 });
 
+export const viewRadioTheme = createTheme({
+  components: {
+    MuiButtonBase: { defaultProps: { disableRipple: true, }, },
+    MuiFormControlLabel: {
+      defaultProps: {  labelPlacement: 'end', },
+      styleOverrides: {
+        root: { margin: 0, marginRight: '8px !important', },
+        label: { fontSize: '14px !important' }
+      }
+    },
+    MuiRadio: {
+      defaultProps: {
+        checkedIcon: <img src="/radio_1.svg" width={18} height={18} />,
+        icon: <img src="/radio_0.svg" width={18} height={18} />,
+      }, styleOverrides: {
+        root: { padding: 0, paddingRight: '4px !important' },
+      }
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          // border: '1px solid #4A6AFE !important',
+          border: '1px solid #C1C1C1 !important', borderRadius: '8px!important',
+          padding: '4px 8px !important', color: 'unset !important'
+        }
+      }
+    },
+    MuiInput: {
+      styleOverrides: {
+        input: {
+          padding: '0 !important', width: 'unset !important', 
+          maxWidth: '84px !important', minWidth: '19px !important',
+          fontSize: '14px !important', textAlign: 'right',
+        },
+        root: {
+          '&:before, &:after': { border: 'none !important' },
+        }
+      }
+    }
+  }
+})
+
 export const viewSwitchTheme = createTheme({
   components: {
     MuiButtonBase: { defaultProps: { disableRipple: true, }, },
@@ -600,3 +642,57 @@ export const searchFreqTheme = createTheme({
     }
   }
 })
+
+
+export const HeadInputRoot = styled('div')(
+  ({ theme }) => `
+  font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  font-weight: 400; color: #1E1E1E; display: grid; width: 84px;
+  // firefox
+  &:focus-visible { outline: 0; }
+`,
+);
+
+export const HeadInputElement = styled('input')(
+  ({ theme }) => `
+  font-size: 14px; font-family: inherit; font-weight: 400;
+  text-align: right; line-height: 160%; color: #1E1E1E;
+  border: none; outline: 0; width: 84px;
+`,
+);
+
+export const HeadButton = styled('button')(
+  ({ theme }) => `
+  display: 'hide'; -webkit-appearance: none; 
+  margin: 0;  pointer-events: none;
+`,
+);
+
+export const PartiInputRoot = styled('div')(
+  ({ theme }) => `
+  font-weight: 400; color: #1E1E1E;
+  display: flex; flex-flow: row nowrap;
+  justify-content: center; align-items: center; margin: 0px 10px;
+`,
+);
+
+export const PartiInputElement = styled('input')(
+  ({ theme }) => `
+  font-size: 14px; font-weight: 400; line-height: 160%;
+  color: #1E1E1E; outline: 0;
+  min-width: 0; width: 4rem; text-align: center;
+
+  &:focus-visible { outline: 0; }
+`,
+);
+
+export const PartiButton = styled('button')(
+  ({ theme }) => `
+  width: 24px; height: 24px; display: flex;
+  flex-flow: row nowrap; justify-content: center; align-items: center;
+
+  &:hover { cursor: pointer; }
+  &:focus-visible { outline: 0; }
+  &.increment { order: 1; }
+`,
+);

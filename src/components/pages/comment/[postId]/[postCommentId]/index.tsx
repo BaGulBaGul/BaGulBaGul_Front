@@ -5,26 +5,85 @@ import { CommentProps, CommentBlock } from '../index';
 import { commentData } from '@/components/common/Data';
 import { commentTheme, replyButtonTheme } from '@/components/common/Themes';
 import { SubHeaderCnt } from '@/components/layout/subHeader';
+import { useEffect, useRef, useState } from 'react';
+import { useParams } from 'next/navigation';
+import { call } from '@/service/ApiService';
 
+// * API 파라미터 업데이트 필요
+export interface CommentProps1 {
+  commentChildCount: number; commentId: number; content: string; createdAt: string;
+  likeCount: number; userId: number; username: string;
+}
 const index = () => {
-  const comment = commentData[0]
-  return (
-    <>
-      <SubHeaderCnt name='답글' url={"/"} cnt={commentData.length} />
-      <div className='flex flex-col w-full min-h-[100vh] pb-[49px] bg-gray1-text '>
-        {/* <CommentBlock user={comment.user} content={comment.content}
-        date={comment.date} liked={comment.liked} likes={comment.likes} /> */}
-        {
-          commentData.map((comment, idx) => (
-            <div className={idx % 2 == 0 ? 'bg-white-text ps-[48px] pe-[16px] py-[12px]' : 'bg-gray1-text ps-[48px] pe-[16px] py-[12px]'}>
-              {/* <ReplyBlock data={comment} /> */}
-            </div>
-          ))
+  const params = useParams()
+  const [comment, setComment] = useState<CommentProps>()
+
+  const [children, setChildren] = useState<CommentProps[]>([]);
+  function setChildrenList(currentChildren: []) {
+    const newChildren = children.concat(currentChildren)
+    const newChildrenSet = new Set(newChildren)
+    const newChildrenList = Array.from(newChildrenSet);
+    console.log(newChildren, ' | ', newChildrenSet)
+    setChildren(newChildrenList);
+  }
+
+  const [page, setPage] = useState({ current: 0, total: 0, });
+  function setPageInfo(currentPage: number) {
+    setPage({ ...page, current: currentPage });
+  }
+  const [count, setCount] = useState(0);
+
+  const initialSet = useRef(false);
+  useEffect(() => {
+    let apiURL = `/api/post/comment/${params.postCommentId}`;
+    console.log("###", apiURL)
+    call(apiURL, "GET", null)
+      .then((response) => {
+        console.log(response.data);
+        setComment(response.data);
+      })
+  }, [])
+  useEffect(() => {
+    let apiURL = `/api/post/comment/${params.postCommentId}/children?size=10&page=${page.current}`;
+    console.log("$$$", apiURL)
+    call(apiURL, "GET", null)
+      .then((response) => {
+        console.log(response.data);
+        if (response.data.empty === false) {
+          // 페이지값 초기설정
+          if (!initialSet.current) {
+            setPage({ current: 0, total: response.data.totalPages })
+            initialSet.current = true;
+            setCount(response.data.totalElements)
+          }
+          setChildrenList(response.data.content)
         }
-      </div>
-      <CommentFooter />
-    </>
-  )
+      })
+  }, [page])
+
+  if (comment !== undefined) {
+    return (
+      <>
+        <SubHeaderCnt name='답글' url={"/"} cnt={commentData.length} />
+        <div className='flex flex-col w-full min-h-[100vh] pb-[49px] bg-gray1-text'>
+          <div className='bg-white-text px-[16px] py-[12px] mb-[2px]'>
+            <CommentBlock data={comment} currentURL='' />
+          </div>
+          <div className='flex flex-col w-full min-h-[100vh] pb-[76px] bg-gray1-text'>
+            {
+              children.map((comment: CommentProps, idx: number) => (
+                <div className={idx % 2 == 0 ? 'bg-white-text ps-[48px] pe-[16px] py-[12px]' : 'bg-gray1-text ps-[48px] pe-[16px] py-[12px]'}>
+                  <CommentBlock data={comment} key={`cmt-${idx}`} currentURL='' />
+                </div>
+              ))
+            }
+          </div>
+        </div>
+        <CommentFooter />
+      </>
+    )
+  }
+
 }
 export default index;
 

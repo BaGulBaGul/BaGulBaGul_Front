@@ -7,7 +7,7 @@ import Link from "next/link";
 
 // - tab item : 페스티벌
 interface PostProps {
-  img_url: string; title: string; user_profile: string; userName: string; abstractLocation?: string;
+  headImageUrl: string; title: string; userImage: string; userName: string; abstractLocation?: string;
   startDate: any; endDate: any; categories: string[]; content?: string; tags?: string[]; id?: number;
 }
 
@@ -38,11 +38,11 @@ export function FestivalBlock(props: { data: PostProps }) {
               <div className='flex flex-row gap-[4px]'>
                 <img className='rounded-full w-[24px] h-[24px]' src='/main_profile.svg' />
                 <p className='text-sm text-gray3-text self-center'>user</p>
-                {/* <img className='rounded-full w-[24px] h-[24px]' src={props.data.user_profile} />
+                {/* <img className='rounded-full w-[24px] h-[24px]' src={props.data.userImage} />
                   <p className='text-sm text-gray3-text self-center'>{props.data.userName}</p> */}
               </div>
             </div>
-            <img className='rounded-lg w-[92px] h-[116px] object-cover' src={props.data.img_url} />
+            <img className='rounded-lg w-[92px] h-[116px] object-cover' src={props.data.headImageUrl === null ? '/default_list_thumb3x.png' : props.data.headImageUrl} />
           </div>
           {props.data.tags ? <HashtagAccordion tag={props.data.tags} /> : <></>}
         </div>
@@ -57,7 +57,7 @@ export function CalendarBlock(props: { data: PostProps }) {
       <div className='flex flex-col py-[18px] px-[16px]'>
         <div className='flex flex-col justify-between'>
           <div className='flex flex-row items-center pb-[10px] gap-[20px]'>
-            <img className='rounded-lg w-[84px] h-[104px] object-cover' src={props.data.img_url} />
+            <img className='rounded-lg w-[84px] h-[104px] object-cover' src={props.data.headImageUrl} />
             <div className='flex flex-col w-[278px] h-[104px] gap-[20px] justify-between'>
               <div className='flex flex-col'>
                 <div className="flex flex-row justify-between items-center">

@@ -13,6 +13,7 @@ import { FormatDateRange } from '@/service/Functions';
 import MoreButton from '@/components/common/MoreButton';
 import { FestivalBlock } from '@/components/common/FestivalBlock';
 import NoEvent from '@/components/common/NoEvent';
+import { DayRange, Calendar, Day } from 'react-modern-calendar-datepicker'
 
 const index = () => {
   //type
@@ -25,10 +26,29 @@ const index = () => {
   const [selectedCate, setSelectedCate] = useState<string[]>([]);
   // 정렬기준, default는 최신순
   const [sort, setSort] = useState('createdAt,desc');
+  const [dayRange, setDayRange] = useState<DayRange>({ from: undefined, to: undefined });
+  // * temporary name - 참여인원 / 규모
+  const [participants, setParticipants] = useState(0);
+  const [headCount, setHeadCount] = useState<{ from: undefined | number, to: undefined | number }>({ from: undefined, to: undefined });
 
+
+  // 필터 개수
+  interface FilterProps {
+    sort: string, date: { from: undefined | null | Day, to: undefined | null | Day }, participants: null | number,
+    head: { from: undefined | null | number, to: undefined | null | number }
+  }
+  const [filterCnt, setFilterCnt] = useState(0)
+  const [filter, setFilter] = useState<FilterProps>
+    ({
+      sort: 'createdAt,desc', date: { from: undefined, to: undefined }, participants: null,
+      head: { from: undefined, to: undefined }
+    })
+
+  // api 호출용 파라미터
   const [params, setParams] = useState({
     page: 0, type: valueList[value],
     categories: selectedCate, sort: sort,
+    startDate: '', endDate: ''
   });
 
   const [events, setEvents] = useState([]);
@@ -47,7 +67,6 @@ const index = () => {
     setParams({ ...params, page: currentPage })
   }
 
-  // console.log(page, ' | ', events)
   const initialSet = useRef(false);
   const mounted = useRef(false);
   useEffect(() => {
@@ -56,9 +75,17 @@ const index = () => {
       ...params,
       page: 0, type: valueList[value],
       categories: selectedCate, sort: sort,
+      startDate: dayRange.from === null || dayRange.from === undefined
+        ? '' : `${dayRange.from.year}-${String(dayRange.from.month).padStart(2, "0")}-${String(dayRange.from.day).padStart(2, "0")}T00:00:00`,
+      endDate: dayRange.to === null || dayRange.to === undefined
+        ? '' : `${dayRange.to.year}-${String(dayRange.to.month).padStart(2, "0")}-${String(dayRange.to.day).padStart(2, "0")}T23:59:59`
     })
     setEvents([]);
-  }, [selectedCate, sort, value])
+  }, [selectedCate, sort, value, dayRange])
+
+  useEffect(() => {
+    setFilter({ sort: sort, date: dayRange, participants: participants, head: headCount })
+  }, [sort, dayRange, participants, headCount])
 
   function getParams(params: any) {
     let sparams = createSearchParams(params);
@@ -92,7 +119,8 @@ const index = () => {
   return (
     <div className='flex flex-col w-full pt-[44px]'>
       <RecCarousel />
-      <PostTab events={events} value={value} handleChange={handleChange} sort={sort} setSort={setSort}
+      <PostTab events={events} value={value} handleChange={handleChange} sort={sort} setSort={setSort} dayRange={dayRange} setDayRange={setDayRange}
+        participants={participants} setParticipants={setParticipants} headCount={headCount} setHeadCount={setHeadCount}
         page={page} setPageInfo={setPageInfo} selectedCate={selectedCate} setSelectedCate={setSelectedCate} />
     </div>
   )
@@ -156,6 +184,8 @@ function RecCarousel() {
 
 interface TabProps {
   events: never[]; value: number; handleChange: any; sort: string; setSort: Dispatch<SetStateAction<string>>;
+  dayRange: DayRange; setDayRange: any; participants: number; setParticipants: any;
+  headCount: { from: undefined | number, to: undefined | number }; setHeadCount: any;
   page: { current: number; total: number; }; setPageInfo: any;
   selectedCate: string[]; setSelectedCate: Dispatch<SetStateAction<string[]>>;
 }
@@ -185,7 +215,9 @@ function PostTab(props: TabProps) {
         <CategoryButtons selectedCate={props.selectedCate} setSelectedCate={props.setSelectedCate} />
       </div>
       <Backdrop open={open} className='z-paper'>
-        <ViewSelect sort={props.sort} setSort={props.setSort} handleClose={handleClose} />
+      {/* <Backdrop open={true} className='z-paper'> */}
+        <ViewSelect sort={props.sort} setSort={props.setSort} handleClose={handleClose} dayRange={props.dayRange} setDayRange={props.setDayRange}
+          participants={props.participants} setParticipants={props.setParticipants} headCount={props.headCount} setHeadCount={props.setHeadCount} />
       </Backdrop>
       <TabPanel value={props.value} index={0}>
         <TabBlock opt={0} selectedCate={props.selectedCate} setSelectedCate={props.setSelectedCate} events={props.events} page={props.page} setPageInfo={props.setPageInfo} />

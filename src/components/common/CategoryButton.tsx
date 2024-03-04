@@ -1,42 +1,21 @@
 'use client';
 
-// import styled from "@emotion/styled";
-import { ThemeProvider, styled } from '@mui/material/styles';
 import { Dispatch, SetStateAction } from "react";
-import { categories } from "./Data";
-import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { ToggleButton, ToggleButtonGroup, ThemeProvider } from "@mui/material";
 import { categoryButtonTheme } from './Themes';
+import { Category19 } from './Icon';
+
+export const categories = [
+  '문화/예술', '공연전시/행사', '식품/음료', '교육/체험', '스포츠/레저', '지역특색', '민속/전통', '주류', '종교', '인물/역사'
+]
 
 interface CategoryButtonProps {
   selectedCate: string[]; setSelectedCate: Dispatch<SetStateAction<string[]>>;
-  // params: any; setParams: any;
 }
 export function CategoryButtons(props: CategoryButtonProps) {
   const handleCate = (e: React.MouseEvent<HTMLElement>, newCate: string[]) => {
     props.setSelectedCate(newCate);
-    // props.setParams({ ...props.params, categories: props.selectedCate });
   }
-
-  // const SToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
-  //   '& .MuiToggleButtonGroup-grouped': { border: '0px' },
-  //   '& .MuiToggleButton-standard, &.Mui-disabled': {
-  //     fontSize: '14px !important', color: '#1E1E1E', fontWeight: '400',
-  //     border: '0.5px solid #ECECEC !important', borderRadius: '20px !important',
-  //     padding: '2px 8px', backgroundColor: '#ECECEC',
-  //     "&:hover, &:focus": {
-  //       border: '0.5px solid #4A6AFE !important', backgroundColor: '#ECECEC'
-  //     },
-  //     "&:active": {
-  //       border: '0.5px solid #4A6AFE !important', backgroundColor: '#4A6AFE',
-  //       color: '#FCFCFC', fontWeight: '600',
-  //     },
-  //     "&.Mui-selected, &.Mui-selected:hover": {
-  //       backgroundColor: '#4A6AFE', color: '#FCFCFC !important', fontWeight: '600',
-  //       border: '0.5px solid #4A6AFE !important'
-  //     },
-  //     "&:not(:last-child)": { marginRight: '10px' }
-  //   }
-  // }));
 
   return (
     <div className='overflow-hidden	h-[46px]'>
@@ -45,7 +24,9 @@ export function CategoryButtons(props: CategoryButtonProps) {
         <ThemeProvider theme={categoryButtonTheme}>
           <ToggleButtonGroup value={props.selectedCate} onChange={handleCate}>
             {categories.map((cate, idx) =>
-              <ToggleButton value={cate} className='cateInfo' key={`cate-${cate}`}>{cate}</ToggleButton>
+              cate === '주류'
+                ? <ToggleButton value={cate} className='cateInfo gap-[2px]' key={`cate-${cate}`}><Category19/>{cate}</ToggleButton>
+                : <ToggleButton value={cate} className='cateInfo' key={`cate-${cate}`}>{cate}</ToggleButton>
             )}
           </ToggleButtonGroup>
         </ThemeProvider>

@@ -72,7 +72,11 @@ const DetailEvent = (props: { data: any; }) => {
   let commentURL = `/comment/${props.data.postId}`
   return (
     <div className='flex flex-col w-full pt-[104px]'>
-      <PostSlide />
+      {
+        props.data.imageUrls.length > 0
+        ? <PostSlide />
+        : <img className='h-[280px]' src='/default_detail_thumb3x.png' />
+      }
       <PostTitle title={props.data.title} startDate={props.data.startDate} endDate={props.data.endDate}
         type={props.data.type} views={props.data.views} userName={props.data.userName} categories={props.data.categories} />
       <Divider />

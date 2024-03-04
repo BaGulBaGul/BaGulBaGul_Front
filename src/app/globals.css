@@ -265,6 +265,99 @@ em {
   border-radius: 100% !important;
 }
 
+.FilterCalendar {
+  width: 380px !important;
+  max-width: unset !important; min-height: unset !important;
+  padding: 0px !important; box-shadow: none !important;
+}
+
+.FilterCalendar .Calendar__header {
+  padding: 16px 24px !important;
+}
+
+.FilterCalendar .Calendar__monthArrow {
+  width: 24px; height: 24px;
+  background-image: url(../../public/chevron-left.svg);
+}
+.FilterCalendar .Calendar__monthArrowWrapper.-right {
+  transform: unset;
+}
+.FilterCalendar .Calendar__monthArrowWrapper.-left {
+  transform: rotate(180deg);
+}
+
+.FilterCalendar .Calendar__monthYear {
+  display: flex; flex-direction: row; gap: 10px;
+}
+.FilterCalendar .Calendar__monthText {
+  font-size: 18px !important; line-height: 140% !important;
+  padding: 0 !important; margin: 0 !important; order: 2;
+}
+.FilterCalendar .Calendar__yearText {
+  font-size: 18px !important; line-height: 140% !important;
+  padding: 0 !important; order: 1;
+}
+.FilterCalendar .Calendar__yearText::after {
+  content: "년";
+}
+
+.FilterCalendar .Calendar__weekDays {
+  font-size: 14px !important;
+  color: #000000 !important;
+  margin-top: 8px !important;
+  margin-bottom: 0px !important;
+  padding: 8px 24px !important;
+}
+
+.FilterCalendar .Calendar__monthSelectorAnimationWrapper,
+.FilterCalendar .Calendar__yearSelectorAnimationWrapper {
+  height: calc(100% - 55px) !important;
+}
+
+.FilterCalendar .Calendar__sectionWrapper{
+  padding: 4px 22px 8px 22px;
+  min-height: 312px;
+}
+
+.FilterCalendar .Calendar__section {
+  padding: 4px 22px 8px 22px;
+}
+.FilterCalendar .Calendar__section.-hiddenPrevious{
+  transform: translateX(-95%) ;
+}
+.FilterCalendar .Calendar__section.-hiddenNext {
+  transform: translateX(95%) ;
+}
+
+.FilterCalendar .Calendar__day {
+  padding: 0px !important; margin: 0px !important;
+  height: 42px; font-size: 14px !important;
+  width: 42px !important;
+  line-height: 160% !important;
+}
+
+.FilterCalendar .Calendar__weekRow {
+  padding: 4px 0px;
+  gap: 7px;
+}
+
+.FilterCalendar .Calendar__day.-selected, 
+.FilterCalendar .Calendar__day.-selectedStart, 
+.FilterCalendar .Calendar__day.-selectedEnd {
+  background: #FFF27E !important;
+  color: #000000 !important;
+}
+.FilterCalendar .Calendar__day.-selectedBetween {
+  background: rgba(255, 242, 126, 0.3) !important;
+  color: #000000 !important;
+}
+
+.FilterCalendar .Calendar__day.-ltr.-selectedStart,
+.FilterCalendar .Calendar__day.-ltr.-selectedEnd,
+.FilterCalendar .Calendar__day.-selectedBetween {
+  border-radius: 100% !important;
+}
+
 
 .MyCalendar .Calendar__header {
   padding: 16px 36px !important;

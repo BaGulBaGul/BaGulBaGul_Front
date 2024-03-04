@@ -60,7 +60,7 @@ function SearchBar() {
           <ViewButton sort={sort} handleOpen={handleOpen} />
         </div>
         <Backdrop open={open} onClick={handleClose} className='z-50'>
-          <ViewSelect sort={sort} setSort={setSort} handleClose={handleCloseCal} />
+          {/* <ViewSelect sort={sort} setSort={setSort} handleClose={handleCloseCal} /> */}
         </Backdrop>
         <Backdrop open={openCal} onClick={handleCloseCal} className='z-50'>
           <SearchCalendar dayRange={dayRange} setDayRange={setDayRange} />
