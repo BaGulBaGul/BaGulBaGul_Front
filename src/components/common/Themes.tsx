@@ -1,27 +1,22 @@
 import { Button, createTheme, ThemeProvider } from '@mui/material';
 import { styled } from '@mui/system';
 
-// export const categoryButtonTheme = createTheme({
-//   components: {
-//     MuiButtonBase: { defaultProps: { disableRipple: true, }, },
-//     MuiButton: {
-//       styleOverrides: {
-//         root: {
-//           fontSize: '14px !important', fontWeight: '400', lineHeight: '150%',
-//           color: '#1E1E1E!important', padding: '2px 8px', minWidth: 'unset',
-//           border: '0.5px solid #C1C1C1 !important', borderRadius: '20px!important',
-//           '&:hover, &:focus': {
-//             border: '0.5px solid #4A6AFE !important', backgroundColor: 'transparent'
-//           },
-//           '&:active': {
-//             backgroundColor: '#4A6AFE', color: '#FCFCFC !important', fontWeight: '600',
-//             border: '0.5px solid #4A6AFE !important'
-//           }
-//         }
-//       }
-//     }
-//   },
-// });
+export const filterChipTheme = createTheme({
+  components: {
+    MuiButtonBase: { defaultProps: { disableRipple: true, }, },
+    MuiChip: {
+      styleOverrides: {
+        root: {
+          padding: '2px 8px !important', border: '0.5px solid #C1C1C1 !important', borderRadius: '20px !important',
+          fontSize: '14px !important', fontWeight: '400', lineHeight: '160%',
+          color: '#6C6C6C !important', gap: '2px'
+        },
+        label: { padding: '0 !important' },
+        deleteIcon: { margin: '0 !important' }
+      }
+    }
+  }
+});
 
 export const categoryButtonTheme = createTheme({
   components: {
