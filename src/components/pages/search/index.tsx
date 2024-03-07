@@ -1,11 +1,13 @@
 "use client";
-import { Dispatch, SetStateAction, useState } from 'react';
-import { IconButton, TextField, ThemeProvider, Divider, Button, Backdrop, Paper } from '@mui/material';
+import { Dispatch, SetStateAction, useRef, useState } from 'react';
+import { useNavigate } from "react-router-dom";
+import { IconButton, TextField, ThemeProvider, Divider, Button, Backdrop, Paper, FormControl } from '@mui/material';
 import { ViewButton, ViewSelect } from '@/components/common/ViewFilter';
 import { searchInputTheme, searchFreqTheme, deleteButtonTheme } from '@/components/common/Themes';
 import { krLocale } from '@/components/common/CalendarLocale';
 import "react-modern-calendar-datepicker/lib/DatePicker.css";
 import { DayRange, Calendar, Day } from 'react-modern-calendar-datepicker'
+import { useRouter } from 'next/navigation';
 
 const index = () => {
   return (
@@ -20,33 +22,35 @@ const index = () => {
 export default index;
 
 function SearchBar() {
-  const [sort, setSort] = useState('createdAt,desc');
-
   const [open, setOpen] = useState(false);
   const handleOpen = () => { setOpen(true) }
   const handleClose = () => { setOpen(false) }
 
-  const [openCal, setOpenCal] = useState(false);
-  const handleOpenCal = () => { setOpenCal(true) }
-  const handleCloseCal = () => { setOpenCal(false) }
-  const [dayRange, setDayRange] = useState<DayRange>({ from: null, to: null });
-  const handleDayData = (date: Day) => {
-    if (date !== null && date !== undefined) {
-      return `${date.year.toString().slice(2)}.${date.month}.${date.day}`
+  const inputRef = useRef<HTMLInputElement>(null);
+  const router = useRouter()
+  const handleSearch = () => {
+    console.log(inputRef.current ? inputRef.current.value : '()()()()()(')
+    if (inputRef.current && inputRef.current.value !== '') {
+      router.push(`/searched?query=${inputRef.current.value}`)
+      // navigate({ pathname: '/search', search: inputRef.current.value });
     }
   }
-
+  
   return (
     <div className='flex flex-row mx-[16px] my-[18px] gap-[16px]'>
       <div>
         <IconButton disableRipple className='p-0'><img src='/search_back.svg' /></IconButton>
       </div>
-      <div className='flex flex-col gap-[8px]'>
-        <div className='flex flex-row bg-gray1-text px-[8px] py-[4px] gap-[8px]'>
-          <ThemeProvider theme={searchInputTheme}><TextField placeholder="피크페스티벌" /></ThemeProvider>
-          <IconButton disableRipple className='p-0'><img src='/search_magnifying.svg' /></IconButton>
+      <div className='flex flex-row w-full justify-between'>
+        <div className='flex flex-row w-[268px] bg-gray1-text px-[8px] py-[4px] gap-[8px]'>
+          {/* <FormControl required onSubmit={handleSearch}> */}
+            <ThemeProvider theme={searchInputTheme}><TextField placeholder="피크페스티벌" inputRef={inputRef} required /></ThemeProvider>
+            <IconButton onClick={handleSearch} disableRipple className='p-0' ><img src='/search_magnifying.svg' /></IconButton>
+          {/* </FormControl> */}
+
         </div>
-        <div className='flex flex-row gap-[10px]'>
+        <ViewButton handleOpen={handleOpen} cnt={3} fs={14} />
+        {/* <div className='flex flex-row gap-[10px]'>
           <div className='flex flex-row bg-gray1-text w-[250px] px-[8px] py-[4px] gap-[8px]' onClick={handleOpenCal}>
             <img src='/post_calendar.svg' className='h-[20px] w-[20px]' />
             {
@@ -57,14 +61,12 @@ function SearchBar() {
               : <span className='text-[14px] text-black-text'>{`${handleDayData(dayRange.from)} - ${handleDayData(dayRange.to)}`}</span>
             }
           </div>
-          <ViewButton sort={sort} handleOpen={handleOpen} />
-        </div>
-        <Backdrop open={open} onClick={handleClose} className='z-50'>
-          {/* <ViewSelect sort={sort} setSort={setSort} handleClose={handleCloseCal} /> */}
-        </Backdrop>
-        <Backdrop open={openCal} onClick={handleCloseCal} className='z-50'>
-          <SearchCalendar dayRange={dayRange} setDayRange={setDayRange} />
-        </Backdrop>
+          <ViewButton handleOpen={handleOpen} cnt={3} />
+        </div> */}
+        {/* <Backdrop open={open} className='z-paper'>
+          <ViewSelect sort={sort} setSort={setSort} handleClose={handleClose} dayRange={dayRange} setDayRange={setDayRange}
+            participants={participants} setParticipants={setParticipants} headCount={headCount} setHeadCount={setHeadCount} />
+        </Backdrop> */}
       </div>
     </div>
   )
@@ -133,12 +135,12 @@ function RecentSearches() {
   )
 }
 
-interface SearchCalendarProps { dayRange: DayRange; setDayRange: Dispatch<SetStateAction<DayRange>>; }
-export function SearchCalendar(props: SearchCalendarProps) {
-  return (
-    <Paper className="absolute top-[93px] w-[380px] rounded-[8px]" onClick={(e) => e.stopPropagation()}>
-      <Calendar value={props.dayRange} onChange={props.setDayRange} locale={krLocale}
-        calendarClassName="SearchCalendar" />
-    </Paper>
-  )
-}
+// interface SearchCalendarProps { dayRange: DayRange; setDayRange: Dispatch<SetStateAction<DayRange>>; }
+// export function SearchCalendar(props: SearchCalendarProps) {
+//   return (
+//     <Paper className="absolute top-[93px] w-[380px] rounded-[8px]" onClick={(e) => e.stopPropagation()}>
+//       <Calendar value={props.dayRange} onChange={props.setDayRange} locale={krLocale}
+//         calendarClassName="SearchCalendar" />
+//     </Paper>
+//   )
+// }

@@ -12,11 +12,12 @@ import "react-modern-calendar-datepicker/lib/DatePicker.css";
 import { DayRange, Calendar } from 'react-modern-calendar-datepicker'
 
 
-interface ViewButtonProps { handleOpen: any; cnt: number; }
+interface ViewButtonProps { handleOpen: any; cnt: number; fs: number; }
 export function ViewButton(props: ViewButtonProps) {
   return (
     <ThemeProvider theme={viewTheme}>
-      <Button onClick={props.handleOpen} className="justify-between">
+      <Button onClick={props.handleOpen}
+        className={props.fs === 14 ? `justify-between text-[14px] leading-[160%]` : `justify-between text-[18px] leading-[140%] pb-[3px]`}>
         <span>필터</span>
         {props.cnt > 0 ? <span>{props.cnt}</span> : <></>}
         <img src='/main_filter.svg' />
@@ -111,7 +112,7 @@ export function ViewSelect(props: ViewSelectProps) {
               <Collapse in={openParti} timeout="auto" className="filter-collapse">
                 <div className="flex flex-row justify-between mt-[8px]">
                   <span className="text-[14px] leading-[160%]">인원 수</span>
-                  <PartiNumberInput  value={props.participants ?? 0} min={1}
+                  <PartiNumberInput value={props.participants ?? 0} min={1}
                     onInputChange={(event) => {
                       props.setParticipants(Number.isNaN(Number(event.target.value)) ? undefined : Number(event.target.value))
                     }}
@@ -148,7 +149,7 @@ export function ViewSelect(props: ViewSelectProps) {
                     </div>
                     <div className="flex flex-row justify-between border border-gray2-text rounded-[8px] w-[180px] px-[16px] py-[5px]">
                       <span className="text-[14px] leading-[160%]">최대인원</span>
-                      <HeadNumberInput placeholder="10명"  value={props.headCount.to ?? 0} min={props.headCount.from}
+                      <HeadNumberInput placeholder="10명" value={props.headCount.to ?? 0} min={props.headCount.from}
                         onInputChange={(event) => {
                           props.setHeadCount({ from: props.headCount.from, to: Number.isNaN(Number(event.target.value)) ? undefined : Number(event.target.value) })
                         }}

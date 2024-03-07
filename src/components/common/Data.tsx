@@ -1,3 +1,5 @@
+export const valueList = ['FESTIVAL', 'LOCAL_EVENT', 'PARTY']
+
 export const postData = [
   {
     img_url: '/images/rec1.jpg',

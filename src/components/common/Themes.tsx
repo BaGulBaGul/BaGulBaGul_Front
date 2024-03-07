@@ -526,11 +526,11 @@ export const viewTheme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          cursor: 'pointer', padding: 0, paddingBottom: '3px', minWidth: 'unset',
-          fontSize: '18px !important', fontWeight: '400', lineHeight: '140%',
+          cursor: 'pointer', padding: 0, minWidth: 'unset',
+          /*fontSize: '18px !important',*/ fontWeight: '400', lineHeight: '140%',
           color: '#6C6C6C!important', borderRadius: '2px!important',
           '&:before, &:after': { border: 'none !important' },
-          '&:hover, &:focus, &:active': { backgroundColor: '#ECECEC', color: '#1E1E1E !important' },
+          // '&:hover, &:focus, &:active': { backgroundColor: '#ECECEC', color: '#1E1E1E !important' },
         },
       }
     },
@@ -606,7 +606,7 @@ export const searchInputTheme = createTheme({
           fontSize: '14px', lineHeight: '160%', height: '22px',
         },
         input: {
-          padding: '0 !important', width: '286px',
+          padding: '0 !important', width: '268px',
         },
         notchedOutline: {
           border: 0,

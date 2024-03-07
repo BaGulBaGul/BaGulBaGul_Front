@@ -13,10 +13,10 @@ import { FestivalBlock } from '@/components/common/FestivalBlock';
 import NoEvent from '@/components/common/NoEvent';
 import { DayRange } from 'react-modern-calendar-datepicker'
 import { RecCarousel } from '@/components/common/RecCarousel';
+import { valueList } from '@/components/common/Data';
 
 const index = () => {
   //type
-  const valueList = ['FESTIVAL', 'LOCAL_EVENT', 'PARTY']
   const [value, setValue] = useState(0);
   const handleChange = (e: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -100,9 +100,7 @@ const index = () => {
   function getParams(params: any) {
     let sparams = createSearchParams(params);
     let target: any[] = [];
-    sparams.forEach((val, key) => {
-      if (val === '') { target.push(key); }
-    })
+    sparams.forEach((val, key) => { if (val === '') { target.push(key); } })
     target.forEach(key => { sparams.delete(key); })
     return sparams.toString();
   }
@@ -145,7 +143,7 @@ interface TabProps {
   selectedCate: string[]; setSelectedCate: Dispatch<SetStateAction<string[]>>;
 }
 
-function PostTab(props: TabProps) {
+ export function PostTab(props: TabProps) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => { setOpen(true) }
   const handleClose = () => { setOpen(false) }
@@ -175,7 +173,7 @@ function PostTab(props: TabProps) {
               <Tab label="파티" />
             </Tabs>
           </ThemeProvider>
-          <ViewButton handleOpen={handleOpen} cnt={props.filterCnt} />
+          <ViewButton handleOpen={handleOpen} cnt={props.filterCnt} fs={18} />
         </div>
       </Box>
       <div className='sticky top-[102px] bg-[#FFF] relative z-10'>
