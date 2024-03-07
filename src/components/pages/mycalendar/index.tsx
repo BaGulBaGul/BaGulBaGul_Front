@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Tab, Tabs, Box, Button, ThemeProvider, Checkbox, Divider } from '@mui/material';
 import TabPanel from '@/components/common/TabPanel';
-import { CalendarBlock } from '@/components/common/FestivalBlock';
+import { CalendarBlock } from '@/components/common/EventBlock';
 import { likeEvents, postData, partyData } from '@/components/common/Data';
 import { likeButtonTheme1, likeButtonTheme2, tabTheme, deleteButtonTheme } from '@/components/common/Themes';
 import { krLocale } from '@/components/common/CalendarLocale';
@@ -69,7 +69,8 @@ function LikedTab() {
           <ThemeProvider theme={deleteButtonTheme}><Button>전체삭제</Button></ThemeProvider>
         </div>
       </Box>
-      <TabPanel value={value} index={0}>
+      {/* // * CalendarBlock 수정 필요 */}
+      {/* <TabPanel value={value} index={0}>
         {postData.map((post, idx) => (
           idx === 0
             ? <CalendarBlock data={post} key={`rec-${idx}`} />
@@ -98,7 +99,7 @@ function LikedTab() {
               <CalendarBlock data={post} key={`party-${idx}`} />
             </>
         ))}
-      </TabPanel>
+      </TabPanel> */}
     </Box>
   )
 

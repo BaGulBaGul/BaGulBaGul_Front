@@ -8,9 +8,9 @@ import { searchInputTheme, searchFreqTheme, deleteButtonTheme } from '@/componen
 import "react-modern-calendar-datepicker/lib/DatePicker.css";
 import { DayRange } from 'react-modern-calendar-datepicker'
 import { valueList } from '@/components/common/Data';
-import { useEffectFilter } from '@/service/Functions';
+import { RangeProps, useEffectCallAPI, useEffectFilter, useEffectFilterApplied, useEffectParam } from '@/service/Functions';
 import { call } from '@/service/ApiService';
-import { PostTab } from '../main';
+import { PostTabs } from '../main';
 
 const index = () => {
   const searchParams = useSearchParams()
@@ -24,27 +24,16 @@ const index = () => {
 
   // * PostTab 수정 후 지우기
   const [selectedCate, setSelectedCate] = useState<string[]>([]);
-  // 정렬기준, default는 최신순
+  // 정렬기준(default 최신순), 날짜, 참여인원, 규모
   const [sort, setSort] = useState('createdAt,desc');
   const [dayRange, setDayRange] = useState<DayRange>({ from: undefined, to: undefined });
-  // * temporary name - 참여인원 / 규모
+  // * temporary name
   const [participants, setParticipants] = useState(0);
-  const [headCount, setHeadCount] = useState<{ from: undefined | number, to: undefined | number }>({ from: undefined, to: undefined });
+  const [headCount, setHeadCount] = useState<RangeProps>({ from: undefined, to: undefined });
 
   // api 호출용 파라미터
-  const [params, setParams] = useState({
-    page: 0, type: valueList[value],
-    sort: sort, startDate: '', endDate: ''
-  });
-
+  const [params, setParams] = useState({ title: search, page: 0, type: valueList[value], sort: sort, startDate: '', endDate: '' });
   const [events, setEvents] = useState([]);
-  function setEventList(currentEvents: []) {
-    // setEvents(prevState => [...prevState, ...currentEvents])
-    const newEvents = events.concat(currentEvents)
-    const newEventsSet = new Set(newEvents)
-    const newEventsList = Array.from(newEventsSet);
-    setEvents(newEventsList);
-  }
 
   // const loading = useRef<boolean>(false);
   const [page, setPage] = useState({ current: 0, total: 0, });
@@ -55,75 +44,19 @@ const index = () => {
 
   const initialSet = useRef(false);
   const mounted = useRef(false);
-  useEffect(() => {
-    initialSet.current = false;
-    setParams({
-      ...params,
-      page: 0, type: valueList[value], sort: sort,
-      startDate: dayRange.from === null || dayRange.from === undefined
-        ? '' : `${dayRange.from.year}-${String(dayRange.from.month).padStart(2, "0")}-${String(dayRange.from.day).padStart(2, "0")}T00:00:00`,
-      endDate: dayRange.to === null || dayRange.to === undefined
-        ? '' : `${dayRange.to.year}-${String(dayRange.to.month).padStart(2, "0")}-${String(dayRange.to.day).padStart(2, "0")}T23:59:59`
-    })
-    setEvents([]);
-  }, [sort, value, dayRange])
-
-  // 적용된 필터 확인
+  // 적용된 필터들, 적용된 필터 개수, 현재 변경된 필터
   const [filters, setFilters] = useState(['sort'])
   const [filterCnt, setFilterCnt] = useState(0)
   const [changed, setChanged] = useState<{ key: string, value: string | number | { from: undefined | number, to: undefined | number } | undefined }>({ key: '', value: undefined })
 
-  useEffectFilter([sort, dayRange, participants, headCount], ['sort', 'dayRange', 'participants', 'headCount'], setChanged)
+  useEffectParam([sort, value, dayRange], initialSet, setParams, params, value, [], sort, dayRange, setEvents)
 
-  useEffect(() => {
-    if (!filters.includes(changed.key)) { // filters에 key가 존재하지 않고 값이 유효 -> filters에 key 추가
-      if ((changed.value !== undefined) && JSON.stringify(changed.value) !== JSON.stringify({ from: undefined, to: undefined })) {
-        setFilters(filters.concat(changed.key))
-      }
-    } else { // filters에 key가 존재하고 값이 유효하지 X -> filters에서 key 제외
-      if ((changed.value === undefined) || JSON.stringify(changed.value) === JSON.stringify({ from: undefined, to: undefined })) {
-        setFilters(filters.filter((f) => f !== changed.key))
-      }
-    }
-  }, [changed])
-  // 필터 개수 판단
-  useEffect(() => {
-    if (filters.length === 1 && sort === 'createdAt,desc') {
-      setFilterCnt(0)
-    } else if (filters.length > 0) {
-      setFilterCnt(filters.length)
-    }
-  }, [filters, sort])
+  // 적용된 필터 확인
+  useEffectFilter([sort, dayRange, participants, headCount], ['sort', 'dayRange', 'participants', 'headCount'], setChanged)
+  useEffectFilterApplied([filters, sort], filters, setFilters, changed, sort, setFilterCnt)
 
   // 조건에 따라 리스트 호출
-  function getParams(params: any) {
-    let sparams = createSearchParams(params);
-    let target: any[] = [];
-    sparams.forEach((val, key) => { if (val === '') { target.push(key); } })
-    target.forEach(key => { sparams.delete(key); })
-    return sparams.toString();
-  }
-
-  useEffect(() => {
-    let apiURL = Object.keys(params).length !== 0 ? `/api/event?size=5&title=${search}&${getParams(params)}` : '/api/event?size=5'
-    console.log('** ', apiURL)
-    call(apiURL, "GET", null)
-      .then((response) => {
-        console.log(response.data);
-        if (response.data.empty === false) {
-          // 페이지값 초기설정
-          if (!initialSet.current) {
-            setPage({ current: 0, total: response.data.totalPages })
-            initialSet.current = true;
-          }
-          setEventList(response.data.content)
-        }
-      })
-  }, [params])
-
-  // const [open, setOpen] = useState(false);
-  // const handleOpen = () => { setOpen(true) }
-  // const handleClose = () => { setOpen(false) }
+  useEffectCallAPI(params, initialSet, setPage, events, setEvents)
 
   return (
     <div className='flex flex-col w-full pb-[10px]'>
@@ -131,7 +64,7 @@ const index = () => {
         <SearchBar title={search ?? ''} />
         <Divider />
       </div>
-      <PostTab events={events} value={value} handleChange={handleChange} filterCnt={filterCnt} filters={filters}
+      <PostTabs events={events} value={value} handleChange={handleChange} filterCnt={filterCnt} filters={filters}
         setFilters={setFilters} sort={sort} setSort={setSort} dayRange={dayRange} setDayRange={setDayRange}
         participants={participants} setParticipants={setParticipants} headCount={headCount} setHeadCount={setHeadCount}
         page={page} setPageInfo={setPageInfo} selectedCate={[]} setSelectedCate={setSelectedCate} />

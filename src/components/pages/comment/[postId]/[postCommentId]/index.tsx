@@ -1,12 +1,11 @@
 "use client";
-import { Button, IconButton } from '@mui/material';
-import { ThemeProvider, TextField } from '@mui/material';
+import { useEffect, useRef, useState } from 'react';
+import { useParams } from 'next/navigation';
+import { ThemeProvider, TextField, Button, IconButton } from '@mui/material';
 import { CommentProps, CommentBlock } from '../index';
 import { commentData } from '@/components/common/Data';
 import { commentTheme, replyButtonTheme } from '@/components/common/Themes';
 import { SubHeaderCnt } from '@/components/layout/subHeader';
-import { useEffect, useRef, useState } from 'react';
-import { useParams } from 'next/navigation';
 import { call } from '@/service/ApiService';
 
 // * API 파라미터 업데이트 필요

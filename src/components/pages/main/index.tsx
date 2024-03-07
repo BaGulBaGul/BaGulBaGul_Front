@@ -1,19 +1,13 @@
 "use client";
-import { useState, useEffect, useRef, Dispatch, SetStateAction } from 'react';
-import { createSearchParams } from 'react-router-dom'
-import { Tab, Tabs, Box, Divider, ThemeProvider, Fab, Backdrop, Chip } from '@mui/material';
-import { CategoryButtons } from '@/components/common/CategoryButton';
-import { ViewButton, ViewSelect } from '@/components/common/ViewFilter';
-import { writeFabTheme, tabTheme, filterChipTheme } from '@/components/common/Themes'
-import TabPanel from '@/components/common/TabPanel';
-import { call } from '@/service/ApiService';
-import { handleDayData, sortLabel, useEffectFilter } from '@/service/Functions';
-import MoreButton from '@/components/common/MoreButton';
-import { FestivalBlock } from '@/components/common/FestivalBlock';
-import NoEvent from '@/components/common/NoEvent';
-import { DayRange } from 'react-modern-calendar-datepicker'
-import { RecCarousel } from '@/components/common/RecCarousel';
+import { useState, useRef, Dispatch, SetStateAction } from 'react';
+import { Box, Divider, ThemeProvider, Fab, Backdrop, } from '@mui/material';
+import { 
+  CategoryButtons, ViewButton, ViewSelect, TabPanel, MoreButton, FestivalBlock, NoEvent, RecCarousel, PostTab, ViewFilterApplied
+ } from '@/components/common';
+import { writeFabTheme } from '@/components/common/Themes'
 import { valueList } from '@/components/common/Data';
+import { useEffectFilter, useEffectFilterApplied, useEffectParam, useEffectCallAPI, RangeProps } from '@/service/Functions';
+import { DayRange } from 'react-modern-calendar-datepicker'
 
 const index = () => {
   //type
@@ -22,29 +16,17 @@ const index = () => {
     setValue(newValue);
   };
 
+  // 선택된 카테고리, 정렬기준(default 최신순), 날짜, 참여인원, 규모
   const [selectedCate, setSelectedCate] = useState<string[]>([]);
-  // 정렬기준, default는 최신순
   const [sort, setSort] = useState('createdAt,desc');
   const [dayRange, setDayRange] = useState<DayRange>({ from: undefined, to: undefined });
-  // * temporary name - 참여인원 / 규모
+  // * temporary name
   const [participants, setParticipants] = useState(0);
-  const [headCount, setHeadCount] = useState<{ from: undefined | number, to: undefined | number }>({ from: undefined, to: undefined });
+  const [headCount, setHeadCount] = useState<RangeProps>({ from: undefined, to: undefined });
 
-  // api 호출용 파라미터
-  const [params, setParams] = useState({
-    page: 0, type: valueList[value],
-    categories: selectedCate, sort: sort,
-    startDate: '', endDate: ''
-  });
-
+  // api 호출용 파라미터, 호출 결과
+  const [params, setParams] = useState({ page: 0, type: valueList[value], categories: selectedCate, sort: sort, startDate: '', endDate: '' });
   const [events, setEvents] = useState([]);
-  function setEventList(currentEvents: []) {
-    // setEvents(prevState => [...prevState, ...currentEvents])
-    const newEvents = events.concat(currentEvents)
-    const newEventsSet = new Set(newEvents)
-    const newEventsList = Array.from(newEventsSet);
-    setEvents(newEventsList);
-  }
 
   // const loading = useRef<boolean>(false);
   const [page, setPage] = useState({ current: 0, total: 0, });
@@ -54,78 +36,25 @@ const index = () => {
   }
 
   const initialSet = useRef(false);
-  const mounted = useRef(false);
-  useEffect(() => {
-    initialSet.current = false;
-    setParams({
-      ...params,
-      page: 0, type: valueList[value],
-      categories: selectedCate, sort: sort,
-      startDate: dayRange.from === null || dayRange.from === undefined
-        ? '' : `${dayRange.from.year}-${String(dayRange.from.month).padStart(2, "0")}-${String(dayRange.from.day).padStart(2, "0")}T00:00:00`,
-      endDate: dayRange.to === null || dayRange.to === undefined
-        ? '' : `${dayRange.to.year}-${String(dayRange.to.month).padStart(2, "0")}-${String(dayRange.to.day).padStart(2, "0")}T23:59:59`
-    })
-    setEvents([]);
-  }, [selectedCate, sort, value, dayRange])
-
-  // 적용된 필터 확인
+  // 적용된 필터들, 적용된 필터 개수, 현재 변경된 필터
   const [filters, setFilters] = useState(['sort'])
   const [filterCnt, setFilterCnt] = useState(0)
-  const [changed, setChanged] = useState<{ key: string, value: string | number | { from: undefined | number, to: undefined | number } | undefined }>({ key: '', value: undefined })
+  const [changed, setChanged] = useState<{ key: string, value: string | number | RangeProps | undefined }>({ key: '', value: undefined })
 
+  // const mounted = useRef(false);
+  useEffectParam([selectedCate, sort, value, dayRange], initialSet, setParams, params, value, selectedCate, sort, dayRange, setEvents)
+
+  // 적용된 필터 확인
   useEffectFilter([sort, dayRange, participants, headCount], ['sort', 'dayRange', 'participants', 'headCount'], setChanged)
-
-  useEffect(() => {
-    if (!filters.includes(changed.key)) { // filters에 key가 존재하지 않고 값이 유효 -> filters에 key 추가
-      if ((changed.value !== undefined) && JSON.stringify(changed.value) !== JSON.stringify({ from: undefined, to: undefined })) {
-        setFilters(filters.concat(changed.key))
-      }
-    } else { // filters에 key가 존재하고 값이 유효하지 X -> filters에서 key 제외
-      if ((changed.value === undefined) || JSON.stringify(changed.value) === JSON.stringify({ from: undefined, to: undefined })) {
-        setFilters(filters.filter((f) => f !== changed.key))
-      }
-    }
-  }, [changed])
-  // 필터 개수 판단
-  useEffect(() => {
-    if (filters.length === 1 && sort === 'createdAt,desc') {
-      setFilterCnt(0)
-    } else if (filters.length > 0) {
-      setFilterCnt(filters.length)
-    }
-  }, [filters, sort])
+  useEffectFilterApplied([filters, sort], filters, setFilters, changed, sort, setFilterCnt)
 
   // 조건에 따라 리스트 호출
-  function getParams(params: any) {
-    let sparams = createSearchParams(params);
-    let target: any[] = [];
-    sparams.forEach((val, key) => { if (val === '') { target.push(key); } })
-    target.forEach(key => { sparams.delete(key); })
-    return sparams.toString();
-  }
-
-  useEffect(() => {
-    let apiURL = Object.keys(params).length !== 0 ? `/api/event?size=5&${getParams(params)}` : '/api/event?size=5'
-    console.log('** ', apiURL)
-    call(apiURL, "GET", null)
-      .then((response) => {
-        console.log(response.data);
-        if (response.data.empty === false) {
-          // 페이지값 초기설정
-          if (!initialSet.current) {
-            setPage({ current: 0, total: response.data.totalPages })
-            initialSet.current = true;
-          }
-          setEventList(response.data.content)
-        }
-      })
-  }, [params])
+  useEffectCallAPI(params, initialSet, setPage, events, setEvents)
 
   return (
     <div className='flex flex-col w-full pt-[44px]'>
       <RecCarousel />
-      <PostTab events={events} value={value} handleChange={handleChange} filterCnt={filterCnt} filters={filters}
+      <PostTabs events={events} value={value} handleChange={handleChange} filterCnt={filterCnt} filters={filters}
         setFilters={setFilters} sort={sort} setSort={setSort} dayRange={dayRange} setDayRange={setDayRange}
         participants={participants} setParticipants={setParticipants} headCount={headCount} setHeadCount={setHeadCount}
         page={page} setPageInfo={setPageInfo} selectedCate={selectedCate} setSelectedCate={setSelectedCate} />
@@ -134,7 +63,7 @@ const index = () => {
 };
 export default index;
 
-interface TabProps {
+interface PostTabsProps {
   events: never[]; value: number; handleChange: any; filterCnt: number; filters: string[],
   setFilters: Dispatch<SetStateAction<string[]>>; sort: string; setSort: Dispatch<SetStateAction<string>>;
   dayRange: DayRange; setDayRange: any; participants: number; setParticipants: any;
@@ -142,68 +71,23 @@ interface TabProps {
   page: { current: number; total: number; }; setPageInfo: any;
   selectedCate: string[]; setSelectedCate: Dispatch<SetStateAction<string[]>>;
 }
-
- export function PostTab(props: TabProps) {
+export function PostTabs(props: PostTabsProps) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => { setOpen(true) }
   const handleClose = () => { setOpen(false) }
-  const handleDelete = (event: any) => {
-    props.setFilters((props.filters).filter((f) => f !== event.target.parentNode.id))
-    switch (event.target.parentNode.id) {
-      case 'dayRange': 
-        props.setDayRange({from: undefined, to: undefined})
-        break;
-      case 'participants':
-        props.setParticipants(undefined)
-        break;
-      case 'headCount':
-        props.setHeadCount({from: undefined, to: undefined})
-        break;
-    }
-  };
 
   return (
     <Box className='w-full px-0'>
       <Box className='sticky top-[44px] bg-[#FFF] relative z-10 px-[16px] pt-[20px] pb-[10px]'>
         <div className='flex justify-between items-center'>
-          <ThemeProvider theme={tabTheme}>
-            <Tabs value={props.value} onChange={props.handleChange} className='items-center min-h-0'>
-              <Tab label="페스티벌" />
-              <Tab label="지역행사" />
-              <Tab label="파티" />
-            </Tabs>
-          </ThemeProvider>
+          <PostTab value={props.value} handleChange={props.handleChange} />
           <ViewButton handleOpen={handleOpen} cnt={props.filterCnt} fs={18} />
         </div>
       </Box>
       <div className='sticky top-[102px] bg-[#FFF] relative z-10'>
-        {
-          props.filterCnt > 0
-            ? <div className='flex flex-row px-[16px] gap-[4px]'>
-              <ThemeProvider theme={filterChipTheme}>
-                <Chip label={sortLabel(props.sort)} variant="outlined" />
-                {
-                  (props.filters).includes('dayRange')
-                    ? <Chip id='dayRange' label={props.dayRange.to === undefined || props.dayRange.to === null
-                      ? handleDayData(props.dayRange.from, 1) : `${handleDayData(props.dayRange.from, 1)} - ${handleDayData(props.dayRange.to, 1)}`}
-                      onDelete={handleDelete} deleteIcon={<img src='/main_delete_filter.svg' />} variant="outlined" />
-                    : <></>
-                }
-                {
-                  (props.filters).includes('participants')
-                    ? <Chip id='participants' label={`참여 ${props.participants}명`} onDelete={handleDelete}
-                      deleteIcon={<img src='/main_delete_filter.svg' />} variant="outlined" />
-                    : <></>
-                }
-                {
-                  (props.filters).includes('headCount')
-                    ? <Chip id='headCount' label={`규모 ${props.headCount.from ?? ''} - ${props.headCount.to ?? ''}명`}
-                      onDelete={handleDelete} deleteIcon={<img src='/main_delete_filter.svg'/>} variant="outlined" />
-                    : <></>
-                }</ThemeProvider>
-            </div>
-            : <></>
-        }
+        <ViewFilterApplied filterCnt={props.filterCnt} filters={props.filters} setFilters={props.setFilters}
+          sort={props.sort} dayRange={props.dayRange} setDayRange={props.setDayRange} participants={props.participants}
+          setParticipants={props.setParticipants} headCount={props.headCount} setHeadCount={props.setHeadCount} />
         <CategoryButtons selectedCate={props.selectedCate} setSelectedCate={props.setSelectedCate} />
       </div>
       <Backdrop open={open} className='z-paper'>
@@ -229,7 +113,7 @@ interface TabBlockProps {
 }
 const TabBlock = (props: TabBlockProps) => {
   const handleMore = () => { props.setPageInfo(props.page.current + 1) }
-  if (props.opt === 0) {
+  if (props.opt === 0) {  // 페스티벌, 지역행사
     return (
       <>
         {
@@ -251,7 +135,7 @@ const TabBlock = (props: TabBlockProps) => {
         }
       </>
     )
-  } else if (props.opt === 1) {
+  } else if (props.opt === 1) { // 파티
     return (
       <>
         <div className='contents'>
@@ -263,14 +147,6 @@ const TabBlock = (props: TabBlockProps) => {
               </div>
             </Fab>
           </ThemeProvider>
-          {/* {props.events.map((post, idx) => (
-            idx === 0
-              ? <FestivalBlock data={post} key={`party-${idx}`} />
-              : <div key={`party-${idx}`}>
-                <Divider />
-                <FestivalBlock data={post} />
-              </div>
-          ))} */}
           {
             props.events.length > 0
               ? <>

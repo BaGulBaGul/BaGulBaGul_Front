@@ -2,11 +2,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from 'next/navigation';
 import Link from "next/link";
-import { ViewButton, ViewSelect } from "@/components/common/ViewFilter";
 import { ThemeProvider, Divider, FormControl, FormControlLabel, Checkbox, Chip, Backdrop } from '@mui/material';
 import { doneChipTheme, viewCheckTheme } from '@/components/common/Themes'
-import HashtagAccordion from '@/components/common/HashtagAccordion';
-import MoreButton from '@/components/common/MoreButton';
+import { HashtagAccordion, MoreButton, ViewButton, ViewSelect } from '@/components/common';
 import { call } from '@/service/ApiService';
 import { FormatDate } from "@/service/Functions";
 
@@ -71,7 +69,7 @@ const index = () => {
       </div>
       <ViewsCheck />
       <Backdrop open={open} onClick={handleClose} className='z-paper'>
-        <ViewSelect sort={sort} setSort={setSort} handleClose={handleClose} />
+        {/* <ViewSelect sort={sort} setSort={setSort} handleClose={handleClose} /> */}
       </Backdrop>
       <div className='flex flex-col w-full pt-[104px] pb-[44px]'>
         {
@@ -110,7 +108,7 @@ const index = () => {
         <a href={'/'} className="me-[46px]"><img src='/arrow_prev.svg' /></a>
         <div className='text-[18px]'>모집글</div>
         {/* <div className='w-[24px]'></div> */}
-        <ViewButton sort={sort} handleOpen={handleOpen} />
+        {/* <ViewButton handleOpen={handleOpen} /> */}
       </div>
     )
   }

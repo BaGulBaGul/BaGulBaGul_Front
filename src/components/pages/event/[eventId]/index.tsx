@@ -11,7 +11,7 @@ import SubHeader from '@/components/layout/subHeader';
 import { PostFooter } from '@/components/layout/footer';
 import { FormatDate, FormatDateTime, FormatDateRange } from '@/service/Functions';
 import { call } from '@/service/ApiService';
-import ShareDialog from '@/components/common/ShareDialog';
+import { ShareDialog } from '@/components/common';
 
 interface EventProps {
   title: string; startDate: string; endDate: string; type: string; views: number;

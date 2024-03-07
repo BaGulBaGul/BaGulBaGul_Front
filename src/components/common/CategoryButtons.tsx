@@ -12,7 +12,7 @@ export const categories = [
 interface CategoryButtonProps {
   selectedCate: string[]; setSelectedCate: Dispatch<SetStateAction<string[]>>;
 }
-export function CategoryButtons(props: CategoryButtonProps) {
+export default function CategoryButtons(props: CategoryButtonProps) {
   const handleCate = (e: React.MouseEvent<HTMLElement>, newCate: string[]) => {
     props.setSelectedCate(newCate);
   }

@@ -1,5 +1,5 @@
 'use client';
-import { CategoryButtons } from '@/components/common/CategoryButton'
+import { CategoryButtons } from '@/components/common'
 import { Button, TextField } from '@mui/material'
 import React, { useState } from 'react'
 
@@ -13,6 +13,9 @@ export default function index() {
         textarea.style.height = `${textarea.scrollHeight + 10}px`;
         setContent(textarea.value);
     };
+
+    // eden(240307) : 선택한 카테고리 저장값
+    const [selectedCate, setSelectedCate] = useState<string[]>([]);
 
     return (
         <div className='mt-[94px]'>
@@ -31,7 +34,7 @@ export default function index() {
                     <text className='pl-4 pr-2 text-[18px]'>파티</text>
                     <text className='text-xs text-[#6C6C6C]'>카테고리는 최대 2개까지 선택가능합니다.</text>
                 </div>
-                <CategoryButtons />
+                <CategoryButtons selectedCate={selectedCate} setSelectedCate={setSelectedCate} />
             </div>
             <div className='w-full border-b-[1px] border-[#D9D9D9] bg-[#FFFFFF] px-4 py-2.5'>
                 <div className='flex flex-row justify-between items-center py-2.5'>

@@ -8,7 +8,7 @@ import { ThemeProvider, Divider, IconButton, Chip } from '@mui/material';
 import { HashtagButton, accompanyChipTheme, slideChipTheme } from '@/components/common/Themes'
 import { FormatDate } from '@/service/Functions';
 import { call } from '@/service/ApiService';
-import ShareDialog from '@/components/common/ShareDialog';
+import { ShareDialog } from '@/components/common';
 
 const index = (props: { data: any }) => {
   const params = useParams()
