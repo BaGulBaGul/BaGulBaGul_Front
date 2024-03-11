@@ -8,8 +8,9 @@ import {
 import { SmileyFace, CalendarIcn, AddIcn, RemoveIcn } from "./Icon";
 import { handleDayData } from "@/service/Functions";
 import { krLocale } from '@/components/common/CalendarLocale';
-import "react-modern-calendar-datepicker/lib/DatePicker.css";
-import { DayRange, Calendar } from 'react-modern-calendar-datepicker'
+import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
+// import { DayRange, Calendar } from 'react-modern-calendar-datepicker'
+import { DayRange, Calendar } from '@hassanmojab/react-modern-calendar-datepicker'
 
 
 interface ViewButtonProps { handleOpen: any; cnt: number; fs: number; }
@@ -17,8 +18,9 @@ export function ViewButton(props: ViewButtonProps) {
   return (
     <ThemeProvider theme={viewTheme}>
       <Button onClick={props.handleOpen}
-        className={props.fs === 14 ? `justify-between text-[14px] leading-[160%]` : `justify-between text-[18px] leading-[140%] pb-[3px]`}>
-        <span>필터</span>
+        className={props.fs === 14 ? `justify-between text-[14px] leading-[160%] max-w-[67px] min-w-[49px] break-keep`
+          : `justify-between text-[18px] leading-[140%] pb-[3px] max-w-[67px] min-w-[55px] break-keep`}>
+        <div>필터</div>
         {props.cnt > 0 ? <span>{props.cnt}</span> : <></>}
         <img src='/main_filter.svg' />
       </Button>

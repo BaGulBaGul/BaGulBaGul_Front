@@ -18,6 +18,21 @@ export const filterChipTheme = createTheme({
   }
 });
 
+export const suggestChipTheme = createTheme({
+  components: {
+    MuiChip: {
+      styleOverrides: {
+        root: {
+          padding: '2px 8px !important', border: '1px solid #C1C1C1 !important', borderRadius: '14px !important',
+          fontSize: '14px !important', fontWeight: '400', lineHeight: '160%',
+          color: '#1E1E1E !important'
+        },
+        label: { padding: '0 !important' },
+      }
+    }
+  }
+});
+
 export const categoryButtonTheme = createTheme({
   components: {
     MuiButtonBase: { defaultProps: { disableRipple: true, }, },
@@ -606,7 +621,7 @@ export const searchInputTheme = createTheme({
           fontSize: '14px', lineHeight: '160%', height: '22px',
         },
         input: {
-          padding: '0 !important', width: '268px',
+          padding: '0 !important', //width: '268px',
         },
         notchedOutline: {
           border: 0,

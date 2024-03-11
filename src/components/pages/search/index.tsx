@@ -5,17 +5,19 @@ import { IconButton, TextField, ThemeProvider, Divider, Button, Backdrop, Paper,
 import { ViewButton, ViewSelect } from '@/components/common';
 import { searchInputTheme, searchFreqTheme, deleteButtonTheme } from '@/components/common/Themes';
 import { krLocale } from '@/components/common/CalendarLocale';
-import "react-modern-calendar-datepicker/lib/DatePicker.css";
-import { DayRange, Calendar, Day } from 'react-modern-calendar-datepicker'
+import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
+import { DayRange, Calendar, Day } from '@hassanmojab/react-modern-calendar-datepicker'
 import { useRouter } from 'next/navigation';
 
 const index = () => {
   return (
-    <div className='flex flex-col w-full pb-[10px]'>
-      <SearchBar />
-      <Divider />
-      <FrequentSearches />
-      <RecentSearches />
+    <div className='flex flex-col w-full h-screen bg-gray1-text'>
+      <div className='bg-white-text'>
+        <SearchBar />
+        <Divider />
+        <FrequentSearches />
+        <RecentSearches />
+      </div>
     </div>
   )
 }
@@ -31,11 +33,11 @@ function SearchBar() {
   const handleSearch = () => {
     console.log(inputRef.current ? inputRef.current.value : '()()()()()(')
     if (inputRef.current && inputRef.current.value !== '') {
-      router.push(`/searched?query=${inputRef.current.value}`)
+      router.push(`/searched?query=${encodeURIComponent(encodeURIComponent(inputRef.current.value))}`)
       // navigate({ pathname: '/search', search: inputRef.current.value });
     }
   }
-  
+
   return (
     <div className='flex flex-row mx-[16px] my-[18px] gap-[16px]'>
       <div>
@@ -44,8 +46,8 @@ function SearchBar() {
       <div className='flex flex-row w-full justify-between'>
         <div className='flex flex-row w-[268px] bg-gray1-text px-[8px] py-[4px] gap-[8px]'>
           {/* <FormControl required onSubmit={handleSearch}> */}
-            <ThemeProvider theme={searchInputTheme}><TextField placeholder="피크페스티벌" inputRef={inputRef} required /></ThemeProvider>
-            <IconButton onClick={handleSearch} disableRipple className='p-0' ><img src='/search_magnifying.svg' /></IconButton>
+          <ThemeProvider theme={searchInputTheme}><TextField placeholder="피크페스티벌" inputRef={inputRef} required /></ThemeProvider>
+          <IconButton onClick={handleSearch} disableRipple className='p-0' ><img src='/search_magnifying.svg' /></IconButton>
           {/* </FormControl> */}
 
         </div>

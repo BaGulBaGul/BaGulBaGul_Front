@@ -6,8 +6,8 @@ import {
  } from '@/components/common';
 import { writeFabTheme } from '@/components/common/Themes'
 import { valueList } from '@/components/common/Data';
-import { useEffectFilter, useEffectFilterApplied, useEffectParam, useEffectCallAPI, RangeProps } from '@/service/Functions';
-import { DayRange } from 'react-modern-calendar-datepicker'
+import { useEffectFilter, useEffectFilterApplied, useEffectParam, useEffectCallAPI, RangeProps, PostTabsProps } from '@/service/Functions';
+import { DayRange } from '@hassanmojab/react-modern-calendar-datepicker'
 
 const index = () => {
   //type
@@ -63,14 +63,6 @@ const index = () => {
 };
 export default index;
 
-interface PostTabsProps {
-  events: never[]; value: number; handleChange: any; filterCnt: number; filters: string[],
-  setFilters: Dispatch<SetStateAction<string[]>>; sort: string; setSort: Dispatch<SetStateAction<string>>;
-  dayRange: DayRange; setDayRange: any; participants: number; setParticipants: any;
-  headCount: { from: undefined | number, to: undefined | number }; setHeadCount: any;
-  page: { current: number; total: number; }; setPageInfo: any;
-  selectedCate: string[]; setSelectedCate: Dispatch<SetStateAction<string[]>>;
-}
 export function PostTabs(props: PostTabsProps) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => { setOpen(true) }
@@ -115,7 +107,7 @@ const TabBlock = (props: TabBlockProps) => {
   const handleMore = () => { props.setPageInfo(props.page.current + 1) }
   if (props.opt === 0) {  // 페스티벌, 지역행사
     return (
-      <>
+      <div className='bg-white-text'>
         {
           props.events.length > 0
             ? <>
@@ -133,12 +125,11 @@ const TabBlock = (props: TabBlockProps) => {
             </>
             : <NoEvent text1="찾는 행사가 없어요." text2="지금 인기 있는 페스티벌을 만나보세요." buttonText={"페스티벌 인기순 보러가기"} />
         }
-      </>
+      </div>
     )
   } else if (props.opt === 1) { // 파티
     return (
-      <>
-        <div className='contents'>
+        <div className='bg-white-text'>
           <ThemeProvider theme={writeFabTheme}>
             <Fab variant="extended" size="small" color="primary" className='fixed bottom-[55px] right-[16px]'>
               <div className='flex flex-row items-center'>
@@ -165,7 +156,6 @@ const TabBlock = (props: TabBlockProps) => {
               : <NoEvent text1="찾는 행사가 없어요." text2="지금 인기 있는 페스티벌을 만나보세요." buttonText={"페스티벌 인기순 보러가기"} />
           }
         </div>
-      </>
     )
   }
 }

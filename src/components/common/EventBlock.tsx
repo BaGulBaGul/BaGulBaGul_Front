@@ -1,12 +1,15 @@
-import { Button, ThemeProvider, IconButton } from "@mui/material";
-import { categoryButtonTheme } from "./Themes";
+import { Button, ThemeProvider, IconButton, Chip } from "@mui/material";
+import { categoryButtonTheme, suggestChipTheme } from "./Themes";
 import { FormatDateRange } from "@/service/Functions";
 import HashtagAccordion from "./HashtagAccordion";
 import Link from "next/link";
+import { postData } from "./Data";
+import { useEffect, useState } from "react";
+import { call } from "@/service/ApiService";
 
 
 // - tab item : 페스티벌
-interface PostProps {
+export interface PostProps {
   headImageUrl: string; title: string; userImage: string; userName: string; abstractLocation?: string;
   startDate: any; endDate: any; categories: string[]; content?: string; tags?: string[]; id?: number;
 }
@@ -42,7 +45,7 @@ export function FestivalBlock(props: { data: PostProps }) {
                   <p className='text-sm text-gray3-text self-center'>{props.data.userName}</p> */}
               </div>
             </div>
-            <img className='rounded-lg w-[92px] h-[116px] object-cover' src={props.data.headImageUrl === null ? '/default_list_thumb3x.png' : props.data.headImageUrl} />
+            <img className='rounded-lg w-[92px] h-[116px] object-cover' src={props.data.headImageUrl ?? '/default_list_thumb3x.png'} />
           </div>
           {props.data.tags ? <HashtagAccordion tag={props.data.tags} /> : <></>}
         </div>
@@ -74,6 +77,66 @@ export function CalendarBlock(props: { data: PostProps }) {
           </div>
         </div>
       </div>
+    </div>
+  )
+}
+
+interface SuggestProps {
+  headImageUrl: string; title: string; startDate: any; endDate: any; id?: number;
+}
+
+export function SuggestBlock(props: { type: number }) {
+  const [suggestions, setSuggestions] = useState<any[]>([])
+  useEffect(() => {
+    let apiURL = `/api/event?size=10`
+    console.log('** ', apiURL)
+    call(apiURL, "GET", null)
+      .then((response) => {
+        console.log(response.data);
+        if (response.data.empty === false) {
+          setSuggestions(response.data.content)
+        }
+      })
+  }, [])
+
+  const SuggestText = () => {
+    return (
+      <div className="flex flex-col gap-[8px]">
+        <span className="text-[14px] leading-[160%]">혹시 이건 어떠세요?</span>
+        <div className="flex flex-row gap-[6px] flex-wrap w-[382px]">
+          {
+            suggestions.map((s, idx) =>
+            <ThemeProvider theme={suggestChipTheme}>
+              <a href={`/event/${s.id}`}><Chip label={s.title} variant="outlined" /></a>
+            </ThemeProvider>
+          )
+          }
+        </div>
+      </div>
+    )
+  }
+  const SuggestImage = () => {
+    return (
+      <div className="overflow-hidden	h-[204px]">
+        <div className="flex flex-row gap-[16px] overflow-x-auto overflow-y-hide whitespace-nowrap">
+          {suggestions.map((s, idx) =>
+            <div className="flex flex-col w-[120px] gap-[12px]">
+              <img className='h-[148px] rounded-[5.65px] object-cover' src={s.headImageUrl ?? '/default_list_thumb3x.png'} />
+              <div className="flex flex-col text-[14px] leading-[160%]">
+                <span className="font-semibold truncate">{s.title}</span>
+                <span>{FormatDateRange(s.startDate, s.endDate)}</span>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex flex-col px-[16px] py-[20px] gap-[16px] bg-white-text">
+      <SuggestText />
+      {props.type > 0 ? <SuggestImage /> : <></>}
     </div>
   )
 }

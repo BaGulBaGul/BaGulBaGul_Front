@@ -4,13 +4,13 @@ import { FormatDateRange } from "@/service/Functions";
 
 // - main page carousel
 interface PostProps {
-  img_url: string; title: string; user_profile: string; userName: string;
+  headImageUrl: string; title: string; userImage: string; userName: string;
   startDate: any; endDate: any; categories: string[]; content?: string; tags?: string[];
 }
 function RecPost(props: { data: PostProps }) {
   return (
     <div className="flex flex-col w-[188px] lg:w-[480px] px-[9px]">
-      <img className='rounded-lg h-[210px] w-[170px] lg:w-[480px] object-cover' src={props.data.img_url} />
+      <img className='rounded-lg h-[210px] w-[170px] lg:w-[480px] object-cover' src={props.data.userImage} />
       <div className='flex flex-col pt-[12px]'>
         <p className='truncate text-base text-center'>{props.data.title}</p>
         <p className='text-sm text-center'>{FormatDateRange(props.data.startDate, props.data.endDate)}</p>

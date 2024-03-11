@@ -7,9 +7,9 @@ import { likeEvents, postData, partyData } from '@/components/common/Data';
 import { likeButtonTheme1, likeButtonTheme2, tabTheme, deleteButtonTheme } from '@/components/common/Themes';
 import { krLocale } from '@/components/common/CalendarLocale';
 
-import "react-modern-calendar-datepicker/lib/DatePicker.css";
+import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
 // import { Calendar } from "react-modern-calendar-datepicker";
-import { Calendar } from 'react-modern-calendar-datepicker'
+import { Calendar } from '@hassanmojab/react-modern-calendar-datepicker'
 
 const index = () => {
   const [focusDay, setFocusDay] = useState('');

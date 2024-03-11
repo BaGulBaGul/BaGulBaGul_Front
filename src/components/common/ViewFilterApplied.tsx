@@ -2,7 +2,7 @@ import { Chip, ThemeProvider } from "@mui/material";
 import { filterChipTheme } from "./Themes";
 import { handleDayData, sortLabel } from "@/service/Functions";
 import { Dispatch, SetStateAction } from "react";
-import { DayRange } from "react-modern-calendar-datepicker";
+import { DayRange } from "@hassanmojab/react-modern-calendar-datepicker";
 
 interface FilterAppliedProps {
   filterCnt: number; filters: string[], setFilters: Dispatch<SetStateAction<string[]>>; sort: string;

@@ -2,9 +2,9 @@ export const valueList = ['FESTIVAL', 'LOCAL_EVENT', 'PARTY']
 
 export const postData = [
   {
-    img_url: '/images/rec1.jpg',
+    headImageUrl: '/images/rec1.jpg',
     title: 'BEAUTIFUL MINT LIFE 2023',
-    user_profile: '/images/profile_pic.png',
+    userImage: '/images/profile_pic.png',
     userName: '민트페이퍼',
     startDate: '2023-05-13T13:18:08.827Z',
     endDate: '2023-05-14T13:18:08.827Z',
@@ -14,9 +14,9 @@ export const postData = [
     address: '서울특별시 마포구'
   },
   {
-    img_url: '/images/rec2.jpg',
+    headImageUrl: '/images/rec2.jpg',
     title: 'PEAK FESTIVAL 2023',
-    user_profile: '/images/profile_pic.png',
+    userImage: '/images/profile_pic.png',
     userName: '(주)SACOM',
     startDate: '2023-05-27T13:18:08.827Z',
     endDate: '2023-05-28T13:18:08.827Z',
@@ -26,9 +26,9 @@ export const postData = [
     address: '서울특별시 마포구'
   },
   {
-    img_url: '/images/rec3.jpg',
+    headImageUrl: '/images/rec3.jpg',
     title: 'SEOUL JAZZ FESTIVAL 2023',
-    user_profile: '/images/profile_pic.png',
+    userImage: '/images/profile_pic.png',
     userName: '(주)프라이빗커브',
     startDate: '2023-05-26T13:18:08.827Z',
     endDate: '2023-05-28T13:18:08.827Z',
@@ -38,9 +38,9 @@ export const postData = [
     address: '서울특별시 송파구'
   },
   {
-    img_url: '/images/rec4.jpg',
+    headImageUrl: '/images/rec4.jpg',
     title: '2023 WORLD DJ FESTIVAL',
-    user_profile: '/images/profile_pic.png',
+    userImage: '/images/profile_pic.png',
     userName: '(주)프라이빗커브',
     startDate: '2023-05-13T13:18:08.827Z',
     endDate: '2023-05-14T13:18:08.827Z',
@@ -50,9 +50,9 @@ export const postData = [
     address: '서울특별시 송파구'
   },
   {
-    img_url: '/images/rec5.jpg',
+    headImageUrl: '/images/rec5.jpg',
     title: 'PENTAPORT ROCK FESTIVAL 2023',
-    user_profile: '/images/profile_pic.png',
+    userImage: '/images/profile_pic.png',
     userName: '(주)프라이빗커브',
     startDate: '2023-05-13T13:18:08.827Z',
     endDate: '2023-05-14T13:18:08.827Z',

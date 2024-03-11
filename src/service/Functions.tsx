@@ -1,8 +1,9 @@
 import { valueList } from "@/components/common/Data";
-import { MutableRefObject, useEffect, useRef, useState } from "react";
+import { Dispatch, MutableRefObject, SetStateAction, useEffect, useRef, useState } from "react";
 import { createSearchParams } from 'react-router-dom'
 import { DayValue } from "react-modern-calendar-datepicker";
 import { call } from "./ApiService";
+import { DayRange } from "@hassanmojab/react-modern-calendar-datepicker";
 
 export const FormatDate = (dateStr: any, type: number) => {
   const dateD = new Date(dateStr);
@@ -83,6 +84,16 @@ export const sortLabel = (sort: string) => {
     case 'likeCount,desc': return '좋아요수'
     case 'commentCount,desc': return '댓글수'
   }
+}
+
+export interface PostTabsProps {
+  events: never[]; value: number; handleChange: any; filterCnt: number; filters: string[],
+  setFilters: Dispatch<SetStateAction<string[]>>; sort: string; setSort: Dispatch<SetStateAction<string>>;
+  dayRange: DayRange; setDayRange: any; participants: number; setParticipants: any;
+  headCount: { from: undefined | number, to: undefined | number }; setHeadCount: any;
+  page: { current: number; total: number; }; setPageInfo: any;
+  selectedCate: string[]; setSelectedCate: Dispatch<SetStateAction<string[]>>;
+  open?: boolean; setOpen?: any;
 }
 
 export interface RangeProps { from: undefined | number, to: undefined | number }

@@ -122,7 +122,7 @@ function PostSlide() {
       </ThemeProvider>
       <Slider {...settings} className='h-[280px] bg-gray1-text slider-detail'>
         {postData.map((post, idx) => (
-          <img key={`img-{idx}`} src={post.img_url} height="280" className='h-[280px] object-cover' />
+          <img key={`img-{idx}`} src={post.headImageUrl} height="280" className='h-[280px] object-cover' />
         ))}
       </Slider>
     </div>
