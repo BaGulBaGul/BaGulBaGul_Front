@@ -1,12 +1,14 @@
 "use client";
-import { useEffect, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { ThemeProvider, TextField, Button, IconButton } from '@mui/material';
 import { CommentProps, CommentBlock } from '../index';
 import { commentData } from '@/components/common/Data';
-import { commentTheme, replyButtonTheme } from '@/components/common/Themes';
+import { commentTheme } from '@/components/common/Themes';
 import { SubHeaderCnt } from '@/components/layout/subHeader';
 import { call } from '@/service/ApiService';
+import { FormatDateTime } from '@/service/Functions';
+
 
 // * API 파라미터 업데이트 필요
 export interface CommentProps1 {
@@ -60,6 +62,13 @@ const index = () => {
       })
   }, [page])
 
+  const [mentioning, setMentioning] = useState(false)
+  const [mentionTarget, setMentionTarget] = useState<{ id: Number, name: string } | undefined>(undefined)
+  const handleMention = (data: CommentProps) => {
+    setMentioning(true)
+    setMentionTarget({ id: data.userId, name: data.userName ?? '' })
+  }
+
   if (comment !== undefined) {
     return (
       <>
@@ -71,14 +80,15 @@ const index = () => {
           <div className='flex flex-col w-full min-h-[100vh] pb-[76px] bg-gray1-text'>
             {
               children.map((comment: CommentProps, idx: number) => (
-                <div className={idx % 2 == 0 ? 'bg-white-text ps-[48px] pe-[16px] py-[12px]' : 'bg-gray1-text ps-[48px] pe-[16px] py-[12px]'}>
-                  <CommentBlock data={comment} key={`cmt-${idx}`} currentURL='' />
+                <div className={idx % 2 == 0 ? 'bg-white-text ps-[48px] pe-[16px] py-[12px]' : 'bg-gray1-text ps-[48px] pe-[16px] py-[12px]'}
+                  onClick={(e) => { handleMention(comment) }}>
+                  <ReplyBlock data={comment} key={`cmt-${idx}`} />
                 </div>
               ))
             }
           </div>
         </div>
-        <CommentFooter />
+        <ReplyFooter mentioning={mentioning} setMentioning={setMentioning} target={mentionTarget} />
       </>
     )
   }
@@ -87,6 +97,7 @@ const index = () => {
 export default index;
 
 function ReplyBlock(props: { data: CommentProps }) {
+  let createdD = FormatDateTime(props.data.createdAt, 1)
   return (
     <div>
       <div className='flex flex-row justify-between pb-[10px]' id='comment-head'>
@@ -94,18 +105,17 @@ function ReplyBlock(props: { data: CommentProps }) {
           <a className="flex place-items-center" href="/">
             <img src="/main_profile.svg" width={24} height={24} />
           </a>
-          <div className='text-sm ps-[8px]'>{props.data.username}</div>
+          <div className='text-sm ps-[8px]'>{props.data.userName}</div>
         </div>
         <IconButton disableRipple className='p-0'><img src='/comment_etc.svg' width={24} height={24} /></IconButton>
       </div>
       <div className='text-sm text-gray3-text pb-[6px]' id='comment-body'>
         {props.data.content}
       </div>
-      <div className='text-xs text-gray3-text' id='comment-datetime'>{props.data.createdAt}</div>
       <div className='flex flex-row justify-between items-center pt-[8px]' id='comment-foot'>
-        <ThemeProvider theme={replyButtonTheme}>
-          <Button className='text-xs font-normal'>답글</Button>
-        </ThemeProvider>
+        <div className='flex flex-row text-xs text-gray3-text' id='comment-datetime'>
+          <p className='pe-[6px]'>{createdD.date}</p><p>{createdD.time}</p>
+        </div>
         <div className='flex flex-row items-center' id='comment-likes'>
           {
             props.data.myLike
@@ -121,11 +131,38 @@ function ReplyBlock(props: { data: CommentProps }) {
   )
 }
 
-export function CommentFooter() {
+export function ReplyFooter(props: { mentioning: boolean; setMentioning: Dispatch<SetStateAction<boolean>>; target: any; }) {
+  const [value, setValue] = useState('')
+  const mentionRef = useRef<HTMLDivElement>(null);
+
+  const handleInput = () => {
+    if (props.mentioning && mentionRef.current) {
+      console.log(mentionRef.current.children.length, ' | ', mentionRef.current.children)
+      if (mentionRef.current.children.length < 0 ||
+        (mentionRef.current.children.length === 1 && mentionRef.current.children[0].tagName === 'BR')) {
+        props.setMentioning(false);
+      }
+    }
+  }
+
+  function MentionInput() {
+    return (
+      <div className='editor-body wrapper'>
+        {props.mentioning
+          ? <div className='mention-reply-section' ref={mentionRef} contentEditable onInput={handleInput}>
+            <span contentEditable={false}
+              className='text-primary-blue'>{`@${props.target.name} `}</span>
+          </div>
+          : <TextField placeholder='댓글을 입력해주세요.' fullWidth multiline className='bg-secondary-yellow' />
+        }
+      </div>
+    )
+  }
+
   return (
     <ThemeProvider theme={commentTheme}>
       <div className="flex flex-row comment-input">
-        <TextField placeholder='댓글을 입력해주세요.' fullWidth multiline />
+        <MentionInput />
         <Button className='text-sm w-[70px] h-[48px]'>등록</Button>
       </div>
     </ThemeProvider>

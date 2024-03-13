@@ -49,7 +49,7 @@ const index = () => {
   const [filterCnt, setFilterCnt] = useState(0)
   const [changed, setChanged] = useState<{ key: string, value: string | number | RangeProps | undefined }>({ key: '', value: undefined })
 
-  useEffectParam([sort, value, dayRange], initialSet, setParams, params, value, [], sort, dayRange, setEvents)
+  useEffectParam([sort, value, dayRange], initialSet, setParams, params, value, [], sort, dayRange, participants, headCount, setEvents)
 
   // 적용된 필터 확인
   useEffectFilter([sort, dayRange, participants, headCount], ['sort', 'dayRange', 'participants', 'headCount'], setChanged)
@@ -60,13 +60,15 @@ const index = () => {
 
   return (
     <div className='flex flex-col w-full pb-[10px] h-screen bg-gray1-text'>
-      <div className='sticky top-0 bg-white-text'>
+      <div className='fixed top-0 bg-white-text z-paper'>
         <SearchBar title={search ?? ''} setOpen={setOpen} />
       </div>
-      <ResultTabs events={events} value={value} handleChange={handleChange} filterCnt={filterCnt} filters={filters}
-        setFilters={setFilters} sort={sort} setSort={setSort} dayRange={dayRange} setDayRange={setDayRange}
-        participants={participants} setParticipants={setParticipants} headCount={headCount} setHeadCount={setHeadCount}
-        page={page} setPageInfo={setPageInfo} selectedCate={[]} setSelectedCate={setSelectedCate} open={open} setOpen={setOpen} />
+      <div className='pt-[66px]'>
+        <ResultTabs events={events} value={value} handleChange={handleChange} filterCnt={filterCnt} filters={filters}
+          setFilters={setFilters} sort={sort} setSort={setSort} dayRange={dayRange} setDayRange={setDayRange}
+          participants={participants} setParticipants={setParticipants} headCount={headCount} setHeadCount={setHeadCount}
+          page={page} setPageInfo={setPageInfo} selectedCate={[]} setSelectedCate={setSelectedCate} open={open} setOpen={setOpen} />
+      </div>
     </div>
   )
 }
@@ -138,13 +140,13 @@ const TabBlock = (props: TabBlockProps) => {
       {
         props.events.length > 5
           ? <div className='bg-white-text'>
-            {postData.map((post, idx) => (
-              // props.events.map((post, idx) => (
-              <div key={`searched-${idx}`}>
-                {idx === 0 ? <></> : <Divider />}
-                <ResultBlock data={post} />
-              </div>
-            ))}
+            {//postData.map((post, idx) => (
+              props.events.map((post, idx) => (
+                <div key={`searched-${idx}`}>
+                  {idx === 0 ? <></> : <Divider />}
+                  <ResultBlock data={post} />
+                </div>
+              ))}
             {
               props.page.total > 1 && props.page.current + 1 < props.page.total
                 ? <MoreButton onClick={handleMore} />
@@ -154,8 +156,8 @@ const TabBlock = (props: TabBlockProps) => {
           : props.events.length > 0
             ? <div className='flex flex-col gap-[1px] bg-white-text'>
               <div>
-                {postData.map((post, idx) => (
-                  // props.events.map((post, idx) => (
+                {/* {postData.map((post, idx) => ( */}
+                {props.events.map((post, idx) => (
                   <div key={`searched-${idx}`}>
                     {idx === 0 ? <></> : <Divider />}
                     <ResultBlock data={post} />

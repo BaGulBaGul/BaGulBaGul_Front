@@ -482,3 +482,21 @@ em {
   transform: translateX(-50%);
   transition: 0.2s;
 }
+
+
+/* testing input */
+div.editor-body {
+  width:100%; height:100%; min-height:5em;
+  overflow-y:auto; overflow-x:none;
+  border-top:solid 1px #eee; border-bottom:solid 1px #eee;
+  position:relative; box-sizing:border-box;
+}
+
+.mention-reply-section {
+  padding: 15px 24px;
+  font-size: 14px;
+
+}
+.mention-reply-section:focus {
+  outline: none;
+}

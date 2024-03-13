@@ -4,7 +4,7 @@ function Header() {
   return (
     <header className="fixed top-0 left-0 right-0
       flex-row flex w-full justify-between px-[24px] pt-[10px] lg:pt-[58px] pb-[10px] bg-white-text
-      lg:px-[360px] lg:">
+      lg:px-[360px]">
       <p className="flex w-[120.77px] relative">
         <a href="/"><img src="/logo_s.svg" width='120.77'/></a>
       </p>

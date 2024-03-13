@@ -13,7 +13,7 @@ import { commentData } from '@/components/common/Data';
 
 export interface CommentProps {
   commentChildCount: number; commentId: number; content: string; createdAt: string;
-  likeCount: number; myLike: Boolean; userId: number; username: string; user_profile?: string;
+  likeCount: number; myLike: Boolean; userId: number; username?: string; userName?: string; user_profile?: string;
 }
 
 const index = () => {
@@ -61,7 +61,7 @@ const index = () => {
         {
           comments.map((comment: CommentProps, idx: number) => (
             <div className={idx % 2 == 0 ? 'bg-white-text px-[16px] py-[12px]' : 'bg-gray1-text px-[16px] py-[12px]'}>
-              <CommentBlock data={comment} key={`cmt-${idx}`} currentURL={`comment/${params.postId}`} />
+              <CommentBlock data={comment} key={`cmt-${idx}`} currentURL={`${params.postId}`} />
             </div>
           ))
         }
@@ -91,12 +91,7 @@ export function CommentBlock(props: { data: CommentProps; currentURL: string; })
         <p className='pe-[6px]'>{createdD.date}</p><p>{createdD.time}</p>
       </div>
       <div className='flex flex-row justify-between items-center pt-[8px]' id='comment-foot'>
-        {/* <Link href={`${props.currentURL}/${props.data.commentId}`}> */}
-        <Link href={{
-          pathname: `${props.currentURL}/${props.data.commentId}`,
-          query: { comment: JSON.stringify(props.data) }
-        }}
-          as={`${props.currentURL}/${props.data.commentId}`}>
+        <a href={`${props.currentURL}/${props.data.commentId}`}>
           <ThemeProvider theme={replyButtonTheme}>
             {
               props.data.commentChildCount > 0
@@ -106,7 +101,7 @@ export function CommentBlock(props: { data: CommentProps; currentURL: string; })
                 : <Button className={'flex flex-row text-[12px]'}>답글</Button>
             }
           </ThemeProvider>
-        </Link>
+        </a>
         <div className='flex flex-row items-center' id='comment-likes'>
           {
             props.data.myLike

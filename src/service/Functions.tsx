@@ -108,7 +108,7 @@ export function setEventList(currentEvents: [], events: any, setEvents: any) {
 
 // update parameter
 export const useEffectParam = (dependencies: any[], initialSet: MutableRefObject<boolean>, setParams: any, params: any,
-  value: number, selectedCate: string[], sort: string, dayRange: any, setEvents: any) => {
+  value: number, selectedCate: string[], sort: string, dayRange: any, participants: number, headCount: any, setEvents: any) => {
   useEffect(() => {
     initialSet.current = false;
     setParams({
@@ -118,7 +118,11 @@ export const useEffectParam = (dependencies: any[], initialSet: MutableRefObject
       startDate: dayRange.from === null || dayRange.from === undefined
         ? '' : `${dayRange.from.year}-${String(dayRange.from.month).padStart(2, "0")}-${String(dayRange.from.day).padStart(2, "0")}T00:00:00`,
       endDate: dayRange.to === null || dayRange.to === undefined
-        ? '' : `${dayRange.to.year}-${String(dayRange.to.month).padStart(2, "0")}-${String(dayRange.to.day).padStart(2, "0")}T23:59:59`
+        ? '' : `${dayRange.to.year}-${String(dayRange.to.month).padStart(2, "0")}-${String(dayRange.to.day).padStart(2, "0")}T23:59:59`,
+      leftHeadCount: participants ?? '' , 
+      totalHeadCountMax: headCount.from === null || headCount.from === undefined ? '' : headCount.from,
+      totalHeadCountMin: headCount.to === null || headCount.to === undefined ? '' : headCount.to,
+
     })
     setEvents([]);
   }, dependencies)
@@ -187,7 +191,7 @@ function getParams(params: any) {
 
 export const useEffectCallAPI = (params: any, initialSet: MutableRefObject<boolean>, setPage: any, events: any, setEvents: any) => {
   useEffect(() => {
-    let apiURL = Object.keys(params).length !== 0 ? `/api/event?size=5&${getParams(params)}` : '/api/event?size=5'
+    let apiURL = Object.keys(params).length !== 0 ? `/api/event?size=10&${getParams(params)}` : '/api/event?size=10'
     console.log('** ', apiURL)
     call(apiURL, "GET", null)
       .then((response) => {

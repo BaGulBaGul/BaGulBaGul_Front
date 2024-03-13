@@ -1,9 +1,9 @@
 "use client";
 import { useState, useRef, Dispatch, SetStateAction } from 'react';
 import { Box, Divider, ThemeProvider, Fab, Backdrop, } from '@mui/material';
-import { 
+import {
   CategoryButtons, ViewButton, ViewSelect, TabPanel, MoreButton, FestivalBlock, NoEvent, RecCarousel, PostTab, ViewFilterApplied
- } from '@/components/common';
+} from '@/components/common';
 import { writeFabTheme } from '@/components/common/Themes'
 import { valueList } from '@/components/common/Data';
 import { useEffectFilter, useEffectFilterApplied, useEffectParam, useEffectCallAPI, RangeProps, PostTabsProps } from '@/service/Functions';
@@ -42,7 +42,8 @@ const index = () => {
   const [changed, setChanged] = useState<{ key: string, value: string | number | RangeProps | undefined }>({ key: '', value: undefined })
 
   // const mounted = useRef(false);
-  useEffectParam([selectedCate, sort, value, dayRange], initialSet, setParams, params, value, selectedCate, sort, dayRange, setEvents)
+  useEffectParam([selectedCate, sort, value, dayRange, participants, headCount], initialSet, setParams, params,
+    value, selectedCate, sort, dayRange, participants, headCount, setEvents)
 
   // 적용된 필터 확인
   useEffectFilter([sort, dayRange, participants, headCount], ['sort', 'dayRange', 'participants', 'headCount'], setChanged)
@@ -129,33 +130,33 @@ const TabBlock = (props: TabBlockProps) => {
     )
   } else if (props.opt === 1) { // 파티
     return (
-        <div className='bg-white-text'>
-          <ThemeProvider theme={writeFabTheme}>
-            <Fab variant="extended" size="small" color="primary" className='fixed bottom-[55px] right-[16px]'>
-              <div className='flex flex-row items-center'>
-                <img src='/main_add.svg' />
-                <span className='ps-[4px]'>글작성</span>
-              </div>
-            </Fab>
-          </ThemeProvider>
-          {
-            props.events.length > 0
-              ? <>
-                {props.events.map((post, idx) => (
-                  <div key={`party-${idx}`}>
-                    {idx === 0 ? <></> : <Divider />}
-                    <FestivalBlock data={post} />
-                  </div>
-                ))}
-                {
-                  props.page.total > 1 && props.page.current + 1 < props.page.total
-                    ? <MoreButton onClick={handleMore} />
-                    : <></>
-                }
-              </>
-              : <NoEvent text1="찾는 행사가 없어요." text2="지금 인기 있는 페스티벌을 만나보세요." buttonText={"페스티벌 인기순 보러가기"} />
-          }
-        </div>
+      <div className='bg-white-text'>
+        <ThemeProvider theme={writeFabTheme}>
+          <Fab variant="extended" size="small" color="primary" className='fixed bottom-[55px] right-[16px]'>
+            <div className='flex flex-row items-center'>
+              <img src='/main_add.svg' />
+              <span className='ps-[4px]'>글작성</span>
+            </div>
+          </Fab>
+        </ThemeProvider>
+        {
+          props.events.length > 0
+            ? <>
+              {props.events.map((post, idx) => (
+                <div key={`party-${idx}`}>
+                  {idx === 0 ? <></> : <Divider />}
+                  <FestivalBlock data={post} />
+                </div>
+              ))}
+              {
+                props.page.total > 1 && props.page.current + 1 < props.page.total
+                  ? <MoreButton onClick={handleMore} />
+                  : <></>
+              }
+            </>
+            : <NoEvent text1="찾는 행사가 없어요." text2="지금 인기 있는 페스티벌을 만나보세요." buttonText={"페스티벌 인기순 보러가기"} />
+        }
+      </div>
     )
   }
 }

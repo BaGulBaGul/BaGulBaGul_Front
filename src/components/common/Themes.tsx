@@ -151,7 +151,7 @@ export const commentTheme = createTheme({
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
-          borderRadius: 0, position: 'relative', padding: '13px 24px', fontSize: 14,
+          borderRadius: 0, position: 'relative', padding: '15px 24px', fontSize: 14,
           '&::placeholder': { color: '#C1C1C1' }
         },
         notchedOutline: { border: '0' }
@@ -337,7 +337,7 @@ export const viewRadioTheme = createTheme({
   components: {
     MuiButtonBase: { defaultProps: { disableRipple: true, }, },
     MuiFormControlLabel: {
-      defaultProps: {  labelPlacement: 'end', },
+      defaultProps: { labelPlacement: 'end', },
       styleOverrides: {
         root: { margin: 0, marginRight: '8px !important', },
         label: { fontSize: '14px !important' }
@@ -363,7 +363,7 @@ export const viewRadioTheme = createTheme({
     MuiInput: {
       styleOverrides: {
         input: {
-          padding: '0 !important', width: 'unset !important', 
+          padding: '0 !important', width: 'unset !important',
           maxWidth: '84px !important', minWidth: '19px !important',
           fontSize: '14px !important', textAlign: 'right',
         },
