@@ -5,15 +5,15 @@ import {
   CategoryButtons, ViewButton, ViewSelect, TabPanel, MoreButton, FestivalBlock, NoEvent, RecCarousel, PostTab, ViewFilterApplied
 } from '@/components/common';
 import { writeFabTheme } from '@/components/common/Themes'
-import { valueList } from '@/components/common/Data';
+import { tabList } from '@/components/common/Data';
 import { useEffectFilter, useEffectFilterApplied, useEffectParam, useEffectCallAPI, RangeProps, PostTabsProps } from '@/service/Functions';
 import { DayRange } from '@hassanmojab/react-modern-calendar-datepicker'
 
 const index = () => {
   //type
-  const [value, setValue] = useState(0);
+  const [tab, setTab] = useState(0);
   const handleChange = (e: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
+    setTab(newValue);
   };
 
   // 선택된 카테고리, 정렬기준(default 최신순), 날짜, 참여인원, 규모
@@ -24,7 +24,7 @@ const index = () => {
   const [headCount, setHeadCount] = useState<RangeProps>({ from: undefined, to: undefined });
 
   // api 호출용 파라미터, 호출 결과
-  const [params, setParams] = useState({ page: 0, type: valueList[value], categories: selectedCate, sort: sort, startDate: '', endDate: '' });
+  const [params, setParams] = useState({ page: 0, type: tabList[tab], categories: selectedCate, sort: sort, startDate: '', endDate: '' });
   const [events, setEvents] = useState([]);
 
   // const loading = useRef<boolean>(false);
@@ -41,8 +41,8 @@ const index = () => {
   const [changed, setChanged] = useState<{ key: string, value: string | number | RangeProps | undefined }>({ key: '', value: undefined })
 
   // const mounted = useRef(false);
-  useEffectParam([selectedCate, sort, value, dayRange, participants, headCount], initialSet, setParams, params,
-    value, selectedCate, sort, dayRange, participants, headCount, setEvents)
+  useEffectParam([selectedCate, sort, tab, dayRange, participants, headCount], initialSet, setParams, params,
+    tab, selectedCate, sort, dayRange, participants, headCount, setEvents)
 
   // 적용된 필터 확인
   useEffectFilter([sort, dayRange, participants, headCount], ['sort', 'dayRange', 'participants', 'headCount'], setChanged)
@@ -54,7 +54,7 @@ const index = () => {
   return (
     <div className='flex flex-col w-full pt-[44px]'>
       <RecCarousel />
-      <PostTabs events={events} value={value} handleChange={handleChange} filterCnt={filterCnt} filters={filters}
+      <PostTabs events={events} value={tab} handleChange={handleChange} filterCnt={filterCnt} filters={filters}
         setFilters={setFilters} sort={sort} setSort={setSort} dayRange={dayRange} setDayRange={setDayRange}
         participants={participants} setParticipants={setParticipants} headCount={headCount} setHeadCount={setHeadCount}
         page={page} setPageInfo={setPageInfo} selectedCate={selectedCate} setSelectedCate={setSelectedCate} />

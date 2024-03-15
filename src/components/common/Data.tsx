@@ -1,4 +1,4 @@
-export const valueList = ['FESTIVAL', 'LOCAL_EVENT', 'PARTY']
+export const tabList = ['FESTIVAL', 'LOCAL_EVENT', 'PARTY']
 
 export const postData = [
   {

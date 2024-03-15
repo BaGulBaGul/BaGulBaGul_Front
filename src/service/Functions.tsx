@@ -1,4 +1,4 @@
-import { valueList } from "@/components/common/Data";
+import { tabList } from "@/components/common/Data";
 import { Dispatch, MutableRefObject, SetStateAction, useEffect, useRef, useState } from "react";
 import { createSearchParams } from 'react-router-dom'
 import { DayValue } from "react-modern-calendar-datepicker";
@@ -122,13 +122,13 @@ export const useEffectParam = (dependencies: any[], initialSet: MutableRefObject
     initialSet.current = false;
     setParams({
       ...params,
-      page: 0, type: value !== undefined ? valueList[value] : '',
+      page: 0, type: value !== undefined ? tabList[value] : '',
       categories: selectedCate, sort: sort,
       startDate: dayRange.from === null || dayRange.from === undefined
         ? '' : `${dayRange.from.year}-${String(dayRange.from.month).padStart(2, "0")}-${String(dayRange.from.day).padStart(2, "0")}T00:00:00`,
       endDate: dayRange.to === null || dayRange.to === undefined
         ? '' : `${dayRange.to.year}-${String(dayRange.to.month).padStart(2, "0")}-${String(dayRange.to.day).padStart(2, "0")}T23:59:59`,
-      leftHeadCount: participants ?? '',
+      leftHeadCount: participants > 0 ? participants : '',
       totalHeadCountMax: headCount.from === null || headCount.from === undefined ? '' : headCount.from,
       totalHeadCountMin: headCount.to === null || headCount.to === undefined ? '' : headCount.to,
     })
@@ -159,7 +159,6 @@ export const useEffectFilter = (dependencies: any[], dependencyNames: any = [], 
 
   useEffect(() => {
     if (Object.keys(changedDeps).length) {
-      // console.log('changedDeps: ', changedDeps)
       setChanged({ key: Object.keys(changedDeps)[0], value: changedDeps[Object.keys(changedDeps)[0]]['after'] })
     }
   }, dependencies);
@@ -194,11 +193,13 @@ export function getParams(params: any) {
   let target: any[] = [];
   sparams.forEach((val, key) => { if (val === '') { target.push(key); } })
   target.forEach(key => { sparams.delete(key); })
+  console.log('^^^^^ ', sparams.toString())
   return sparams.toString();
 }
 
 export const useEffectCallAPI = (params: any, initialSet: MutableRefObject<boolean>, setPage: any, events: any, setEvents: any) => {
   useEffect(() => {
+    console.log('^^ useEffectCallAPI');
     let apiURL = Object.keys(params).length !== 0 ? `/api/event?size=10&${getParams(params)}` : '/api/event?size=10'
     console.log('** ', apiURL)
     call(apiURL, "GET", null)

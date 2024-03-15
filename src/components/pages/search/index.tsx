@@ -1,5 +1,5 @@
 "use client";
-import { Dispatch, SetStateAction, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { IconButton, TextField, ThemeProvider, Divider, Button, Backdrop, Paper, FormControl } from '@mui/material';
 import { ViewButton, ViewSelect } from '@/components/common';
@@ -38,9 +38,9 @@ const index = () => {
               ? '' : `${dayRange.from.year}-${String(dayRange.from.month).padStart(2, "0")}-${String(dayRange.from.day).padStart(2, "0")}T00:00:00`,
             endDate: dayRange.to === null || dayRange.to === undefined
               ? '' : `${dayRange.to.year}-${String(dayRange.to.month).padStart(2, "0")}-${String(dayRange.to.day).padStart(2, "0")}T23:59:59`,
-            participants: participants ?? '',
-            headCountMax: headCount.from === null || headCount.from === undefined ? '' : headCount.from,
-            headCountMin: headCount.to === null || headCount.to === undefined ? '' : headCount.to,
+            participants: participants > 0 ? participants : '',
+            headCountMax: headCount.from === null || headCount.from === undefined || headCount.from <= 0 ? '' : headCount.from,
+            headCountMin: headCount.to === null || headCount.to === undefined || headCount.to <= 0 ? '' : headCount.to,
           }} />
         <Divider />
         <div>
@@ -62,13 +62,21 @@ function SearchBar(props: { setOpen: any; filterCnt: number; params: any; }) {
 
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter()
-  const handleSearch = () => {
-    console.log(inputRef.current ? inputRef.current.value : '()()()()()(')
+
+  const [title, setTitle] = useState('')
+  const handleSearch = (event: any) => {
     if (inputRef.current && inputRef.current.value !== '') {
-      router.push(`/searched?query=${encodeURIComponent(encodeURIComponent(inputRef.current.value))}&${getParams(props.params)}`)
-      // navigate({ pathname: '/search', search: inputRef.current.value });
+      event.preventDefault();
+      console.log('^^ SearchBar /search', inputRef.current.value);
+      setTitle(encodeURIComponent(encodeURIComponent(inputRef.current.value)))
     }
   }
+
+  useEffect(() => {
+    if (title.length > 0) {
+      router.push(`/searched?query=${title}&${getParams(props.params)}&tab_id=0`)
+    }
+  }, [title])
 
   return (
     <div className='flex flex-row mx-[16px] my-[18px] gap-[16px] items-center'>
