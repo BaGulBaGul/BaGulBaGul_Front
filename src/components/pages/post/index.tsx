@@ -74,7 +74,7 @@ export default function index() {
                 />
             </div>
             <Button className='fixed left-0 right-0 bottom-0 w-full h-[46px]
-                bg-primary-blue text-white-text hover:bg-[#3757E7]'>
+                bg-primary-blue text-white hover:bg-[#3757E7]'>
                 파티글 작성하기
             </Button>
         </div>

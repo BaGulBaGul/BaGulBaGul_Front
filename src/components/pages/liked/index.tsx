@@ -119,7 +119,7 @@ function LikedTab() {
             </div>
             <span className='text-[16px] text-[#333333] font-semibold'>{props.data.title}</span>
           </div>
-          <span className='text-[12px] text-gray3-text block description max-w-[278px]'>{props.data.content}</span>
+          <span className='text-[12px] text-gray3 block description max-w-[278px]'>{props.data.content}</span>
         </div>
       </div>
     )
@@ -132,9 +132,9 @@ function LikedTab() {
       <div className='flex flex-col px-[16px] py-[18px] gap-[4px]'>
         <div className='flex flex-row justify-between items-start'>
           <div className='flex flex-col gap-[4px]'>
-            <span className='text-[14px] text-gray3-text'>{FormatDate(props.data.startDate, 0)}</span>
+            <span className='text-[14px] text-gray3'>{FormatDate(props.data.startDate, 0)}</span>
             <span className='text-[16px]'>{props.data.title}</span>
-            <span className='text-[14px] text-gray3-text'>{props.data.event_title}</span>
+            <span className='text-[14px] text-gray3'>{props.data.event_title}</span>
           </div>
           <Checkbox icon={<img src="/detail_like.svg" width={20} height={20} />}
             checkedIcon={<img src="/detail_like_1.svg" width={20} height={20} />}

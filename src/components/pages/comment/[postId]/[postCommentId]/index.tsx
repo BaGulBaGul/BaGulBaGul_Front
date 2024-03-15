@@ -73,14 +73,14 @@ const index = () => {
     return (
       <>
         <SubHeaderCnt name='답글' url={"/"} cnt={commentData.length} />
-        <div className='flex flex-col w-full min-h-[100vh] pb-[49px] bg-gray1-text'>
-          <div className='bg-white-text px-[16px] py-[12px] mb-[2px]'>
+        <div className='flex flex-col w-full min-h-[100vh] pb-[49px] bg-gray1'>
+          <div className='bg-white px-[16px] py-[12px] mb-[2px]'>
             <CommentBlock data={comment} currentURL='' />
           </div>
-          <div className='flex flex-col w-full min-h-[100vh] pb-[76px] bg-gray1-text'>
+          <div className='flex flex-col w-full min-h-[100vh] pb-[76px] bg-gray1'>
             {
               children.map((comment: CommentProps, idx: number) => (
-                <div className={idx % 2 == 0 ? 'bg-white-text ps-[48px] pe-[16px] py-[12px]' : 'bg-gray1-text ps-[48px] pe-[16px] py-[12px]'}
+                <div className={idx % 2 == 0 ? 'bg-white ps-[48px] pe-[16px] py-[12px]' : 'bg-gray1 ps-[48px] pe-[16px] py-[12px]'}
                   onClick={(e) => { handleMention(comment) }}>
                   <ReplyBlock data={comment} key={`cmt-${idx}`} />
                 </div>
@@ -109,11 +109,11 @@ function ReplyBlock(props: { data: CommentProps }) {
         </div>
         <IconButton disableRipple className='p-0'><img src='/comment_etc.svg' width={24} height={24} /></IconButton>
       </div>
-      <div className='text-sm text-gray3-text pb-[6px]' id='comment-body'>
+      <div className='text-sm text-gray3 pb-[6px]' id='comment-body'>
         {props.data.content}
       </div>
       <div className='flex flex-row justify-between items-center pt-[8px]' id='comment-foot'>
-        <div className='flex flex-row text-xs text-gray3-text' id='comment-datetime'>
+        <div className='flex flex-row text-xs text-gray3' id='comment-datetime'>
           <p className='pe-[6px]'>{createdD.date}</p><p>{createdD.time}</p>
         </div>
         <div className='flex flex-row items-center' id='comment-likes'>
@@ -123,7 +123,7 @@ function ReplyBlock(props: { data: CommentProps }) {
               : <img src="/comment_like.svg" width={24} height={24} />
           }
           {
-            props.data.likeCount !== 0 ? <p className='text-xs text-gray3-text ps-[2px]'>{props.data.likeCount}</p> : <></>
+            props.data.likeCount !== 0 ? <p className='text-xs text-gray3 ps-[2px]'>{props.data.likeCount}</p> : <></>
           }
         </div>
       </div>

@@ -77,6 +77,15 @@ export const handleDayData = (date: DayValue, type: number = 0) => {
   }
 }
 
+export const String2Day = (date: string | null) => {
+  if (date === null) {
+    return undefined
+  } else {
+    let dateD = new Date(date);
+    return { year: dateD.getFullYear(), month: dateD.getMonth(), day: dateD.getDate() }
+  }
+}
+
 export const sortLabel = (sort: string) => {
   switch (sort) {
     case 'createdAt,desc': return '최신순'
@@ -108,23 +117,22 @@ export function setEventList(currentEvents: [], events: any, setEvents: any) {
 
 // update parameter
 export const useEffectParam = (dependencies: any[], initialSet: MutableRefObject<boolean>, setParams: any, params: any,
-  value: number, selectedCate: string[], sort: string, dayRange: any, participants: number, headCount: any, setEvents: any) => {
+  value: number | undefined, selectedCate: string[], sort: string, dayRange: any, participants: number, headCount: any, setEvents?: any) => {
   useEffect(() => {
     initialSet.current = false;
     setParams({
       ...params,
-      page: 0, type: valueList[value],
+      page: 0, type: value !== undefined ? valueList[value] : '',
       categories: selectedCate, sort: sort,
       startDate: dayRange.from === null || dayRange.from === undefined
         ? '' : `${dayRange.from.year}-${String(dayRange.from.month).padStart(2, "0")}-${String(dayRange.from.day).padStart(2, "0")}T00:00:00`,
       endDate: dayRange.to === null || dayRange.to === undefined
         ? '' : `${dayRange.to.year}-${String(dayRange.to.month).padStart(2, "0")}-${String(dayRange.to.day).padStart(2, "0")}T23:59:59`,
-      leftHeadCount: participants ?? '' , 
+      leftHeadCount: participants ?? '',
       totalHeadCountMax: headCount.from === null || headCount.from === undefined ? '' : headCount.from,
       totalHeadCountMin: headCount.to === null || headCount.to === undefined ? '' : headCount.to,
-
     })
-    setEvents([]);
+    if (setEvents !== undefined) { setEvents([]); }
   }, dependencies)
 }
 
@@ -181,7 +189,7 @@ export const useEffectFilterApplied = (dependencies: any[], filters: string[], s
 }
 
 // call event list api with filters
-function getParams(params: any) {
+export function getParams(params: any) {
   let sparams = createSearchParams(params);
   let target: any[] = [];
   sparams.forEach((val, key) => { if (val === '') { target.push(key); } })

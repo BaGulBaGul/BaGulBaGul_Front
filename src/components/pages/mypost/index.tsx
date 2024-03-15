@@ -61,7 +61,7 @@ function LikedTab() {
         <div className='flex flex-col justify-between w-full'>
           <div className='flex flex-col'>
             <div className='flex flex-row justify-between'>
-              <span className='text-[14px] text-gray3-text'>{FormatDateRange(props.data.startDate, props.data.endDate)}</span>
+              <span className='text-[14px] text-gray3'>{FormatDateRange(props.data.startDate, props.data.endDate)}</span>
               <div className='flex flex-row gap-[6px]'>
                 <ThemeProvider theme={likeButtonTheme1}><Button disableRipple>수정</Button></ThemeProvider>
                 <ThemeProvider theme={likeButtonTheme2}><Button disableRipple>삭제</Button></ThemeProvider>
@@ -69,7 +69,7 @@ function LikedTab() {
             </div>
             <span className='text-[16px] font-semibold'>{props.data.title}</span>
           </div>
-          <span className='text-[12px] text-gray3-text block description max-w-[278px]'>{props.data.content}</span>
+          <span className='text-[12px] text-gray3 block description max-w-[278px]'>{props.data.content}</span>
         </div>
       </div>
     )

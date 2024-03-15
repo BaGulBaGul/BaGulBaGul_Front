@@ -8,67 +8,77 @@ import { krLocale } from '@/components/common/CalendarLocale';
 import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
 import { DayRange, Calendar, Day } from '@hassanmojab/react-modern-calendar-datepicker'
 import { useRouter } from 'next/navigation';
+import { RangeProps, getParams, useEffectFilter, useEffectFilterApplied, useEffectParam } from '@/service/Functions';
 
 const index = () => {
+  // 정렬기준(default 최신순), 날짜, 참여인원, 규모
+  const [sort, setSort] = useState('createdAt,desc');
+  const [dayRange, setDayRange] = useState<DayRange>({ from: undefined, to: undefined });
+  // * temporary name
+  const [participants, setParticipants] = useState(0);
+  const [headCount, setHeadCount] = useState<RangeProps>({ from: undefined, to: undefined });
+
+  // 적용된 필터들, 적용된 필터 개수, 현재 변경된 필터
+  const [filters, setFilters] = useState(['sort'])
+  const [filterCnt, setFilterCnt] = useState(0)
+  const [changed, setChanged] = useState<{ key: string, value: string | number | RangeProps | undefined }>({ key: '', value: undefined })
+
+  const [open, setOpen] = useState(false);
+  const handleClose = () => { setOpen(false) }
+
+  useEffectFilter([sort, dayRange, participants, headCount], ['sort', 'dayRange', 'participants', 'headCount'], setChanged)
+  useEffectFilterApplied([filters, sort], filters, setFilters, changed, sort, setFilterCnt)
+
   return (
-    <div className='flex flex-col w-full h-screen bg-gray1-text'>
-      <div className='bg-white-text'>
-        <SearchBar />
+    <div className='flex flex-col w-full h-screen bg-gray1'>
+      <div className='bg-white'>
+        <SearchBar setOpen={setOpen} filterCnt={filterCnt}
+          params={{
+            sort: sort, startDate: dayRange.from === null || dayRange.from === undefined
+              ? '' : `${dayRange.from.year}-${String(dayRange.from.month).padStart(2, "0")}-${String(dayRange.from.day).padStart(2, "0")}T00:00:00`,
+            endDate: dayRange.to === null || dayRange.to === undefined
+              ? '' : `${dayRange.to.year}-${String(dayRange.to.month).padStart(2, "0")}-${String(dayRange.to.day).padStart(2, "0")}T23:59:59`,
+            participants: participants ?? '',
+            headCountMax: headCount.from === null || headCount.from === undefined ? '' : headCount.from,
+            headCountMin: headCount.to === null || headCount.to === undefined ? '' : headCount.to,
+          }} />
         <Divider />
-        <FrequentSearches />
-        <RecentSearches />
+        <div>
+          <FrequentSearches />
+          <RecentSearches />
+          <Backdrop open={open} className='z-paper'>
+            <ViewSelect sort={sort} setSort={setSort} handleClose={handleClose} dayRange={dayRange} setDayRange={setDayRange}
+              participants={participants} setParticipants={setParticipants} headCount={headCount} setHeadCount={setHeadCount} />
+          </Backdrop>
+        </div>
       </div>
     </div>
   )
 }
 export default index;
 
-function SearchBar() {
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => { setOpen(true) }
-  const handleClose = () => { setOpen(false) }
+function SearchBar(props: { setOpen: any; filterCnt: number; params: any; }) {
+  const handleOpen = () => { props.setOpen(true) }
 
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter()
   const handleSearch = () => {
     console.log(inputRef.current ? inputRef.current.value : '()()()()()(')
     if (inputRef.current && inputRef.current.value !== '') {
-      router.push(`/searched?query=${encodeURIComponent(encodeURIComponent(inputRef.current.value))}`)
+      router.push(`/searched?query=${encodeURIComponent(encodeURIComponent(inputRef.current.value))}&${getParams(props.params)}`)
       // navigate({ pathname: '/search', search: inputRef.current.value });
     }
   }
 
   return (
-    <div className='flex flex-row mx-[16px] my-[18px] gap-[16px]'>
-      <div>
-        <IconButton disableRipple className='p-0'><img src='/search_back.svg' /></IconButton>
-      </div>
+    <div className='flex flex-row mx-[16px] my-[18px] gap-[16px] items-center'>
+      <IconButton disableRipple className='p-0'><img src='/search_back.svg' /></IconButton>
       <div className='flex flex-row w-full justify-between'>
-        <div className='flex flex-row w-[268px] bg-gray1-text px-[8px] py-[4px] gap-[8px]'>
-          {/* <FormControl required onSubmit={handleSearch}> */}
+        <div className='flex flex-row bg-gray1 px-[8px] py-[4px] gap-[8px] w-full max-w-[268px]'>
           <ThemeProvider theme={searchInputTheme}><TextField placeholder="피크페스티벌" inputRef={inputRef} required /></ThemeProvider>
           <IconButton onClick={handleSearch} disableRipple className='p-0' ><img src='/search_magnifying.svg' /></IconButton>
-          {/* </FormControl> */}
-
         </div>
-        <ViewButton handleOpen={handleOpen} cnt={3} fs={14} />
-        {/* <div className='flex flex-row gap-[10px]'>
-          <div className='flex flex-row bg-gray1-text w-[250px] px-[8px] py-[4px] gap-[8px]' onClick={handleOpenCal}>
-            <img src='/post_calendar.svg' className='h-[20px] w-[20px]' />
-            {
-              dayRange.from === undefined || dayRange.from === null
-              ? <span className='text-[14px] text-gray2-text'>날짜 검색</span>
-              : dayRange.to === undefined || dayRange.to === null
-              ? <span className='text-[14px] text-black-text'>{handleDayData(dayRange.from)}</span>
-              : <span className='text-[14px] text-black-text'>{`${handleDayData(dayRange.from)} - ${handleDayData(dayRange.to)}`}</span>
-            }
-          </div>
-          <ViewButton handleOpen={handleOpen} cnt={3} />
-        </div> */}
-        {/* <Backdrop open={open} className='z-paper'>
-          <ViewSelect sort={sort} setSort={setSort} handleClose={handleClose} dayRange={dayRange} setDayRange={setDayRange}
-            participants={participants} setParticipants={setParticipants} headCount={headCount} setHeadCount={setHeadCount} />
-        </Backdrop> */}
+        <ViewButton handleOpen={handleOpen} cnt={props.filterCnt} fs={14} />
       </div>
     </div>
   )
@@ -103,14 +113,14 @@ function RecentSearches() {
             ? <>
               <div className='flex flex-row gap-[6px] items-center'>
                 <img className='h-[20px] w-[20px]' src='/search_magnifying.svg' />
-                <span className='text-[14px] text-gray3-text leading-[160%] font-normal'>{props.searchword}</span>
+                <span className='text-[14px] text-gray3 leading-[160%] font-normal'>{props.searchword}</span>
               </div>
               <IconButton className='p-0'><img src='/search_delete.svg' /></IconButton>
             </>
             : <>
               <div className='flex flex-row gap-[6px] items-center'>
                 <img className='h-[20px] w-[20px]' src='/search_magnifying_1.svg' />
-                <span className='text-[14px] text-gray2-text leading-[160%] font-normal'>{props.searchword}</span>
+                <span className='text-[14px] text-gray2 leading-[160%] font-normal'>{props.searchword}</span>
               </div>
               <IconButton className='p-0'><img src='/search_delete_1.svg' /></IconButton>
             </>
@@ -132,7 +142,7 @@ function RecentSearches() {
           ))
         }
       </div>
-      <div className='flex justify-center text-[12px] text-gray3-text leading-[160%] font-normal'>검색어 더보기</div>
+      <div className='flex justify-center text-[12px] text-gray3 leading-[160%] font-normal'>검색어 더보기</div>
     </div>
   )
 }

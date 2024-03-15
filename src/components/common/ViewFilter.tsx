@@ -1,9 +1,9 @@
 import { ChangeEvent, forwardRef, useState } from "react";
-import { ThemeProvider, Button, Paper, IconButton, FormControl, FormControlLabel, RadioGroup, Radio, Collapse } from "@mui/material";
+import { ThemeProvider, Button, Paper, IconButton, FormControl, FormControlLabel, RadioGroup, Radio, Collapse, Checkbox } from "@mui/material";
 import { Unstable_NumberInput as NumberInput, NumberInputProps } from '@mui/base'
 import {
   viewTheme, viewRadioTheme,
-  HeadInputRoot, HeadInputElement, HeadButton, PartiInputRoot, PartiInputElement, PartiButton
+  HeadInputRoot, HeadInputElement, HeadButton, PartiInputRoot, PartiInputElement, PartiButton, viewCheckTheme
 } from "./Themes";
 import { SmileyFace, CalendarIcn, AddIcn, RemoveIcn } from "./Icon";
 import { handleDayData } from "@/service/Functions";
@@ -30,13 +30,18 @@ export function ViewButton(props: ViewButtonProps) {
 
 interface ViewSelectProps {
   sort: string; setSort: any; handleClose: any; dayRange: DayRange; setDayRange: any;
-  participants: number; setParticipants: any;
-  headCount: { from: undefined | number, to: undefined | number }; setHeadCount: any;
+  participants: number; setParticipants: any; headCount?: { from?: number, to?: number }; setHeadCount?: any;
+  proceeding?: boolean; setProceeding?: any;
+
 }
 export function ViewSelect(props: ViewSelectProps) {
   // 정렬
   const handleView = (e: ChangeEvent<HTMLInputElement>, newSort: string) => {
     props.setSort(newSort)
+  }
+  // 모집중
+  const handleProceeding = (e: React.ChangeEvent<HTMLInputElement>) => {
+    props.setProceeding(e.target.checked);
   }
   // 날짜 캘린더
   const [openCal, setOpenCal] = useState(false);
@@ -46,7 +51,7 @@ export function ViewSelect(props: ViewSelectProps) {
   const [openHead, setOpenHead] = useState(false);
   const handleOpenHead = () => { setOpenHead(!openHead) }
 
-  const headCountString = (from: number | undefined | null, to: number | undefined | null) => {
+  const headCountString = (from?: number | null, to?: number | null) => {
     if ((from !== undefined && from !== null && from > 0) || (to !== undefined && to !== null && to > 0)) {
       if (from === undefined) { return ` - ${to}` }
       else if (to === undefined) { return `${from} - ` }
@@ -57,14 +62,26 @@ export function ViewSelect(props: ViewSelectProps) {
   return (
     <ThemeProvider theme={viewTheme}>
       <Paper className="w-screen absolute bottom-0">
-        <div className="flex px-[16px] py-[20px] w-full justify-between items-center border-b-[0.5px] border-gray2-text">
+        <div className="flex px-[16px] py-[20px] w-full justify-between items-center border-b-[0.5px] border-gray2">
           <span className="text-[14px] font-semibold">바글바글 필터</span>
           <IconButton disableRipple onClick={props.handleClose} className="p-0"><img src='/popup_close.svg' /></IconButton>
         </div>
-        <div className="flex flex-col px-[16px] pb-[10px] gap-[10px]">
+        <div className="flex flex-col px-[16px] pb-[20px] gap-[16px]">
           <ThemeProvider theme={viewRadioTheme}>
-            <div className="flex flex-col mb-[6px]">
-              <div className="py-[10px] text-[14px] font-semibold leading-[160%]">정렬</div>
+            {
+              props.proceeding !== undefined
+                ? <div className="flex flex-row pt-[10px] justify-between" id="filter-proceeding">
+                  <div className="text-[14px] font-semibold leading-[160%] pb-[2px]">모집 중만 보기</div>
+                  <ThemeProvider theme={viewCheckTheme}>
+                    <FormControl>
+                      <FormControlLabel control={<Checkbox checked={props.proceeding} onChange={handleProceeding} />} label="" />
+                    </FormControl>
+                  </ThemeProvider>
+                </div>
+                : <></>
+            }
+            <div className="flex flex-col" id="filter-sort">
+              <div className={props.proceeding === undefined ? "py-[10px] text-[14px] font-semibold leading-[160%]" : "pb-[10px] text-[14px] font-semibold leading-[160%]"}>정렬</div>
               <FormControl>
                 <RadioGroup row value={props.sort} onChange={handleView}>
                   <FormControlLabel value="createdAt,desc" control={<Radio />} label="최신순" />
@@ -78,10 +95,12 @@ export function ViewSelect(props: ViewSelectProps) {
               <div className="flex flex-row gap-[16px]">
                 <div className="text-[14px] font-semibold leading-[160%]">날짜선택</div>
                 <Button disableRipple onClick={handleOpenCal}
-                  className={props.dayRange.from === undefined || props.dayRange.from === null ? '' : 'border-primary-blue text-primary-blue'}>
-                  <div className="flex flex-row gap-[16px]">
-                    <CalendarIcn />
-                    <span className="text-[14px] text-black-text self-start">
+                  className={props.dayRange.from === undefined || props.dayRange.from === null ? '' : 'border-primary-blue'}>
+                  <div className="flex flex-row gap-[8px]">
+                    <span className={props.dayRange.from === undefined || props.dayRange.from === null ? 'text-black' : "text-primary-blue"}>
+                      <CalendarIcn />
+                    </span>
+                    <span className="text-[14px] text-black self-start">
                       {
                         props.dayRange.from === undefined || props.dayRange.from === null
                           ? <span>날짜를 선택하세요</span>
@@ -102,10 +121,10 @@ export function ViewSelect(props: ViewSelectProps) {
               <div className="flex flex-row gap-[16px]">
                 <span className="text-[14px] font-semibold leading-[160%]">참여인원</span>
                 <Button disableRipple onClick={handleOpenParti}
-                  className={props.participants > 0 ? 'border-primary-blue text-primary-blue' : ''}>
+                  className={props.participants > 0 ? 'border-primary-blue ps-[4px] pe-[6px] py-[4px]' : 'ps-[4px] pe-[6px] py-[4px]'}>
                   <div className="flex flex-row gap-[4px]">
-                    <SmileyFace />
-                    <span className="text-[14px] text-black-text self-start">
+                    <SmileyFace type={props.participants > 0 ? 1 : 0} />
+                    <span className="text-[14px] text-black self-start">
                       {props.participants >= 0 ? props.participants : 0}명
                     </span>
                   </div>
@@ -122,46 +141,51 @@ export function ViewSelect(props: ViewSelectProps) {
                 </div>
               </Collapse>
             </div>
-            <div className="flex flex-col" id="filter-head">
-              <div className="flex flex-row gap-[16px]">
-                <span className="text-[14px] font-semibold leading-[160%]">규모설정</span>
-                <Button disableRipple onClick={handleOpenHead}
-                  className={(props.headCount.from !== undefined && props.headCount.from > 0)
-                    || (props.headCount.to !== undefined && props.headCount.to > 0)
-                    ? 'border-primary-blue text-primary-blue' : ''}>
-                  <div className="flex flex-row gap-[4px]">
-                    <SmileyFace />
-                    <div className="flex flex-row text-[14px] text-black-text self-start">
-                      {headCountString(props.headCount.from, props.headCount.to)}명
-                    </div>
+            {
+              props.headCount === undefined
+                ? <></>
+                : <div className="flex flex-col" id="filter-head">
+                  <div className="flex flex-row gap-[16px]">
+                    <span className="text-[14px] font-semibold leading-[160%]">규모설정</span>
+                    <Button disableRipple onClick={handleOpenHead}
+                      className={(props.headCount.from !== undefined && props.headCount.from > 0)
+                        || (props.headCount.to !== undefined && props.headCount.to > 0)
+                        ? 'border-primary-blue ps-[4px] pe-[6px] py-[4px]' : 'ps-[4px] pe-[6px] py-[4px]'}>
+                      <div className="flex flex-row gap-[4px]">
+                        <SmileyFace type={(props.headCount.from !== undefined && props.headCount.from > 0) || (props.headCount.to !== undefined && props.headCount.to > 0) ? 1 : 0} />
+                        <div className="flex flex-row text-[14px] text-black self-start">
+                          {headCountString(props.headCount.from, props.headCount.to)}명
+                        </div>
+                      </div>
+                    </Button>
                   </div>
-                </Button>
-              </div>
-              <Collapse in={openHead} timeout="auto" className="filter-collapse">
-                <div className="flex flex-col mt-[8px] gap-[8px]">
-                  <span className="text-[14px] leading-[160%]">최소/최대 설정하기</span>
-                  <div className="flex flex-row justify-between">
-                    <div className="flex flex-row justify-between border border-gray2-text rounded-[8px] w-[180px] px-[16px] py-[5px]">
-                      <span className="text-[14px] leading-[160%] w-[49px]">최소인원</span>
-                      <HeadNumberInput placeholder="1명" value={props.headCount.from ?? 0} min={1}
-                        onInputChange={(event) => {
-                          props.setHeadCount({ from: Number.isNaN(Number(event.target.value)) ? undefined : Number(event.target.value), to: props.headCount.to })
-                        }}
-                        onChange={(event, newValue) => props.setHeadCount({ from: Number.isNaN(Number(newValue)) ? undefined : Number(newValue), to: props.headCount.to })} />
+                  <Collapse in={openHead} timeout="auto" className="filter-collapse">
+                    <div className="flex flex-col mt-[8px] gap-[8px]">
+                      <span className="text-[14px] leading-[160%]">최소/최대 설정하기</span>
+                      <div className="flex flex-row justify-between">
+                        <div className="flex flex-row justify-between border border-gray2 rounded-[8px] w-[180px] px-[16px] py-[5px]">
+                          <span className="text-[14px] leading-[160%] w-[49px]">최소인원</span>
+                          <HeadNumberInput placeholder="1명" value={props.headCount.from ?? 0} min={1}
+                            onInputChange={(event) => {
+                              props.setHeadCount({ from: Number.isNaN(Number(event.target.value)) ? undefined : Number(event.target.value), to: props.headCount!.to })
+                            }}
+                            onChange={(event, newValue) => props.setHeadCount({ from: Number.isNaN(Number(newValue)) ? undefined : Number(newValue), to: props.headCount!.to })} />
+                        </div>
+                        <div className="flex flex-row justify-between border border-gray2 rounded-[8px] w-[180px] px-[16px] py-[5px]">
+                          <span className="text-[14px] leading-[160%]">최대인원</span>
+                          <HeadNumberInput placeholder="10명" value={props.headCount.to ?? 0} min={props.headCount.from}
+                            onInputChange={(event) => {
+                              props.setHeadCount({ from: props.headCount!.from, to: Number.isNaN(Number(event.target.value)) ? undefined : Number(event.target.value) })
+                            }}
+                            onChange={(event, newValue) => props.setHeadCount({ from: props.headCount!.from, to: Number.isNaN(Number(newValue)) ? undefined : Number(newValue) })}
+                          />
+                        </div>
+                      </div>
                     </div>
-                    <div className="flex flex-row justify-between border border-gray2-text rounded-[8px] w-[180px] px-[16px] py-[5px]">
-                      <span className="text-[14px] leading-[160%]">최대인원</span>
-                      <HeadNumberInput placeholder="10명" value={props.headCount.to ?? 0} min={props.headCount.from}
-                        onInputChange={(event) => {
-                          props.setHeadCount({ from: props.headCount.from, to: Number.isNaN(Number(event.target.value)) ? undefined : Number(event.target.value) })
-                        }}
-                        onChange={(event, newValue) => props.setHeadCount({ from: props.headCount.from, to: Number.isNaN(Number(newValue)) ? undefined : Number(newValue) })}
-                      />
-                    </div>
-                  </div>
+                  </Collapse>
                 </div>
-              </Collapse>
-            </div>
+            }
+
           </ThemeProvider>
         </div >
       </Paper >

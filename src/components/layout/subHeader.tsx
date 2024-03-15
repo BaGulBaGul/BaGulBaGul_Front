@@ -30,7 +30,7 @@ export function SubHeaderCnt({ name, url, cnt }: any) {
             <a href={url}><img src='/arrow_prev.svg' /></a>
             <div className='flex flex-row text-[18px]'>
                 <div>{name}</div>
-                <div className="text-gray3-text ps-[8px]">{cnt}</div>
+                <div className="text-gray3 ps-[8px]">{cnt}</div>
             </div>
             <div className='w-[24px]'></div>
         </div>

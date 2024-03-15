@@ -20,7 +20,6 @@ const index = () => {
   const [selectedCate, setSelectedCate] = useState<string[]>([]);
   const [sort, setSort] = useState('createdAt,desc');
   const [dayRange, setDayRange] = useState<DayRange>({ from: undefined, to: undefined });
-  // * temporary name
   const [participants, setParticipants] = useState(0);
   const [headCount, setHeadCount] = useState<RangeProps>({ from: undefined, to: undefined });
 
@@ -108,7 +107,7 @@ const TabBlock = (props: TabBlockProps) => {
   const handleMore = () => { props.setPageInfo(props.page.current + 1) }
   if (props.opt === 0) {  // 페스티벌, 지역행사
     return (
-      <div className='bg-white-text'>
+      <div className='bg-white'>
         {
           props.events.length > 0
             ? <>
@@ -130,7 +129,7 @@ const TabBlock = (props: TabBlockProps) => {
     )
   } else if (props.opt === 1) { // 파티
     return (
-      <div className='bg-white-text'>
+      <div className='bg-white'>
         <ThemeProvider theme={writeFabTheme}>
           <Fab variant="extended" size="small" color="primary" className='fixed bottom-[55px] right-[16px]'>
             <div className='flex flex-row items-center'>

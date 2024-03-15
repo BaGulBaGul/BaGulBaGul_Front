@@ -240,6 +240,22 @@ export const writeFabTheme = createTheme({
   },
 });
 
+export const scrollFabTheme = createTheme({
+  components: {
+    MuiButtonBase: { defaultProps: { disableRipple: true, }, },
+    MuiFab: {
+      styleOverrides: {
+        root: {
+          width: '50px', height: '50px', padding: '15px !important',
+          backgroundColor: '#FCFCFC !important',
+          borderRadius: '100% !important', boxShadow: 'none',
+          filter: 'drop-shadow(1px 1px 6px #00000040)',
+        }
+      }
+    },
+  },
+});
+
 export const likeButtonTheme1 = createTheme({
   components: {
     // MuiButtonBase: { defaultProps: { disableRipple: true, }, },
@@ -288,7 +304,7 @@ export const viewCheckTheme = createTheme({
     MuiFormControlLabel: {
       defaultProps: { labelPlacement: 'start', },
       styleOverrides: {
-        root: { margin: 0, marginRight: '8px !important', },
+        root: { margin: 0, padding: '4px' },
         label: { fontSize: '12px !important', color: '#6C6C6C' }
       }
     },
@@ -296,11 +312,11 @@ export const viewCheckTheme = createTheme({
       defaultProps: {
         checkedIcon: <img src="/checkbox_1.svg" width={16} height={16} />,
         icon: <img src="/checkbox.svg" width={16} height={16} />,
-      }
+      },
     },
     MuiButtonBase: {
       styleOverrides: {
-        root: { padding: '0 !important', paddingLeft: '8px !important' }
+        root: { padding: '0 !important' }
       }
     }
   },
@@ -356,7 +372,7 @@ export const viewRadioTheme = createTheme({
         root: {
           // border: '1px solid #4A6AFE !important',
           border: '1px solid #C1C1C1 !important', borderRadius: '8px!important',
-          padding: '4px 8px !important', color: 'unset !important'
+          padding: '4px 8px', color: 'unset !important', fontWeight: '400 !important'
         }
       }
     },
@@ -615,13 +631,18 @@ export const doneChipTheme = createTheme({
 
 export const searchInputTheme = createTheme({
   components: {
+    MuiTextField: {
+      styleOverrides: {
+        root: { width: '100%' }
+      }
+    },
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
           fontSize: '14px', lineHeight: '160%', height: '22px',
         },
         input: {
-          padding: '0 !important', //width: '268px',
+          padding: '0 !important',
         },
         notchedOutline: {
           border: 0,

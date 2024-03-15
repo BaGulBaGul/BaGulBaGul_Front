@@ -1,18 +1,19 @@
 "use client";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation'
-import { createSearchParams } from 'react-router-dom'
-import { IconButton, TextField, ThemeProvider, Divider, Button, Backdrop, Paper, FormControl, Box, Checkbox } from '@mui/material';
-import { searchInputTheme, searchFreqTheme, deleteButtonTheme } from '@/components/common/Themes';
+import { IconButton, TextField, ThemeProvider, Divider, Backdrop, Box } from '@mui/material';
+import { searchInputTheme } from '@/components/common/Themes';
 import "react-modern-calendar-datepicker/lib/DatePicker.css";
 import { DayRange } from '@hassanmojab/react-modern-calendar-datepicker'
-import { postData, valueList } from '@/components/common/Data';
-import { FormatDateRange, PostTabsProps, RangeProps, useEffectCallAPI, useEffectFilter, useEffectFilterApplied, useEffectParam } from '@/service/Functions';
-import { MoreButton, NoEvent, PostTab, SuggestBlock, TabPanel, ViewButton, ViewSelect } from '@/components/common';
-import { PostProps } from '@/components/common/EventBlock';
+import { valueList } from '@/components/common/Data';
+import { FormatDateRange, PostTabsProps, RangeProps, String2Day, useEffectCallAPI, useEffectFilter, useEffectFilterApplied, useEffectParam } from '@/service/Functions';
+import { MoreButton, NoEvent, PostTab, ResultBlock, SuggestBlock, TabPanel, ViewButton, ViewSelect } from '@/components/common';
 
 const index = () => {
   const searchParams = useSearchParams()
+  for (const key of searchParams.keys()) {
+    console.log(key);
+  }
   const search = decodeURIComponent(decodeURIComponent(searchParams.get('query') ?? ''))
 
   //type
@@ -24,11 +25,17 @@ const index = () => {
   // * PostTab 수정 후 지우기
   const [selectedCate, setSelectedCate] = useState<string[]>([]);
   // 정렬기준(default 최신순), 날짜, 참여인원, 규모
-  const [sort, setSort] = useState('createdAt,desc');
-  const [dayRange, setDayRange] = useState<DayRange>({ from: undefined, to: undefined });
+  const [sort, setSort] = useState(searchParams.get('sort') ?? 'createdAt,desc');
+  const [dayRange, setDayRange] = useState<DayRange>({
+    from: String2Day(searchParams.get('startDate')),
+    to: String2Day(searchParams.get('endDate'))
+  });
   // * temporary name
-  const [participants, setParticipants] = useState(0);
-  const [headCount, setHeadCount] = useState<RangeProps>({ from: undefined, to: undefined });
+  const [participants, setParticipants] = useState(Number(searchParams.get('participants')) ?? 0);
+  const [headCount, setHeadCount] = useState<RangeProps>({
+    from: Number(searchParams.get('headCountMax')) ?? undefined,
+    to: Number(searchParams.get('headCountMin')) ?? undefined
+  });
 
   // api 호출용 파라미터
   const [params, setParams] = useState({ title: search, page: 0, type: valueList[value], sort: sort, startDate: '', endDate: '' });
@@ -49,7 +56,23 @@ const index = () => {
   const [filterCnt, setFilterCnt] = useState(0)
   const [changed, setChanged] = useState<{ key: string, value: string | number | RangeProps | undefined }>({ key: '', value: undefined })
 
-  useEffectParam([sort, value, dayRange], initialSet, setParams, params, value, [], sort, dayRange, participants, headCount, setEvents)
+  // searchParams로 넘어온 필터 count
+  useEffect(() => {
+    let paramFilter: string[] = []
+    for (const key of searchParams.keys()) {
+      if ((key === 'startDate' || key === 'endDate')) {
+        if (!filters.includes('dayRange') && !paramFilter.includes('dayRange')) {
+          paramFilter.push('dayRange')
+        }
+      } else if (key !== 'query' && !filters.includes(key)) {
+        paramFilter.push(key)
+      }
+    }
+
+    if (paramFilter.length > 0) { setFilters(paramFilter) }
+  }, [])
+  
+  useEffectParam([sort, value, dayRange, participants, headCount], initialSet, setParams, params, value, [], sort, dayRange, participants, headCount, setEvents)
 
   // 적용된 필터 확인
   useEffectFilter([sort, dayRange, participants, headCount], ['sort', 'dayRange', 'participants', 'headCount'], setChanged)
@@ -59,9 +82,9 @@ const index = () => {
   useEffectCallAPI(params, initialSet, setPage, events, setEvents)
 
   return (
-    <div className='flex flex-col w-full pb-[10px] h-screen bg-gray1-text'>
-      <div className='fixed top-0 bg-white-text z-paper'>
-        <SearchBar title={search ?? ''} setOpen={setOpen} />
+    <div className='flex flex-col w-full pb-[10px] h-screen bg-gray1'>
+      <div className='fixed w-full top-0 bg-white z-paper'>
+        <SearchBar title={search ?? ''} setOpen={setOpen} filterCnt={filterCnt} />
       </div>
       <div className='pt-[66px]'>
         <ResultTabs events={events} value={value} handleChange={handleChange} filterCnt={filterCnt} filters={filters}
@@ -74,7 +97,7 @@ const index = () => {
 }
 export default index;
 
-function SearchBar(props: { title: string; setOpen: any; }) {
+function SearchBar(props: { title: string; setOpen: any; filterCnt: number; }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter()
   const handleSearch = (event: any) => {
@@ -87,16 +110,14 @@ function SearchBar(props: { title: string; setOpen: any; }) {
   const handleOpen = () => { props.setOpen(true) }
 
   return (
-    <div className='flex flex-row mx-[16px] my-[18px] gap-[16px]'>
-      <div>
-        <IconButton disableRipple className='p-0'><img src='/search_back.svg' /></IconButton>
-      </div>
-      <div className='flex flex-row w-full gap-[25px] justify-between'>
-        <div className='flex flex-row bg-gray1-text px-[8px] py-[4px] gap-[8px]'>
+    <div className='flex flex-row mx-[16px] my-[18px] gap-[16px] items-center'>
+      <IconButton disableRipple className='p-0'><img src='/search_back.svg' /></IconButton>
+      <div className='flex flex-row w-full justify-between'>
+        <div className='flex flex-row bg-gray1 px-[8px] py-[4px] gap-[8px] w-full max-w-[268px]'>
           <ThemeProvider theme={searchInputTheme}><TextField defaultValue={props.title} inputRef={inputRef} required /></ThemeProvider>
           <IconButton onClick={handleSearch} disableRipple className='p-0' ><img src='/search_magnifying.svg' /></IconButton>
         </div>
-        <ViewButton handleOpen={handleOpen} cnt={3} fs={14} />
+        <ViewButton handleOpen={handleOpen} cnt={props.filterCnt} fs={14} />
       </div>
     </div>
   )
@@ -139,8 +160,8 @@ const TabBlock = (props: TabBlockProps) => {
     <div>
       {
         props.events.length > 5
-          ? <div className='bg-white-text'>
-            {//postData.map((post, idx) => (
+          ? <div className='bg-white'>
+            {
               props.events.map((post, idx) => (
                 <div key={`searched-${idx}`}>
                   {idx === 0 ? <></> : <Divider />}
@@ -154,7 +175,7 @@ const TabBlock = (props: TabBlockProps) => {
             }
           </div>
           : props.events.length > 0
-            ? <div className='flex flex-col gap-[1px] bg-white-text'>
+            ? <div className='flex flex-col gap-[1px] bg-white'>
               <div>
                 {/* {postData.map((post, idx) => ( */}
                 {props.events.map((post, idx) => (
@@ -171,38 +192,6 @@ const TabBlock = (props: TabBlockProps) => {
               <NoEvent text1="찾는 검색결과가 없어요." text2="지금 인기 있는 페스티벌을 만나보세요." buttonText={"페스티벌 인기순 보러가기"} />
             </div>
       }
-    </div>
-  )
-}
-
-export function ResultBlock(props: { data: PostProps }) {
-  const [checked, setChecked] = useState(true);
-  const handleChange = (event: any) => { setChecked(!checked); };
-
-  return (
-    <div>
-      <div className='flex flex-col py-[18px] px-[16px]'>
-        <div className='flex flex-col justify-between'>
-          <div className='flex flex-row items-center pb-[10px] gap-[20px]'>
-            <img className='rounded-lg w-[84px] h-[104px] object-cover' src={props.data.headImageUrl ?? '/default_list_thumb3x.png'} />
-            <div className='flex flex-col w-[278px] h-[104px] gap-[20px] justify-between'>
-              <div className='flex flex-col'>
-                <div className="flex flex-row justify-between items-center">
-                  <div className="flex flex-row text-[14px] text-gray3-text">
-                    <p>{FormatDateRange(props.data.startDate, props.data.endDate)}</p>
-                    <p>, {props.data.abstractLocation}</p>
-                  </div>
-                  <Checkbox icon={<img src="/detail_like.svg" width={20} height={20} />}
-                    checkedIcon={<img src="/detail_like_1.svg" width={20} height={20} />}
-                    checked={checked} onChange={handleChange} style={{ padding: 0 }} />
-                </div>
-                <p className='truncate text-base font-semibold'>{props.data.title}</p>
-              </div>
-              <span className='text-[12px] text-gray3-text block description max-w-[278px]'>{props.data.content}</span>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   )
 }

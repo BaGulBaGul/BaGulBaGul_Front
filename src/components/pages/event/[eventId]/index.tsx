@@ -120,7 +120,7 @@ function PostSlide() {
       <ThemeProvider theme={slideChipTheme}>
         <Chip label={`${index + 1}/${postData.length}`} />
       </ThemeProvider>
-      <Slider {...settings} className='h-[280px] bg-gray1-text slider-detail'>
+      <Slider {...settings} className='h-[280px] bg-gray1 slider-detail'>
         {postData.map((post, idx) => (
           <img key={`img-{idx}`} src={post.headImageUrl} height="280" className='h-[280px] object-cover' />
         ))}
@@ -142,10 +142,10 @@ function PostTitle(props: PostTitleProps) {
         <IconButton disableRipple className='p-0'><img src='/detail_more.svg' /></IconButton>
       </div>
       <div className='flex flex-row justify-between pt-[4px]'>
-        <p className='text-[14px] text-gray3-text'>{`${dateString}`}</p>
+        <p className='text-[14px] text-gray3'>{`${dateString}`}</p>
         <div className='flex flex-row items-center'>
           <a href="/"><img src='/detail_views.svg' /></a>
-          <p className='text-[14px] text-gray3-text ps-[4px]'>{props.views.toLocaleString("en-US")}</p>
+          <p className='text-[14px] text-gray3 ps-[4px]'>{props.views.toLocaleString("en-US")}</p>
         </div>
       </div>
       <div className='flex flex-row justify-between items-center pt-[4px]'>
@@ -153,7 +153,7 @@ function PostTitle(props: PostTitleProps) {
           <div className='me-[4px] rounded-full overflow-hidden w-[24px] h-[24px]'>
             <img className='w-[24px] h-[24px]' src="/images/profile_pic.png" />
           </div>
-          <p className='text-[14px] text-gray3-text'>{props.userName}</p>
+          <p className='text-[14px] text-gray3'>{props.userName}</p>
         </div>
         <div className='flex flex-row gap-[8px]'>
           <ThemeProvider theme={categoryButtonTheme}>
@@ -274,13 +274,13 @@ function PostTools(props: PostToolsProps) {
         <div className='flex flex-row items-center'>
           <div className='flex flex-row items-center gap-[4px]'>
             <IconButton disableRipple className='p-0'><img src='/detail_like.svg' /></IconButton>
-            <p className='text-gray3-text text-14'>{props.likeCount}</p>
+            <p className='text-gray3 text-[14px]'>{props.likeCount}</p>
           </div>
         </div>
         <div className='flex flex-row items-center'>
           <Link className='flex flex-row items-center gap-[4px]' href={props.commentURL}>
             <img src='/detail_comment.svg' />
-            <p className='text-gray3-text text-14'>{props.commentCount}</p>
+            <p className='text-gray3 text-[14px]'>{props.commentCount}</p>
           </Link>
         </div>
       </div>

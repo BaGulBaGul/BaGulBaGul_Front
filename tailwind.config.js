@@ -18,11 +18,11 @@ module.exports = {
       'danger-lighten': '#FC5B55',
       'danger-darken': '#E4231C',
       'danger-disabled': '#FAA8A5',
-      'white-text': '#FCFCFC',
-      'gray1-text': '#ECECEC',
-      'gray2-text': '#C1C1C1',
-      'gray3-text': '#6C6C6C',
-      'black-text': '#1E1E1E'
+      'white': '#FCFCFC',
+      'gray1': '#ECECEC',
+      'gray2': '#C1C1C1',
+      'gray3': '#6C6C6C',
+      'black': '#1E1E1E'
     },
     extend: {
       backgroundImage: {
