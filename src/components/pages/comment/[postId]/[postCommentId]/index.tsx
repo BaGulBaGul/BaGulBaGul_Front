@@ -1,7 +1,7 @@
 "use client";
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef, useState, FocusEvent } from 'react';
 import { useParams } from 'next/navigation';
-import { ThemeProvider, TextField, Button, IconButton } from '@mui/material';
+import { ThemeProvider, TextField, Button, IconButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import { CommentProps, CommentBlock } from '../index';
 import { commentData } from '@/components/common/Data';
 import { commentTheme } from '@/components/common/Themes';
@@ -9,27 +9,27 @@ import { SubHeaderCnt } from '@/components/layout/subHeader';
 import { call } from '@/service/ApiService';
 import { FormatDateTime } from '@/service/Functions';
 
-
 // * API 파라미터 업데이트 필요
 export interface CommentProps1 {
-  commentChildCount: number; commentId: number; content: string; createdAt: string;
-  likeCount: number; userId: number; username: string;
+  commentChildCount: number; commentId: number; content: string; createdAt: string; likeCount: number; userId: number; username: string;
+}
+export interface ReplyProps {
+  commentChildId: number; content: string; createdAt: string; likeCount: number; userId: number; userName: string; myLike: boolean;
 }
 const index = () => {
   const params = useParams()
   const [comment, setComment] = useState<CommentProps>()
 
-  const [children, setChildren] = useState<CommentProps[]>([]);
+  const [children, setChildren] = useState<ReplyProps[]>([]);
   function setChildrenList(currentChildren: []) {
     const newChildren = children.concat(currentChildren)
-    const newChildrenSet = new Set(newChildren)
-    const newChildrenList = Array.from(newChildrenSet);
-    console.log(newChildren, ' | ', newChildrenSet)
-    setChildren(newChildrenList);
+    const ids = newChildren.map(({ commentChildId }) => commentChildId);
+    const filtered = newChildren.filter(({ commentChildId }, index) => !ids.includes(commentChildId, index + 1));
+    setChildren(filtered);
   }
 
   const [page, setPage] = useState({ current: 0, total: 0, });
-  function setPageInfo(currentPage: number) {
+  function setPageInfo(currentPage: number) { // handleMore 적용시 사용
     setPage({ ...page, current: currentPage });
   }
   const [count, setCount] = useState(0);
@@ -64,10 +64,19 @@ const index = () => {
 
   const [mentioning, setMentioning] = useState(false)
   const [mentionTarget, setMentionTarget] = useState<{ id: Number, name: string } | undefined>(undefined)
-  const handleMention = (data: CommentProps) => {
+  const mentionRef = useRef<HTMLDivElement>(null);
+  const replyRef = useRef<HTMLInputElement>(null);
+
+  const handleMention = (data: ReplyProps) => {
     setMentioning(true)
     setMentionTarget({ id: data.userId, name: data.userName ?? '' })
   }
+
+  useEffect(() => {
+    if (mentioning && mentionRef && mentionRef.current) {
+      mentionRef.current.focus()
+    }
+  }, [mentionTarget])
 
   if (comment !== undefined) {
     return (
@@ -79,7 +88,7 @@ const index = () => {
           </div>
           <div className='flex flex-col w-full min-h-[100vh] pb-[76px] bg-gray1'>
             {
-              children.map((comment: CommentProps, idx: number) => (
+              children.map((comment: ReplyProps, idx: number) => (
                 <div className={idx % 2 == 0 ? 'bg-white ps-[48px] pe-[16px] py-[12px]' : 'bg-gray1 ps-[48px] pe-[16px] py-[12px]'}
                   onClick={(e) => { handleMention(comment) }}>
                   <ReplyBlock data={comment} key={`cmt-${idx}`} />
@@ -88,15 +97,15 @@ const index = () => {
             }
           </div>
         </div>
-        <ReplyFooter mentioning={mentioning} setMentioning={setMentioning} target={mentionTarget} />
+        <ReplyFooter mentioning={mentioning} setMentioning={setMentioning} target={mentionTarget}
+          mentionRef={mentionRef} replyRef={replyRef} />
       </>
     )
   }
-
 }
 export default index;
 
-function ReplyBlock(props: { data: CommentProps }) {
+function ReplyBlock(props: { data: ReplyProps }) {
   let createdD = FormatDateTime(props.data.createdAt, 1)
   return (
     <div>
@@ -131,16 +140,56 @@ function ReplyBlock(props: { data: CommentProps }) {
   )
 }
 
-export function ReplyFooter(props: { mentioning: boolean; setMentioning: Dispatch<SetStateAction<boolean>>; target: any; }) {
+export function ReplyFooter(props: {
+  mentioning: boolean; setMentioning: Dispatch<SetStateAction<boolean>>; target: any; mentionRef: any; replyRef: any;
+}) {
   const [value, setValue] = useState('')
-  const mentionRef = useRef<HTMLDivElement>(null);
 
-  const handleInput = () => {
-    if (props.mentioning && mentionRef.current) {
-      console.log(mentionRef.current.children.length, ' | ', mentionRef.current.children)
-      if (mentionRef.current.children.length < 0 ||
-        (mentionRef.current.children.length === 1 && mentionRef.current.children[0].tagName === 'BR')) {
+  const handleInput = (e: any) => {
+    if (props.mentioning && props.mentionRef.current) {
+      if (props.mentionRef.current.children.length <= 0 || props.mentionRef.current.children.namedItem('mention-highlight') === null) {
+        setValue(e.target.innerText.replace(/\n$/, ''))
         props.setMentioning(false);
+      }
+    }
+  }
+
+  const moveCaretEnd = (el: HTMLInputElement) => {
+    var range = document.createRange();
+    var sel = window.getSelection();
+    range.setStart(el.childNodes[1], 0);
+    range.collapse(true);
+    if (sel !== null) {
+      sel.removeAllRanges();
+      sel.addRange(range);
+    }
+  }
+
+  const handleFocus = (e: FocusEvent<HTMLInputElement>) => {
+    var el = e.currentTarget as HTMLInputElement
+    moveCaretEnd(el)
+    el.focus();
+  }
+
+  const handleCaret = (e: any) => {
+    let el = props.mentionRef.current
+    let caretOffset = 0;
+    let winSel = window.getSelection()
+    if (winSel !== null && winSel !== undefined) {
+      var range = winSel.getRangeAt(0);
+      var preCaretRange = range.cloneRange();
+      preCaretRange.selectNodeContents(el);
+      preCaretRange.setEnd(range.endContainer, range.endOffset);
+      caretOffset = preCaretRange.toString().length;
+      // console.log(caretOffset)
+      if (caretOffset === 0) {
+        moveCaretEnd(el)
+      }
+      else if (caretOffset === (el.children.namedItem('mention-highlight').innerText.replace(/ $/, '').length + 1)) {
+        if (e.type === 'keydown' && e.code === 'ArrowLeft') {
+          e.preventDefault();
+          return false;
+        }
       }
     }
   }
@@ -149,11 +198,12 @@ export function ReplyFooter(props: { mentioning: boolean; setMentioning: Dispatc
     return (
       <div className='editor-body wrapper'>
         {props.mentioning
-          ? <div className='mention-reply-section' ref={mentionRef} contentEditable onInput={handleInput}>
-            <span contentEditable={false}
-              className='text-primary-blue'>{`@${props.target.name} `}</span>
+          ? <div className='mention-reply-section' ref={props.mentionRef} contentEditable onInput={handleInput} onFocus={handleFocus}
+            onKeyUp={handleCaret} onKeyDown={handleCaret} onMouseUp={handleCaret} suppressContentEditableWarning={true} >
+            <span contentEditable={false} id='mention-highlight' className='text-primary-blue'>{`@${props.target.name} `}</span>
+            <span className='w-full' contentEditable></span>
           </div>
-          : <TextField placeholder='댓글을 입력해주세요.' fullWidth multiline className='bg-secondary-yellow' />
+          : <TextField placeholder='댓글을 입력해주세요.' defaultValue={value.replace(/\n$/, '')} inputRef={props.replyRef} fullWidth multiline />
         }
       </div>
     )

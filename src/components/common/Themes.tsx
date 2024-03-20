@@ -152,6 +152,7 @@ export const commentTheme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 0, position: 'relative', padding: '15px 24px', fontSize: 14,
+          lineHeight: '160%',
           '&::placeholder': { color: '#C1C1C1' }
         },
         notchedOutline: { border: '0' }

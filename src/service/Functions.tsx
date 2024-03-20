@@ -1,5 +1,5 @@
 import { tabList } from "@/components/common/Data";
-import { Dispatch, MutableRefObject, SetStateAction, useEffect, useRef, useState } from "react";
+import { Dispatch, MutableRefObject, SetStateAction, useEffect, useRef } from "react";
 import { createSearchParams } from 'react-router-dom'
 import { DayValue } from "react-modern-calendar-datepicker";
 import { call } from "./ApiService";
@@ -106,13 +106,17 @@ export interface PostTabsProps {
 }
 
 export interface RangeProps { from: undefined | number, to: undefined | number }
+
+export interface EventProps { id: number; abstractLocation: string; categories: string[]; 
+  tags: string[]; title: string; type: string; userName: string; userImage: string;
+  startDate: string; endDate: string; lastModifiedAt: string; headImageUrl: string; 
+  currentHeadCount: number; totalHeadCount: number; }
 // 이벤트 저장 리스트 업데이트
-export function setEventList(currentEvents: [], events: any, setEvents: any) {
-  // setEvents(prevState => [...prevState, ...currentEvents])
+export function setEventList(currentEvents: [], events: EventProps[], setEvents: any) {
   const newEvents = events.concat(currentEvents)
-  const newEventsSet = new Set(newEvents)
-  const newEventsList = Array.from(newEventsSet);
-  setEvents(newEventsList);
+  const ids = newEvents.map(({ id }) => id);
+  const filtered = newEvents.filter(({ id }, index: number) => !ids.includes(id, index + 1));
+  setEvents(filtered);
 }
 
 // update parameter
