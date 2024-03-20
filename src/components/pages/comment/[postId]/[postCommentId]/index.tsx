@@ -1,9 +1,8 @@
 "use client";
 import { Dispatch, SetStateAction, useEffect, useRef, useState, FocusEvent, memo } from 'react';
 import { useParams } from 'next/navigation';
-import { ThemeProvider, TextField, Button, IconButton, Dialog, DialogActions, DialogTitle, DialogContent, DialogContentText } from '@mui/material';
+import { ThemeProvider, TextField, Button, IconButton, Dialog, DialogActions, DialogContent, DialogContentText } from '@mui/material';
 import { CommentProps, CommentBlock } from '../index';
-import { commentData } from '@/components/common/Data';
 import { commentTheme, mentionDialogTheme } from '@/components/common/Themes';
 import { SubHeaderCnt } from '@/components/layout/subHeader';
 import { call } from '@/service/ApiService';
@@ -103,7 +102,7 @@ const index = () => {
   if (comment !== undefined) {
     return (
       <>
-        <SubHeaderCnt name='답글' url={"/"} cnt={commentData.length} />
+        <SubHeaderCnt name='답글' url={"/"} cnt={comment.commentChildCount} />
         <div className='flex flex-col w-full min-h-[100vh] pb-[49px] bg-gray1'>
           <div className='bg-white px-[16px] py-[12px] mb-[2px]'>
             <CommentBlock data={comment} currentURL='' />
@@ -112,7 +111,7 @@ const index = () => {
             {
               children.map((comment: ReplyProps, idx: number) => (
                 <div className={idx % 2 == 0 ? 'bg-white ps-[48px] pe-[16px] py-[12px]' : 'bg-gray1 ps-[48px] pe-[16px] py-[12px]'}
-                  onClick={(e) => { handleMention(comment) }}>
+                  key={`reply-${idx}`} onClick={(e) => { handleMention(comment) }}>
                   <ReplyBlock data={comment} key={`cmt-${idx}`} />
                 </div>
               ))
@@ -173,7 +172,6 @@ function ReplyFooter(props: {
   mentioning: boolean; setMentioning: Dispatch<SetStateAction<boolean>>; target: any; mentionRef: any; replyRef: any;
 }) {
   const [value, setValue] = useState('')
-
   const handleInput = (e: any) => {
     if (props.mentioning && props.mentionRef.current) {
       if (props.mentionRef.current.children.length <= 0 || props.mentionRef.current.children.namedItem('mention-highlight') === null) {
