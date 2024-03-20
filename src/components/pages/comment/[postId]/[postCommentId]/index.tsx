@@ -1,10 +1,10 @@
 "use client";
-import { Dispatch, SetStateAction, useEffect, useRef, useState, FocusEvent } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef, useState, FocusEvent, memo } from 'react';
 import { useParams } from 'next/navigation';
-import { ThemeProvider, TextField, Button, IconButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import { ThemeProvider, TextField, Button, IconButton, Dialog, DialogActions, DialogTitle, DialogContent, DialogContentText } from '@mui/material';
 import { CommentProps, CommentBlock } from '../index';
 import { commentData } from '@/components/common/Data';
-import { commentTheme } from '@/components/common/Themes';
+import { commentTheme, mentionDialogTheme } from '@/components/common/Themes';
 import { SubHeaderCnt } from '@/components/layout/subHeader';
 import { call } from '@/service/ApiService';
 import { FormatDateTime } from '@/service/Functions';
@@ -29,12 +29,13 @@ const index = () => {
   }
 
   const [page, setPage] = useState({ current: 0, total: 0, });
-  function setPageInfo(currentPage: number) { // handleMore 적용시 사용
+  function setPageInfo(currentPage: number) { // * handleMore 적용시 사용
     setPage({ ...page, current: currentPage });
   }
   const [count, setCount] = useState(0);
 
   const initialSet = useRef(false);
+  // 댓글 조회 후 대댓글 조회
   useEffect(() => {
     let apiURL = `/api/post/comment/${params.postCommentId}`;
     console.log("###", apiURL)
@@ -63,19 +64,40 @@ const index = () => {
   }, [page])
 
   const [mentioning, setMentioning] = useState(false)
-  const [mentionTarget, setMentionTarget] = useState<{ id: Number, name: string } | undefined>(undefined)
+  const [mentionTarget, setMentionTarget] = useState<{ id: number, name: string } | undefined>(undefined)
+  const [tmpTarget, setTmpTarget] = useState<{ id: number, name: string } | undefined>(undefined)  // Dialog 오픈 시 타겟값 임시 저장
   const mentionRef = useRef<HTMLDivElement>(null);
   const replyRef = useRef<HTMLInputElement>(null);
 
-  const handleMention = (data: ReplyProps) => {
+  const [open, setOpen] = useState(false);
+  const handleClickOpen = () => { setOpen(true); };
+  const handleClose = () => { setOpen(false); };
+  // 멘션 대상 설정
+  const switchMention = (data: { id: number, name: string }) => {
     setMentioning(true)
-    setMentionTarget({ id: data.userId, name: data.userName ?? '' })
+    setMentionTarget(data)
+    setTmpTarget(undefined)
+  }
+  const handleMention = (data: ReplyProps) => {
+    // 입력창에 작성 중인 댓글 있는 경우 타겟 임시 저장 후 Dialog
+    if ((!mentioning && replyRef && replyRef.current !== null && replyRef.current.value.length > 0)
+      || (mentioning && mentionRef && mentionRef.current !== null && mentionRef.current.children.namedItem('mention-highlight') !== null
+        && mentionRef.current.innerText.length + 1 > (mentionRef.current.children.namedItem('mention-highlight')?.innerHTML.length ?? 0))) {
+      setTmpTarget({ id: data.userId, name: data.userName ?? '' })
+      handleClickOpen()
+    } // 없는 경우 바로 멘션 대상 설정 및 변경
+    else { switchMention({ id: data.userId, name: data.userName ?? '' }) }
+  }
+
+  const handleDialog = () => {
+    if (tmpTarget !== undefined) {
+      switchMention(tmpTarget)
+      handleClose()
+    }
   }
 
   useEffect(() => {
-    if (mentioning && mentionRef && mentionRef.current) {
-      mentionRef.current.focus()
-    }
+    if (mentioning && mentionRef && mentionRef.current) { mentionRef.current.focus() }
   }, [mentionTarget])
 
   if (comment !== undefined) {
@@ -86,7 +108,7 @@ const index = () => {
           <div className='bg-white px-[16px] py-[12px] mb-[2px]'>
             <CommentBlock data={comment} currentURL='' />
           </div>
-          <div className='flex flex-col w-full min-h-[100vh] pb-[76px] bg-gray1'>
+          <div className='flex flex-col w-full min-h-[100vh] pb-[76px]'>
             {
               children.map((comment: ReplyProps, idx: number) => (
                 <div className={idx % 2 == 0 ? 'bg-white ps-[48px] pe-[16px] py-[12px]' : 'bg-gray1 ps-[48px] pe-[16px] py-[12px]'}
@@ -97,8 +119,18 @@ const index = () => {
             }
           </div>
         </div>
-        <ReplyFooter mentioning={mentioning} setMentioning={setMentioning} target={mentionTarget}
-          mentionRef={mentionRef} replyRef={replyRef} />
+        <ThemeProvider theme={mentionDialogTheme}>
+          <Dialog open={open} onClose={handleClose} >
+            <DialogContent>
+              <DialogContentText>작성 중이던 댓글을 삭제하고<br/> 새로운 댓글을 작성하시겠습니까?</DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose} className='btn-mention-keep'>계속 작성</Button>
+              <Button onClick={handleDialog} className='btn-mention-delete'>삭제</Button>
+            </DialogActions>
+          </Dialog >
+        </ThemeProvider>
+        <MemoizedReplyFooter mentioning={mentioning} setMentioning={setMentioning} target={mentionTarget} mentionRef={mentionRef} replyRef={replyRef} />
       </>
     )
   }
@@ -126,21 +158,18 @@ function ReplyBlock(props: { data: ReplyProps }) {
           <p className='pe-[6px]'>{createdD.date}</p><p>{createdD.time}</p>
         </div>
         <div className='flex flex-row items-center' id='comment-likes'>
-          {
-            props.data.myLike
-              ? <img src="/comment_like_1.svg" width={24} height={24} />
-              : <img src="/comment_like.svg" width={24} height={24} />
+          {props.data.myLike
+            ? <img src="/comment_like_1.svg" width={24} height={24} />
+            : <img src="/comment_like.svg" width={24} height={24} />
           }
-          {
-            props.data.likeCount !== 0 ? <p className='text-xs text-gray3 ps-[2px]'>{props.data.likeCount}</p> : <></>
-          }
+          {props.data.likeCount !== 0 ? <p className='text-xs text-gray3 ps-[2px]'>{props.data.likeCount}</p> : <></>}
         </div>
       </div>
     </div>
   )
 }
 
-export function ReplyFooter(props: {
+function ReplyFooter(props: {
   mentioning: boolean; setMentioning: Dispatch<SetStateAction<boolean>>; target: any; mentionRef: any; replyRef: any;
 }) {
   const [value, setValue] = useState('')
@@ -164,10 +193,9 @@ export function ReplyFooter(props: {
       sel.addRange(range);
     }
   }
-
   const handleFocus = (e: FocusEvent<HTMLInputElement>) => {
     var el = e.currentTarget as HTMLInputElement
-    moveCaretEnd(el)
+    moveCaretEnd(el);
     el.focus();
   }
 
@@ -181,7 +209,6 @@ export function ReplyFooter(props: {
       preCaretRange.selectNodeContents(el);
       preCaretRange.setEnd(range.endContainer, range.endOffset);
       caretOffset = preCaretRange.toString().length;
-      // console.log(caretOffset)
       if (caretOffset === 0) {
         moveCaretEnd(el)
       }
@@ -203,7 +230,7 @@ export function ReplyFooter(props: {
             <span contentEditable={false} id='mention-highlight' className='text-primary-blue'>{`@${props.target.name} `}</span>
             <span className='w-full' contentEditable></span>
           </div>
-          : <TextField placeholder='댓글을 입력해주세요.' defaultValue={value.replace(/\n$/, '')} inputRef={props.replyRef} fullWidth multiline />
+          : <TextField placeholder='댓글을 입력해주세요.' defaultValue={value.replace(/\n$/, '')} autoFocus inputRef={props.replyRef} fullWidth multiline />
         }
       </div>
     )
@@ -218,3 +245,5 @@ export function ReplyFooter(props: {
     </ThemeProvider>
   )
 }
+// Dialog 열렸을 때 작성 중이던 내용 유지 위해 memo
+const MemoizedReplyFooter = memo(ReplyFooter)

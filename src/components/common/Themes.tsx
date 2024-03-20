@@ -197,6 +197,35 @@ export const replyButtonTheme = createTheme({
   },
 });
 
+export const mentionDialogTheme = createTheme({
+  components: {
+    MuiButtonBase: { defaultProps: { disableRipple: true, }, },
+    MuiPaper: {
+      styleOverrides: { root: { borderRadius: '8px', width: '250px', } }
+    },
+    MuiDialogContent: {
+      styleOverrides: { root: { paddingTop: '20px', paddingBottom: '8px' } }
+    },
+    MuiDialogContentText: {
+      styleOverrides: { root: { fontSize: '14px', lineHeight: '160%', textAlign: 'center', } }
+    },
+    MuiDialogActions: {
+      styleOverrides: { root: { justifyContent: 'center', padding: '12px' } }
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          width: '108px', fontSize: '14px', lineHeight: '160%', fontWeight: '400',
+          borderRadius: '4px',
+          padding: '4px', backgroundColor: '#4A6AFE', color: '#FCFCFC',
+          '&:hover, &:active' : { backgroundColor: '#4A6AFE', color: '#FCFCFC' },
+          '&.btn-mention-keep': { backgroundColor: '#ECECEC', color: '#1E1E1E' }
+        }
+      }
+    }
+  }
+})
+
 export const noEventButtonTheme = createTheme({
   components: {
     MuiButtonBase: { defaultProps: { disableRipple: true, }, },
