@@ -6,12 +6,13 @@ import { postData } from '@/components/common/Data'
 import Slider from "react-slick";
 
 import { ThemeProvider, Button, Divider, IconButton, Chip } from '@mui/material';
-import { categoryButtonTheme, HashtagButton, slideChipTheme } from '@/components/common/Themes'
+import { categoryButtonTheme, slideChipTheme } from '@/components/common/Themes'
 import SubHeader from '@/components/layout/subHeader';
 import { PostFooter } from '@/components/layout/footer';
 import { FormatDate, FormatDateTime, FormatDateRange } from '@/service/Functions';
 import { call } from '@/service/ApiService';
-import { ShareDialog } from '@/components/common';
+import { ShareDialog, HashtagButton } from '@/components/common';
+import { ArrowNext, ArrowPrev } from '@/components/common/Arrow';
 
 interface EventProps {
   title: string; startDate: string; endDate: string; type: string; views: number;
@@ -96,23 +97,12 @@ const DetailEvent = (props: { data: any; }) => {
   )
 }
 
-interface ArrowProps {
-  className?: any; style?: any;
-  onClick?: React.MouseEventHandler<HTMLDivElement>;
-}
-function ArrowPrev({ onClick }: ArrowProps) {
-  return (<div className='slick-arrow slick-prev slick-prev-detail' onClick={onClick} />)
-}
-function ArrowNext({ onClick }: ArrowProps) {
-  return (<div className='slick-arrow slick-next slick-next-detail' onClick={onClick} />)
-}
-
 function PostSlide() {
   const [index, setIndex] = useState(0);
   const settings = {
     className: "center", infinite: true,
     slidesToShow: 1, slidesToScroll: 1,
-    nextArrow: <ArrowNext />, prevArrow: <ArrowPrev />,
+    nextArrow: <ArrowNext cN='slick-next-detail' />, prevArrow: <ArrowPrev cN='slick-prev-detail' />,
     beforeChange: (current: any, next: any) => { setIndex(next); },
   }
   return (

@@ -1,6 +1,6 @@
 import { useState, useLayoutEffect, createRef } from 'react';
-import { styled, IconButton, IconButtonProps } from '@mui/material';
-import { HashtagButton } from '@/components/common/Themes'
+import { styled, IconButton, IconButtonProps, Button, ThemeProvider } from '@mui/material';
+import { hashtagButtonTheme } from '@/components/common/Themes'
 
 interface ExpandMoreProps extends IconButtonProps { expand: boolean; }
 const ExpandMore = styled((props: ExpandMoreProps) => {
@@ -47,5 +47,20 @@ export default function HashtagAccordion(props: HashtagAccordionProps) {
         }
       </div>
     </div>
+  )
+}
+
+interface HashtagButtonProps { tag: string; }
+export function HashtagButton(props: HashtagButtonProps) {
+  return (
+    <ThemeProvider theme={hashtagButtonTheme}>
+      <Button>
+        <div className='flex flex-row'>
+          <span className='pe-[2px]'>#</span>
+          <span>{props.tag}</span>
+        </div>
+      </Button>
+    </ThemeProvider>
+
   )
 }

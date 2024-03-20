@@ -8,8 +8,7 @@ export const filterChipTheme = createTheme({
       styleOverrides: {
         root: {
           padding: '2px 8px !important', border: '0.5px solid #C1C1C1 !important', borderRadius: '20px !important',
-          fontSize: '14px !important', fontWeight: '400', lineHeight: '160%',
-          color: '#6C6C6C !important', gap: '2px'
+          fontSize: '14px !important', fontWeight: '400', lineHeight: '160%', color: '#6C6C6C !important', gap: '2px'
         },
         label: { padding: '0 !important' },
         deleteIcon: { margin: '0 !important' }
@@ -24,8 +23,7 @@ export const suggestChipTheme = createTheme({
       styleOverrides: {
         root: {
           padding: '2px 8px !important', border: '1px solid #C1C1C1 !important', borderRadius: '14px !important',
-          fontSize: '14px !important', fontWeight: '400', lineHeight: '160%',
-          color: '#1E1E1E !important'
+          fontSize: '14px !important', fontWeight: '400', lineHeight: '160%', color: '#1E1E1E !important'
         },
         label: { padding: '0 !important' },
       }
@@ -37,9 +35,7 @@ export const categoryButtonTheme = createTheme({
   components: {
     MuiButtonBase: { defaultProps: { disableRipple: true, }, },
     MuiToggleButtonGroup: {
-      styleOverrides: {
-        root: { gap: '4px' }
-      }
+      styleOverrides: { root: { gap: '4px' } }
     },
     MuiToggleButton: {
       styleOverrides: {
@@ -111,20 +107,6 @@ export const hashtagButtonTheme = createTheme({
     }
   },
 });
-interface HashtagButtonProps { tag: string; }
-export function HashtagButton(props: HashtagButtonProps) {
-  return (
-    <ThemeProvider theme={hashtagButtonTheme}>
-      <Button>
-        <div className='flex flex-row'>
-          <span className='pe-[2px]'>#</span>
-          <span>{props.tag}</span>
-        </div>
-      </Button>
-    </ThemeProvider>
-
-  )
-}
 
 export const commentButtonTheme = createTheme({
   components: {
@@ -218,7 +200,7 @@ export const mentionDialogTheme = createTheme({
           width: '108px', fontSize: '14px', lineHeight: '160%', fontWeight: '400',
           borderRadius: '4px',
           padding: '4px', backgroundColor: '#4A6AFE', color: '#FCFCFC',
-          '&:hover, &:active' : { backgroundColor: '#4A6AFE', color: '#FCFCFC' },
+          '&:hover, &:active': { backgroundColor: '#4A6AFE', color: '#FCFCFC' },
           '&.btn-mention-keep': { backgroundColor: '#ECECEC', color: '#1E1E1E' }
         }
       }
@@ -426,39 +408,21 @@ export const viewSwitchTheme = createTheme({
     MuiButtonBase: { defaultProps: { disableRipple: true, }, },
     MuiToggleButtonGroup: {
       styleOverrides: {
-        root: { gap: '4px !important' }
+        root: { backgroundColor: '#ECECEC', borderRadius: '20px', }
       }
     },
     MuiToggleButton: {
       styleOverrides: {
         root: {
           fontSize: '14px !important', fontWeight: '400', lineHeight: '160%',
-          color: '#1E1E1E!important', padding: '2px 8px', minWidth: 'unset',
-          border: '0.5px solid #C1C1C1 !important', borderRadius: '20px!important',
+          color: '#6C6C6C!important', padding: '2px 8px', minWidth: 'unset',
+          border: 'transparent !important', borderRadius: '20px!important',
           '&:hover, &:focus': {
-            backgroundColor: 'transparent', color: '#6C6C6C !important',
-            border: '0.5px solid #6C6C6C !important'
+            backgroundColor: 'transparent'
           },
           '&.Mui-selected, &.Mui-selected:hover': {
-            backgroundColor: '#ECECEC', color: '#6C6C6C !important',
-            border: '0.5px solid #C1C1C1 !important'
-          }
-        }
-      }
-    },
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          fontSize: '14px !important', fontWeight: '400', lineHeight: '160%',
-          color: '#1E1E1E!important', padding: '2px 8px', minWidth: 'unset',
-          border: '0.5px solid #C1C1C1 !important', borderRadius: '20px!important',
-          '&:hover, &:focus': {
-            backgroundColor: 'transparent', color: '#6C6C6C !important',
-            border: '0.5px solid #6C6C6C !important'
-          },
-          '&.Mui-selected, &.Mui-selected:hover': {
-            backgroundColor: '#ECECEC', color: '#6C6C6C !important',
-            border: '0.5px solid #C1C1C1 !important'
+            backgroundColor: '#4A6AFE', color: '#FCFCFC !important', fontWeight: '600',
+            boxShadow: '1px 0px 2px #00000033',
           }
         }
       }

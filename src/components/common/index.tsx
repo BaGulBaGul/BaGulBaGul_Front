@@ -1,6 +1,6 @@
 import CategoryButtons from './CategoryButtons'
 import { FestivalBlock, CalendarBlock, ResultBlock, SuggestBlock } from './EventBlock'
-import HashtagAccordion from './HashtagAccordion'
+import HashtagAccordion, { HashtagButton } from './HashtagAccordion'
 import MoreButton from './MoreButton'
 import NoEvent from './NoEvent'
 import PostTab from './PostTab'
@@ -15,7 +15,7 @@ import { ViewFilterApplied } from './ViewFilterApplied'
 export {
   CategoryButtons,
   FestivalBlock, CalendarBlock, ResultBlock, SuggestBlock,
-  HashtagAccordion,
+  HashtagAccordion,HashtagButton,
   MoreButton,
   NoEvent,
   PostTab, TabPanel,

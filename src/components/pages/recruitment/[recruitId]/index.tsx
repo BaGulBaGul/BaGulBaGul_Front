@@ -5,10 +5,11 @@ import { postData } from '@/components/common/Data'
 import Slider from "react-slick";
 
 import { ThemeProvider, Divider, IconButton, Chip } from '@mui/material';
-import { HashtagButton, accompanyChipTheme, slideChipTheme } from '@/components/common/Themes'
+import { accompanyChipTheme, slideChipTheme } from '@/components/common/Themes'
 import { FormatDate } from '@/service/Functions';
 import { call } from '@/service/ApiService';
-import { ShareDialog } from '@/components/common';
+import { ShareDialog, HashtagButton } from '@/components/common';
+import { ArrowNext, ArrowPrev } from '@/components/common/Arrow';
 
 const index = (props: { data: any }) => {
   const params = useParams()
@@ -58,20 +59,11 @@ const DetailRecruitment = (props: { data: any }) => {
       </div>
       <Divider />
       <ShareDialog handleClose={handleClose} popopen={popopen} sharingURL={pathname} />
-      <div className='pb-[30px]'><PostTools handleOpen={handleOpen} likeCount={props.data.likeCount} commentCount={props.data.commentCount} /></div>
+      <div className='pb-[30px]'>
+        <PostTools handleOpen={handleOpen} likeCount={props.data.likeCount} commentCount={props.data.commentCount} />
+      </div>
     </div>
   )
-}
-
-interface ArrowProps {
-  className?: any; style?: any;
-  onClick?: React.MouseEventHandler<HTMLDivElement>;
-}
-function ArrowPrev({ onClick }: ArrowProps) {
-  return (<div className='slick-arrow slick-prev slick-prev-detail' onClick={onClick} />)
-}
-function ArrowNext({ onClick }: ArrowProps) {
-  return (<div className='slick-arrow slick-next slick-next-detail' onClick={onClick} />)
 }
 
 function PostSlide() {
@@ -79,7 +71,7 @@ function PostSlide() {
   const settings = {
     className: "center", infinite: true,
     slidesToShow: 1, slidesToScroll: 1,
-    nextArrow: <ArrowNext />, prevArrow: <ArrowPrev />,
+    nextArrow: <ArrowNext cN='slick-next-detail' />, prevArrow: <ArrowPrev cN='slick-prev-detail' />,
     beforeChange: (current: any, next: any) => { setIndex(next); },
   }
   return (
@@ -114,10 +106,10 @@ function PostTitle(props: PostTitleProps) {
         </div>
       </div>
       <div className='flex flex-row items-center pt-[4px]'>
-          <div className='me-[4px] rounded-full overflow-hidden w-[24px] h-[24px]'>
-            <img className='w-[24px] h-[24px]' src="/images/profile_pic.png" />
-          </div>
-          <p className='text-[14px] text-gray3'>{props.username}</p>
+        <div className='me-[4px] rounded-full overflow-hidden w-[24px] h-[24px]'>
+          <img className='w-[24px] h-[24px]' src="/images/profile_pic.png" />
+        </div>
+        <p className='text-[14px] text-gray3'>{props.username}</p>
       </div>
     </div>
   )

@@ -1,6 +1,7 @@
 import Slider from "react-slick";
 import { postData } from "./Data";
 import { FormatDateRange } from "@/service/Functions";
+import { ArrowNext, ArrowPrev } from "./Arrow";
 
 // - main page carousel
 interface PostProps {
@@ -19,22 +20,11 @@ function RecPost(props: { data: PostProps }) {
   )
 }
 
-interface ArrowProps {
-  className?: any; style?: any;
-  onClick?: React.MouseEventHandler<HTMLDivElement>;
-}
-function ArrowPrev({ onClick }: ArrowProps) {
-  return (<div className='slick-arrow slick-prev slick-prev-main' onClick={onClick} />)
-}
-function ArrowNext({ onClick }: ArrowProps) {
-  return (<div className='slick-arrow slick-next slick-next-main' onClick={onClick} />)
-}
-
 function RecSlide() {
   const settings = {
     className: "center", infinite: true, dots: true, dotsClass: 'slick-dots',
     slidesToShow: 1, slidesToScroll: 1, centerMode: true, variableWidth: true,
-    nextArrow: <ArrowNext />, prevArrow: <ArrowPrev />,
+    nextArrow: <ArrowNext cN='slick-next-main' />, prevArrow: <ArrowPrev cN='slick-prev-main' />
   }
   return (
     <div className='pb-[50px] h-auto'>
