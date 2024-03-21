@@ -8,10 +8,12 @@ export const filterChipTheme = createTheme({
       styleOverrides: {
         root: {
           padding: '2px 8px !important', border: '0.5px solid #C1C1C1 !important', borderRadius: '20px !important',
-          fontSize: '14px !important', fontWeight: '400', lineHeight: '160%', color: '#6C6C6C !important', gap: '2px'
+          fontSize: '14px !important', fontWeight: '400', lineHeight: '160%', color: '#6C6C6C !important',
+          height: '26px',
+          '&:not(:last-child)': { marginRight: '4px' }
         },
         label: { padding: '0 !important' },
-        deleteIcon: { margin: '0 !important' }
+        deleteIcon: { margin: '0 !important', height: '22px' }
       }
     }
   }
@@ -133,7 +135,7 @@ export const commentTheme = createTheme({
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
-          borderRadius: 0, position: 'relative', padding: '15px 24px', fontSize: 14,
+          borderRadius: 0, position: 'relative', padding: '13px 24px', fontSize: 14,
           lineHeight: '160%',
           '&::placeholder': { color: '#C1C1C1' }
         },
@@ -613,7 +615,7 @@ export const doneChipTheme = createTheme({
       styleOverrides: {
         root: {
           fontSize: '12px !important', height: 'unset', lineHeight: '160%',
-          color: '#6C6C6C!important',
+          color: '#1E1E1E!important',
           backgroundColor: '#FFF27E',
           borderRadius: '2px!important', padding: '2px 4px',
         },

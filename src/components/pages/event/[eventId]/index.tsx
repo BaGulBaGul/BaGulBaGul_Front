@@ -14,11 +14,6 @@ import { call } from '@/service/ApiService';
 import { ShareDialog, HashtagButton } from '@/components/common';
 import { ArrowNext, ArrowPrev } from '@/components/common/Arrow';
 
-interface EventProps {
-  title: string; startDate: string; endDate: string; type: string; views: number;
-  userName: string; categories: any; headCount: number; content: string; fullLocation: string; 
-  latitudeLocation: any; longitudeLocation: any;
-}
 const index = () => {
   const params = useParams()
   const [data, setData] = useState<any>({})
@@ -141,7 +136,8 @@ function PostTitle(props: PostTitleProps) {
       <div className='flex flex-row justify-between items-center pt-[4px]'>
         <div className='flex flex-row items-center'>
           <div className='me-[4px] rounded-full overflow-hidden w-[24px] h-[24px]'>
-            <img className='w-[24px] h-[24px]' src="/images/profile_pic.png" />
+            {/* 프로필 이미지 적용 필요 */}
+            <img className='w-[24px] h-[24px]' src={"/images/profile_pic.png"} />
           </div>
           <p className='text-[14px] text-gray3'>{props.userName}</p>
         </div>
@@ -268,10 +264,10 @@ function PostTools(props: PostToolsProps) {
           </div>
         </div>
         <div className='flex flex-row items-center'>
-          <Link className='flex flex-row items-center gap-[4px]' href={props.commentURL}>
+          <a className='flex flex-row items-center gap-[4px]' href={props.commentURL}>
             <img src='/detail_comment.svg' />
             <p className='text-gray3 text-[14px]'>{props.commentCount}</p>
-          </Link>
+          </a>
         </div>
       </div>
       <div className='flex flex-row gap-[10px]'>

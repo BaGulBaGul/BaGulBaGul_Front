@@ -1,19 +1,20 @@
 "use client";
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation'
 import { IconButton, TextField, ThemeProvider, Divider } from '@mui/material';
 import { searchInputTheme } from '@/components/common/Themes';
-import "react-modern-calendar-datepicker/lib/DatePicker.css";
 import { tabList } from '@/components/common/Data';
 import { useEffectCallAPI } from '@/service/Functions';
 import { MoreButton, NoEvent, ResultBlock, SuggestBlock, TabPanel, ViewButton } from '@/components/common';
 
 const index = () => {
   const searchParams = useSearchParams()
+  console.log(searchParams.getAll('tag'))
 
   // api 호출용 파라미터
   const [params, setParams] = useState({
     title: decodeURIComponent(decodeURIComponent(searchParams.get('query') ?? '')), page: 0,
+    // tag: decodeURIComponent(decodeURIComponent(searchParams.get('tag') ?? '')),
     type: tabList[Number(searchParams.get('tab_id')) ?? 0], sort: searchParams.get('sort') ?? 'createdAt,desc',
     startDate: searchParams.get('startDate') ?? '', endDate: searchParams.get('endDate') ?? '',
   });
@@ -23,6 +24,7 @@ const index = () => {
     setEvents([])
     setParams({
       title: decodeURIComponent(decodeURIComponent(searchParams.get('query') ?? '')), page: 0,
+      // tag: decodeURIComponent(decodeURIComponent(searchParams.get('tag') ?? '')),
       type: tabList[Number(searchParams.get('tab_id')) ?? 0], sort: searchParams.get('sort') ?? 'createdAt,desc',
       startDate: searchParams.get('startDate') ?? '', endDate: searchParams.get('endDate') ?? ''
     })

@@ -7,11 +7,11 @@ import { SubHeaderCnt } from '@/components/layout/subHeader';
 import { FormatDateTime } from '@/service/Functions';
 import { commentTheme, replyButtonTheme } from '@/components/common/Themes';
 import { call } from '@/service/ApiService';
-import { commentData } from '@/components/common/Data';
+import { MoreButton } from '@/components/common';
 
 export interface CommentProps {
   commentChildCount: number; commentId: number; content: string; createdAt: string;
-  likeCount: number; myLike: Boolean; userId: number; username?: string; userName?: string; user_profile?: string;
+  likeCount: number; myLike: Boolean; userId: number; username?: string; userName?: string; userImage?: string;
 }
 
 const index = () => {
@@ -20,16 +20,17 @@ const index = () => {
   const [comments, setComments] = useState<CommentProps[]>([]);
   function setCommentList(currentComments: []) {
     const newComments = comments.concat(currentComments)
-    const newCommentsSet = new Set(newComments)
-    const newCommentsList = Array.from(newCommentsSet);
-    console.log(newComments, ' | ', newCommentsSet)
-    setComments(newCommentsList);
+    const ids = newComments.map(({ commentId }) => commentId);
+    const filtered = newComments.filter(({ commentId }, index: number) => !ids.includes(commentId, index + 1));
+    setComments(filtered);
   }
 
   const [page, setPage] = useState({ current: 0, total: 0, });
   function setPageInfo(currentPage: number) {
     setPage({ ...page, current: currentPage });
   }
+  const handleMore = () => { setPageInfo(page.current + 1) }
+
   const [count, setCount] = useState(0);
 
   const initialSet = useRef(false);
@@ -54,13 +55,18 @@ const index = () => {
   return (
     <>
       <SubHeaderCnt name='글 댓글' url={"/"} cnt={count} />
-      <div className='flex flex-col w-full min-h-[100vh] pb-[76px] bg-gray1'>
+      <div className='flex flex-col w-full min-h-[calc(100vh-104px)] pb-[49px] bg-gray1'>
         {
           comments.map((comment: CommentProps, idx: number) => (
-            <div className={idx % 2 == 0 ? 'bg-white px-[16px] py-[12px]' : 'bg-gray1 px-[16px] py-[12px]'}>
-              <CommentBlock data={comment} key={`cmt-${idx}`} currentURL={`${params.postId}`} />
+            <div key={`cmt-${idx}`} className={idx % 2 == 0 ? 'bg-white px-[16px] py-[12px]' : 'bg-gray1 px-[16px] py-[12px]'}>
+              <CommentBlock data={comment} currentURL={`${params.postId}`} />
             </div>
           ))
+        }
+        {
+          page.total > 1 && page.current + 1 < page.total
+            ? <MoreButton onClick={handleMore} />
+            : <></>
         }
       </div>
       <CommentFooter />

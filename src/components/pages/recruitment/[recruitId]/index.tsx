@@ -10,8 +10,9 @@ import { FormatDate } from '@/service/Functions';
 import { call } from '@/service/ApiService';
 import { ShareDialog, HashtagButton } from '@/components/common';
 import { ArrowNext, ArrowPrev } from '@/components/common/Arrow';
+import Link from 'next/link';
 
-const index = (props: { data: any }) => {
+const index = () => {
   const params = useParams()
   const [data, setData] = useState<any>({})
 
@@ -42,25 +43,28 @@ const DetailRecruitment = (props: { data: any }) => {
   const handleClose = () => { setPopopen(false) }
 
   const pathname = usePathname();
+  let commentURL = `/comment/${props.data.postId}`
   return (
-    <div className='flex flex-col w-full pt-[104px]'>
-      <PostSlide />
-      <PostTitle title={props.data.title} startDate={props.data.startDate}
-        views={props.data.views} username={props.data.username} />
-      <Divider />
-      <PostInfo headCount={props.data.headCount} />
-      <div className='pb-[30px]'>
-        <PostContent content={props.data.content} />
-        {
-          props.data.tags !== undefined && props.data.tags.length > 0
-            ? <PostContentTag tags={props.data.tags} />
-            : <></>
-        }
+    <div className='flex flex-col w-full min-h-screen pt-[104px] justify-between'>
+      <div>
+        <PostSlide />
+        <PostTitle title={props.data.title} startDate={props.data.startDate}
+          views={props.data.views} username={props.data.username} />
+        <Divider />
+        <PostInfo headCount={props.data.totalHeadCount} currentHeadCount={props.data.currentHeadCount} />
+        <div className='pb-[30px]'>
+          <PostContent content={props.data.content} />
+          {
+            props.data.tags !== undefined && props.data.tags.length > 0
+              ? <PostContentTag tags={props.data.tags} />
+              : <></>
+          }
+        </div>
       </div>
-      <Divider />
       <ShareDialog handleClose={handleClose} popopen={popopen} sharingURL={pathname} />
       <div className='pb-[30px]'>
-        <PostTools handleOpen={handleOpen} likeCount={props.data.likeCount} commentCount={props.data.commentCount} />
+        <Divider />
+        <PostTools handleOpen={handleOpen} likeCount={props.data.likeCount} commentCount={props.data.commentCount} commentURL={commentURL} />
       </div>
     </div>
   )
@@ -115,12 +119,12 @@ function PostTitle(props: PostTitleProps) {
   )
 }
 
-function PostInfo(props: { headCount: number }) {
+function PostInfo(props: { headCount: number; currentHeadCount: number; }) {
   return (
     <div className='flex flex-row px-[16px] pt-[30px]' id='p-info'>
-      <p className='text-[14px] leading-[160%] font-semibold pe-[10px]'>인원(명)</p>
+      <p className='text-[14px] leading-[160%] font-semibold pe-[10px]'>모집인원</p>
       <p className='text-[14px] leading-[160%] pe-[6px]'>{props.headCount}명</p>
-      <ThemeProvider theme={accompanyChipTheme}><Chip label="모집 중" /></ThemeProvider>
+      <ThemeProvider theme={accompanyChipTheme}><Chip label={`${props.currentHeadCount}명 참여 중`} /></ThemeProvider>
     </div>
   )
 }
@@ -147,20 +151,20 @@ function PostContentTag(props: { tags: string[] }) {
 
 }
 
-interface PostToolsProps { handleOpen: any; likeCount: number; commentCount: number; }
+interface PostToolsProps { handleOpen: any; likeCount: number; commentCount: number; commentURL: string; }
 function PostTools(props: PostToolsProps) {
   return (
     <div className='flex flex-row justify-between pt-[30px] px-[16px]'>
-      <div className='flex flex-row'>
-        <div className='flex flex-row items-center pe-[10px]'>
-          <div className='flex flex-row items-center'>
-            <IconButton disableRipple className='p-0 pe-[4px]'><img src='/detail_like.svg' /></IconButton>
-            <p className='text-gray3 text-sm'>{props.likeCount}</p>
+      <div className='flex flex-row gap-[10px]'>
+        <div className='flex flex-row items-center'>
+          <div className='flex flex-row items-center gap-[4px]'>
+            <IconButton disableRipple className='p-0'><img src='/detail_like.svg' /></IconButton>
+            <p className='text-gray3 text-[14px]'>{props.likeCount}</p>
           </div>
         </div>
-        <div className='flex flex-row items-center pe-[10px]'>
-          <a href="/comment" className='flex flex-row items-center'>
-            <img src='/detail_comment.svg' className='pe-[4px]' />
+        <div className='flex flex-row items-center'>
+          <a className='flex flex-row items-center gap-[4px]' href={props.commentURL}>
+            <img src='/detail_comment.svg' />
             <p className='text-gray3 text-sm'>{props.commentCount}</p>
           </a>
         </div>

@@ -7,6 +7,7 @@ import { commentTheme, mentionDialogTheme } from '@/components/common/Themes';
 import { SubHeaderCnt } from '@/components/layout/subHeader';
 import { call } from '@/service/ApiService';
 import { FormatDateTime } from '@/service/Functions';
+import { MoreButton } from '@/components/common';
 
 // * API 파라미터 업데이트 필요
 export interface CommentProps1 {
@@ -28,9 +29,10 @@ const index = () => {
   }
 
   const [page, setPage] = useState({ current: 0, total: 0, });
-  function setPageInfo(currentPage: number) { // * handleMore 적용시 사용
+  function setPageInfo(currentPage: number) {
     setPage({ ...page, current: currentPage });
   }
+  const handleMore = () => { setPageInfo(page.current + 1) }
   const [count, setCount] = useState(0);
 
   const initialSet = useRef(false);
@@ -103,11 +105,11 @@ const index = () => {
     return (
       <>
         <SubHeaderCnt name='답글' url={"/"} cnt={comment.commentChildCount} />
-        <div className='flex flex-col w-full min-h-[100vh] pb-[49px] bg-gray1'>
+        <div className='flex flex-col w-full min-h-[calc(100vh-104px)] pb-[49px] bg-gray1'>
           <div className='bg-white px-[16px] py-[12px] mb-[2px]'>
             <CommentBlock data={comment} currentURL='' />
           </div>
-          <div className='flex flex-col w-full min-h-[100vh] pb-[76px]'>
+          <div className='flex flex-col w-full'>
             {
               children.map((comment: ReplyProps, idx: number) => (
                 <div className={idx % 2 == 0 ? 'bg-white ps-[48px] pe-[16px] py-[12px]' : 'bg-gray1 ps-[48px] pe-[16px] py-[12px]'}
@@ -116,12 +118,17 @@ const index = () => {
                 </div>
               ))
             }
+            {
+              page.total > 1 && page.current + 1 < page.total
+                ? <MoreButton onClick={handleMore} />
+                : <></>
+            }
           </div>
         </div>
         <ThemeProvider theme={mentionDialogTheme}>
           <Dialog open={open} onClose={handleClose} >
             <DialogContent>
-              <DialogContentText>작성 중이던 댓글을 삭제하고<br/> 새로운 댓글을 작성하시겠습니까?</DialogContentText>
+              <DialogContentText>작성 중이던 댓글을 삭제하고<br /> 새로운 댓글을 작성하시겠습니까?</DialogContentText>
             </DialogContent>
             <DialogActions>
               <Button onClick={handleClose} className='btn-mention-keep'>계속 작성</Button>

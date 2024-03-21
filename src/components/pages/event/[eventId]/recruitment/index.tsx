@@ -1,13 +1,12 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from 'next/navigation';
-import Link from "next/link";
-import { ThemeProvider, Divider, FormControl, FormControlLabel, Checkbox, Chip, Backdrop } from '@mui/material';
-import { doneChipTheme, viewCheckTheme } from '@/components/common/Themes'
-import { HashtagAccordion, MoreButton, ViewButton, ViewSelect } from '@/components/common';
+import { Divider, Backdrop } from '@mui/material';
+import { MoreButton, ViewButton, ViewSelect } from '@/components/common';
 import { call } from '@/service/ApiService';
-import { FormatDate, RangeProps, getParams, useEffectFilter, useEffectFilterApplied, useEffectParam } from "@/service/Functions";
+import { RangeProps, getParams, useEffectFilter, useEffectFilterApplied, useEffectParam } from "@/service/Functions";
 import { DayRange } from "@hassanmojab/react-modern-calendar-datepicker";
+import { RecruitBlock, RecruitProps } from "@/components/common/EventBlock";
 
 const index = () => {
   const prms = useParams()
@@ -16,10 +15,6 @@ const index = () => {
   const [dayRange, setDayRange] = useState<DayRange>({ from: undefined, to: undefined });
   const [participants, setParticipants] = useState(0);
 
-  interface RecruitProps {
-    title: string; user_profile: string; username: string; state: string;
-    startDate: any; tags?: string[]; id?: number;
-  }
   const [params, setParams] = useState({ page: 0, sort: sort, startDate: '', endDate: '' });
   const [recruits, setRecruits] = useState<RecruitProps[]>([]);
   function setRecruitList(currentRecruits: []) {
@@ -119,45 +114,5 @@ const index = () => {
     </>
   )
 
-  // function ViewsCheck() {
-  //   const handleView = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //     setView(e.target.checked);
-  //   }
-  //   return (
-  //     <div className='sticky top-[104px] bg-[#FFF] relative z-10'>
-  //       <div className='flex flex-row justify-end gap-[8px] px-[16px] pb-[10px]'>
-  //         <ThemeProvider theme={viewCheckTheme}>
-  //           <FormControl>
-  //             <FormControlLabel control={<Checkbox checked={view} value='festival' onChange={handleView} />} label="모집 중만 보기" />
-  //           </FormControl>
-  //         </ThemeProvider>
-  //       </div>
-  //     </div>
-  //   )
-  // }
-
-  function RecruitBlock(props: { data: RecruitProps }) {
-    let urlLink = `/recruitment/${props.data.id}`
-    return (
-      <div className='flex flex-col py-[18px] px-[16px]'>
-        <div className='flex flex-col gap-[4px]'>
-          <Link href={urlLink}>
-            <p className='truncate text-[16px]'>{props.data.title}</p>
-            <p className='text-[14px] text-gray3'>{FormatDate(props.data.startDate, 0)}</p>
-          </Link>
-          <div className='flex flex-row items-center gap-[8px]'>
-            <div className='flex flex-row items-center gap-[4px]'>
-              <img className='w-[24px] h-[24px]' src="/main_profile.svg" />
-              <p className="text-[14px] text-gray3">{props.data.username}</p>
-            </div>
-            {
-              props.data.state === "PROCEEDING" ? <></> : <ThemeProvider theme={doneChipTheme}><Chip label="모집완료" /></ThemeProvider>
-            }
-          </div>
-          {props.data.tags ? <HashtagAccordion tag={props.data.tags} /> : <></>}
-        </div>
-      </div>
-    )
-  }
 };
 export default index;
