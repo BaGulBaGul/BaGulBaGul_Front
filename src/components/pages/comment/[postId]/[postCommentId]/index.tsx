@@ -2,12 +2,13 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState, FocusEvent, memo } from 'react';
 import { useParams } from 'next/navigation';
 import { ThemeProvider, TextField, Button, IconButton, Dialog, DialogActions, DialogContent, DialogContentText } from '@mui/material';
-import { CommentProps, CommentBlock } from '../index';
+import { CommentBlock } from '../index';
 import { commentTheme, mentionDialogTheme } from '@/components/common/Themes';
 import { SubHeaderCnt } from '@/components/layout/subHeader';
 import { call } from '@/service/ApiService';
 import { FormatDateTime } from '@/service/Functions';
 import { MoreButton } from '@/components/common';
+import { CommentDrawer, CommentMProps, CommentProps, ModifyInput } from '@/components/common/Comment';
 
 // * API 파라미터 업데이트 필요
 export interface CommentProps1 {
@@ -19,7 +20,6 @@ export interface ReplyProps {
 const index = () => {
   const params = useParams()
   const [comment, setComment] = useState<CommentProps>()
-
   const [children, setChildren] = useState<ReplyProps[]>([]);
   function setChildrenList(currentChildren: []) {
     const newChildren = children.concat(currentChildren)
@@ -33,7 +33,13 @@ const index = () => {
     setPage({ ...page, current: currentPage });
   }
   const handleMore = () => { setPageInfo(page.current + 1) }
-  const [count, setCount] = useState(0);
+
+  // menu drawer
+  const [openD, setOpenD] = useState(false);
+  const toggleDrawer = (newOpen: boolean) => () => { setOpenD(newOpen); };
+
+  const [openM, setOpenM] = useState(false);
+  const [targetM, setTargetM] = useState<CommentMProps | undefined>();
 
   const initialSet = useRef(false);
   // 댓글 조회 후 대댓글 조회
@@ -57,7 +63,6 @@ const index = () => {
           if (!initialSet.current) {
             setPage({ current: 0, total: response.data.totalPages })
             initialSet.current = true;
-            setCount(response.data.totalElements)
           }
           setChildrenList(response.data.content)
         }
@@ -107,14 +112,14 @@ const index = () => {
         <SubHeaderCnt name='답글' url={"/"} cnt={comment.commentChildCount} />
         <div className='flex flex-col w-full min-h-[calc(100vh-104px)] pb-[49px] bg-gray1'>
           <div className='bg-white px-[16px] py-[12px] mb-[2px]'>
-            <CommentBlock data={comment} currentURL='' />
+            <CommentBlock data={comment} currentURL='' setOpenD={setOpenD} setTargetM={setTargetM} />
           </div>
           <div className='flex flex-col w-full'>
             {
               children.map((comment: ReplyProps, idx: number) => (
                 <div className={idx % 2 == 0 ? 'bg-white ps-[48px] pe-[16px] py-[12px]' : 'bg-gray1 ps-[48px] pe-[16px] py-[12px]'}
                   key={`reply-${idx}`} onClick={(e) => { handleMention(comment) }}>
-                  <ReplyBlock data={comment} key={`cmt-${idx}`} />
+                  <ReplyBlock data={comment} key={`cmt-${idx}`} setOpenD={setOpenD} setTargetM={setTargetM} />
                 </div>
               ))
             }
@@ -137,14 +142,20 @@ const index = () => {
           </Dialog >
         </ThemeProvider>
         <MemoizedReplyFooter mentioning={mentioning} setMentioning={setMentioning} target={mentionTarget} mentionRef={mentionRef} replyRef={replyRef} />
+        <CommentDrawer open={openD} toggleDrawer={toggleDrawer} setOpenM={setOpenM} />
+        <ModifyInput open={openM} setOpenM={setOpenM} target={targetM} setTarget={setTargetM} />
       </>
     )
   }
 }
 export default index;
 
-function ReplyBlock(props: { data: ReplyProps }) {
+function ReplyBlock(props: { data: ReplyProps; setOpenD: any; setTargetM: any; }) {
   let createdD = FormatDateTime(props.data.createdAt, 1)
+  const handleToggle = () => {
+    props.setOpenD(true)
+    props.setTargetM({ postCommentId: props.data.commentChildId, content: props.data.content })
+  }
   return (
     <div>
       <div className='flex flex-row justify-between pb-[10px]' id='comment-head'>
@@ -154,7 +165,7 @@ function ReplyBlock(props: { data: ReplyProps }) {
           </a>
           <div className='text-sm ps-[8px]'>{props.data.userName}</div>
         </div>
-        <IconButton disableRipple className='p-0'><img src='/comment_etc.svg' width={24} height={24} /></IconButton>
+        <IconButton disableRipple className='p-0' onClick={handleToggle}><img src='/comment_etc.svg' width={24} height={24} /></IconButton>
       </div>
       <div className='text-sm text-gray3 pb-[6px]' id='comment-body'>
         {props.data.content}
@@ -245,7 +256,7 @@ function ReplyFooter(props: {
     <ThemeProvider theme={commentTheme}>
       <div className="flex flex-row comment-input">
         <MentionInput />
-        <Button className='text-sm w-[70px] h-[48px]'>등록</Button>
+        <Button className='text-[16px] w-[70px] h-[48px]'>등록</Button>
       </div>
     </ThemeProvider>
   )

@@ -6,7 +6,7 @@ import { postData } from '@/components/common/Data'
 import Slider from "react-slick";
 
 import { ThemeProvider, Button, Divider, IconButton, Chip } from '@mui/material';
-import { categoryButtonTheme, slideChipTheme } from '@/components/common/Themes'
+import { accompanyChipTheme, categoryButtonTheme, slideChipTheme } from '@/components/common/Themes'
 import SubHeader from '@/components/layout/subHeader';
 import { PostFooter } from '@/components/layout/footer';
 import { FormatDate, FormatDateTime, FormatDateRange } from '@/service/Functions';
@@ -70,13 +70,13 @@ const DetailEvent = (props: { data: any; }) => {
     <div className='flex flex-col w-full pt-[104px]'>
       {
         props.data.imageUrls.length > 0
-        ? <PostSlide />
-        : <img className='h-[280px]' src='/default_detail_thumb3x.png' />
+          ? <PostSlide />
+          : <img className='h-[280px]' src='/default_detail_thumb3x.png' />
       }
       <PostTitle title={props.data.title} startDate={props.data.startDate} endDate={props.data.endDate}
         type={props.data.type} views={props.data.views} userName={props.data.userName} categories={props.data.categories} />
       <Divider />
-      <PostInfoF startDate={props.data.startDate} endDate={props.data.endDate} headCount={props.data.headCount} />
+      <PostInfoF type={props.data.type} startDate={props.data.startDate} endDate={props.data.endDate} headCountMax={props.data.headCountMax} headCount={props.data.headCount} />
       <PostContent content={props.data.content} />
       {/* <PostContentMap address={props.data.fullLocation} lat={props.data.latitudeLocation} lng={props.data.longitudeLocation} /> */}
       <PostContentMap address={props.data.fullLocation} lat={33.450701} lng={126.570667} />
@@ -156,13 +156,13 @@ function PostTitle(props: PostTitleProps) {
   )
 }
 
-function PostInfoF(props: { startDate: any; endDate: any; headCount: number; }) {
+function PostInfoF(props: { type: string; startDate: any; endDate: any; headCount: number; headCountMax: number; }) {
   let startD = FormatDateTime(props.startDate, 0)
   let endD = FormatDateTime(props.endDate, 0)
   return (
     <div className='flex flex-col px-[16px] pt-[30px] text-[14px]' id='p-info'>
       <div className='flex flex-row pb-[6px]'>
-        <p className='font-semibold pe-[20px]'>시작일</p>
+        <p className='font-semibold pe-[20px]'>시작일시</p>
         {
           startD !== undefined
             ? <><p className='pe-[10px]'>{startD.date}</p><p>{startD.time}</p></>
@@ -170,16 +170,24 @@ function PostInfoF(props: { startDate: any; endDate: any; headCount: number; }) 
         }
       </div>
       <div className='flex flex-row pb-[6px]'>
-        <p className='font-semibold pe-[20px]'>종료일</p>
+        <p className='font-semibold pe-[20px]'>종료일시</p>
         {
           endD !== undefined
             ? <><p className='pe-[10px]'>{endD.date}</p><p>{endD.time}</p></>
             : <p>—</p>
         }
       </div>
-      <div className='flex flex-row'>
-        <p className='font-semibold pe-[10px]'>인원(명)</p>
-        <p>{props.headCount}명</p>
+      <div className='flex flex-row items-center'>
+        <p className='font-semibold pe-[20px]'>참여인원</p>
+        <p>{props.headCountMax ?? '-'}명</p>
+        {
+          props.type === 'PARTY'
+            ? <p className='ps-[4px]'>
+              <ThemeProvider theme={accompanyChipTheme}><Chip label={`${props.headCount ?? 0}명 참여 중`} /></ThemeProvider>
+            </p>
+            : <></>
+        }
+
       </div>
     </div>
   )

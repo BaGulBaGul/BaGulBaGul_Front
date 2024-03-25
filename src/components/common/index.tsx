@@ -1,5 +1,6 @@
 import CategoryButtons from './CategoryButtons'
-import { FestivalBlock, RecruitProps, RecruitBlock, CalendarBlock, ResultBlock, SuggestBlock } from './EventBlock'
+import { FestivalBlock, RecruitBlock, CalendarBlock, ResultBlock, SuggestBlock } from './EventBlock'
+import { CommentDrawer, ModifyInput } from './Comment'
 import HashtagAccordion, { HashtagButton } from './HashtagAccordion'
 import MoreButton from './MoreButton'
 import NoEvent from './NoEvent'
@@ -15,6 +16,7 @@ import { ViewFilterApplied } from './ViewFilterApplied'
 export {
   CategoryButtons,
   FestivalBlock, RecruitBlock, CalendarBlock, ResultBlock, SuggestBlock,
+  CommentDrawer, ModifyInput,
   HashtagAccordion,HashtagButton,
   MoreButton,
   NoEvent,

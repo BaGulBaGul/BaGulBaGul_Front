@@ -210,6 +210,84 @@ export const mentionDialogTheme = createTheme({
   }
 })
 
+export const commentMenuTheme = createTheme({
+  components: {
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          borderTopLeftRadius: '8px !important', borderTopRightRadius: '8px !important',
+          paddingBottom: '40px !important',
+        },
+      }
+    },
+    MuiList: {
+      styleOverrides: {
+        root: { padding: '0px' }
+      }
+    },
+    MuiListItemButton: {
+      styleOverrides: {
+        root: {
+          padding: '20px 16px'
+        }
+      }
+    },
+    MuiListItemText: {
+      styleOverrides: {
+        root: { margin: '0px' },
+        primary: { fontSize: '14px', },
+      }
+    },
+  },
+});
+
+export const modifyCommentTheme = createTheme({
+  components: {
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#FFF', boxShadow: 'unset',
+          color: '#1E1E1E', fontSize: '18px', lineHeight: '160%',
+          position: 'relative', padding: '0px !important'
+        }
+      }
+    },
+    MuiToolbar: {
+      styleOverrides: {
+        root: {
+          display: 'flex', justifyContent: 'space-between',
+          flexDirection: 'row', padding: '18px 24px'
+        }
+      }
+    },
+    MuiIconButton: { styleOverrides: { root: { padding: '0px' } } },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          fontSize: '16px', color: '#FCFCFC', lineHeight: '140%',
+          backgroundColor: '#4A6AFE !important', width: '100%',
+          paddingTop: '20px', paddingBottom: '35px',
+          position: 'fixed', bottom: '0px', left: '0px',
+          borderRadius: '0px'
+        }
+      }
+    },
+    MuiTextField: { styleOverrides: { root: { height: '100%' } } },
+    MuiInputBase: {
+      styleOverrides: {
+        root: { padding: '12px 16px !important', },
+        input: {
+          height: 'calc(100vh - 161px) !important',
+          fontSize: '14px', lineHeight: '160%', color: '#6C6C6C',
+        }
+      }
+    },
+    MuiOutlinedInput: {
+      styleOverrides: { root: { border: 'none', "& fieldset": { border: 'none' }, } }
+    }
+  }
+})
+
 export const noEventButtonTheme = createTheme({
   components: {
     MuiButtonBase: { defaultProps: { disableRipple: true, }, },

@@ -1,22 +1,16 @@
 "use client";
 import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'next/navigation';
-
 import { Button, IconButton, ThemeProvider, TextField } from '@mui/material';
 import { SubHeaderCnt } from '@/components/layout/subHeader';
 import { FormatDateTime } from '@/service/Functions';
 import { commentTheme, replyButtonTheme } from '@/components/common/Themes';
 import { call } from '@/service/ApiService';
 import { MoreButton } from '@/components/common';
-
-export interface CommentProps {
-  commentChildCount: number; commentId: number; content: string; createdAt: string;
-  likeCount: number; myLike: Boolean; userId: number; username?: string; userName?: string; userImage?: string;
-}
+import { CommentDrawer, CommentMProps, CommentProps, ModifyInput } from '@/components/common/Comment';
 
 const index = () => {
   const params = useParams()
-
   const [comments, setComments] = useState<CommentProps[]>([]);
   function setCommentList(currentComments: []) {
     const newComments = comments.concat(currentComments)
@@ -32,6 +26,13 @@ const index = () => {
   const handleMore = () => { setPageInfo(page.current + 1) }
 
   const [count, setCount] = useState(0);
+
+  // menu drawer
+  const [openD, setOpenD] = useState(false);
+  const toggleDrawer = (newOpen: boolean) => () => { setOpenD(newOpen); };
+
+  const [openM, setOpenM] = useState(false);
+  const [targetM, setTargetM] = useState<CommentMProps | undefined>();
 
   const initialSet = useRef(false);
   useEffect(() => {
@@ -59,7 +60,7 @@ const index = () => {
         {
           comments.map((comment: CommentProps, idx: number) => (
             <div key={`cmt-${idx}`} className={idx % 2 == 0 ? 'bg-white px-[16px] py-[12px]' : 'bg-gray1 px-[16px] py-[12px]'}>
-              <CommentBlock data={comment} currentURL={`${params.postId}`} />
+              <CommentBlock data={comment} currentURL={`${params.postId}`} setOpenD={setOpenD} setTargetM={setTargetM} />
             </div>
           ))
         }
@@ -70,13 +71,19 @@ const index = () => {
         }
       </div>
       <CommentFooter />
+      <CommentDrawer open={openD} toggleDrawer={toggleDrawer} setOpenM={setOpenM} />
+      <ModifyInput open={openM} setOpenM={setOpenM} target={targetM} setTarget={setTargetM}  />
     </>
   )
 }
 export default index;
 
-export function CommentBlock(props: { data: CommentProps; currentURL: string; }) {
+export function CommentBlock(props: { data: CommentProps; currentURL: string; setOpenD: any; setTargetM: any; }) {
   let createdD = FormatDateTime(props.data.createdAt, 1)
+  const handleToggle = () => {
+    props.setOpenD(true)
+    props.setTargetM({postCommentId: props.data.commentId, content: props.data.content})
+  }
   return (
     <div>
       <div className='flex flex-row justify-between pb-[10px]' id='comment-head'>
@@ -86,7 +93,7 @@ export function CommentBlock(props: { data: CommentProps; currentURL: string; })
           </a>
           <div className='text-sm ps-[8px]'>{props.data.username}</div>
         </div>
-        <IconButton disableRipple className='p-0'><img src='/comment_etc.svg' width={24} height={24} /></IconButton>
+        <IconButton disableRipple className='p-0' onClick={handleToggle}><img src='/comment_etc.svg' width={24} height={24} /></IconButton>
       </div>
       <div className='text-sm text-gray3 pb-[6px]' id='comment-body'>{props.data.content}</div>
       <div className='flex flex-row text-xs text-gray3' id='comment-datetime'>
@@ -124,7 +131,7 @@ function CommentFooter() {
     <ThemeProvider theme={commentTheme}>
       <div className="flex flex-row comment-input">
         <TextField placeholder='댓글을 입력해주세요.' fullWidth multiline />
-        <Button className='text-sm w-[70px] h-[48px]'>등록</Button>
+        <Button className='text-[16px] w-[70px] h-[48px]'>등록</Button>
       </div>
     </ThemeProvider>
   )

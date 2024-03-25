@@ -10,7 +10,6 @@ import { FormatDate } from '@/service/Functions';
 import { call } from '@/service/ApiService';
 import { ShareDialog, HashtagButton } from '@/components/common';
 import { ArrowNext, ArrowPrev } from '@/components/common/Arrow';
-import Link from 'next/link';
 
 const index = () => {
   const params = useParams()

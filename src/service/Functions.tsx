@@ -4,6 +4,7 @@ import { createSearchParams } from 'react-router-dom'
 import { DayValue } from "react-modern-calendar-datepicker";
 import { call } from "./ApiService";
 import { DayRange } from "@hassanmojab/react-modern-calendar-datepicker";
+import { CommentProps } from "@/components/common/Comment";
 
 export const FormatDate = (dateStr: any, type: number) => {
   const dateD = new Date(dateStr);
