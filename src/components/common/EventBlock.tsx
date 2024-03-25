@@ -144,15 +144,17 @@ export function ResultBlock(props: { data: PostProps }) {
 export function SuggestBlock(props: { type: number }) {
   const [suggestions, setSuggestions] = useState<any[]>([])
   useEffect(() => {
-    let apiURL = `/api/event?size=10`
-    console.log('** ', apiURL)
-    call(apiURL, "GET", null)
-      .then((response) => {
-        console.log(response.data);
-        if (response.data.empty === false) {
-          setSuggestions(response.data.content)
-        }
-      })
+    if (props.type > 0) {
+      let apiURL = `/api/event?size=5&sort=likeCount,desc`
+      console.log('** ', apiURL)
+      call(apiURL, "GET", null)
+        .then((response) => {
+          console.log(response.data);
+          if (response.data.empty === false) {
+            setSuggestions(response.data.content)
+          }
+        })
+    }
   }, [])
 
   const SuggestText = () => {
@@ -160,7 +162,7 @@ export function SuggestBlock(props: { type: number }) {
       <div className="flex flex-col gap-[8px]">
         <span className="text-[14px] leading-[160%]">혹시 이건 어떠세요?</span>
         <div className="flex flex-row gap-[6px] flex-wrap w-[382px]">
-          {
+          { // 자주 찾는 검색어, 1~2줄
             suggestions.map((s, idx) =>
               <ThemeProvider theme={suggestChipTheme}>
                 <a href={`/event/${s.id}`}><Chip label={s.title} variant="outlined" /></a>

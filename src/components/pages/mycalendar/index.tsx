@@ -8,7 +8,6 @@ import { likeButtonTheme1, likeButtonTheme2, tabTheme, deleteButtonTheme } from 
 import { krLocale } from '@/components/common/CalendarLocale';
 
 import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
-// import { Calendar } from "react-modern-calendar-datepicker";
 import { Calendar } from '@hassanmojab/react-modern-calendar-datepicker'
 
 const index = () => {
@@ -70,7 +69,7 @@ function LikedTab() {
         </div>
       </Box>
       {/* // * CalendarBlock 수정 필요 */}
-      {/* <TabPanel value={value} index={0}>
+      <TabPanel value={value} index={0}>
         {postData.map((post, idx) => (
           idx === 0
             ? <CalendarBlock data={post} key={`rec-${idx}`} />
@@ -99,7 +98,7 @@ function LikedTab() {
               <CalendarBlock data={post} key={`party-${idx}`} />
             </>
         ))}
-      </TabPanel> */}
+      </TabPanel>
     </Box>
   )
 
