@@ -91,12 +91,12 @@ export function CommentBlock(props: { data: CommentProps; currentURL: string; se
           <a className="flex place-items-center" href="/">
             <img src="/main_profile.svg" width={24} height={24} />
           </a>
-          <div className='text-sm ps-[8px]'>{props.data.username}</div>
+          <div className='text-[14px] ps-[8px]'>{props.data.username}</div>
         </div>
         <IconButton disableRipple className='p-0' onClick={handleToggle}><img src='/comment_etc.svg' width={24} height={24} /></IconButton>
       </div>
-      <div className='text-sm text-gray3 pb-[6px]' id='comment-body'>{props.data.content}</div>
-      <div className='flex flex-row text-xs text-gray3' id='comment-datetime'>
+      <div className='text-[14px] text-gray3 pb-[6px]' id='comment-body'>{props.data.content}</div>
+      <div className='flex flex-row text-[12px] text-gray3' id='comment-datetime'>
         <p className='pe-[6px]'>{createdD.date}</p><p>{createdD.time}</p>
       </div>
       <div className='flex flex-row justify-between items-center pt-[8px]' id='comment-foot'>
@@ -118,7 +118,7 @@ export function CommentBlock(props: { data: CommentProps; currentURL: string; se
               : <img src="/comment_like.svg" width={24} height={24} />
           }
           {
-            props.data.likeCount !== 0 ? <p className='text-xs text-gray3 ps-[2px]'>{props.data.likeCount}</p> : <></>
+            props.data.likeCount !== 0 ? <p className='text-[12px] text-gray3 ps-[2px]'>{props.data.likeCount}</p> : <></>
           }
         </div>
       </div>
@@ -131,7 +131,7 @@ function CommentFooter() {
     <ThemeProvider theme={commentTheme}>
       <div className="flex flex-row comment-input">
         <TextField placeholder='댓글을 입력해주세요.' fullWidth multiline />
-        <Button className='text-[16px] w-[70px] h-[48px]'>등록</Button>
+        <Button className='text-[14px] w-[70px] h-[48px]'>등록</Button>
       </div>
     </ThemeProvider>
   )

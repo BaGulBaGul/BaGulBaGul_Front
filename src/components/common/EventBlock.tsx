@@ -94,15 +94,15 @@ export function CalendarBlock(props: { data: PostProps }) {
             <div className='flex flex-col w-[278px] h-[104px] gap-[20px] justify-between'>
               <div className='flex flex-col'>
                 <div className="flex flex-row justify-between items-center">
-                  <div className="flex flex-row text-sm text-gray3-text">
+                  <div className="flex flex-row text-[14px] text-gray3">
                     <p>{FormatDateRange(props.data.startDate, props.data.endDate)}</p>
                     <p>, {props.data.abstractLocation}</p>
                   </div>
                   <IconButton disableRipple className='p-0'><img src='/calendar_delete.svg' /></IconButton>
                 </div>
-                <p className='truncate text-base font-semibold'>{props.data.title}</p>
+                <p className='truncate text-[16px] font-semibold'>{props.data.title}</p>
               </div>
-              <span className='text-[12px] text-gray3-text block description max-w-[278px]'>{props.data.content}</span>
+              <span className='text-[12px] text-gray3 block description max-w-[278px]'>{props.data.content}</span>
             </div>
           </div>
         </div>
@@ -132,7 +132,7 @@ export function ResultBlock(props: { data: PostProps }) {
                 checkedIcon={<img src="/detail_like_1.svg" width={20} height={20} />}
                 checked={checked} onChange={handleChange} style={{ padding: 0 }} />
             </div>
-            <p className='truncate text-base font-semibold'>{props.data.title}</p>
+            <p className='truncate text-[16px] font-semibold'>{props.data.title}</p>
           </div>
           <span className='text-[12px] text-gray3 block description max-w-[278px]'>{props.data.content}</span>
         </div>
@@ -192,7 +192,7 @@ export function SuggestBlock(props: { type: number }) {
   }
 
   return (
-    <div className="flex flex-col px-[16px] py-[20px] gap-[16px] bg-white-text">
+    <div className="flex flex-col px-[16px] py-[20px] gap-[16px] bg-white">
       <SuggestText />
       {props.type > 0 ? <SuggestImage /> : <></>}
     </div>

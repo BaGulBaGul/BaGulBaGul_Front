@@ -2,8 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-html,
-body,
+html, body,
 .MuiTypography-root, .MuiButtonBase-root,
 .MuiChip-root, .MuiInputBase-root {
   font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif !important;
@@ -14,9 +13,9 @@ em {
   font-style: unset;
 }
 
-.slider-detail {
+/* .slider-detail {
   color: white;
-}
+} */
 
 .slick-arrow {
   display: none;
@@ -148,7 +147,7 @@ em {
   display: none;
 }
 
-.select-icon {
+/* .select-icon {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -168,7 +167,7 @@ em {
   top: calc(50% - 0.5em);
   pointer-events: none;
   color: rgba(0, 0, 0, 0.54);
-}
+} */
 
 .description {
   display: -webkit-box;
@@ -187,83 +186,6 @@ em {
   max-width: unset !important;
   min-height: unset !important;
   padding: 0px !important;
-}
-
-.SearchCalendar .Calendar__header {
-  padding: 16px 24px !important;
-}
-
-.SearchCalendar .Calendar__monthArrow {
-  width: 24px; height: 24px;
-  background-image: url(../../public/chevron-left.svg);
-}
-.SearchCalendar .Calendar__monthArrowWrapper.-right {
-  transform: unset;
-}
-.SearchCalendar .Calendar__monthArrowWrapper.-left {
-  transform: rotate(180deg);
-}
-
-.SearchCalendar .Calendar__monthText,
-.SearchCalendar .Calendar__yearText {
-  font-size: 18px !important; line-height: 140% !important;
-}
-
-.SearchCalendar .Calendar__weekDays {
-  font-size: 14px !important;
-  color: #000000 !important;
-  margin-top: 8px !important;
-  margin-bottom: 0px !important;
-  padding: 8px 24px !important;
-}
-
-.SearchCalendar .Calendar__monthSelectorAnimationWrapper,
-.SearchCalendar .Calendar__yearSelectorAnimationWrapper {
-  height: calc(100% - 55px) !important;
-}
-
-.SearchCalendar .Calendar__sectionWrapper{
-  padding: 4px 22px 8px 22px;
-  min-height: 312px;
-}
-
-.SearchCalendar .Calendar__section {
-  padding: 4px 22px 8px 22px;
-}
-.SearchCalendar .Calendar__section.-hiddenPrevious{
-  transform: translateX(-95%) ;
-}
-.SearchCalendar .Calendar__section.-hiddenNext {
-  transform: translateX(95%) ;
-}
-
-.SearchCalendar .Calendar__day {
-  padding: 0px !important; margin: 0px !important;
-  height: 42px; font-size: 14px !important;
-  width: 42px !important;
-  line-height: 160% !important;
-}
-
-.SearchCalendar .Calendar__weekRow {
-  padding: 4px 0px;
-  gap: 7px;
-}
-
-.SearchCalendar .Calendar__day.-selected, 
-.SearchCalendar .Calendar__day.-selectedStart, 
-.SearchCalendar .Calendar__day.-selectedEnd {
-  background: #FFF27E !important;
-  color: #000000 !important;
-}
-.SearchCalendar .Calendar__day.-selectedBetween {
-  background: rgba(255, 242, 126, 0.3) !important;
-  color: #000000 !important;
-}
-
-.SearchCalendar .Calendar__day.-ltr.-selectedStart,
-.SearchCalendar .Calendar__day.-ltr.-selectedEnd,
-.SearchCalendar .Calendar__day.-selectedBetween {
-  border-radius: 100% !important;
 }
 
 .FilterCalendar {
@@ -489,7 +411,6 @@ em {
 div.editor-body {
   width:100%; height:100%;
   overflow-y:auto; overflow-x:none;
-  /* border-top:solid 1px #eee; border-bottom:solid 1px #eee; */
   position:relative; box-sizing:border-box;
 }
 

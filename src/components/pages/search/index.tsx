@@ -154,13 +154,3 @@ function RecentSearches() {
     </div>
   )
 }
-
-// interface SearchCalendarProps { dayRange: DayRange; setDayRange: Dispatch<SetStateAction<DayRange>>; }
-// export function SearchCalendar(props: SearchCalendarProps) {
-//   return (
-//     <Paper className="absolute top-[93px] w-[380px] rounded-[8px]" onClick={(e) => e.stopPropagation()}>
-//       <Calendar value={props.dayRange} onChange={props.setDayRange} locale={krLocale}
-//         calendarClassName="SearchCalendar" />
-//     </Paper>
-//   )
-// }

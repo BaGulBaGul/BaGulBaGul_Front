@@ -163,15 +163,15 @@ function ReplyBlock(props: { data: ReplyProps; setOpenD: any; setTargetM: any; }
           <a className="flex place-items-center" href="/">
             <img src="/main_profile.svg" width={24} height={24} />
           </a>
-          <div className='text-sm ps-[8px]'>{props.data.userName}</div>
+          <div className='text-[14px] ps-[8px]'>{props.data.userName}</div>
         </div>
         <IconButton disableRipple className='p-0' onClick={handleToggle}><img src='/comment_etc.svg' width={24} height={24} /></IconButton>
       </div>
-      <div className='text-sm text-gray3 pb-[6px]' id='comment-body'>
+      <div className='text-[14px] text-gray3 pb-[6px]' id='comment-body'>
         {props.data.content}
       </div>
       <div className='flex flex-row justify-between items-center pt-[8px]' id='comment-foot'>
-        <div className='flex flex-row text-xs text-gray3' id='comment-datetime'>
+        <div className='flex flex-row text-[12px] text-gray3' id='comment-datetime'>
           <p className='pe-[6px]'>{createdD.date}</p><p>{createdD.time}</p>
         </div>
         <div className='flex flex-row items-center' id='comment-likes'>
@@ -179,7 +179,7 @@ function ReplyBlock(props: { data: ReplyProps; setOpenD: any; setTargetM: any; }
             ? <img src="/comment_like_1.svg" width={24} height={24} />
             : <img src="/comment_like.svg" width={24} height={24} />
           }
-          {props.data.likeCount !== 0 ? <p className='text-xs text-gray3 ps-[2px]'>{props.data.likeCount}</p> : <></>}
+          {props.data.likeCount !== 0 ? <p className='text-[12px] text-gray3 ps-[2px]'>{props.data.likeCount}</p> : <></>}
         </div>
       </div>
     </div>
