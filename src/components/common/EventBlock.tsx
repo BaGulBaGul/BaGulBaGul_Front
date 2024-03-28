@@ -1,6 +1,6 @@
 import { ThemeProvider, IconButton, Chip, Checkbox } from "@mui/material";
 import { doneChipTheme, suggestChipTheme } from "./Themes";
-import { FormatDate, FormatDateRange } from "@/service/Functions";
+import { FormatDate, FormatDateRange, RecruitProps } from "@/service/Functions";
 import HashtagAccordion from "./HashtagAccordion";
 import { useEffect, useState } from "react";
 import { call } from "@/service/ApiService";
@@ -14,11 +14,11 @@ export interface PostProps {
   currentHeadCount?: number; totalHeadCount?: number;
 }
 
-export function FestivalBlock(props: { data: PostProps }) {
+export function EventBlock(props: { data: PostProps }) {
   let urlLink = `/event/${props.data.id}`
   return (
     <a href={urlLink} className="flex flex-col py-[18px] px-[16px] justify-between">
-      <div className='flex flex-row items-center justify-between pb-[10px]'>
+      <div className='flex flex-row items-center justify-between'>
         <div className='flex flex-col w-[230px] h-[116px] justify-between'>
           <div className='flex flex-col gap-[4px]'>
             <p className='truncate text-[16px] font-semibold leading-[140%]'>{props.data.title}</p>
@@ -46,27 +46,20 @@ export function FestivalBlock(props: { data: PostProps }) {
             }
           </div>
         </div>
-        <img className='rounded-lg w-[92px] h-[116px] object-cover' src={props.data.headImageUrl ?? '/default_list_thumb3x.png'} />
+        <img className='rounded-[4px] w-[92px] h-[116px] object-cover' src={props.data.headImageUrl ?? '/default_list_thumb3x.png'} />
       </div>
-      {props.data.tags ? <HashtagAccordion tag={props.data.tags} /> : <></>}
+      {props.data.tags ? <div className="pt-[20px]"><HashtagAccordion tag={props.data.tags} /></div> : <></>}
     </a>
   )
-}
-
-export interface RecruitProps {
-  title: string; user_profile: string; username: string; state: string;
-  startDate: any; tags?: string[]; id?: number; headCount?: number; headCountMax?: number;
 }
 
 export function RecruitBlock(props: { data: RecruitProps }) {
   let urlLink = `/recruitment/${props.data.id}`
   return (
     <div className='flex flex-col py-[18px] px-[16px]'>
-      <div className='flex flex-col gap-[4px]'>
-        <a href={urlLink} className="flex flex-col gap-[4px]">
-          <p className='truncate text-[16px]'>{props.data.title}</p>
-          <p className='text-[14px] text-gray3'>{FormatDate(props.data.startDate, 0)}</p>
-        </a>
+      <a className='flex flex-col gap-[4px]' href={urlLink}>
+        <p className='truncate text-[16px]'>{props.data.title}</p>
+        <p className='text-[14px] text-gray3'>{FormatDate(props.data.startDate, 0)}</p>
         <div className='flex flex-row items-center gap-[8px]'>
           <div className='flex flex-row items-center gap-[4px] text-[14px]'>
             <img className='w-[24px] h-[24px]' src="/main_profile.svg" />
@@ -78,8 +71,8 @@ export function RecruitBlock(props: { data: RecruitProps }) {
             props.data.state === "PROCEEDING" ? <></> : <ThemeProvider theme={doneChipTheme}><Chip label="모집완료" /></ThemeProvider>
           }
         </div>
-        {props.data.tags ? <HashtagAccordion tag={props.data.tags} /> : <></>}
-      </div>
+      </a>
+      {props.data.tags ? <HashtagAccordion tag={props.data.tags} /> : <></>}
     </div>
   )
 }
@@ -90,7 +83,7 @@ export function CalendarBlock(props: { data: PostProps }) {
       <div className='flex flex-col py-[18px] px-[16px]'>
         <div className='flex flex-col justify-between'>
           <div className='flex flex-row items-center pb-[10px] gap-[20px]'>
-            <img className='rounded-lg w-[84px] h-[104px] object-cover' src={props.data.headImageUrl} />
+            <img className='rounded-[4px] w-[84px] h-[104px] object-cover' src={props.data.headImageUrl} />
             <div className='flex flex-col w-[278px] h-[104px] gap-[20px] justify-between'>
               <div className='flex flex-col'>
                 <div className="flex flex-row justify-between items-center">
@@ -120,7 +113,7 @@ export function ResultBlock(props: { data: PostProps }) {
   return (
     <a href={urlLink} className='flex flex-col py-[18px] px-[16px] justify-between'>
       <div className='flex flex-row items-center pb-[10px] gap-[20px]'>
-        <img className='rounded-lg w-[84px] h-[104px] object-cover' src={props.data.headImageUrl ?? '/default_list_thumb3x.png'} />
+        <img className='rounded-[4px] w-[84px] h-[104px] object-cover' src={props.data.headImageUrl ?? '/default_list_thumb3x.png'} />
         <div className='flex flex-col w-[278px] h-[104px] gap-[20px] justify-between'>
           <div className='flex flex-col'>
             <div className="flex flex-row justify-between items-center">
@@ -192,7 +185,7 @@ export function SuggestBlock(props: { type: number }) {
   }
 
   return (
-    <div className="flex flex-col px-[16px] py-[20px] gap-[16px] bg-white">
+    <div className="flex flex-col px-[16px] py-[20px] gap-[16px] bg-[#FFF]">
       <SuggestText />
       {props.type > 0 ? <SuggestImage /> : <></>}
     </div>

@@ -6,11 +6,35 @@ import { SubHeaderCnt } from '@/components/layout/subHeader';
 import { FormatDateTime } from '@/service/Functions';
 import { commentTheme, replyButtonTheme } from '@/components/common/Themes';
 import { call } from '@/service/ApiService';
-import { MoreButton } from '@/components/common';
+import { LoadingSkeleton, MoreButton } from '@/components/common';
 import { CommentDrawer, CommentMProps, CommentProps, ModifyInput } from '@/components/common/Comment';
 
 const index = () => {
+  const [count, setCount] = useState(0);
+
+  // menu drawer
+  const [openD, setOpenD] = useState(false);
+  const toggleDrawer = (newOpen: boolean) => () => { setOpenD(newOpen); };
+
+  const [openM, setOpenM] = useState(false);
+  const [targetM, setTargetM] = useState<CommentMProps | undefined>();
+
+  return (
+    <>
+      <SubHeaderCnt name='글 댓글' url={"/"} cnt={count} />
+      <Comments setCount={setCount} setOpenD={setOpenD} setTargetM={setTargetM} />
+      <CommentFooter />
+      <CommentDrawer open={openD} toggleDrawer={toggleDrawer} setOpenM={setOpenM} />
+      <ModifyInput open={openM} setOpenM={setOpenM} target={targetM} setTarget={setTargetM} />
+    </>
+  )
+}
+export default index;
+
+function Comments(props: { setCount: any; setOpenD: any; setTargetM: any; }) {
   const params = useParams()
+  const [isLoading, setLoading] = useState(true)
+
   const [comments, setComments] = useState<CommentProps[]>([]);
   function setCommentList(currentComments: []) {
     const newComments = comments.concat(currentComments)
@@ -25,15 +49,6 @@ const index = () => {
   }
   const handleMore = () => { setPageInfo(page.current + 1) }
 
-  const [count, setCount] = useState(0);
-
-  // menu drawer
-  const [openD, setOpenD] = useState(false);
-  const toggleDrawer = (newOpen: boolean) => () => { setOpenD(newOpen); };
-
-  const [openM, setOpenM] = useState(false);
-  const [targetM, setTargetM] = useState<CommentMProps | undefined>();
-
   const initialSet = useRef(false);
   useEffect(() => {
     let apiURL = `/api/post/${params.postId}/comment?size=10&page=${page.current}`;
@@ -46,21 +61,22 @@ const index = () => {
           if (!initialSet.current) {
             setPage({ current: 0, total: response.data.totalPages })
             initialSet.current = true;
-            setCount(response.data.totalElements)
+            props.setCount(response.data.totalElements)
           }
           setCommentList(response.data.content)
         }
+        setLoading(false)
       })
   }, [page])
 
-  return (
-    <>
-      <SubHeaderCnt name='글 댓글' url={"/"} cnt={count} />
+  if (isLoading) { return <LoadingSkeleton type='CMT' /> }
+  else {
+    return (
       <div className='flex flex-col w-full min-h-[calc(100vh-104px)] pb-[49px] bg-gray1'>
         {
           comments.map((comment: CommentProps, idx: number) => (
-            <div key={`cmt-${idx}`} className={idx % 2 == 0 ? 'bg-white px-[16px] py-[12px]' : 'bg-gray1 px-[16px] py-[12px]'}>
-              <CommentBlock data={comment} currentURL={`${params.postId}`} setOpenD={setOpenD} setTargetM={setTargetM} />
+            <div key={`cmt-${idx}`} className={idx % 2 == 0 ? 'bg-[#FFF] px-[16px] py-[12px]' : 'bg-gray1 px-[16px] py-[12px]'}>
+              <CommentBlock data={comment} currentURL={`${params.postId}`} setOpenD={props.setOpenD} setTargetM={props.setTargetM} />
             </div>
           ))
         }
@@ -70,19 +86,15 @@ const index = () => {
             : <></>
         }
       </div>
-      <CommentFooter />
-      <CommentDrawer open={openD} toggleDrawer={toggleDrawer} setOpenM={setOpenM} />
-      <ModifyInput open={openM} setOpenM={setOpenM} target={targetM} setTarget={setTargetM}  />
-    </>
-  )
+    )
+  }
 }
-export default index;
 
 export function CommentBlock(props: { data: CommentProps; currentURL: string; setOpenD: any; setTargetM: any; }) {
   let createdD = FormatDateTime(props.data.createdAt, 1)
   const handleToggle = () => {
     props.setOpenD(true)
-    props.setTargetM({postCommentId: props.data.commentId, content: props.data.content})
+    props.setTargetM({ postCommentId: props.data.commentId, content: props.data.content })
   }
   return (
     <div>

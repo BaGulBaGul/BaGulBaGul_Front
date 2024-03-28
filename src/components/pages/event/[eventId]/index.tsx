@@ -1,7 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useParams, usePathname } from 'next/navigation'
-import Link from 'next/link';
 import { postData } from '@/components/common/Data'
 import Slider from "react-slick";
 
@@ -11,10 +10,11 @@ import SubHeader from '@/components/layout/subHeader';
 import { PostFooter } from '@/components/layout/footer';
 import { FormatDate, FormatDateTime, FormatDateRange } from '@/service/Functions';
 import { call } from '@/service/ApiService';
-import { ShareDialog, HashtagButton } from '@/components/common';
+import { ShareDialog, HashtagButton, LoadingSkeleton } from '@/components/common';
 import { ArrowNext, ArrowPrev } from '@/components/common/Arrow';
 
 const index = () => {
+  const [isLoading, setLoading] = useState(true)
   const params = useParams()
   const [data, setData] = useState<any>({})
 
@@ -27,39 +27,26 @@ const index = () => {
       .then((response) => {
         console.log(response.data);
         setData(response.data);
+        setLoading(false);
       })
   }, [])
 
-  // 페스티벌, 지역행사는 '모집글 보러가기' 버튼 배치
-  if (Object.keys(data).length === 0) {
-    return (<></>)
-  } else {
-    if (data.type === 'PARTY') {
-      return (
-        <>
-          <SubHeader name={typeString[data.type as string]} url={"/"} />
-          <div className='flex flex-col w-full'>
-            <DetailEvent data={data} />
-          </div>
-        </>
-      )
-    } else {
-      let recruitURL = `/event/${params.eventId}/recruitment`
-      return (
-        <>
-          <SubHeader name={typeString[data.type as string]} url={"/"} />
-          <div className='flex flex-col w-full'>
-            <div className='pb-[46px]'><DetailEvent data={data} /></div>
-            <PostFooter title='모집글 보러가기' path={recruitURL} />
-          </div>
-        </>
-      )
-    }
-  }
+  return (
+    <>
+      <SubHeader name={data ? typeString[data.type as string] : ''} url={"/"} />
+      <div className='flex flex-col w-full'>
+        {isLoading
+          ? <LoadingSkeleton type='DTLE' />
+          : Object.keys(data).length > 0
+            ? <DetailEvent data={data} eventId={params.eventId} /> : <></>
+        }
+      </div>
+    </>
+  )
 }
 export default index;
 
-const DetailEvent = (props: { data: any; }) => {
+const DetailEvent = (props: { data: any; eventId: any; }) => {
   const [popopen, setPopopen] = useState(false);
   const handleOpen = () => { setPopopen(true) }
   const handleClose = () => { setPopopen(false) }
@@ -67,36 +54,41 @@ const DetailEvent = (props: { data: any; }) => {
   const pathname = usePathname();
   let commentURL = `/comment/${props.data.postId}`
   return (
-    <div className='flex flex-col w-full pt-[104px]'>
-      {
-        props.data.imageUrls.length > 0
-          ? <PostSlide />
-          : <img className='h-[280px]' src='/default_detail_thumb3x.png' />
+    <div>
+      <div className={props.data.type !== 'PARTY' ? 'flex flex-col w-full pt-[104px] pb-[46px]' : 'flex flex-col w-full pt-[104px]'}>
+        {
+          props.data.imageUrls.length > 0
+            ? <PostSlide />
+            : <img className='h-[280px] object-cover' src='/default_detail_thumb3x.png' />
+        }
+        <PostTitle title={props.data.title} startDate={props.data.startDate} endDate={props.data.endDate}
+          type={props.data.type} views={props.data.views} userName={props.data.userName} categories={props.data.categories} />
+        <Divider />
+        <PostInfoF type={props.data.type} startDate={props.data.startDate} endDate={props.data.endDate} headCountMax={props.data.headCountMax} headCount={props.data.headCount} />
+        <PostContent content={props.data.content} />
+        {/* <PostContentMap address={props.data.fullLocation} lat={props.data.latitudeLocation} lng={props.data.longitudeLocation} /> */}
+        <PostContentMap address={props.data.fullLocation} lat={33.450701} lng={126.570667} />
+        {
+          props.data.tags !== undefined && props.data.tags.length > 0
+            ? <PostContentTag tags={props.data.tags} />
+            : <></>
+        }
+        <ShareDialog handleClose={handleClose} popopen={popopen} sharingURL={pathname} />
+        <PostTools handleOpen={handleOpen} likeCount={props.data.likeCount} commentCount={props.data.commentCount} commentURL={commentURL} />
+      </div>
+      { // 페스티벌, 지역행사는 '모집글 보러가기' 버튼 배치
+        props.data.type !== 'PARTY'
+          ? <PostFooter title='모집글 보러가기' path={`/event/${props.eventId}/recruitment`} /> : <></>
       }
-      <PostTitle title={props.data.title} startDate={props.data.startDate} endDate={props.data.endDate}
-        type={props.data.type} views={props.data.views} userName={props.data.userName} categories={props.data.categories} />
-      <Divider />
-      <PostInfoF type={props.data.type} startDate={props.data.startDate} endDate={props.data.endDate} headCountMax={props.data.headCountMax} headCount={props.data.headCount} />
-      <PostContent content={props.data.content} />
-      {/* <PostContentMap address={props.data.fullLocation} lat={props.data.latitudeLocation} lng={props.data.longitudeLocation} /> */}
-      <PostContentMap address={props.data.fullLocation} lat={33.450701} lng={126.570667} />
-      {
-        props.data.tags !== undefined && props.data.tags.length > 0
-          ? <PostContentTag tags={props.data.tags} />
-          : <></>
-      }
-      <ShareDialog handleClose={handleClose} popopen={popopen} sharingURL={pathname} />
-      {/* <PostFooter title='모집글 보러가기' path='/accompany' /> */}
-      <PostTools handleOpen={handleOpen} likeCount={props.data.likeCount} commentCount={props.data.commentCount} commentURL={commentURL} />
     </div>
+
   )
 }
 
 function PostSlide() {
   const [index, setIndex] = useState(0);
   const settings = {
-    className: "center", infinite: true,
-    slidesToShow: 1, slidesToScroll: 1,
+    className: "center", infinite: true, slidesToShow: 1, slidesToScroll: 1,
     nextArrow: <ArrowNext cN='slick-next-detail' />, prevArrow: <ArrowPrev cN='slick-prev-detail' />,
     beforeChange: (current: any, next: any) => { setIndex(next); },
   }
@@ -143,11 +135,9 @@ function PostTitle(props: PostTitleProps) {
         </div>
         <div className='flex flex-row gap-[8px]'>
           <ThemeProvider theme={categoryButtonTheme}>
-            {
-              props.categories.map((cate, idx) => (
-                <Button key={`cate-${idx}`}>{cate}</Button>
-              ))
-            }
+            {props.categories.map((cate, idx) => (
+              <Button key={`cate-${idx}`}>{cate}</Button>
+            ))}
           </ThemeProvider>
         </div>
 

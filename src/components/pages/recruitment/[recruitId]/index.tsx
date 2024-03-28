@@ -8,10 +8,11 @@ import { ThemeProvider, Divider, IconButton, Chip } from '@mui/material';
 import { accompanyChipTheme, slideChipTheme } from '@/components/common/Themes'
 import { FormatDate } from '@/service/Functions';
 import { call } from '@/service/ApiService';
-import { ShareDialog, HashtagButton } from '@/components/common';
+import { ShareDialog, HashtagButton, LoadingSkeleton } from '@/components/common';
 import { ArrowNext, ArrowPrev } from '@/components/common/Arrow';
 
 const index = () => {
+  const [isLoading, setLoading] = useState(true)
   const params = useParams()
   const [data, setData] = useState<any>({})
 
@@ -21,18 +22,12 @@ const index = () => {
       .then((response) => {
         console.log(response.data);
         setData(response.data);
+        setLoading(false);
       })
   }, [])
 
-  if (Object.keys(data).length === 0) {
-    return (<></>)
-  } else {
-    return (
-      <div className='flex flex-col w-full'>
-        <DetailRecruitment data={data} />
-      </div>
-    )
-  }
+  if (isLoading) { return <LoadingSkeleton type='DTLR' /> }
+  if (Object.keys(data).length > 0) { return <DetailRecruitment data={data} /> }
 }
 export default index;
 
@@ -101,7 +96,7 @@ function PostTitle(props: PostTitleProps) {
         <p className='text-[18px]'>{props.title}</p>
         <IconButton disableRipple className='p-0'><img src='/detail_more.svg' /></IconButton>
       </div>
-      <div className='flex flex-row pt-[4px] gap-[8px]'>
+      <div className='flex flex-row pt-[4px] gap-[8px] justify-between'>
         <p className='text-[14px] text-gray3'>{FormatDate(props.startDate, 0)}</p>
         <div className='flex flex-row items-center'>
           <a href="/"><img src='/detail_views.svg' /></a>
@@ -139,11 +134,11 @@ function PostContentTag(props: { tags: string[] }) {
   return (
     <div className='flex flex-col px-[16px] pt-[30px]' id='p-content-tag'>
       <div className='container'>
-        {
-          props.tags.map((tag, idx) => (
-            <HashtagButton tag={tag} key={`tag-${idx}`} />
-          ))
-        }
+        {props.tags.map((tag, idx) => {
+          if (tag.length > 0) {
+            return (<HashtagButton tag={tag} key={`tag-${idx}`} />)
+          }
+        })}
       </div>
     </div>
   )
@@ -164,7 +159,7 @@ function PostTools(props: PostToolsProps) {
         <div className='flex flex-row items-center'>
           <a className='flex flex-row items-center gap-[4px]' href={props.commentURL}>
             <img src='/detail_comment.svg' />
-            <p className='text-gray3 text-sm'>{props.commentCount}</p>
+            <p className='text-gray3 text-[14px]'>{props.commentCount}</p>
           </a>
         </div>
       </div>

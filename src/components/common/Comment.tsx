@@ -17,13 +17,13 @@ export function CommentDrawer(props: { open: boolean; toggleDrawer: any; setOpen
         <Box onClick={props.toggleDrawer(false)}>
           <List>
             <ListItem disablePadding>
-              <ListItemButton onClick={handleClickOpen}><ListItemText primary="수정하기" /></ListItemButton>
+              <ListItemButton onClick={handleClickOpen} disableRipple><ListItemText primary="수정하기" /></ListItemButton>
             </ListItem>
           </List>
           <Divider />
           <List>
             <ListItem disablePadding>
-              <ListItemButton><ListItemText primary="삭제하기" className='text-[#FF0000]' /></ListItemButton>
+              <ListItemButton disableRipple><ListItemText primary="삭제하기" className='text-[#FF0000]' /></ListItemButton>
             </ListItem>
           </List>
         </Box>

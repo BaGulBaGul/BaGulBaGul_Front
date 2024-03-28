@@ -27,27 +27,28 @@ export default function HashtagAccordion(props: HashtagAccordionProps) {
     }
   }, [ref]);
   const handleExpandClick = () => { setExpanded(!expanded); }
-
-  return (
-    <div className='pt-[10px]'>
-      <div ref={ref} className='flex flex-row justify-between'>
-        {
-          showMore
-            ? <>
-              <div className={expanded ? "container-expand" : "container-shrink"}>
+  if (props.tag.length > 0 && props.tag[0].length > 0) {
+    return (
+      <div className='pt-[10px]'>
+        <div ref={ref} className='flex flex-row justify-between'>
+          {
+            showMore
+              ? <>
+                <div className={expanded ? "container-expand" : "container-shrink"}>
+                  {(props.tag).map((tag, idx) => <HashtagButton tag={tag} key={`tag-${idx}`} />)}
+                </div>
+                <ExpandMore expand={expanded} onClick={handleExpandClick} aria-expanded={expanded} >
+                  <img src='/arrow_down.svg' />
+                </ExpandMore>
+              </>
+              : <div className='container'>
                 {(props.tag).map((tag, idx) => <HashtagButton tag={tag} key={`tag-${idx}`} />)}
               </div>
-              <ExpandMore expand={expanded} onClick={handleExpandClick} aria-expanded={expanded} >
-                <img src='/arrow_down.svg' />
-              </ExpandMore>
-            </>
-            : <div className='container'>
-              {(props.tag).map((tag, idx) => <HashtagButton tag={tag} key={`tag-${idx}`} />)}
-            </div>
-        }
+          }
+        </div>
       </div>
-    </div>
-  )
+    )
+  }
 }
 
 interface HashtagButtonProps { tag: string; }

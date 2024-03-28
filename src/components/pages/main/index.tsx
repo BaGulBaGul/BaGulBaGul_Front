@@ -2,14 +2,26 @@
 import { useState, useRef, Dispatch, SetStateAction } from 'react';
 import { Box, Divider, ThemeProvider, Fab, Backdrop, } from '@mui/material';
 import {
-  CategoryButtons, ViewButton, ViewSelect, TabPanel, MoreButton, FestivalBlock, NoEvent, RecCarousel, PostTab, ViewFilterApplied
+  CategoryButtons, ViewButton, ViewSelect, TabPanel, MoreButton, EventBlock, NoEvent, RecCarousel, PostTab, ViewFilterApplied, LoadingSkeleton, LoadingCircle
 } from '@/components/common';
 import { writeFabTheme } from '@/components/common/Themes'
 import { tabList } from '@/components/common/Data';
-import { useEffectFilter, useEffectFilterApplied, useEffectParam, useEffectCallAPI, RangeProps, PostTabsProps } from '@/service/Functions';
+import { useEffectFilter, useEffectFilterApplied, useEffectParam, useEffectCallAPI, RangeProps } from '@/service/Functions';
 import { DayRange } from '@hassanmojab/react-modern-calendar-datepicker'
 
 const index = () => {
+  return (
+    <div className='flex flex-col w-full pt-[44px]'>
+      <RecCarousel />
+      <PostTabs />
+    </div>
+  )
+};
+export default index;
+
+function PostTabs() {
+  const [isLoading, setLoading] = useState(true)
+
   //type
   const [tab, setTab] = useState(0);
   const handleChange = (e: React.SyntheticEvent, newValue: number) => {
@@ -42,28 +54,15 @@ const index = () => {
 
   // const mounted = useRef(false);
   useEffectParam([selectedCate, sort, tab, dayRange, participants, headCount], initialSet, setParams, params,
-    tab, selectedCate, sort, dayRange, participants, headCount, setEvents)
+    tab, selectedCate, sort, dayRange, participants, headCount, setEvents, setLoading)
 
   // 적용된 필터 확인
   useEffectFilter([sort, dayRange, participants, headCount], ['sort', 'dayRange', 'participants', 'headCount'], setChanged)
   useEffectFilterApplied([filters, sort], filters, setFilters, changed, sort, setFilterCnt)
 
   // 조건에 따라 리스트 호출
-  useEffectCallAPI(params, initialSet, setPage, events, setEvents)
+  useEffectCallAPI(params, initialSet, setPage, events, setEvents, setLoading)
 
-  return (
-    <div className='flex flex-col w-full pt-[44px]'>
-      <RecCarousel />
-      <PostTabs events={events} value={tab} handleChange={handleChange} filterCnt={filterCnt} filters={filters}
-        setFilters={setFilters} sort={sort} setSort={setSort} dayRange={dayRange} setDayRange={setDayRange}
-        participants={participants} setParticipants={setParticipants} headCount={headCount} setHeadCount={setHeadCount}
-        page={page} setPageInfo={setPageInfo} selectedCate={selectedCate} setSelectedCate={setSelectedCate} />
-    </div>
-  )
-};
-export default index;
-
-export function PostTabs(props: PostTabsProps) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => { setOpen(true) }
   const handleClose = () => { setOpen(false) }
@@ -72,28 +71,28 @@ export function PostTabs(props: PostTabsProps) {
     <Box className='w-full px-0'>
       <Box className='sticky top-[44px] bg-[#FFF] relative z-10 px-[16px] pt-[20px] pb-[10px]'>
         <div className='flex justify-between items-center'>
-          <PostTab value={props.value} handleChange={props.handleChange} />
-          <ViewButton handleOpen={handleOpen} cnt={props.filterCnt} fs={18} />
+          <PostTab value={tab} handleChange={handleChange} />
+          <ViewButton handleOpen={handleOpen} cnt={filterCnt} fs={18} />
         </div>
       </Box>
       <div className='sticky top-[102px] bg-[#FFF] relative z-10'>
-        <ViewFilterApplied filterCnt={props.filterCnt} filters={props.filters} setFilters={props.setFilters}
-          sort={props.sort} dayRange={props.dayRange} setDayRange={props.setDayRange} participants={props.participants}
-          setParticipants={props.setParticipants} headCount={props.headCount} setHeadCount={props.setHeadCount} />
-        <CategoryButtons selectedCate={props.selectedCate} setSelectedCate={props.setSelectedCate} />
+        <ViewFilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters}
+          sort={sort} dayRange={dayRange} setDayRange={setDayRange} participants={participants}
+          setParticipants={setParticipants} headCount={headCount} setHeadCount={setHeadCount} />
+        <CategoryButtons selectedCate={selectedCate} setSelectedCate={setSelectedCate} />
       </div>
       <Backdrop open={open} className='z-paper'>
-        <ViewSelect sort={props.sort} setSort={props.setSort} handleClose={handleClose} dayRange={props.dayRange} setDayRange={props.setDayRange}
-          participants={props.participants} setParticipants={props.setParticipants} headCount={props.headCount} setHeadCount={props.setHeadCount} />
+        <ViewSelect sort={sort} setSort={setSort} handleClose={handleClose} dayRange={dayRange} setDayRange={setDayRange}
+          participants={participants} setParticipants={setParticipants} headCount={headCount} setHeadCount={setHeadCount} />
       </Backdrop>
-      <TabPanel value={props.value} index={0}>
-        <TabBlock opt={0} selectedCate={props.selectedCate} setSelectedCate={props.setSelectedCate} events={props.events} page={props.page} setPageInfo={props.setPageInfo} />
+      <TabPanel value={tab} index={0}>
+        <TabBlock opt={0} selectedCate={selectedCate} setSelectedCate={setSelectedCate} events={events} page={page} setPageInfo={setPageInfo} isLoading={isLoading} />
       </TabPanel>
-      <TabPanel value={props.value} index={1}>
-        <TabBlock opt={0} selectedCate={props.selectedCate} setSelectedCate={props.setSelectedCate} events={props.events} page={props.page} setPageInfo={props.setPageInfo} />
+      <TabPanel value={tab} index={1}>
+        <TabBlock opt={0} selectedCate={selectedCate} setSelectedCate={setSelectedCate} events={events} page={page} setPageInfo={setPageInfo} isLoading={isLoading} />
       </TabPanel>
-      <TabPanel value={props.value} index={2}>
-        <TabBlock opt={1} selectedCate={props.selectedCate} setSelectedCate={props.setSelectedCate} events={props.events} page={props.page} setPageInfo={props.setPageInfo} />
+      <TabPanel value={tab} index={2}>
+        <TabBlock opt={1} selectedCate={selectedCate} setSelectedCate={setSelectedCate} events={events} page={page} setPageInfo={setPageInfo} isLoading={isLoading} />
       </TabPanel>
     </Box>
   )
@@ -101,36 +100,34 @@ export function PostTabs(props: PostTabsProps) {
 
 interface TabBlockProps {
   opt: number; selectedCate: string[]; setSelectedCate: Dispatch<SetStateAction<string[]>>;
-  events: never[]; page: { current: number; total: number; }; setPageInfo: any;
+  events: never[]; page: { current: number; total: number; }; setPageInfo: any; isLoading: boolean;
 }
 const TabBlock = (props: TabBlockProps) => {
   const handleMore = () => { props.setPageInfo(props.page.current + 1) }
-  if (props.opt === 0) {  // 페스티벌, 지역행사
+  if (props.isLoading && props.page.current === 0) { return <LoadingSkeleton /> }
+  else if (props.isLoading && props.page.current > 0) { return <LoadingCircle /> }
+  else {
     return (
-      <div className='bg-white'>
+      <div className='bg-[#FFF]'>
         {
           props.events.length > 0
             ? <>
               {props.events.map((post, idx) => (
                 <div key={`event-${idx}`}>
                   {idx === 0 ? <></> : <Divider />}
-                  <FestivalBlock data={post} />
+                  <EventBlock data={post} />
                 </div>
               ))}
               {
                 props.page.total > 1 && props.page.current + 1 < props.page.total
-                  ? <MoreButton onClick={handleMore} />
-                  : <></>
+                  ? <MoreButton onClick={handleMore} />: <></>
               }
             </>
             : <NoEvent text1="찾는 행사가 없어요." text2="지금 인기 있는 페스티벌을 만나보세요." buttonText={"페스티벌 인기순 보러가기"} />
         }
-      </div>
-    )
-  } else if (props.opt === 1) { // 파티
-    return (
-      <div className='bg-white'>
-        <ThemeProvider theme={writeFabTheme}>
+        {
+          props.opt === 1 
+          ? <ThemeProvider theme={writeFabTheme}>
           <Fab variant="extended" size="small" color="primary" className='fixed bottom-[55px] right-[16px]'>
             <div className='flex flex-row items-center'>
               <img src='/main_add.svg' />
@@ -138,23 +135,9 @@ const TabBlock = (props: TabBlockProps) => {
             </div>
           </Fab>
         </ThemeProvider>
-        {
-          props.events.length > 0
-            ? <>
-              {props.events.map((post, idx) => (
-                <div key={`party-${idx}`}>
-                  {idx === 0 ? <></> : <Divider />}
-                  <FestivalBlock data={post} />
-                </div>
-              ))}
-              {
-                props.page.total > 1 && props.page.current + 1 < props.page.total
-                  ? <MoreButton onClick={handleMore} />
-                  : <></>
-              }
-            </>
-            : <NoEvent text1="찾는 행사가 없어요." text2="지금 인기 있는 페스티벌을 만나보세요." buttonText={"페스티벌 인기순 보러가기"} />
+        : <></>
         }
+        
       </div>
     )
   }

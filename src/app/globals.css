@@ -13,9 +13,9 @@ em {
   font-style: unset;
 }
 
-/* .slider-detail {
-  color: white;
-} */
+.slick-track {
+  min-width: 4710px;
+}
 
 .slick-arrow {
   display: none;
@@ -71,9 +71,9 @@ em {
 .cateBtns::-webkit-scrollbar {
   display: none; }
 
-.MuiToggleButton-standard+.MuiToggleButton-standard {
+/* .MuiToggleButton-standard+.MuiToggleButton-standard {
   margin-left: 10px;
-}
+} */
 
 .container {
   width: 100%;
@@ -422,3 +422,7 @@ div.editor-body {
 .mention-reply-section:focus {
   outline: none;
 }
+/* 
+.slide {
+  min-width: 195px !important
+} */

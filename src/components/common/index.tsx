@@ -1,5 +1,5 @@
 import CategoryButtons from './CategoryButtons'
-import { FestivalBlock, RecruitBlock, CalendarBlock, ResultBlock, SuggestBlock } from './EventBlock'
+import { EventBlock, RecruitBlock, CalendarBlock, ResultBlock, SuggestBlock } from './EventBlock'
 import { CommentDrawer, ModifyInput } from './Comment'
 import HashtagAccordion, { HashtagButton } from './HashtagAccordion'
 import MoreButton from './MoreButton'
@@ -11,11 +11,12 @@ import ShareDialog from './ShareDialog'
 import TabPanel from './TabPanel'
 import { ViewButton, ViewSelect } from './ViewFilter'
 import { ViewFilterApplied } from './ViewFilterApplied'
+import { LoadingSkeleton, LoadingCircle } from './Loading'
 
 
 export {
   CategoryButtons,
-  FestivalBlock, RecruitBlock, CalendarBlock, ResultBlock, SuggestBlock,
+  EventBlock, RecruitBlock, CalendarBlock, ResultBlock, SuggestBlock,
   CommentDrawer, ModifyInput,
   HashtagAccordion,HashtagButton,
   MoreButton,
@@ -25,4 +26,5 @@ export {
   ViewButton, ViewSelect, ViewFilterApplied,
   ShareDialog,
   ScrollToTop,
+  LoadingSkeleton, LoadingCircle
 }

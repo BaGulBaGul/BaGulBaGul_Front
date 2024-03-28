@@ -108,12 +108,18 @@ export interface PostTabsProps {
 
 export interface RangeProps { from: undefined | number, to: undefined | number }
 
-export interface EventProps { id: number; abstractLocation: string; categories: string[]; 
+export interface EventProps {
+  id: number; abstractLocation: string; categories: string[];
   tags: string[]; title: string; type: string; userName: string; userImage: string;
-  startDate: string; endDate: string; lastModifiedAt: string; headImageUrl: string; 
-  currentHeadCount: number; totalHeadCount: number; }
+  startDate: string; endDate: string; lastModifiedAt: string; headImageUrl: string;
+  currentHeadCount: number; totalHeadCount: number;
+}
+export interface RecruitProps {
+  title: string; user_profile: string; username: string; state: string;
+  startDate: any; tags?: string[]; id?: number; headCount?: number; headCountMax?: number;
+}
 // 이벤트 저장 리스트 업데이트
-export function setEventList(currentEvents: [], events: EventProps[], setEvents: any) {
+export function setEventList(currentEvents: [], events: EventProps[] | RecruitProps[], setEvents: any) {
   const newEvents = events.concat(currentEvents)
   const ids = newEvents.map(({ id }) => id);
   const filtered = newEvents.filter(({ id }, index: number) => !ids.includes(id, index + 1));
@@ -122,7 +128,7 @@ export function setEventList(currentEvents: [], events: EventProps[], setEvents:
 
 // update parameter
 export const useEffectParam = (dependencies: any[], initialSet: MutableRefObject<boolean>, setParams: any, params: any,
-  value: number | undefined, selectedCate: string[], sort: string, dayRange: any, participants: number, headCount: any, setEvents?: any) => {
+  value: number | undefined, selectedCate: string[], sort: string, dayRange: any, participants: number, headCount: any, setEvents?: any, setLoading?: any) => {
   useEffect(() => {
     initialSet.current = false;
     setParams({
@@ -137,7 +143,10 @@ export const useEffectParam = (dependencies: any[], initialSet: MutableRefObject
       totalHeadCountMax: headCount.from === null || headCount.from === undefined ? '' : headCount.from,
       totalHeadCountMin: headCount.to === null || headCount.to === undefined ? '' : headCount.to,
     })
-    if (setEvents !== undefined) { setEvents([]); }
+    if (setEvents !== undefined) {
+      setEvents([]);
+      setLoading(true);
+    }
   }, dependencies)
 }
 
@@ -202,7 +211,7 @@ export function getParams(params: any) {
   return sparams.toString();
 }
 
-export const useEffectCallAPI = (params: any, initialSet: MutableRefObject<boolean>, setPage: any, events: any, setEvents: any) => {
+export const useEffectCallAPI = (params: any, initialSet: MutableRefObject<boolean>, setPage: any, events: any, setEvents: any, setLoading: any) => {
   useEffect(() => {
     console.log('^^ useEffectCallAPI');
     let apiURL = Object.keys(params).length !== 0 ? `/api/event?size=10&${getParams(params)}` : '/api/event?size=10'
@@ -218,6 +227,7 @@ export const useEffectCallAPI = (params: any, initialSet: MutableRefObject<boole
           }
           setEventList(response.data.content, events, setEvents)
         }
+        setLoading(false)
       })
   }, [params])
 }

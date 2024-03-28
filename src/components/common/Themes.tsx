@@ -200,10 +200,10 @@ export const mentionDialogTheme = createTheme({
       styleOverrides: {
         root: {
           width: '108px', fontSize: '14px', lineHeight: '160%', fontWeight: '400',
-          borderRadius: '4px',
-          padding: '4px', backgroundColor: '#4A6AFE', color: '#FCFCFC',
+          borderRadius: '4px', padding: '4px',
           '&:hover, &:active': { backgroundColor: '#4A6AFE', color: '#FCFCFC' },
-          '&.btn-mention-keep': { backgroundColor: '#ECECEC', color: '#1E1E1E' }
+          '&.btn-mention-keep': { backgroundColor: '#ECECEC', color: '#1E1E1E' },
+          '&.btn-mention-delete': {  backgroundColor: '#4A6AFE', color: '#FCFCFC' },
         }
       }
     }

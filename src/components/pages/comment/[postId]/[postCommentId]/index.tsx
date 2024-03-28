@@ -1,13 +1,13 @@
 "use client";
 import { Dispatch, SetStateAction, useEffect, useRef, useState, FocusEvent, memo } from 'react';
 import { useParams } from 'next/navigation';
-import { ThemeProvider, TextField, Button, IconButton, Dialog, DialogActions, DialogContent, DialogContentText } from '@mui/material';
+import { ThemeProvider, TextField, Button, IconButton, Dialog, DialogActions, DialogContent, DialogContentText, Divider } from '@mui/material';
 import { CommentBlock } from '../index';
 import { commentTheme, mentionDialogTheme } from '@/components/common/Themes';
 import { SubHeaderCnt } from '@/components/layout/subHeader';
 import { call } from '@/service/ApiService';
 import { FormatDateTime } from '@/service/Functions';
-import { MoreButton } from '@/components/common';
+import { LoadingSkeleton, MoreButton } from '@/components/common';
 import { CommentDrawer, CommentMProps, CommentProps, ModifyInput } from '@/components/common/Comment';
 
 // * API 파라미터 업데이트 필요
@@ -18,21 +18,7 @@ export interface ReplyProps {
   commentChildId: number; content: string; createdAt: string; likeCount: number; userId: number; userName: string; myLike: boolean;
 }
 const index = () => {
-  const params = useParams()
-  const [comment, setComment] = useState<CommentProps>()
-  const [children, setChildren] = useState<ReplyProps[]>([]);
-  function setChildrenList(currentChildren: []) {
-    const newChildren = children.concat(currentChildren)
-    const ids = newChildren.map(({ commentChildId }) => commentChildId);
-    const filtered = newChildren.filter(({ commentChildId }, index) => !ids.includes(commentChildId, index + 1));
-    setChildren(filtered);
-  }
-
-  const [page, setPage] = useState({ current: 0, total: 0, });
-  function setPageInfo(currentPage: number) {
-    setPage({ ...page, current: currentPage });
-  }
-  const handleMore = () => { setPageInfo(page.current + 1) }
+  const [count, setCount] = useState(0);
 
   // menu drawer
   const [openD, setOpenD] = useState(false);
@@ -41,8 +27,10 @@ const index = () => {
   const [openM, setOpenM] = useState(false);
   const [targetM, setTargetM] = useState<CommentMProps | undefined>();
 
-  const initialSet = useRef(false);
-  // 댓글 조회 후 대댓글 조회
+  const params = useParams()
+  const [isLoadingC, setLoadingC] = useState(true)
+  const [comment, setComment] = useState<CommentProps>()
+
   useEffect(() => {
     let apiURL = `/api/post/comment/${params.postCommentId}`;
     console.log("###", apiURL)
@@ -50,24 +38,9 @@ const index = () => {
       .then((response) => {
         console.log(response.data);
         setComment(response.data);
+        setLoadingC(false)
       })
   }, [])
-  useEffect(() => {
-    let apiURL = `/api/post/comment/${params.postCommentId}/children?size=10&page=${page.current}`;
-    console.log("$$$", apiURL)
-    call(apiURL, "GET", null)
-      .then((response) => {
-        console.log(response.data);
-        if (response.data.empty === false) {
-          // 페이지값 초기설정
-          if (!initialSet.current) {
-            setPage({ current: 0, total: response.data.totalPages })
-            initialSet.current = true;
-          }
-          setChildrenList(response.data.content)
-        }
-      })
-  }, [page])
 
   const [mentioning, setMentioning] = useState(false)
   const [mentionTarget, setMentionTarget] = useState<{ id: number, name: string } | undefined>(undefined)
@@ -106,49 +79,101 @@ const index = () => {
     if (mentioning && mentionRef && mentionRef.current) { mentionRef.current.focus() }
   }, [mentionTarget])
 
-  if (comment !== undefined) {
+  return (
+    <>
+      <SubHeaderCnt name='답글' url={"/"} cnt={count} />
+      {
+        !isLoadingC && comment !== undefined
+          ? <div className='flex flex-col w-full min-h-[calc(100vh-104px)] pb-[49px] bg-gray1'>
+            <div className='bg-[#FFF] px-[16px] py-[12px] mb-[2px]'>
+              <CommentBlock data={comment} currentURL='' setOpenD={setOpenD} setTargetM={setTargetM} />
+            </div>
+            <Replies setCount={setCount} setOpenD={setOpenD} setTargetM={setTargetM} handleMention={handleMention} postCommentId={params.postCommentId} />
+          </div>
+          : <div className='flex flex-col gap-[2px]'>
+            <LoadingSkeleton type='CMT' />
+            <Divider />
+            <LoadingSkeleton type='RPL' />
+          </div>
+      }
+      <ThemeProvider theme={mentionDialogTheme}>
+        <Dialog open={open} onClose={handleClose} >
+          <DialogContent>
+            <DialogContentText>작성 중이던 댓글을 삭제하고<br /> 새로운 댓글을 작성하시겠습니까?</DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} className='btn-mention-keep'>계속 작성</Button>
+            <Button onClick={handleDialog} className='btn-mention-delete'>삭제</Button>
+          </DialogActions>
+        </Dialog >
+      </ThemeProvider>
+      <MemoizedReplyFooter mentioning={mentioning} setMentioning={setMentioning} target={mentionTarget} mentionRef={mentionRef} replyRef={replyRef} />
+      <CommentDrawer open={openD} toggleDrawer={toggleDrawer} setOpenM={setOpenM} />
+      <ModifyInput open={openM} setOpenM={setOpenM} target={targetM} setTarget={setTargetM} />
+    </>
+  )
+}
+export default index;
+
+function Replies(props: { setCount: any; setOpenD: any; setTargetM: any; handleMention: any; postCommentId: any; }) {
+  const [isLoadingR, setLoadingR] = useState(true)
+
+  const [children, setChildren] = useState<ReplyProps[]>([]);
+  function setChildrenList(currentChildren: []) {
+    const newChildren = children.concat(currentChildren)
+    const ids = newChildren.map(({ commentChildId }) => commentChildId);
+    const filtered = newChildren.filter(({ commentChildId }, index) => !ids.includes(commentChildId, index + 1));
+    setChildren(filtered);
+  }
+
+  const [page, setPage] = useState({ current: 0, total: 0, });
+  function setPageInfo(currentPage: number) {
+    setPage({ ...page, current: currentPage });
+  }
+  const handleMore = () => { setPageInfo(page.current + 1) }
+
+  const initialSet = useRef(false);
+  // 댓글 조회 후 대댓글 조회
+  useEffect(() => {
+    let apiURL = `/api/post/comment/${props.postCommentId}/children?size=10&page=${page.current}`;
+    console.log("$$$", apiURL)
+    call(apiURL, "GET", null)
+      .then((response) => {
+        console.log(response.data);
+        if (response.data.empty === false) {
+          // 페이지값 초기설정
+          if (!initialSet.current) {
+            setPage({ current: 0, total: response.data.totalPages })
+            initialSet.current = true;
+            props.setCount(response.data.totalElements)
+          }
+          setChildrenList(response.data.content)
+        }
+        setLoadingR(false)
+      })
+  }, [page])
+
+  if (isLoadingR) { return <LoadingSkeleton type='RPL' /> }
+  else {
     return (
-      <>
-        <SubHeaderCnt name='답글' url={"/"} cnt={comment.commentChildCount} />
-        <div className='flex flex-col w-full min-h-[calc(100vh-104px)] pb-[49px] bg-gray1'>
-          <div className='bg-white px-[16px] py-[12px] mb-[2px]'>
-            <CommentBlock data={comment} currentURL='' setOpenD={setOpenD} setTargetM={setTargetM} />
-          </div>
-          <div className='flex flex-col w-full'>
-            {
-              children.map((comment: ReplyProps, idx: number) => (
-                <div className={idx % 2 == 0 ? 'bg-white ps-[48px] pe-[16px] py-[12px]' : 'bg-gray1 ps-[48px] pe-[16px] py-[12px]'}
-                  key={`reply-${idx}`} onClick={(e) => { handleMention(comment) }}>
-                  <ReplyBlock data={comment} key={`cmt-${idx}`} setOpenD={setOpenD} setTargetM={setTargetM} />
-                </div>
-              ))
-            }
-            {
-              page.total > 1 && page.current + 1 < page.total
-                ? <MoreButton onClick={handleMore} />
-                : <></>
-            }
-          </div>
-        </div>
-        <ThemeProvider theme={mentionDialogTheme}>
-          <Dialog open={open} onClose={handleClose} >
-            <DialogContent>
-              <DialogContentText>작성 중이던 댓글을 삭제하고<br /> 새로운 댓글을 작성하시겠습니까?</DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose} className='btn-mention-keep'>계속 작성</Button>
-              <Button onClick={handleDialog} className='btn-mention-delete'>삭제</Button>
-            </DialogActions>
-          </Dialog >
-        </ThemeProvider>
-        <MemoizedReplyFooter mentioning={mentioning} setMentioning={setMentioning} target={mentionTarget} mentionRef={mentionRef} replyRef={replyRef} />
-        <CommentDrawer open={openD} toggleDrawer={toggleDrawer} setOpenM={setOpenM} />
-        <ModifyInput open={openM} setOpenM={setOpenM} target={targetM} setTarget={setTargetM} />
-      </>
+      <div className='flex flex-col w-full'>
+        {
+          children.map((comment: ReplyProps, idx: number) => (
+            <div className={idx % 2 == 0 ? 'bg-[#FFF] ps-[48px] pe-[16px] py-[12px]' : 'bg-gray1 ps-[48px] pe-[16px] py-[12px]'}
+              key={`reply-${idx}`} onClick={(e) => { props.handleMention(comment) }}>
+              <ReplyBlock data={comment} key={`cmt-${idx}`} setOpenD={props.setOpenD} setTargetM={props.setTargetM} />
+            </div>
+          ))
+        }
+        {
+          page.total > 1 && page.current + 1 < page.total
+            ? <MoreButton onClick={handleMore} />
+            : <></>
+        }
+      </div>
     )
   }
 }
-export default index;
 
 function ReplyBlock(props: { data: ReplyProps; setOpenD: any; setTargetM: any; }) {
   let createdD = FormatDateTime(props.data.createdAt, 1)

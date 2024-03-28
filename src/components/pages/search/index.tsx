@@ -31,7 +31,7 @@ const index = () => {
 
   return (
     <div className='flex flex-col w-full h-screen bg-gray1'>
-      <div className='bg-white'>
+      <div className='bg-[#FFF]'>
         <SearchBar setOpen={setOpen} filterCnt={filterCnt}
           params={{
             sort: sort, startDate: dayRange.from === null || dayRange.from === undefined

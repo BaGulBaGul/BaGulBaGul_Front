@@ -78,7 +78,7 @@ export function ClientRootLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className='flex flex-col w-full pb-[10px] h-screen bg-gray1'>
-      <div className='fixed w-full top-0 bg-white z-paper'>
+      <div className='fixed w-full top-0 bg-[#FFF] z-paper'>
         <SearchBar title={search ?? ''} setOpen={setOpen} filterCnt={filterCnt} setTitle={setTitle} />
       </div>
       <div className='pt-[66px]'>
