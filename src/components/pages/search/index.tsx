@@ -1,14 +1,12 @@
 "use client";
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
-import { useNavigate } from "react-router-dom";
-import { IconButton, TextField, ThemeProvider, Divider, Button, Backdrop, Paper, FormControl } from '@mui/material';
+import { useEffect, useRef, useState } from 'react';
+import { IconButton, TextField, ThemeProvider, Divider, Button, Backdrop } from '@mui/material';
 import { ViewButton, ViewSelect } from '@/components/common';
 import { searchInputTheme, searchFreqTheme, deleteButtonTheme } from '@/components/common/Themes';
-import { krLocale } from '@/components/common/CalendarLocale';
 import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
-import { DayRange, Calendar, Day } from '@hassanmojab/react-modern-calendar-datepicker'
+import { DayRange } from '@hassanmojab/react-modern-calendar-datepicker'
 import { useRouter } from 'next/navigation';
-import { RangeProps, getParams, useEffectFilter, useEffectFilterApplied, useEffectParam } from '@/service/Functions';
+import { RangeProps, getParams, useEffectFilter, useEffectFilterApplied } from '@/service/Functions';
 
 const index = () => {
   // 정렬기준(default 최신순), 날짜, 참여인원, 규모
@@ -34,13 +32,13 @@ const index = () => {
       <div className='bg-[#FFF]'>
         <SearchBar setOpen={setOpen} filterCnt={filterCnt}
           params={{
-            sort: sort, startDate: dayRange.from === null || dayRange.from === undefined
-              ? '' : `${dayRange.from.year}-${String(dayRange.from.month).padStart(2, "0")}-${String(dayRange.from.day).padStart(2, "0")}T00:00:00`,
-            endDate: dayRange.to === null || dayRange.to === undefined
-              ? '' : `${dayRange.to.year}-${String(dayRange.to.month).padStart(2, "0")}-${String(dayRange.to.day).padStart(2, "0")}T23:59:59`,
-            participants: participants > 0 ? participants : '',
-            headCountMax: headCount.from === null || headCount.from === undefined || headCount.from <= 0 ? '' : headCount.from,
-            headCountMin: headCount.to === null || headCount.to === undefined || headCount.to <= 0 ? '' : headCount.to,
+            sort: sort, sD: dayRange.from === null || dayRange.from === undefined
+              ? '' : `${dayRange.from.year}${String(dayRange.from.month).padStart(2, "0")}${String(dayRange.from.day).padStart(2, "0")}`,
+            eD: dayRange.to === null || dayRange.to === undefined
+              ? '' : `${dayRange.to.year}${String(dayRange.to.month).padStart(2, "0")}${String(dayRange.to.day).padStart(2, "0")}`,
+            ptcp: participants > 0 ? participants : '',
+            hcMin: headCount.from === null || headCount.from === undefined || headCount.from <= 0 ? '' : headCount.from,
+            hcMax: headCount.to === null || headCount.to === undefined || headCount.to <= 0 ? '' : headCount.to,
           }} />
         <Divider />
         <div>

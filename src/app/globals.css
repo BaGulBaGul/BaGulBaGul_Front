@@ -17,9 +17,9 @@ em {
   min-width: 4710px;
 }
 
-.slick-arrow {
+/* .slick-arrow {
   display: none;
-}
+} */
 
 .slick-arrow:before {
   content: "" !important;

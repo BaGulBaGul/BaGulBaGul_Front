@@ -119,7 +119,7 @@ function LikedTab() {
             </div>
             <span className='text-[16px] text-[#333333] font-semibold'>{props.data.title}</span>
           </div>
-          <span className='text-[12px] text-gray3 block description max-w-[278px]'>{props.data.content}</span>
+          <span className='text-[12px] text-gray3 description max-w-[278px]'>{props.data.content}</span>
         </div>
       </div>
     )

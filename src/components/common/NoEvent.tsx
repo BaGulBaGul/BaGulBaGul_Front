@@ -12,7 +12,7 @@ export default function NoEvent(props: NoEventProps) {
           <span className='text-[16px] leading-[140%] text-gray2'>{props.text2}</span>
         </div>
         <ThemeProvider theme={noEventButtonTheme}>
-          <Button>{props.buttonText}</Button>
+          <Button href='/?sort=likeCount%2Cdesc'>{props.buttonText}</Button>
         </ThemeProvider>
       </div>
       <img className='w-[140px] h-[75px]' src='/no_event.svg' />

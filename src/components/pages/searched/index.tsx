@@ -1,24 +1,19 @@
 "use client";
 import { useEffect, useRef, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import { IconButton, TextField, ThemeProvider, Divider } from '@mui/material';
 import { searchInputTheme } from '@/components/common/Themes';
 import { tabList } from '@/components/common/Data';
-import { useEffectCallAPI } from '@/service/Functions';
+import { ParamProps, String2ISO, useEffectCallAPI } from '@/service/Functions';
 import { LoadingSkeleton, MoreButton, NoEvent, ResultBlock, SuggestBlock, TabPanel, ViewButton } from '@/components/common';
+import { TabBlockProps } from '@/components/common/EventBlock';
 
-const index = () => {
-  return (
-    <ResultTabs />
-  )
-}
+const index = () => (<ResultTabs />)
 export default index;
 
-export function SearchBar(props: { title: string; setOpen: any; filterCnt: number; setTitle: any; }) {
+export function SearchBar(props: { title: string; setOpen: any; filterCnt: number; setTitle: any; handleRt?: any; }) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const router = useRouter()
   const handleSearch = (event: any) => {
-    console.log(inputRef.current ? inputRef.current.value : '()()()()()(')
     if (inputRef.current && inputRef.current.value !== '') {
       event.preventDefault();
       props.setTitle(encodeURIComponent(encodeURIComponent(inputRef.current.value)))
@@ -43,29 +38,11 @@ export function SearchBar(props: { title: string; setOpen: any; filterCnt: numbe
 export function ResultTabs() {
   const searchParams = useSearchParams()
   const [isLoading, setLoading] = useState(true)
+  const [events, setEvents] = useState([]);
 
   // api 호출용 파라미터
-  const [params, setParams] = useState({
-    title: decodeURIComponent(decodeURIComponent(searchParams.get('query') ?? '')), page: 0,
-    // tag: decodeURIComponent(decodeURIComponent(searchParams.get('tag') ?? '')),
-    type: tabList[Number(searchParams.get('tab_id')) ?? 0], sort: searchParams.get('sort') ?? 'createdAt,desc',
-    startDate: searchParams.get('startDate') ?? '', endDate: searchParams.get('endDate') ?? '',
-  });
+  const [params, setParams] = useState<ParamProps | undefined>();
   let tab = Number(searchParams.get('tab_id')) ?? 0
-
-  useEffect(() => {
-    console.log("@#!@#!@#!@")
-    setEvents([])
-    setLoading(true);
-    setParams({
-      title: decodeURIComponent(decodeURIComponent(searchParams.get('query') ?? '')), page: 0,
-      // tag: decodeURIComponent(decodeURIComponent(searchParams.get('tag') ?? '')),
-      type: tabList[Number(searchParams.get('tab_id')) ?? 0], sort: searchParams.get('sort') ?? 'createdAt,desc',
-      startDate: searchParams.get('startDate') ?? '', endDate: searchParams.get('endDate') ?? ''
-    })
-  }, [searchParams])
-
-  const [events, setEvents] = useState([]);
 
   const [page, setPage] = useState({ current: 0, total: 0, });
   function setPageInfo(currentPage: number) {
@@ -74,6 +51,20 @@ export function ResultTabs() {
   }
 
   const initialSet = useRef(false);
+  useEffect(() => {
+    if (initialSet.current) { initialSet.current = false }
+    setEvents([])
+    setLoading(true);
+    setParams({
+      title: decodeURIComponent(decodeURIComponent(searchParams.get('query') ?? '')), page: 0,
+      // tag: decodeURIComponent(decodeURIComponent(searchParams.get('tag') ?? '')),
+      type: tabList[Number(searchParams.get('tab_id')) ?? 0], sort: searchParams.get('sort') ?? 'createdAt,desc',
+      startDate: searchParams.get('sD') ? String2ISO((searchParams.get('sD'))) : '',
+      endDate: searchParams.get('eD') ? String2ISO((searchParams.get('eD'))) : '',
+      leftHeadCount: searchParams.get('ptcp') ?? '', totalHeadCountMax: searchParams.get('hcMax') ?? '',
+      totalHeadCountMin: searchParams.get('hcMin') ?? '',
+    })
+  }, [searchParams])
 
   // 조건에 따라 리스트 호출
   useEffectCallAPI(params, initialSet, setPage, events, setEvents, setLoading)
@@ -93,9 +84,6 @@ export function ResultTabs() {
   )
 }
 
-interface TabBlockProps {
-  opt: number; events: any[]; page: { current: number; total: number; }; setPageInfo: any; isLoading: boolean;
-}
 const TabBlock = (props: TabBlockProps) => {
   const handleMore = () => { props.setPageInfo(props.page.current + 1) }
   if (props.isLoading) { return <LoadingSkeleton /> }

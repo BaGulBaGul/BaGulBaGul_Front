@@ -8,6 +8,7 @@ interface FilterAppliedProps {
   filterCnt: number; filters: string[], setFilters: Dispatch<SetStateAction<string[]>>; sort: string;
   dayRange: DayRange; setDayRange: any; participants: number; setParticipants: any;
   headCount: { from: undefined | number, to: undefined | number }; setHeadCount: any;
+  handleRt?: any;
 }
 export const ViewFilterApplied = (props: FilterAppliedProps) => {
   const handleDelete = (event: any) => {
@@ -16,13 +17,15 @@ export const ViewFilterApplied = (props: FilterAppliedProps) => {
       case 'dayRange':
         props.setDayRange({ from: undefined, to: undefined })
         break;
-      case 'participants':
+      case 'ptcp':
         props.setParticipants(undefined)
         break;
       case 'headCount':
         props.setHeadCount({ from: undefined, to: undefined })
         break;
     }
+    if (props.handleRt !== undefined) { props.handleRt() }
+
   };
   return (
     <>
@@ -40,8 +43,8 @@ export const ViewFilterApplied = (props: FilterAppliedProps) => {
                     : <></>
                 }
                 {
-                  (props.filters).includes('participants')
-                    ? <Chip id='participants' label={`참여 ${props.participants}명`} onDelete={handleDelete}
+                  (props.filters).includes('ptcp')
+                    ? <Chip id='ptcp' label={`참여 ${props.participants}명`} onDelete={handleDelete}
                       deleteIcon={<img src='/main_delete_filter.svg' />} variant="outlined" />
                     : <></>
                 }

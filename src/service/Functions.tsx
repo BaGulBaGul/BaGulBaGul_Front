@@ -79,11 +79,21 @@ export const handleDayData = (date: DayValue, type: number = 0) => {
 }
 
 export const String2Day = (date: string | null) => {
-  if (date === null) {
-    return undefined
-  } else {
-    let dateD = new Date(date);
-    return { year: dateD.getFullYear(), month: dateD.getMonth(), day: dateD.getDate() }
+  if (date === null) { return undefined }
+  else {
+    // let dateD = new Date(date);
+    return { year: Number(date.substring(0, 4)), month: Number(date.substring(4, 6)), day: Number(date.substring(6, 8)) }
+  }
+}
+
+export const String2ISO = (date: string | null) => {
+  if (date === null) { return undefined }
+  else {
+    let y = date.substring(0, 4);
+    let m = date.substring(4, 6);
+    let d = date.substring(6, 8);
+    const tmp = new Date(Number(y), Number(m)-1, Number(d));
+    return tmp.toISOString().slice(0,-5)
   }
 }
 
@@ -124,6 +134,7 @@ export function setEventList(currentEvents: [], events: EventProps[] | RecruitPr
   const ids = newEvents.map(({ id }) => id);
   const filtered = newEvents.filter(({ id }, index: number) => !ids.includes(id, index + 1));
   setEvents(filtered);
+  console.log('::: new event: ', filtered)
 }
 
 // update parameter
@@ -201,6 +212,33 @@ export const useEffectFilterApplied = (dependencies: any[], filters: string[], s
   }, dependencies)
 }
 
+export const useEffectCntFilter = (searchParams: any, setFilters: any, setFilterCnt: any, sort: string) => {
+  useEffect(() => {
+    let paramFilter: string[] = []
+    for (const key of searchParams.keys()) {
+      if ((key === 'sD' || key === 'eD') && !paramFilter.includes('dayRange')) {
+        paramFilter.push('dayRange')
+      } else if ((key === 'hcMin' || key === 'hcMax') && !paramFilter.includes('headCount')) {
+        paramFilter.push('headCount')
+      } else if ((key === 'sort' || key === 'ptcp') && !paramFilter.includes(key)) {
+        paramFilter.push(key)
+      }
+    }
+
+    if (paramFilter.length > 0) {
+      setFilters(paramFilter)
+      if (paramFilter.length === 1 && sort === 'createdAt,desc') { setFilterCnt(0) }
+      else { setFilterCnt(paramFilter.length) }
+    }
+  }, [searchParams])
+}
+
+export interface ParamProps {
+  title?: string; page: number; categories?: string[] | undefined; type?: string | undefined; sort?: string | undefined;
+  startDate?: string | undefined; endDate?: string | undefined; leftHeadCount?: string | undefined;
+  totalHeadCountMax?: string | undefined; totalHeadCountMin?: string | undefined;
+}
+
 // call event list api with filters
 export function getParams(params: any) {
   let sparams = createSearchParams(params);
@@ -213,21 +251,24 @@ export function getParams(params: any) {
 
 export const useEffectCallAPI = (params: any, initialSet: MutableRefObject<boolean>, setPage: any, events: any, setEvents: any, setLoading: any) => {
   useEffect(() => {
-    console.log('^^ useEffectCallAPI');
-    let apiURL = Object.keys(params).length !== 0 ? `/api/event?size=10&${getParams(params)}` : '/api/event?size=10'
-    console.log('** ', apiURL)
-    call(apiURL, "GET", null)
-      .then((response) => {
-        console.log(response.data);
-        if (response.data.empty === false) {
-          // 페이지값 초기설정
-          if (!initialSet.current) {
-            setPage({ current: 0, total: response.data.totalPages })
-            initialSet.current = true;
+    if (params) {
+      console.log('useEffect - useEffectCallAPI')
+      let apiURL = Object.keys(params).length > 0 ? `/api/event?size=10&${getParams(params)}` : '/api/event?size=10&type=FESTIVAL'
+      console.log('** ', apiURL)
+      call(apiURL, "GET", null)
+        .then((response) => {
+          console.log(response.data);
+          if (!response.data.empty) {
+            // 페이지값 초기설정
+            if (!initialSet.current) {
+              console.log(' -- pageset for initialSet.current')
+              setPage({ current: 0, total: response.data.totalPages })
+              initialSet.current = true;
+            }
+            setEventList(response.data.content, events, setEvents)
           }
-          setEventList(response.data.content, events, setEvents)
-        }
-        setLoading(false)
-      })
+          setLoading(false)
+        })
+    }
   }, [params])
 }

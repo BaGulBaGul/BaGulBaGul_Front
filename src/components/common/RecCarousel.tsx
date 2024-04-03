@@ -28,7 +28,7 @@ function RecSlide() {
     nextArrow: <ArrowNext cN='slick-next-main' />, prevArrow: <ArrowPrev cN='slick-prev-main' />
   }
   return (
-    <div className='pb-[50px] h-auto'>
+    <div className='pb-[50px] h-[316px]'>
       <Slider {...settings}>
         {postData.map((post, idx) => <RecPost data={post} key={`rec-${idx}`} />)}
       </Slider>
@@ -39,7 +39,7 @@ function RecSlide() {
 export function RecCarousel() {
   return (
     <div className='flex flex-col bg-secondary-yellow w-full h-[430px] lg:px-[360px] lg:bg-gradient-to-b lg:from-grad-yellow lg:to-grad-blue'>
-      <div className='flex flex-col pt-[22px] pb-[20px] px-[24px] text-[26px]'>
+      <div className='flex flex-col pt-[22px] pb-[20px] px-[16px] text-[26px] leading-[140%]'>
         <p className='font-semibold'>SUMMER</p>
         <p>페스티벌 추천</p>
       </div>

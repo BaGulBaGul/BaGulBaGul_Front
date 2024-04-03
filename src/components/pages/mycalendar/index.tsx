@@ -101,34 +101,4 @@ function LikedTab() {
       </TabPanel>
     </Box>
   )
-
-  interface LikePostProps { title: string; date: string; type: string; eventId: number; }
-  function LikePostBlock(props: LikePostProps) {
-    const [checked, setChecked] = useState(true);
-    const handleChange = (event: any) => { setChecked(!checked); };
-
-    return (
-      <div className='flex flex-col px-[16px] py-[10px] gap-[4px]'>
-        <div className='flex flex-row gap-[6px]'>
-          <ThemeProvider theme={likeButtonTheme1}>
-            <Button disabled>{likeEvents[props.eventId]}</Button>
-          </ThemeProvider>
-          {
-            props.type === 'ACCOMPANY'
-              ? <ThemeProvider theme={likeButtonTheme2}><Button disabled>모집글</Button></ThemeProvider>
-              : <></>
-          }
-        </div>
-        <div className='flex flex-row justify-between items-center'>
-          <div className='flex flex-col'>
-            <span className='text-[12px] text-[#757575]'>{props.date}</span>
-            <span className='text-[14px]'>{props.title}</span>
-          </div>
-          <Checkbox icon={<img src="/detail_like.svg" width={24} height={24} />}
-            checkedIcon={<img src="/detail_like_1.svg" width={24} height={24} />}
-            checked={checked} onChange={handleChange} />
-        </div>
-      </div>
-    )
-  }
 }

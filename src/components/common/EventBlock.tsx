@@ -6,6 +6,9 @@ import { useEffect, useState } from "react";
 import { call } from "@/service/ApiService";
 import { DividerDot } from "./Icon";
 
+export interface TabBlockProps {
+  opt: number; events: never[]; page: { current: number; total: number; }; setPageInfo: any; isLoading: boolean;
+}
 
 // - tab item : 페스티벌
 export interface PostProps {
@@ -48,7 +51,7 @@ export function EventBlock(props: { data: PostProps }) {
         </div>
         <img className='rounded-[4px] w-[92px] h-[116px] object-cover' src={props.data.headImageUrl ?? '/default_list_thumb3x.png'} />
       </div>
-      {props.data.tags ? <div className="pt-[20px]"><HashtagAccordion tag={props.data.tags} /></div> : <></>}
+      {props.data.tags ? <div className="pt-[10px]"><HashtagAccordion tag={props.data.tags} /></div> : <></>}
     </a>
   )
 }
@@ -95,7 +98,7 @@ export function CalendarBlock(props: { data: PostProps }) {
                 </div>
                 <p className='truncate text-[16px] font-semibold'>{props.data.title}</p>
               </div>
-              <span className='text-[12px] text-gray3 block description max-w-[278px]'>{props.data.content}</span>
+              <span className='text-[12px] text-gray3 description max-w-[278px]'>{props.data.content}</span>
             </div>
           </div>
         </div>
@@ -137,9 +140,10 @@ export function ResultBlock(props: { data: PostProps }) {
 export function SuggestBlock(props: { type: number }) {
   const [suggestions, setSuggestions] = useState<any[]>([])
   useEffect(() => {
-    if (props.type > 0) {
+    console.log(' :: suggestblock: ', props.type)
+    // if (props.type > 0) {
       let apiURL = `/api/event?size=5&sort=likeCount,desc`
-      console.log('** ', apiURL)
+      console.log('** suggest : ', apiURL)
       call(apiURL, "GET", null)
         .then((response) => {
           console.log(response.data);
@@ -147,7 +151,7 @@ export function SuggestBlock(props: { type: number }) {
             setSuggestions(response.data.content)
           }
         })
-    }
+    // }
   }, [])
 
   const SuggestText = () => {
@@ -157,7 +161,7 @@ export function SuggestBlock(props: { type: number }) {
         <div className="flex flex-row gap-[6px] flex-wrap w-[382px]">
           { // 자주 찾는 검색어, 1~2줄
             suggestions.map((s, idx) =>
-              <ThemeProvider theme={suggestChipTheme}>
+              <ThemeProvider theme={suggestChipTheme} key={`st-${idx}`}>
                 <a href={`/event/${s.id}`}><Chip label={s.title} variant="outlined" /></a>
               </ThemeProvider>
             )
@@ -171,7 +175,7 @@ export function SuggestBlock(props: { type: number }) {
       <div className="overflow-hidden	h-[204px]">
         <div className="flex flex-row gap-[16px] overflow-x-auto overflow-y-hide whitespace-nowrap">
           {suggestions.map((s, idx) =>
-            <div className="flex flex-col w-[120px] gap-[12px]">
+            <div className="flex flex-col w-[120px] gap-[12px]" key={`si-${idx}`}>
               <img className='h-[148px] rounded-[5.65px] object-cover' src={s.headImageUrl ?? '/default_list_thumb3x.png'} />
               <div className="flex flex-col text-[14px] leading-[160%]">
                 <span className="font-semibold truncate">{s.title}</span>

@@ -133,7 +133,7 @@ export function ViewSelect(props: ViewSelectProps) {
               <Collapse in={openParti} timeout="auto" className="filter-collapse">
                 <div className="flex flex-row justify-between mt-[8px]">
                   <span className="text-[14px] leading-[160%]">인원 수</span>
-                  <PartiNumberInput value={props.participants ?? 0} min={1}
+                  <PartiNumberInput value={props.participants ?? 0} min={0}
                     onInputChange={(event) => {
                       props.setParticipants(Number.isNaN(Number(event.target.value)) ? undefined : Number(event.target.value))
                     }}
@@ -165,7 +165,7 @@ export function ViewSelect(props: ViewSelectProps) {
                       <div className="flex flex-row justify-between">
                         <div className="flex flex-row justify-between border border-gray2 rounded-[8px] w-[180px] px-[16px] py-[5px]">
                           <span className="text-[14px] leading-[160%] w-[49px]">최소인원</span>
-                          <HeadNumberInput placeholder="1명" value={props.headCount.from ?? 0} min={1}
+                          <HeadNumberInput placeholder="1명" value={props.headCount.from ?? 0} min={0}
                             onInputChange={(event) => {
                               props.setHeadCount({ from: Number.isNaN(Number(event.target.value)) ? undefined : Number(event.target.value), to: props.headCount!.to })
                             }}
