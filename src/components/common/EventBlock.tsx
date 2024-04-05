@@ -1,13 +1,14 @@
 import { ThemeProvider, IconButton, Chip, Checkbox } from "@mui/material";
 import { doneChipTheme, suggestChipTheme } from "./Themes";
-import { FormatDate, FormatDateRange, RecruitProps } from "@/service/Functions";
+import { FormatDate, FormatDateRange, ParamProps, RecruitProps } from "@/service/Functions";
 import HashtagAccordion from "./HashtagAccordion";
 import { useEffect, useState } from "react";
 import { call } from "@/service/ApiService";
 import { DividerDot } from "./Icon";
 
 export interface TabBlockProps {
-  opt: number; events: never[]; page: { current: number; total: number; }; setPageInfo: any; isLoading: boolean;
+  opt: number; events: never[]; page: { current: number; total: number; }; setPage: any; isLoading: boolean;
+  params?: ParamProps, setParams?: any
 }
 
 // - tab item : 페스티벌

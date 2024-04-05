@@ -4,7 +4,7 @@ import { useParams, useSearchParams } from 'next/navigation';
 import { Divider } from '@mui/material';
 import { LoadingCircle, LoadingSkeleton, MoreButton } from '@/components/common';
 import { call } from '@/service/ApiService';
-import { ParamProps, RecruitProps, String2ISO, getParams, setEventList } from "@/service/Functions";
+import { ParamProps, RecruitProps, String2ISO, getParams, setPageInfo, setUniqueList } from "@/service/Functions";
 import { RecruitBlock } from "@/components/common/EventBlock";
 
 const index = () => {
@@ -27,11 +27,6 @@ function RecruitTab() {
   const [proceeding, setProceeding] = useState(false);
 
   const [page, setPage] = useState({ current: 0, total: 0, });
-  function setPageInfo(currentPage: number) {
-    setPage({ ...page, current: currentPage });
-    setParams({ ...params, page: currentPage });
-  }
-
   const initialSet = useRef(false);
   useEffect(() => {
     if (initialSet.current) { initialSet.current = false }
@@ -59,14 +54,14 @@ function RecruitTab() {
               setPage({ current: 0, total: response.data.totalPages })
               initialSet.current = true;
             }
-            setEventList(response.data.content, recruits, setRecruits)
+            setUniqueList('EVT', response.data.content, setRecruits, recruits)
           }
           setLoading(false)
         })
     }
   }, [params])
 
-  const handleMore = () => { setPageInfo(page.current + 1) }
+  const handleMore = () => { setPageInfo(page, setPage, page.current + 1, params, setParams) }
   if (isLoading && page.current === 0) { return <LoadingSkeleton type='RCT' /> }
   else if (isLoading && page.current > 0) { return <LoadingCircle /> }
   else {

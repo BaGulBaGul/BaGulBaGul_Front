@@ -1,6 +1,6 @@
 import CategoryButtons from './CategoryButtons'
 import { EventBlock, RecruitBlock, CalendarBlock, ResultBlock, SuggestBlock } from './EventBlock'
-import { CommentDrawer, ModifyInput } from './Comment'
+import { CommentBlock, CommentDrawer, ModifyInput } from './Comment'
 import HashtagAccordion, { HashtagButton } from './HashtagAccordion'
 import MoreButton from './MoreButton'
 import NoEvent from './NoEvent'
@@ -12,12 +12,13 @@ import TabPanel from './TabPanel'
 import { ViewButton, ViewSelect } from './ViewFilter'
 import { ViewFilterApplied } from './ViewFilterApplied'
 import { LoadingSkeleton, LoadingCircle } from './Loading'
+import { Detail } from './Detail'
 
 
 export {
   CategoryButtons,
   EventBlock, RecruitBlock, CalendarBlock, ResultBlock, SuggestBlock,
-  CommentDrawer, ModifyInput,
+  CommentBlock, CommentDrawer, ModifyInput,
   HashtagAccordion,HashtagButton,
   MoreButton,
   NoEvent,
@@ -26,5 +27,6 @@ export {
   ViewButton, ViewSelect, ViewFilterApplied,
   ShareDialog,
   ScrollToTop,
-  LoadingSkeleton, LoadingCircle
+  LoadingSkeleton, LoadingCircle,
+  Detail
 }

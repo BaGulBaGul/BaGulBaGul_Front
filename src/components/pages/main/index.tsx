@@ -4,7 +4,7 @@ import { Divider, ThemeProvider, Fab } from '@mui/material';
 import { TabPanel, MoreButton, EventBlock, NoEvent, LoadingSkeleton, LoadingCircle } from '@/components/common';
 import { writeFabTheme } from '@/components/common/Themes'
 import { tabList } from '@/components/common/Data';
-import { ParamProps, String2ISO, useEffectCallAPI } from '@/service/Functions';
+import { ParamProps, String2ISO, setPageInfo, useEffectCallAPI } from '@/service/Functions';
 import { useSearchParams } from 'next/navigation';
 import { TabBlockProps } from '@/components/common/EventBlock';
 
@@ -21,12 +21,6 @@ function PostTabs() {
   let tab = Number(searchParams.get('tab_id')) ?? 0
 
   const [page, setPage] = useState({ current: 0, total: 0, });
-  function setPageInfo(currentPage: number) {
-    setPage({ ...page, current: currentPage });
-    setParams({ ...params, page: currentPage })
-  }
-  console.log(page)
-
   const initialSet = useRef(false);
   useEffect(() => {
     console.log('useEffect - setparams')
@@ -49,20 +43,20 @@ function PostTabs() {
   return (
     <>
       <TabPanel value={tab} index={0}>
-        <TabBlock opt={0} events={events} page={page} setPageInfo={setPageInfo} isLoading={isLoading} />
+        <TabBlock opt={0} events={events} page={page} setPage={setPage} isLoading={isLoading} params={params} setParams={setParams} />
       </TabPanel>
       <TabPanel value={tab} index={1}>
-        <TabBlock opt={0} events={events} page={page} setPageInfo={setPageInfo} isLoading={isLoading} />
+        <TabBlock opt={0} events={events} page={page} setPage={setPage} isLoading={isLoading} params={params} setParams={setParams} />
       </TabPanel>
       <TabPanel value={tab} index={2}>
-        <TabBlock opt={1} events={events} page={page} setPageInfo={setPageInfo} isLoading={isLoading} />
+        <TabBlock opt={1} events={events} page={page} setPage={setPage} isLoading={isLoading} params={params} setParams={setParams} />
       </TabPanel>
     </>
   )
 }
 
 const TabBlock = (props: TabBlockProps) => {
-  const handleMore = () => { props.setPageInfo(props.page.current + 1) }
+  const handleMore = () => { setPageInfo(props.page, props.setPage, props.page.current + 1, props.params, props.setParams) }
   if (props.isLoading && props.page.current === 0) { return <LoadingSkeleton /> }
   else if (props.isLoading && props.page.current > 0) { return <LoadingCircle /> }
   else {

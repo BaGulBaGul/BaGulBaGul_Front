@@ -92,8 +92,8 @@ export const String2ISO = (date: string | null) => {
     let y = date.substring(0, 4);
     let m = date.substring(4, 6);
     let d = date.substring(6, 8);
-    const tmp = new Date(Number(y), Number(m)-1, Number(d));
-    return tmp.toISOString().slice(0,-5)
+    const tmp = new Date(Number(y), Number(m) - 1, Number(d));
+    return tmp.toISOString().slice(0, -5)
   }
 }
 
@@ -128,13 +128,34 @@ export interface RecruitProps {
   title: string; user_profile: string; username: string; state: string;
   startDate: any; tags?: string[]; id?: number; headCount?: number; headCountMax?: number;
 }
+
+export function setPageInfo(page: any, setPage: any, currentPage: number, params?: ParamProps, setParams?: any) { 
+  setPage({ ...page, current: currentPage }); 
+  if (params !== undefined && setParams !== undefined) {
+    setParams({ ...params, page: currentPage });
+  }
+}
+
+
+
 // 이벤트 저장 리스트 업데이트
-export function setEventList(currentEvents: [], events: EventProps[] | RecruitProps[], setEvents: any) {
-  const newEvents = events.concat(currentEvents)
-  const ids = newEvents.map(({ id }) => id);
-  const filtered = newEvents.filter(({ id }, index: number) => !ids.includes(id, index + 1));
-  setEvents(filtered);
-  console.log('::: new event: ', filtered)
+export function setUniqueList(opt: string, currentList: [], setItems: any, items?: EventProps[] | RecruitProps[], itemsC?: CommentProps[]) {
+  if (opt === 'EVT' && items) {
+    const newItems = items.concat(currentList)
+    const ids = newItems.map(({ id }) => id);
+    const filtered = newItems.filter(({ id }, index: number) => !ids.includes(id, index + 1));
+    setItems(filtered);
+  } else if (opt === 'CMT' && itemsC) {
+    const newItems = itemsC.concat(currentList)
+    const ids = newItems.map(({ commentId }) => commentId);
+    const filtered = newItems.filter(({ commentId }, index: number) => !ids.includes(commentId, index + 1));
+    setItems(filtered);
+  } else if (opt === 'RPL' && itemsC) {
+    const newItems = itemsC.concat(currentList)
+    const ids = newItems.map(({ commentChildId }) => commentChildId);
+    const filtered = newItems.filter(({ commentChildId }, index: number) => !ids.includes(commentChildId, index + 1));
+    setItems(filtered);
+  }
 }
 
 // update parameter
@@ -265,10 +286,70 @@ export const useEffectCallAPI = (params: any, initialSet: MutableRefObject<boole
               setPage({ current: 0, total: response.data.totalPages })
               initialSet.current = true;
             }
-            setEventList(response.data.content, events, setEvents)
+            setUniqueList('EVT', response.data.content, setEvents, events)
           }
           setLoading(false)
         })
     }
   }, [params])
 }
+
+
+// 상세화면
+export const useEffectDetail = (urlDetail: string, urlCheckLike: string, setData: any, setLoading: any, setLiked: any, setLoginfo: any) => {
+  useEffect(() => {
+    call(urlDetail, "GET", null)
+      .then((response) => {
+        console.log(response.data);
+        setData(response.data);
+        setLoading(false);
+      })
+    call(urlCheckLike, "GET", null)
+      .then((response) => {
+        console.log(response.data);
+        if (response.data) {
+          setLiked(response.data.myLike)
+          setLoginfo(true)
+        }
+      }).catch((error) => console.error('not signed in'));
+  }, [])
+}
+
+export const applyLike = (loginfo: boolean, liked: boolean, url: string, setLiked: any,) => {
+  if (loginfo) {
+    if (!liked) {
+      call(url, "POST", null)
+        .then((response) => {
+          console.log('liked')
+          setLiked(true)
+        }).catch((error) => console.error(error));
+    } else {
+      call(url, "DELETE", null)
+        .then((response) => {
+          console.log('unliked')
+          setLiked(false)
+        }).catch((error) => console.error(error));
+    }
+  }
+}
+
+// 댓글 대댓글
+export const useEffectComment = (opt: string, url: string, initialSet: MutableRefObject<boolean>, page: any, setPage: any, 
+  setCount: any, setLoading: any, setComments: any, comments: CommentProps[]) => {
+    useEffect(() => {
+      call(url, "GET", null)
+        .then((response: any) => {
+          console.log(response.data);
+          if (response.data.empty === false) {
+            // 페이지값 초기설정
+            if (!initialSet.current) {
+              setPage({ current: 0, total: response.data.totalPages })
+              initialSet.current = true;
+              setCount(response.data.totalElements)
+            }
+            setUniqueList(opt, response.data.content, setComments, undefined, comments)
+          }
+          setLoading(false)
+        })
+    }, [page])
+  }
