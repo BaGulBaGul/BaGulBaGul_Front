@@ -14,9 +14,12 @@ export default index;
 export function SearchBar(props: { title: string; setOpen: any; filterCnt: number; setTitle: any; handleRt?: any; }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const handleSearch = (event: any) => {
-    if (inputRef.current && inputRef.current.value !== '') {
-      event.preventDefault();
-      props.setTitle(encodeURIComponent(encodeURIComponent(inputRef.current.value)))
+    if ((event.type === 'keydown' && event.key === 'Enter') || event.type === 'click') {
+      if (inputRef.current && inputRef.current.value !== '') {
+        event.preventDefault();
+        props.setTitle(encodeURIComponent(encodeURIComponent(inputRef.current.value)))
+        props.handleRt()
+      }
     }
   }
   const handleOpen = () => { props.setOpen(true) }
@@ -26,7 +29,7 @@ export function SearchBar(props: { title: string; setOpen: any; filterCnt: numbe
       <IconButton disableRipple className='p-0'><img src='/search_back.svg' /></IconButton>
       <div className='flex flex-row w-full justify-between'>
         <div className='flex flex-row bg-gray1 px-[8px] py-[4px] gap-[8px] w-full max-w-[268px]'>
-          <ThemeProvider theme={searchInputTheme}><TextField defaultValue={props.title} inputRef={inputRef} required /></ThemeProvider>
+          <ThemeProvider theme={searchInputTheme}><TextField defaultValue={props.title} inputRef={inputRef} onKeyDown={handleSearch} required /></ThemeProvider>
           <IconButton onClick={handleSearch} disableRipple className='p-0' ><img src='/search_magnifying.svg' /></IconButton>
         </div>
         <ViewButton handleOpen={handleOpen} cnt={props.filterCnt} fs={14} />
@@ -51,9 +54,10 @@ export function ResultTabs() {
     setEvents([])
     setLoading(true);
     setParams({
-      title: decodeURIComponent(decodeURIComponent(searchParams.get('query') ?? '')), page: 0,
-      // tag: decodeURIComponent(decodeURIComponent(searchParams.get('tag') ?? '')),
+      title: decodeURIComponent(decodeURIComponent(searchParams.get('query') ?? '')),
+      page: 0, categories: searchParams.getAll('ct'),
       type: tabList[Number(searchParams.get('tab_id')) ?? 0], sort: searchParams.get('sort') ?? 'createdAt,desc',
+      tag: decodeURIComponent(decodeURIComponent(searchParams.get('tag') ?? '')),
       startDate: searchParams.get('sD') ? String2ISO((searchParams.get('sD'))) : '',
       endDate: searchParams.get('eD') ? String2ISO((searchParams.get('eD'))) : '',
       leftHeadCount: searchParams.get('ptcp') ?? '', totalHeadCountMax: searchParams.get('hcMax') ?? '',

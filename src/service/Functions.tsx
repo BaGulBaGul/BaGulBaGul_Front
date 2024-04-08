@@ -213,6 +213,7 @@ export const useEffectFilter = (dependencies: any[], dependencyNames: any = [], 
 // update applied filters
 export const useEffectFilterApplied = (dependencies: any[], filters: string[], setFilters: any, changed: any, sort: string, setFilterCnt: any) => {
   useEffect(() => {
+    console.log(changed.key)
     if (!filters.includes(changed.key)) { // filters에 key가 존재하지 않고 값이 유효 -> filters에 key 추가
       if ((changed.value !== undefined) && JSON.stringify(changed.value) !== JSON.stringify({ from: undefined, to: undefined })) {
         setFilters(filters.concat(changed.key))
@@ -228,6 +229,7 @@ export const useEffectFilterApplied = (dependencies: any[], filters: string[], s
     if (filters.length === 1 && sort === 'createdAt,desc') {
       setFilterCnt(0)
     } else if (filters.length > 0) {
+      console.log(filters)
       setFilterCnt(filters.length)
     }
   }, dependencies)
@@ -256,7 +258,7 @@ export const useEffectCntFilter = (searchParams: any, setFilters: any, setFilter
 
 export interface ParamProps {
   title?: string; page: number; categories?: string[] | undefined; type?: string | undefined; sort?: string | undefined;
-  startDate?: string | undefined; endDate?: string | undefined; leftHeadCount?: string | undefined;
+  tag?: string; startDate?: string | undefined; endDate?: string | undefined; leftHeadCount?: string | undefined;
   totalHeadCountMax?: string | undefined; totalHeadCountMin?: string | undefined;
 }
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { PostTab, ViewSelect } from "@/components/common";
+import { CategoryButtons, PostTab, ViewFilterApplied, ViewSelect } from "@/components/common";
 import { useRouter, useSearchParams } from 'next/navigation'
 import { SearchBar } from "@/components/pages/searched";
 import { Box, Backdrop } from "@mui/material";
@@ -15,6 +15,7 @@ export function ClientRootLayout({ children }: { children: React.ReactNode }) {
   const handleChange = (e: React.SyntheticEvent, newValue: number) => { setTab(newValue); };
 
   // 정렬기준(default 최신순), 날짜, 참여인원, 규모
+  const [selectedCate, setSelectedCate] = useState<string[]>(searchParams.getAll('ct') ?? []);
   const [sort, setSort] = useState(searchParams.get('sort') ?? 'createdAt,desc');
   const [dayRange, setDayRange] = useState<DayRange>({ from: String2Day(searchParams.get('sD')), to: String2Day(searchParams.get('eD')) });
   const [participants, setParticipants] = useState(Number(searchParams.get('ptcp')) ?? 0);
@@ -23,12 +24,12 @@ export function ClientRootLayout({ children }: { children: React.ReactNode }) {
   });
 
   const [title, setTitle] = useState(decodeURIComponent(decodeURIComponent(searchParams.get('query') ?? '')))
+  // const [tag, setTag] = useState(decodeURIComponent(decodeURIComponent(searchParams.get('tag') ?? '')))
 
   // 적용된 필터들, 적용된 필터 개수
   const [filters, setFilters] = useState(['sort'])
   const [filterCnt, setFilterCnt] = useState(0)
-
-  // // searchParams로 넘어온 필터 count
+  // searchParams로 넘어온 필터 count
   useEffectCntFilter(searchParams, setFilters, setFilterCnt, sort)
 
   const router = useRouter()
@@ -38,7 +39,7 @@ export function ClientRootLayout({ children }: { children: React.ReactNode }) {
 
   const routeToFilter = () => {
     let params = {
-      sort: sort ?? '',
+      sort: sort ?? '', ct: selectedCate ?? '', tag: decodeURIComponent(decodeURIComponent(searchParams.get('tag') ?? '')),
       sD: dayRange.from === null || dayRange.from === undefined
         ? '' : `${dayRange.from.year}${String(dayRange.from.month).padStart(2, "0")}${String(dayRange.from.day).padStart(2, "0")}`,
       eD: dayRange.to === null || dayRange.to === undefined
@@ -54,7 +55,7 @@ export function ClientRootLayout({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     routeToFilter()
-  }, [tab, rt])
+  }, [tab, selectedCate, rt])
 
   const [open, setOpen] = useState(false);
   const handleClose = () => {
@@ -74,6 +75,12 @@ export function ClientRootLayout({ children }: { children: React.ReactNode }) {
               <PostTab value={tab} handleChange={handleChange} />
             </div>
           </Box>
+          <div className='sticky top-[124px] bg-[#FFF] relative z-10'>
+            <ViewFilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters}
+              sort={sort} dayRange={dayRange} setDayRange={setDayRange} participants={participants}
+              setParticipants={setParticipants} headCount={headCount} setHeadCount={setHeadCount} handleRt={handleRt} />
+            <CategoryButtons selectedCate={selectedCate} setSelectedCate={setSelectedCate} />
+          </div>
           <Backdrop open={open ?? false} className='z-paper'>
             <ViewSelect sort={sort} setSort={setSort} handleClose={handleClose} dayRange={dayRange} setDayRange={setDayRange}
               participants={participants} setParticipants={setParticipants} headCount={headCount} setHeadCount={setHeadCount} />

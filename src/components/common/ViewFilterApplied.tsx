@@ -7,7 +7,7 @@ import { DayRange } from "@hassanmojab/react-modern-calendar-datepicker";
 interface FilterAppliedProps {
   filterCnt: number; filters: string[], setFilters: Dispatch<SetStateAction<string[]>>; sort: string;
   dayRange: DayRange; setDayRange: any; participants: number; setParticipants: any;
-  headCount: { from: undefined | number, to: undefined | number }; setHeadCount: any;
+  headCount?: { from: undefined | number, to: undefined | number }; setHeadCount?: any;
   handleRt?: any;
 }
 export const ViewFilterApplied = (props: FilterAppliedProps) => {
@@ -49,7 +49,7 @@ export const ViewFilterApplied = (props: FilterAppliedProps) => {
                     : <></>
                 }
                 {
-                  (props.filters).includes('headCount')
+                  (props.filters).includes('headCount') && props.headCount !== undefined
                     ? <Chip id='headCount' label={`규모 ${props.headCount.from ?? ''} - ${props.headCount.to ?? ''}명`}
                       onDelete={handleDelete} deleteIcon={<img src='/main_delete_filter.svg' />} variant="outlined" />
                     : <></>

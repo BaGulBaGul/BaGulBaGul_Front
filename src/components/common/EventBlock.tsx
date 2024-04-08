@@ -21,8 +21,8 @@ export interface PostProps {
 export function EventBlock(props: { data: PostProps }) {
   let urlLink = `/event/${props.data.id}`
   return (
-    <a href={urlLink} className="flex flex-col py-[18px] px-[16px] justify-between">
-      <div className='flex flex-row items-center justify-between'>
+    <div className="flex flex-col py-[18px] px-[16px] justify-between">
+      <a href={urlLink} className='flex flex-row items-center justify-between'>
         <div className='flex flex-col w-[230px] h-[116px] justify-between'>
           <div className='flex flex-col gap-[4px]'>
             <p className='truncate text-[16px] font-semibold leading-[140%]'>{props.data.title}</p>
@@ -51,9 +51,9 @@ export function EventBlock(props: { data: PostProps }) {
           </div>
         </div>
         <img className='rounded-[4px] w-[92px] h-[116px] object-cover' src={props.data.headImageUrl ?? '/default_list_thumb3x.png'} />
-      </div>
+      </a>
       {props.data.tags ? <div className="pt-[10px]"><HashtagAccordion tag={props.data.tags} /></div> : <></>}
-    </a>
+    </div>
   )
 }
 
@@ -144,6 +144,7 @@ export function SuggestBlock(props: { type: number }) {
     console.log(' :: suggestblock: ', props.type)
     // if (props.type > 0) {
       let apiURL = `/api/event?size=5&sort=likeCount,desc`
+      
       console.log('** suggest : ', apiURL)
       call(apiURL, "GET", null)
         .then((response) => {

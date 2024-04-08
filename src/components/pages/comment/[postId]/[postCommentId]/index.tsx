@@ -124,9 +124,8 @@ function Replies(props: { setCount: any; setOpenD: any; setTargetM: any; handleM
     return (
       <div className='flex flex-col w-full'>
         {children.map((comment: CommentProps, idx: number) => (
-          <div className={idx % 2 == 0 ? 'bg-[#FFF] ps-[48px] pe-[16px] py-[12px]' : 'bg-gray1 ps-[48px] pe-[16px] py-[12px]'}
-            key={`reply-${idx}`} onClick={(e) => { props.handleMention(comment) }}>
-            <CommentBlock opt="RPL" data={comment} key={`cmt-${idx}`} setOpenD={props.setOpenD} setTargetM={props.setTargetM} />
+          <div className={idx % 2 == 0 ? 'bg-[#FFF] ps-[48px] pe-[16px] py-[12px]' : 'bg-gray1 ps-[48px] pe-[16px] py-[12px]'} key={`reply-${idx}`} >
+            <CommentBlock opt="RPL" data={comment} key={`cmt-${idx}`} setOpenD={props.setOpenD} setTargetM={props.setTargetM} handleMention={props.handleMention} />
           </div>
         ))
         }

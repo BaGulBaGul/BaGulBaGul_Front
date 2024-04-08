@@ -24,7 +24,7 @@ export function ClientRootLayout({ children }: { children: React.ReactNode }) {
   // 적용된 필터들, 적용된 필터 개수
   const [filters, setFilters] = useState(['sort'])
   const [filterCnt, setFilterCnt] = useState(0)
-  // // searchParams로 넘어온 필터 count
+  // searchParams로 넘어온 필터 count
   useEffectCntFilter(searchParams, setFilters, setFilterCnt, sort)
 
   const router = useRouter()

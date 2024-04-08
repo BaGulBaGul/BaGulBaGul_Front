@@ -61,6 +61,11 @@ export function ClientRootLayout({ children }: { children: React.ReactNode }) {
           <ViewButton handleOpen={handleOpen} cnt={filterCnt} fs={18} />
         </div>
       </div>
+      <div className='sticky top-[104px] bg-[#FFF] relative z-10'>
+        <ViewFilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters}
+          sort={sort} dayRange={dayRange} setDayRange={setDayRange} participants={participants}
+          setParticipants={setParticipants} handleRt={handleRt} />
+      </div>
       <Backdrop open={open} className='z-paper'>
         <ViewSelect sort={sort} setSort={setSort} handleClose={handleClose} dayRange={dayRange} setDayRange={setDayRange}
           participants={participants} setParticipants={setParticipants} proceeding={proceeding} setProceeding={setProceeding} />

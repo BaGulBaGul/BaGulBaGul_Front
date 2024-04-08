@@ -10,7 +10,7 @@ export interface CommentProps {
 }
 export interface CommentMProps { postCommentId: number; content: string; userId?: number; } // 댓글수정용
 
-export function CommentBlock(props: { opt: string; data: CommentProps; currentURL?: string; setOpenD: any; setTargetM: any; }) {
+export function CommentBlock(props: { opt: string; data: CommentProps; currentURL?: string; setOpenD: any; setTargetM: any; handleMention?: any; }) {
   let createdD = FormatDateTime(props.data.createdAt, 1)
   const [liked, setLiked] = useState(props.data.myLike ?? false)
   const handleLike = () => {
@@ -24,21 +24,35 @@ export function CommentBlock(props: { opt: string; data: CommentProps; currentUR
   }
   return (
     <div>
-      <div className='flex flex-row justify-between pb-[10px]' id='comment-head'>
-        <div className='flex flex-row items-center'>
-          <a className="flex place-items-center" href="/">
-            <img src="/main_profile.svg" width={24} height={24} />
-          </a>
-          <div className='text-[14px] ps-[8px]'>{props.data.username ?? props.data.userName}</div>
-        </div>
-        <IconButton disableRipple className='p-0' onClick={handleToggle}><img src='/comment_etc.svg' width={24} height={24} /></IconButton>
-      </div>
-      <div className='text-[14px] text-gray3 pb-[6px]' id='comment-body'>{props.data.content}</div>
-      {props.opt === 'CMT'
-        ? <div className='flex flex-row text-[12px] text-gray3' id='comment-datetime'>
-          <p className='pe-[6px]'>{createdD.date}</p><p>{createdD.time}</p>
-        </div>
-        : <></>
+      {
+        props.opt === 'CMT'
+          ? <>
+            <div className='flex flex-row justify-between pb-[10px]' id='comment-head'>
+              <div className='flex flex-row items-center'>
+                <a className="flex place-items-center" href="/">
+                  <img src="/main_profile.svg" width={24} height={24} />
+                </a>
+                <div className='text-[14px] ps-[8px]'>{props.data.username ?? props.data.userName}</div>
+              </div>
+              <IconButton disableRipple className='p-0' onClick={handleToggle}><img src='/comment_etc.svg' width={24} height={24} /></IconButton>
+            </div>
+            <div className='text-[14px] text-gray3 pb-[6px]' id='comment-body'>{props.data.content}</div>
+            <div className='flex flex-row text-[12px] text-gray3' id='comment-datetime'>
+              <p className='pe-[6px]'>{createdD.date}</p><p>{createdD.time}</p>
+            </div>
+          </>
+          : <div onClick={(e) => { props.handleMention(props.data) }}>
+            <div className='flex flex-row justify-between pb-[10px]' id='comment-head'>
+              <div className='flex flex-row items-center'>
+                <a className="flex place-items-center" href="/">
+                  <img src="/main_profile.svg" width={24} height={24} />
+                </a>
+                <div className='text-[14px] ps-[8px]'>{props.data.username ?? props.data.userName}</div>
+              </div>
+              <IconButton disableRipple className='p-0' onClick={handleToggle}><img src='/comment_etc.svg' width={24} height={24} /></IconButton>
+            </div>
+            <div className='text-[14px] text-gray3 pb-[6px]' id='comment-body'>{props.data.content}</div>
+          </div>
       }
       <div className='flex flex-row justify-between items-center pt-[8px]' id='comment-foot'>
         {props.opt === 'CMT'
@@ -101,9 +115,7 @@ export function ModifyInput(props: { open: boolean; setOpenM: any; target?: Comm
         <Dialog fullScreen open={props.open} onClose={handleClose} >
           <AppBar>
             <Toolbar>
-              <IconButton edge="start" color="inherit" onClick={handleClose} >
-                <img src='/arrow_prev.svg' />
-              </IconButton>
+              <IconButton edge="start" color="inherit" onClick={handleClose} ><img src='/arrow_prev.svg' /></IconButton>
               <p>댓글 수정</p>
               <p className='w-[24px] h-[24px]'></p>
             </Toolbar>

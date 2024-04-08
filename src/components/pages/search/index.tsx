@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from 'react';
 import { IconButton, TextField, ThemeProvider, Divider, Button, Backdrop } from '@mui/material';
-import { ViewButton, ViewSelect } from '@/components/common';
+import { ViewButton, ViewFilterApplied, ViewSelect } from '@/components/common';
 import { searchInputTheme, searchFreqTheme, deleteButtonTheme } from '@/components/common/Themes';
 import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
 import { DayRange } from '@hassanmojab/react-modern-calendar-datepicker'
@@ -13,7 +13,7 @@ const index = () => {
   const [sort, setSort] = useState('createdAt,desc');
   const [dayRange, setDayRange] = useState<DayRange>({ from: undefined, to: undefined });
   // * temporary name
-  const [participants, setParticipants] = useState(0);
+  const [ptcp, setParticipants] = useState(0);
   const [headCount, setHeadCount] = useState<RangeProps>({ from: undefined, to: undefined });
 
   // 적용된 필터들, 적용된 필터 개수, 현재 변경된 필터
@@ -24,7 +24,7 @@ const index = () => {
   const [open, setOpen] = useState(false);
   const handleClose = () => { setOpen(false) }
 
-  useEffectFilter([sort, dayRange, participants, headCount], ['sort', 'dayRange', 'participants', 'headCount'], setChanged)
+  useEffectFilter([sort, dayRange, ptcp, headCount], ['sort', 'dayRange', 'ptcp', 'headCount'], setChanged)
   useEffectFilterApplied([filters, sort], filters, setFilters, changed, sort, setFilterCnt)
 
   return (
@@ -36,17 +36,22 @@ const index = () => {
               ? '' : `${dayRange.from.year}${String(dayRange.from.month).padStart(2, "0")}${String(dayRange.from.day).padStart(2, "0")}`,
             eD: dayRange.to === null || dayRange.to === undefined
               ? '' : `${dayRange.to.year}${String(dayRange.to.month).padStart(2, "0")}${String(dayRange.to.day).padStart(2, "0")}`,
-            ptcp: participants > 0 ? participants : '',
+            ptcp: ptcp > 0 ? ptcp : '',
             hcMin: headCount.from === null || headCount.from === undefined || headCount.from <= 0 ? '' : headCount.from,
             hcMax: headCount.to === null || headCount.to === undefined || headCount.to <= 0 ? '' : headCount.to,
           }} />
         <Divider />
+        <div className='bg-[#FFF] relative z-10'>
+          <ViewFilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters}
+            sort={sort} dayRange={dayRange} setDayRange={setDayRange} participants={ptcp}
+            setParticipants={setParticipants} headCount={headCount} setHeadCount={setHeadCount} />
+        </div>
         <div>
           <FrequentSearches />
           <RecentSearches />
           <Backdrop open={open} className='z-paper'>
             <ViewSelect sort={sort} setSort={setSort} handleClose={handleClose} dayRange={dayRange} setDayRange={setDayRange}
-              participants={participants} setParticipants={setParticipants} headCount={headCount} setHeadCount={setHeadCount} />
+              participants={ptcp} setParticipants={setParticipants} headCount={headCount} setHeadCount={setHeadCount} />
           </Backdrop>
         </div>
       </div>
@@ -63,10 +68,12 @@ function SearchBar(props: { setOpen: any; filterCnt: number; params: any; }) {
 
   const [title, setTitle] = useState('')
   const handleSearch = (event: any) => {
-    if (inputRef.current && inputRef.current.value !== '') {
-      event.preventDefault();
-      console.log('^^ SearchBar /search', inputRef.current.value);
-      setTitle(encodeURIComponent(encodeURIComponent(inputRef.current.value)))
+    if ((event.type === 'keydown' && event.key === 'Enter') || event.type === 'click') {
+      if (inputRef.current && inputRef.current.value !== '') {
+        event.preventDefault();
+        console.log('^^ SearchBar /search', inputRef.current.value);
+        setTitle(encodeURIComponent(encodeURIComponent(inputRef.current.value)))
+      }
     }
   }
 
@@ -81,7 +88,7 @@ function SearchBar(props: { setOpen: any; filterCnt: number; params: any; }) {
       <IconButton disableRipple className='p-0'><img src='/search_back.svg' /></IconButton>
       <div className='flex flex-row w-full justify-between'>
         <div className='flex flex-row bg-gray1 px-[8px] py-[4px] gap-[8px] w-full max-w-[268px]'>
-          <ThemeProvider theme={searchInputTheme}><TextField placeholder="피크페스티벌" inputRef={inputRef} required /></ThemeProvider>
+          <ThemeProvider theme={searchInputTheme}><TextField placeholder="피크페스티벌" inputRef={inputRef} onKeyDown={handleSearch} required /></ThemeProvider>
           <IconButton onClick={handleSearch} disableRipple className='p-0' ><img src='/search_magnifying.svg' /></IconButton>
         </div>
         <ViewButton handleOpen={handleOpen} cnt={props.filterCnt} fs={14} />
