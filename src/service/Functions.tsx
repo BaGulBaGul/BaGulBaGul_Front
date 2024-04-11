@@ -337,7 +337,7 @@ export const applyLike = (loginfo: boolean, liked: boolean, url: string, setLike
 
 // 댓글 대댓글
 export const useEffectComment = (opt: string, url: string, initialSet: MutableRefObject<boolean>, page: any, setPage: any, 
-  setCount: any, setLoading: any, setComments: any, comments: CommentProps[]) => {
+  setCount: any, isLoading: boolean, setLoading: any, setComments: any, comments: CommentProps[], cmtEndRef?: any) => {
     useEffect(() => {
       call(url, "GET", null)
         .then((response: any) => {
@@ -352,6 +352,8 @@ export const useEffectComment = (opt: string, url: string, initialSet: MutableRe
             setUniqueList(opt, response.data.content, setComments, undefined, comments)
           }
           setLoading(false)
+          
+          if (cmtEndRef) { cmtEndRef.current?.scrollIntoView({ behavior: "smooth" }) }
         })
-    }, [page])
+    }, [page, isLoading])
   }

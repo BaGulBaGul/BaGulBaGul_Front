@@ -21,6 +21,7 @@ const index = () => {
 
   const params = useParams()
   const [isLoadingC, setLoadingC] = useState(true)
+  const [isLoadingR, setLoadingR] = useState(true)
   const [comment, setComment] = useState<CommentProps>()
 
   useEffect(() => {
@@ -80,7 +81,8 @@ const index = () => {
             <div className='bg-[#FFF] px-[16px] py-[12px] mb-[2px]'>
               <CommentBlock opt='CMT' data={comment} currentURL='' setOpenD={setOpenD} setTargetM={setTargetM} />
             </div>
-            <Replies setCount={setCount} setOpenD={setOpenD} setTargetM={setTargetM} handleMention={handleMention} postCommentId={params.postCommentId} />
+            <Replies setCount={setCount} setOpenD={setOpenD} setTargetM={setTargetM} handleMention={handleMention} postCommentId={params.postCommentId}
+              isLoadingR={isLoadingR} setLoadingR={setLoadingR} />
           </div>
           : <div className='flex flex-col gap-[2px]'>
             <LoadingSkeleton type='CMT' />
@@ -99,7 +101,8 @@ const index = () => {
           </DialogActions>
         </Dialog >
       </ThemeProvider>
-      <MemoizedReplyFooter mentioning={mentioning} setMentioning={setMentioning} target={mentionTarget} mentionRef={mentionRef} replyRef={replyRef} />
+      <MemoizedReplyFooter mentioning={mentioning} setMentioning={setMentioning} postCommentId={params.postCommentId} target={mentionTarget}
+        mentionRef={mentionRef} replyRef={replyRef} setLoadingR={setLoadingR} />
       <CommentDrawer open={openD} toggleDrawer={toggleDrawer} setOpenM={setOpenM} />
       <ModifyInput open={openM} setOpenM={setOpenM} target={targetM} setTarget={setTargetM} />
     </>
@@ -107,8 +110,8 @@ const index = () => {
 }
 export default index;
 
-function Replies(props: { setCount: any; setOpenD: any; setTargetM: any; handleMention: any; postCommentId: any; }) {
-  const [isLoadingR, setLoadingR] = useState(true)
+function Replies(props: { setCount: any; setOpenD: any; setTargetM: any; handleMention: any; postCommentId: any; isLoadingR: boolean; setLoadingR: any }) {
+  // const [isLoadingR, setLoadingR] = useState(true)
 
   const [children, setChildren] = useState<CommentProps[]>([]);
 
@@ -117,9 +120,9 @@ function Replies(props: { setCount: any; setOpenD: any; setTargetM: any; handleM
 
   const initialSet = useRef(false);
   useEffectComment('RPL', `/api/post/comment/${props.postCommentId}/children?size=10&page=${page.current}`, initialSet, page, setPage,
-    props.setCount, setLoadingR, setChildren, children)
+    props.setCount, props.isLoadingR, props.setLoadingR, setChildren, children)
 
-  if (isLoadingR) { return <LoadingSkeleton type='RPL' /> }
+  if (props.isLoadingR) { return <LoadingSkeleton type='RPL' /> }
   else {
     return (
       <div className='flex flex-col w-full'>
@@ -139,7 +142,7 @@ function Replies(props: { setCount: any; setOpenD: any; setTargetM: any; handleM
 }
 
 function ReplyFooter(props: {
-  mentioning: boolean; setMentioning: Dispatch<SetStateAction<boolean>>; target: any; mentionRef: any; replyRef: any;
+  mentioning: boolean; setMentioning: Dispatch<SetStateAction<boolean>>; postCommentId: any; target: any; mentionRef: any; replyRef: any; setLoadingR: any;
 }) {
   const [value, setValue] = useState('')
   const handleInput = (e: any) => {
@@ -189,6 +192,29 @@ function ReplyFooter(props: {
     }
   }
 
+  const handleComment = () => {
+    if (props.mentionRef.current && props.mentionRef.current.innerText.length > 0) {
+      // console.log('mention: ', props.mentionRef.current.innerText)
+      call(`/api/post/comment/${props.postCommentId}/children`, "POST",
+        { "content": props.mentionRef.current.innerText, "replyTargetPostCommentChildId": props.target })
+        .then((response) => {
+          console.log(response)
+          props.setLoadingR(true)
+          if (props.mentionRef.current) { props.mentionRef.current.innerText = '' }
+          props.setMentioning(false);
+        }).catch((error) => console.error(error));
+    } else if (props.replyRef.current && props.replyRef.current.value.length > 0) {
+      // console.log('reply: ', props.replyRef.current.value)
+      call(`/api/post/comment/${props.postCommentId}/children`, "POST",
+        { "content": props.replyRef.current.value })
+        .then((response) => {
+          console.log(response)
+          props.setLoadingR(true)
+          if (props.replyRef.current) { props.replyRef.current.value = '' }
+        }).catch((error) => console.error(error));
+    }
+  }
+
   function MentionInput() {
     return (
       <div className='editor-body wrapper'>
@@ -208,7 +234,7 @@ function ReplyFooter(props: {
     <ThemeProvider theme={commentTheme}>
       <div className="flex flex-row comment-input">
         <MentionInput />
-        <Button className='text-[16px] w-[70px] h-[48px]'>등록</Button>
+        <Button className='text-[16px] w-[70px] h-[48px]' onClick={handleComment}>등록</Button>
       </div>
     </ThemeProvider>
   )
