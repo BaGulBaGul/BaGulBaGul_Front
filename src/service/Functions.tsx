@@ -353,7 +353,7 @@ export const useEffectComment = (opt: string, url: string, initialSet: MutableRe
           }
           setLoading(false)
           
-          if (cmtEndRef) { cmtEndRef.current?.scrollIntoView({ behavior: "smooth" }) }
+          if (cmtEndRef) { cmtEndRef.current?.scrollIntoView({ behavior: "instant" }) }
         })
     }, [page, isLoading])
   }

@@ -14,22 +14,33 @@ const index = () => {
   const [isLoading, setLoading] = useState(true)
 
   // menu drawer
-  const [openD, setOpenD] = useState(false);
-  const toggleDrawer = (newOpen: boolean) => () => { setOpenD(newOpen); };
+  const [openD, setOpenD] = useState(0);
+  const toggleDrawer = (newOpen: number) => () => { setOpenD(newOpen); };
 
   const [openM, setOpenM] = useState(false);
   const [targetM, setTargetM] = useState<CommentMProps | undefined>();
 
   const params = useParams()
 
+  const handleDelete = () => {
+    if (targetM) {
+      console.log(targetM.content)
+      call(`/api/post/comment/${targetM.postCommentId}`, "DELETE", null)
+        .then((response) => {
+          console.log(response)
+          setLoading(true)
+        }).catch((error) => console.error(error));
+    }
+  }
+
   return (
     <>
-      <SubHeaderCnt name='글 댓글' url={"/"} cnt={count} />
+      <SubHeaderCnt name='글 댓글' cnt={count} />
       <Comments postId={params.postId} setCount={setCount} setOpenD={setOpenD} setTargetM={setTargetM}
         isLoading={isLoading} setLoading={setLoading} />
       <CommentFooter postId={params.postId} setLoading={setLoading} />
-      <CommentDrawer open={openD} toggleDrawer={toggleDrawer} setOpenM={setOpenM} />
-      <ModifyInput open={openM} setOpenM={setOpenM} target={targetM} setTarget={setTargetM} />
+      <CommentDrawer open={openD} toggleDrawer={toggleDrawer} setOpenM={setOpenM} handleDelete={handleDelete} />
+      <ModifyInput open={openM} setOpenM={setOpenM} target={targetM} setTarget={setTargetM} setLoading={setLoading} />
     </>
   )
 }

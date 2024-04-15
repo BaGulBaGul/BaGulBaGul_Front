@@ -29,10 +29,9 @@ export function ViewButton(props: ViewButtonProps) {
 }
 
 interface ViewSelectProps {
-  sort: string; setSort: any; handleClose: any; dayRange: DayRange; setDayRange: any;
+  sort: string; setSort: any; setOpen: any; routeToFilter?: any; /*handleClose: any;*/ dayRange: DayRange; setDayRange: any;
   participants: number; setParticipants: any; headCount?: { from?: number, to?: number }; setHeadCount?: any;
   proceeding?: boolean; setProceeding?: any;
-
 }
 export function ViewSelect(props: ViewSelectProps) {
   // 정렬
@@ -59,12 +58,20 @@ export function ViewSelect(props: ViewSelectProps) {
     } else { return '0' }
   }
 
+  const handleClose = () => {
+    props.setOpen(false)
+    setOpenCal(false)
+    setOpenParti(false)
+    setOpenHead(false)
+    if (props.routeToFilter !== undefined) { props.routeToFilter(); }
+  }
+
   return (
     <ThemeProvider theme={viewTheme}>
       <Paper className="w-screen absolute bottom-0">
         <div className="flex px-[16px] py-[20px] w-full justify-between items-center border-b-[0.5px] border-gray2">
           <span className="text-[14px] font-semibold">바글바글 필터</span>
-          <IconButton disableRipple onClick={props.handleClose} className="p-0"><img src='/popup_close.svg' /></IconButton>
+          <IconButton disableRipple onClick={handleClose} className="p-0"><img src='/popup_close.svg' /></IconButton>
         </div>
         <div className="flex flex-col px-[16px] pb-[20px] gap-[16px]">
           <ThemeProvider theme={viewRadioTheme}>

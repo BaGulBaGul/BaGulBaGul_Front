@@ -1,6 +1,6 @@
 "use client";
 import { Dispatch, SetStateAction, useEffect, useRef, useState, FocusEvent, memo } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { ThemeProvider, TextField, Button, Dialog, DialogActions, DialogContent, DialogContentText, Divider } from '@mui/material';
 import { commentTheme, mentionDialogTheme } from '@/components/common/Themes';
 import { SubHeaderCnt } from '@/components/layout/subHeader';
@@ -13,8 +13,9 @@ const index = () => {
   const [count, setCount] = useState(0);
 
   // menu drawer
-  const [openD, setOpenD] = useState(false);
-  const toggleDrawer = (newOpen: boolean) => () => { setOpenD(newOpen); };
+  // 0: closed 1: for comment 2: for reply
+  const [openD, setOpenD] = useState(0);
+  const toggleDrawer = (newOpen: number) => () => { setOpenD(newOpen); };
 
   const [openM, setOpenM] = useState(false);
   const [targetM, setTargetM] = useState<CommentMProps | undefined>();
@@ -25,15 +26,17 @@ const index = () => {
   const [comment, setComment] = useState<CommentProps>()
 
   useEffect(() => {
-    let apiURL = `/api/post/comment/${params.postCommentId}`;
-    console.log("###", apiURL)
-    call(apiURL, "GET", null)
-      .then((response) => {
-        console.log(response.data);
-        setComment(response.data);
-        setLoadingC(false)
-      })
-  }, [])
+    if (isLoadingC) {
+      let apiURL = `/api/post/comment/${params.postCommentId}`;
+      console.log("###", apiURL)
+      call(apiURL, "GET", null)
+        .then((response) => {
+          console.log(response.data);
+          setComment(response.data);
+          setLoadingC(false)
+        })
+    }
+  }, [isLoadingC])
 
   const [mentioning, setMentioning] = useState(false)
   const [mentionTarget, setMentionTarget] = useState<{ id: number, name: string } | undefined>(undefined)
@@ -72,9 +75,22 @@ const index = () => {
     if (mentioning && mentionRef && mentionRef.current) { mentionRef.current.focus() }
   }, [mentionTarget])
 
+  const handleDelete = () => { // * 삭제되는게 코멘트인 경우 어떻게 처리할지??
+    if (targetM) {
+      let apiURL = openD > 1 ? `/api/post/comment/children/${targetM.postCommentId}` : `/api/post/comment/${targetM.postCommentId}`
+      console.log(apiURL)
+      call(apiURL, "DELETE", null)
+        .then((response) => {
+          console.log(response)
+          setLoadingC(true)
+          setLoadingR(true)
+        }).catch((error) => console.error(error));
+    }
+  }
+
   return (
     <>
-      <SubHeaderCnt name='답글' url={"/"} cnt={count} />
+      <SubHeaderCnt name='답글' cnt={count} />
       {
         !isLoadingC && comment !== undefined
           ? <div className='flex flex-col w-full min-h-[calc(100vh-104px)] pb-[49px] bg-gray1'>
@@ -102,8 +118,8 @@ const index = () => {
         </Dialog >
       </ThemeProvider>
       <MemoizedReplyFooter mentioning={mentioning} setMentioning={setMentioning} postCommentId={params.postCommentId} target={mentionTarget}
-        mentionRef={mentionRef} replyRef={replyRef} setLoadingR={setLoadingR} />
-      <CommentDrawer open={openD} toggleDrawer={toggleDrawer} setOpenM={setOpenM} />
+        mentionRef={mentionRef} replyRef={replyRef} setLoadingC={setLoadingC} setLoadingR={setLoadingR} />
+      <CommentDrawer open={openD} toggleDrawer={toggleDrawer} setOpenM={setOpenM} handleDelete={handleDelete} />
       <ModifyInput open={openM} setOpenM={setOpenM} target={targetM} setTarget={setTargetM} />
     </>
   )
@@ -111,8 +127,6 @@ const index = () => {
 export default index;
 
 function Replies(props: { setCount: any; setOpenD: any; setTargetM: any; handleMention: any; postCommentId: any; isLoadingR: boolean; setLoadingR: any }) {
-  // const [isLoadingR, setLoadingR] = useState(true)
-
   const [children, setChildren] = useState<CommentProps[]>([]);
 
   const [page, setPage] = useState({ current: 0, total: 0, });
@@ -142,7 +156,8 @@ function Replies(props: { setCount: any; setOpenD: any; setTargetM: any; handleM
 }
 
 function ReplyFooter(props: {
-  mentioning: boolean; setMentioning: Dispatch<SetStateAction<boolean>>; postCommentId: any; target: any; mentionRef: any; replyRef: any; setLoadingR: any;
+  mentioning: boolean; setMentioning: Dispatch<SetStateAction<boolean>>; postCommentId: any; target: any; mentionRef: any; replyRef: any;
+  setLoadingC: any; setLoadingR: any;
 }) {
   const [value, setValue] = useState('')
   const handleInput = (e: any) => {
@@ -199,6 +214,7 @@ function ReplyFooter(props: {
         { "content": props.mentionRef.current.innerText, "replyTargetPostCommentChildId": props.target })
         .then((response) => {
           console.log(response)
+          props.setLoadingC(true)
           props.setLoadingR(true)
           if (props.mentionRef.current) { props.mentionRef.current.innerText = '' }
           props.setMentioning(false);
@@ -209,6 +225,7 @@ function ReplyFooter(props: {
         { "content": props.replyRef.current.value })
         .then((response) => {
           console.log(response)
+          props.setLoadingC(true)
           props.setLoadingR(true)
           if (props.replyRef.current) { props.replyRef.current.value = '' }
         }).catch((error) => console.error(error));

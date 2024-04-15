@@ -24,7 +24,7 @@ const index = () => {
 
   return (
     <>
-      <SubHeader name={data ? typeString[data.type as string] : ''} url={"/"} />
+      <SubHeader name={data ? typeString[data.type as string] : ''} />
       <div className='flex flex-col w-full'>
         {isLoading
           ? <LoadingSkeleton type='DTLE' />

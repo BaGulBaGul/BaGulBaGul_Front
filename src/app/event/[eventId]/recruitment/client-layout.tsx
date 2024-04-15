@@ -46,11 +46,6 @@ export function ClientRootLayout({ children }: { children: React.ReactNode }) {
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => { setOpen(true) }
-  // 필터 적용마다 링크 이동 시 버벅거림이 커서 필터 닫을때마다 링크 이동하는 것으로 수정
-  const handleClose = () => {
-    setOpen(false);
-    routeToFilter();
-  }
 
   return (
     <>
@@ -67,7 +62,7 @@ export function ClientRootLayout({ children }: { children: React.ReactNode }) {
           setParticipants={setParticipants} handleRt={handleRt} />
       </div>
       <Backdrop open={open} className='z-paper'>
-        <ViewSelect sort={sort} setSort={setSort} handleClose={handleClose} dayRange={dayRange} setDayRange={setDayRange}
+        <ViewSelect sort={sort} setSort={setSort} setOpen={setOpen} routeToFilter={routeToFilter} dayRange={dayRange} setDayRange={setDayRange}
           participants={participants} setParticipants={setParticipants} proceeding={proceeding} setProceeding={setProceeding} />
       </Backdrop>
       {children}

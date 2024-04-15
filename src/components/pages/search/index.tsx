@@ -22,7 +22,7 @@ const index = () => {
   const [changed, setChanged] = useState<{ key: string, value: string | number | RangeProps | undefined }>({ key: '', value: undefined })
 
   const [open, setOpen] = useState(false);
-  const handleClose = () => { setOpen(false) }
+  // const handleClose = () => { setOpen(false) }
 
   useEffectFilter([sort, dayRange, ptcp, headCount], ['sort', 'dayRange', 'ptcp', 'headCount'], setChanged)
   useEffectFilterApplied([filters, sort], filters, setFilters, changed, sort, setFilterCnt)
@@ -50,7 +50,7 @@ const index = () => {
           <FrequentSearches />
           <RecentSearches />
           <Backdrop open={open} className='z-paper'>
-            <ViewSelect sort={sort} setSort={setSort} handleClose={handleClose} dayRange={dayRange} setDayRange={setDayRange}
+            <ViewSelect sort={sort} setSort={setSort} setOpen={setOpen} dayRange={dayRange} setDayRange={setDayRange}
               participants={ptcp} setParticipants={setParticipants} headCount={headCount} setHeadCount={setHeadCount} />
           </Backdrop>
         </div>

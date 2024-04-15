@@ -58,10 +58,6 @@ export function ClientRootLayout({ children }: { children: React.ReactNode }) {
   }, [tab, selectedCate, rt])
 
   const [open, setOpen] = useState(false);
-  const handleClose = () => {
-    setOpen(false);
-    routeToFilter();
-  }
 
   return (
     <div className='flex flex-col w-full pb-[10px] h-screen bg-gray1'>
@@ -82,7 +78,7 @@ export function ClientRootLayout({ children }: { children: React.ReactNode }) {
             <CategoryButtons selectedCate={selectedCate} setSelectedCate={setSelectedCate} />
           </div>
           <Backdrop open={open ?? false} className='z-paper'>
-            <ViewSelect sort={sort} setSort={setSort} handleClose={handleClose} dayRange={dayRange} setDayRange={setDayRange}
+            <ViewSelect sort={sort} setSort={setSort} setOpen={setOpen} routeToFilter={routeToFilter} dayRange={dayRange} setDayRange={setDayRange}
               participants={participants} setParticipants={setParticipants} headCount={headCount} setHeadCount={setHeadCount} />
           </Backdrop>
           {children}

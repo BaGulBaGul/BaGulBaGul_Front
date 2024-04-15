@@ -8,7 +8,7 @@ export default function Page() {
     <div>
       <div className='relative z-30'>
         <HeaderNonMain />
-        <SubHeader name='모집글' url={"/"} />
+        <SubHeader name='모집글' />
       </div>
       <Recruitment />
     </div>
