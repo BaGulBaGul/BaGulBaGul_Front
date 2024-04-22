@@ -23,11 +23,13 @@ const index = () => {
   const params = useParams()
 
   const handleDelete = () => {
-    if (targetM) {
+    let confirmDelete = confirm("댓글을 삭제하시겠습니까?");
+    if (targetM && confirmDelete) {
       console.log(targetM.content)
       call(`/api/post/comment/${targetM.postCommentId}`, "DELETE", null)
         .then((response) => {
           console.log(response)
+          // props.initialSet.current = false;
           setLoading(true)
         }).catch((error) => console.error(error));
     }
@@ -51,11 +53,10 @@ function Comments(props: { postId: any; setCount: any; setOpenD: any; setTargetM
 
   const [page, setPage] = useState({ current: 0, total: 0, });
   const handleMore = () => { setPageInfo(page, setPage, page.current + 1) }
-  const cmtEndRef = useRef(null)  // 댓글 등록 시 밑으로 스크롤하는 용도
 
   const initialSet = useRef(false);
   useEffectComment('CMT', `/api/post/${props.postId}/comment?size=10&page=${page.current}`, initialSet, page, setPage,
-    props.setCount, props.isLoading, props.setLoading, setComments, comments, cmtEndRef)
+    props.setCount, props.isLoading, props.setLoading, setComments, comments)
 
   if (props.isLoading) { return <LoadingSkeleton type='CMT' /> }
   else {
@@ -72,9 +73,7 @@ function Comments(props: { postId: any; setCount: any; setOpenD: any; setTargetM
             ? <MoreButton onClick={handleMore} />
             : <></>
           }
-          {/* <div ref={cmtEndRef} /> */}
         </div>
-        <div ref={cmtEndRef} />
       </>
     )
   }

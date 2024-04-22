@@ -57,7 +57,7 @@ export function ResultTabs() {
       title: decodeURIComponent(decodeURIComponent(searchParams.get('query') ?? '')),
       page: 0, categories: searchParams.getAll('ct'),
       type: tabList[Number(searchParams.get('tab_id')) ?? 0], sort: searchParams.get('sort') ?? 'createdAt,desc',
-      tag: decodeURIComponent(decodeURIComponent(searchParams.get('tag') ?? '')),
+      tags: decodeURIComponent(decodeURIComponent(searchParams.get('tag') ?? '')),
       startDate: searchParams.get('sD') ? String2ISO((searchParams.get('sD'))) : '',
       endDate: searchParams.get('eD') ? String2ISO((searchParams.get('eD'))) : '',
       leftHeadCount: searchParams.get('ptcp') ?? '', totalHeadCountMax: searchParams.get('hcMax') ?? '',

@@ -129,8 +129,8 @@ export interface RecruitProps {
   startDate: any; tags?: string[]; id?: number; headCount?: number; headCountMax?: number;
 }
 
-export function setPageInfo(page: any, setPage: any, currentPage: number, params?: ParamProps, setParams?: any) { 
-  setPage({ ...page, current: currentPage }); 
+export function setPageInfo(page: any, setPage: any, currentPage: number, params?: ParamProps, setParams?: any) {
+  setPage({ ...page, current: currentPage });
   if (params !== undefined && setParams !== undefined) {
     setParams({ ...params, page: currentPage });
   }
@@ -146,10 +146,15 @@ export function setUniqueList(opt: string, currentList: [], setItems: any, items
     const filtered = newItems.filter(({ id }, index: number) => !ids.includes(id, index + 1));
     setItems(filtered);
   } else if (opt === 'CMT' && itemsC) {
+    console.log('**********************************')
+    console.log('c: ', currentList)
     const newItems = itemsC.concat(currentList)
+    console.log('itemsC: ', itemsC)
+    console.log('n: ', newItems)
     const ids = newItems.map(({ commentId }) => commentId);
     const filtered = newItems.filter(({ commentId }, index: number) => !ids.includes(commentId, index + 1));
     setItems(filtered);
+    console.log('f: ', filtered)
   } else if (opt === 'RPL' && itemsC) {
     const newItems = itemsC.concat(currentList)
     const ids = newItems.map(({ commentChildId }) => commentChildId);
@@ -258,7 +263,7 @@ export const useEffectCntFilter = (searchParams: any, setFilters: any, setFilter
 
 export interface ParamProps {
   title?: string; page: number; categories?: string[] | undefined; type?: string | undefined; sort?: string | undefined;
-  tag?: string; startDate?: string | undefined; endDate?: string | undefined; leftHeadCount?: string | undefined;
+  tags?: string; startDate?: string | undefined; endDate?: string | undefined; leftHeadCount?: string | undefined;
   totalHeadCountMax?: string | undefined; totalHeadCountMin?: string | undefined;
 }
 
@@ -336,24 +341,27 @@ export const applyLike = (loginfo: boolean, liked: boolean, url: string, setLike
 }
 
 // 댓글 대댓글
-export const useEffectComment = (opt: string, url: string, initialSet: MutableRefObject<boolean>, page: any, setPage: any, 
-  setCount: any, isLoading: boolean, setLoading: any, setComments: any, comments: CommentProps[], cmtEndRef?: any) => {
-    useEffect(() => {
-      call(url, "GET", null)
-        .then((response: any) => {
-          console.log(response.data);
-          if (response.data.empty === false) {
-            // 페이지값 초기설정
-            if (!initialSet.current) {
-              setPage({ current: 0, total: response.data.totalPages })
-              initialSet.current = true;
-              setCount(response.data.totalElements)
-            }
-            setUniqueList(opt, response.data.content, setComments, undefined, comments)
+export const useEffectComment = (opt: string, url: string, initialSet: MutableRefObject<boolean>, page: any, setPage: any,
+  setCount: any, isLoading: boolean, setLoading: any, setComments: any, comments: CommentProps[]) => {
+  useEffect(() => {
+    if (isLoading) {
+      call(url, "GET", null).then((response: any) => {
+        console.log(url)
+        console.log(response.data);
+        console.log('initialSet: ', initialSet.current)
+        if (response.data.empty === false) {
+          // 페이지값 초기설정
+          if (!initialSet.current) {
+            setPage({ current: 0, total: response.data.totalPages })
+            initialSet.current = true;
+            setCount(response.data.totalElements)
           }
-          setLoading(false)
-          
-          if (cmtEndRef) { cmtEndRef.current?.scrollIntoView({ behavior: "instant" }) }
-        })
-    }, [page, isLoading])
-  }
+          // setUniqueList(opt, response.data.content, setComments, undefined, comments)
+          console.log('response: ', response.data.content)
+          setUniqueList(opt, response.data.content, setComments, undefined, comments)
+        }
+        setLoading(false)
+      })
+    }
+  }, [page, isLoading])
+}

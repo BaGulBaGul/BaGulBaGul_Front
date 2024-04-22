@@ -110,31 +110,32 @@ export function CalendarBlock(props: { data: PostProps }) {
 
 // searched
 export function ResultBlock(props: { data: PostProps }) {
-  const [checked, setChecked] = useState(true);
-  const handleChange = (event: any) => { setChecked(!checked); };
   let urlLink = `/event/${props.data.id}`
-
   return (
-    <a href={urlLink} className='flex flex-col py-[18px] px-[16px] justify-between'>
-      <div className='flex flex-row items-center pb-[10px] gap-[20px]'>
-        <img className='rounded-[4px] w-[84px] h-[104px] object-cover' src={props.data.headImageUrl ?? '/default_list_thumb3x.png'} />
-        <div className='flex flex-col w-[278px] h-[104px] gap-[20px] justify-between'>
-          <div className='flex flex-col'>
-            <div className="flex flex-row justify-between items-center">
-              <div className="flex flex-row text-[14px] text-gray3">
-                <p>{FormatDateRange(props.data.startDate, props.data.endDate)}</p>
-                <p>, {props.data.abstractLocation}</p>
-              </div>
-              <Checkbox icon={<img src="/detail_like.svg" width={20} height={20} />}
-                checkedIcon={<img src="/detail_like_1.svg" width={20} height={20} />}
-                checked={checked} onChange={handleChange} style={{ padding: 0 }} />
-            </div>
-            <p className='truncate text-[16px] font-semibold'>{props.data.title}</p>
-          </div>
-          <span className='text-[12px] text-gray3 block description max-w-[278px]'>{props.data.content}</span>
+    <div className="flex flex-col py-[18px] px-[16px] justify-between">
+      <a href={urlLink} className='flex flex-col gap-[4px]'>
+        <p className='truncate text-[16px] font-semibold leading-[140%]'>{props.data.title}</p>
+        <p className="text-[14px] text-gray3 leading-[160%]">{FormatDateRange(props.data.startDate, props.data.endDate)}</p>
+        <div className='flex flex-row items-center gap-[4px] text-[14px]'>
+          <img className='rounded-full w-[24px] h-[24px]' src='/main_profile.svg' />
+          <p className='text-black'>{props.data.userName}</p>
+          {
+            props.data.type === 'PARTY'
+              ? <>
+                <DividerDot />
+                <p className='text-gray3'>{`${props.data.currentHeadCount}/${props.data.totalHeadCount}(명)`}</p>
+                {
+                  props.data.currentHeadCount === props.data.totalHeadCount
+                    ? <ThemeProvider theme={doneChipTheme}><Chip label="모집완료" /></ThemeProvider>
+                    : <></>
+                }
+              </>
+              : <></>
+          }
         </div>
-      </div>
-    </a>
+      </a>
+      {props.data.tags ? <HashtagAccordion tag={props.data.tags} /> : <></>}
+    </div>
   )
 }
 
@@ -143,16 +144,16 @@ export function SuggestBlock(props: { type: number }) {
   useEffect(() => {
     console.log(' :: suggestblock: ', props.type)
     // if (props.type > 0) {
-      let apiURL = `/api/event?size=5&sort=likeCount,desc`
-      
-      console.log('** suggest : ', apiURL)
-      call(apiURL, "GET", null)
-        .then((response) => {
-          console.log(response.data);
-          if (response.data.empty === false) {
-            setSuggestions(response.data.content)
-          }
-        })
+    let apiURL = `/api/event?size=5&sort=likeCount,desc`
+
+    console.log('** suggest : ', apiURL)
+    call(apiURL, "GET", null)
+      .then((response) => {
+        console.log(response.data);
+        if (response.data.empty === false) {
+          setSuggestions(response.data.content)
+        }
+      })
     // }
   }, [])
 

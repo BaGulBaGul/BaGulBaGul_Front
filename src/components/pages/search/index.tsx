@@ -1,14 +1,20 @@
 "use client";
 import { useEffect, useRef, useState } from 'react';
-import { IconButton, TextField, ThemeProvider, Divider, Button, Backdrop } from '@mui/material';
-import { ViewButton, ViewFilterApplied, ViewSelect } from '@/components/common';
-import { searchInputTheme, searchFreqTheme, deleteButtonTheme } from '@/components/common/Themes';
+import { IconButton, TextField, ThemeProvider, Divider, Button, Backdrop, ToggleButtonGroup, ToggleButton } from '@mui/material';
+import { CategoryButtons, ViewButton, ViewFilterApplied, ViewSelect } from '@/components/common';
+import { searchInputTheme, searchFreqTheme, deleteButtonTheme, tabTheme } from '@/components/common/Themes';
 import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
 import { DayRange } from '@hassanmojab/react-modern-calendar-datepicker'
 import { useRouter } from 'next/navigation';
 import { RangeProps, getParams, useEffectFilter, useEffectFilterApplied } from '@/service/Functions';
 
 const index = () => {
+  const [tab, setTab] = useState(0);
+  const handleTab = (event: React.MouseEvent<HTMLElement>, newTab: number | null) => {
+    if (newTab !== null) { setTab(newTab); }
+  };
+  const [selectedCate, setSelectedCate] = useState<string[]>([]);
+
   // 정렬기준(default 최신순), 날짜, 참여인원, 규모
   const [sort, setSort] = useState('createdAt,desc');
   const [dayRange, setDayRange] = useState<DayRange>({ from: undefined, to: undefined });
@@ -32,6 +38,7 @@ const index = () => {
       <div className='bg-[#FFF]'>
         <SearchBar setOpen={setOpen} filterCnt={filterCnt}
           params={{
+            ct: selectedCate.length > 0 ? selectedCate : undefined,
             sort: sort, sD: dayRange.from === null || dayRange.from === undefined
               ? '' : `${dayRange.from.year}${String(dayRange.from.month).padStart(2, "0")}${String(dayRange.from.day).padStart(2, "0")}`,
             eD: dayRange.to === null || dayRange.to === undefined
@@ -39,13 +46,21 @@ const index = () => {
             ptcp: ptcp > 0 ? ptcp : '',
             hcMin: headCount.from === null || headCount.from === undefined || headCount.from <= 0 ? '' : headCount.from,
             hcMax: headCount.to === null || headCount.to === undefined || headCount.to <= 0 ? '' : headCount.to,
-          }} />
-        <Divider />
+          }} tab={tab} />
         <div className='bg-[#FFF] relative z-10'>
           <ViewFilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters}
             sort={sort} dayRange={dayRange} setDayRange={setDayRange} participants={ptcp}
             setParticipants={setParticipants} headCount={headCount} setHeadCount={setHeadCount} />
         </div>
+        <ThemeProvider theme={tabTheme}>
+          <ToggleButtonGroup value={tab} exclusive onChange={handleTab} >
+            <ToggleButton value={0}>페스티벌</ToggleButton>
+            <ToggleButton value={1}>지역행사</ToggleButton>
+            <ToggleButton value={2}>파티</ToggleButton>
+          </ToggleButtonGroup>
+        </ThemeProvider>
+        <CategoryButtons selectedCate={selectedCate} setSelectedCate={setSelectedCate} />
+        <Divider />
         <div>
           <FrequentSearches />
           <RecentSearches />
@@ -60,7 +75,7 @@ const index = () => {
 }
 export default index;
 
-function SearchBar(props: { setOpen: any; filterCnt: number; params: any; }) {
+function SearchBar(props: { setOpen: any; filterCnt: number; params: any; tab: number; }) {
   const handleOpen = () => { props.setOpen(true) }
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -78,9 +93,7 @@ function SearchBar(props: { setOpen: any; filterCnt: number; params: any; }) {
   }
 
   useEffect(() => {
-    if (title.length > 0) {
-      router.push(`/searched?query=${title}&${getParams(props.params)}&tab_id=0`)
-    }
+    if (title.length > 0) { router.push(`/searched?query=${title}&${getParams(props.params)}&tab_id=${props.tab}`) }
   }, [title])
 
   return (

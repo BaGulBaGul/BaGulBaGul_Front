@@ -24,7 +24,6 @@ export function ClientRootLayout({ children }: { children: React.ReactNode }) {
   });
 
   const [title, setTitle] = useState(decodeURIComponent(decodeURIComponent(searchParams.get('query') ?? '')))
-  // const [tag, setTag] = useState(decodeURIComponent(decodeURIComponent(searchParams.get('tag') ?? '')))
 
   // 적용된 필터들, 적용된 필터 개수
   const [filters, setFilters] = useState(['sort'])
@@ -48,7 +47,7 @@ export function ClientRootLayout({ children }: { children: React.ReactNode }) {
       hcMin: headCount.from === null || headCount.from === undefined || headCount.from <= 0 ? '' : headCount.from,
       hcMax: headCount.to === null || headCount.to === undefined || headCount.to <= 0 ? '' : headCount.to,
     }
-    if (title.length > 0) {
+    if (title.length > 0 || searchParams.get('tag')) {
       router.push(Object.keys(params).length > 0 ? `/searched?query=${title}&${getParams(params)}&tab_id=${tab}` : `/searched?query=${title}&tab_id=${tab}`)
     }
   }
@@ -66,12 +65,12 @@ export function ClientRootLayout({ children }: { children: React.ReactNode }) {
       </div>
       <div className='pt-[66px]'>
         <Box className='w-full p-0'>
-          <Box className='sticky top-[66px] bg-[#FFF] relative z-10 px-[16px] pt-[20px] pb-[10px]'>
+          <Box className='sticky top-[66px] bg-[#FFF] relative z-10 px-[16px] pt-[10px] pb-[10px]'>
             <div className='flex justify-between items-center'>
               <PostTab value={tab} handleChange={handleChange} />
             </div>
           </Box>
-          <div className='sticky top-[124px] bg-[#FFF] relative z-10'>
+          <div className='sticky top-[114px] bg-[#FFF] relative z-10'>
             <ViewFilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters}
               sort={sort} dayRange={dayRange} setDayRange={setDayRange} participants={participants}
               setParticipants={setParticipants} headCount={headCount} setHeadCount={setHeadCount} handleRt={handleRt} />

@@ -1,6 +1,6 @@
 "use client";
 import { Dispatch, SetStateAction, useEffect, useRef, useState, FocusEvent, memo } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { ThemeProvider, TextField, Button, Dialog, DialogActions, DialogContent, DialogContentText, Divider } from '@mui/material';
 import { commentTheme, mentionDialogTheme } from '@/components/common/Themes';
 import { SubHeaderCnt } from '@/components/layout/subHeader';
@@ -61,7 +61,7 @@ const index = () => {
       setTmpTarget({ id: data.userId, name: data.userName ?? '' })
       handleClickOpen()
     } // 없는 경우 바로 멘션 대상 설정 및 변경
-    else { switchMention({ id: data.userId, name: data.userName ?? '' }) }
+    else if (data.commentChildId) { switchMention({ id: data.commentChildId, name: data.userName ?? '' }) }
   }
 
   const handleDialog = () => {
@@ -76,7 +76,8 @@ const index = () => {
   }, [mentionTarget])
 
   const handleDelete = () => { // * 삭제되는게 코멘트인 경우 어떻게 처리할지??
-    if (targetM) {
+    let confirmDelete = confirm("댓글을 삭제하시겠습니까?");
+    if (targetM && confirmDelete) {
       let apiURL = openD > 1 ? `/api/post/comment/children/${targetM.postCommentId}` : `/api/post/comment/${targetM.postCommentId}`
       console.log(apiURL)
       call(apiURL, "DELETE", null)
@@ -109,6 +110,7 @@ const index = () => {
       <ThemeProvider theme={mentionDialogTheme}>
         <Dialog open={open} onClose={handleClose} >
           <DialogContent>
+            {/* confirm 으로 변경하기 */}
             <DialogContentText>작성 중이던 댓글을 삭제하고<br /> 새로운 댓글을 작성하시겠습니까?</DialogContentText>
           </DialogContent>
           <DialogActions>
@@ -208,10 +210,10 @@ function ReplyFooter(props: {
   }
 
   const handleComment = () => {
-    if (props.mentionRef.current && props.mentionRef.current.innerText.length > 0) {
-      // console.log('mention: ', props.mentionRef.current.innerText)
+    if (props.mentionRef.current && props.mentionRef.current.innerText.length > 0 && props.target) {
+      console.log('mention: ', props.mentionRef.current.innerText, props.target.id)
       call(`/api/post/comment/${props.postCommentId}/children`, "POST",
-        { "content": props.mentionRef.current.innerText, "replyTargetPostCommentChildId": props.target })
+        { "content": props.mentionRef.current.innerText, "replyTargetPostCommentChildId": props.target.id })
         .then((response) => {
           console.log(response)
           props.setLoadingC(true)

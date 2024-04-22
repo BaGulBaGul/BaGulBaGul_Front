@@ -1,4 +1,4 @@
-import { Button, createTheme, ThemeProvider } from '@mui/material';
+import { createTheme } from '@mui/material';
 import { styled } from '@mui/system';
 
 export const filterChipTheme = createTheme({
@@ -203,7 +203,7 @@ export const mentionDialogTheme = createTheme({
           borderRadius: '4px', padding: '4px',
           '&:hover, &:active': { backgroundColor: '#4A6AFE', color: '#FCFCFC' },
           '&.btn-mention-keep': { backgroundColor: '#ECECEC', color: '#1E1E1E' },
-          '&.btn-mention-delete': {  backgroundColor: '#4A6AFE', color: '#FCFCFC' },
+          '&.btn-mention-delete': { backgroundColor: '#4A6AFE', color: '#FCFCFC' },
         }
       }
     }
@@ -560,6 +560,27 @@ export const tabTheme = createTheme({
         }
       }
     },
+    MuiToggleButtonGroup: {
+      styleOverrides: {
+        root: {
+          padding: '10px 16px', gap: '16px', borderRadius: '0px !important'
+        }
+      }
+    },
+    MuiToggleButton: {
+      styleOverrides: {
+        root: {
+          border: 'none !important', fontSize: '18px', lineHeight: '140%',
+          padding: '0px', paddingBottom: '3px', fontWeight: 400, color: '#1E1E1E',
+          "&.Mui-selected": {
+            fontWeight: 600, backgroundColor: 'transparent !important',
+            borderBottom: '1px solid #1E1E1E !important', borderRadius: '0px !important',
+            paddingBottom: '2px !important',
+          },
+          "&:hover": { backgroundColor: 'transparent !important' }
+        }
+      }
+    }
   },
 });
 

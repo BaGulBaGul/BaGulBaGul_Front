@@ -48,8 +48,7 @@ export const Detail = (props: { opt: string; data: any; eventId?: any; liked: bo
             commentCount={props.data.commentCount} commentURL={commentURL} />
         </div>
         { // 페스티벌, 지역행사는 '모집글 보러가기' 버튼 배치
-          props.data.type !== 'PARTY'
-            ? <PostFooter title='모집글 보러가기' path={`/event/${props.eventId}/recruitment`} /> : <></>
+          props.data.type !== 'PARTY' ? <PostFooter title='모집글 보러가기' path={`/event/${props.eventId}/recruitment`} /> : <></>
         }
       </div>
     )
@@ -58,8 +57,7 @@ export const Detail = (props: { opt: string; data: any; eventId?: any; liked: bo
       <div className='flex flex-col w-full min-h-screen pt-[104px] justify-between'>
         <div>
           {props.data.imageUrls.length > 0
-            ? <PostSlide />
-            : <img className='h-[280px] object-cover' src='/default_detail_thumb3x.png' />
+            ? <PostSlide /> : <img className='h-[280px] object-cover' src='/default_detail_thumb3x.png' />
           }
           <PostTitle title={props.data.title} startDate={props.data.startDate} views={props.data.views} username={props.data.username} />
           <Divider />
@@ -67,8 +65,7 @@ export const Detail = (props: { opt: string; data: any; eventId?: any; liked: bo
           <div className='pb-[30px]'>
             <PostContent content={props.data.content} />
             {props.data.tags !== undefined && props.data.tags.length > 0
-              ? <PostContentTag tags={props.data.tags} />
-              : <></>
+              ? <PostContentTag tags={props.data.tags} /> : <></>
             }
           </div>
         </div>
@@ -132,7 +129,7 @@ function PostTitle(props: PostTitleProps) {
           props.categories !== undefined
             ? <div className='flex flex-row gap-[8px]'>
               <ThemeProvider theme={categoryButtonTheme}>
-                {props.categories.map((cate, idx) => ( <Button key={`cate-${idx}`}>{cate}</Button> ))}
+                {props.categories.map((cate, idx) => (<Button key={`cate-${idx}`}>{cate}</Button>))}
               </ThemeProvider>
             </div>
             : <></>
@@ -196,9 +193,7 @@ function PostContentTag(props: { tags: string[] }) {
     <div className='flex flex-col px-[16px] pt-[30px]' id='p-content-tag'>
       <div className='container'>
         {props.tags.map((tag, idx) => {
-          if (tag.length > 0) {
-            return (<HashtagButton tag={tag} key={`tag-${idx}`} />)
-          }
+          if (tag.length > 0) { return (<HashtagButton tag={tag} key={`tag-${idx}`} />) }
         })}
       </div>
     </div>
@@ -272,8 +267,7 @@ function PostTools(props: PostToolsProps) {
 
       <div className='flex flex-row gap-[10px]'>
         {
-          props.opt === 'EVT'
-            ? <IconButton disableRipple className='p-0'><img src='/post_calendar.svg' /></IconButton> : <></>
+          props.opt === 'EVT' ? <IconButton disableRipple className='p-0'><img src='/post_calendar.svg' /></IconButton> : <></>
         }
         <IconButton disableRipple onClick={props.handleOpen} className='p-0'><img src='/detail_share.svg' /></IconButton>
       </div>
