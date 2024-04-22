@@ -7,9 +7,10 @@ import { call } from "@/service/ApiService";
 
 export interface CommentProps {
   commentChildCount?: number; commentId?: number; commentChildId?: number; content: string; createdAt: string;
-  likeCount: number; myLike: boolean; userId: number; username?: string; userName?: string; userImage?: string;
+  likeCount: number; myLike: boolean; userId: number; username?: string; userName?: string; userProfileImageUrl?: string;
+  replyTargetUserName?: string;
 }
-export interface CommentMProps { postCommentId: number; content: string; userId?: number; } // 댓글수정용
+export interface CommentMProps { postCommentId: number; content: string; userId?: number; mentionTarget?: string; } // 댓글수정용
 
 export function CommentBlock(props: { opt: string; data: CommentProps; currentURL?: string; setOpenD: any; setTargetM: any; handleMention?: any; }) {
   let createdD = FormatDateTime(props.data.createdAt, 1)
@@ -53,7 +54,21 @@ export function CommentBlock(props: { opt: string; data: CommentProps; currentUR
               </div>
               <IconButton disableRipple className='p-0' onClick={(e) => handleToggle(e)}><img src='/comment_etc.svg' width={24} height={24} /></IconButton>
             </div>
-            <div className='text-[14px] text-gray3 pb-[6px]' id='comment-body'>{props.data.content}</div>
+            <div className='text-[14px] text-gray3 pb-[6px]' id='comment-body'>
+              {
+                props.data.replyTargetUserName
+                  ? <>
+                    <span className="text-primary-blue">@{props.data.replyTargetUserName} </span>
+                    <span>{
+                      props.data.content.startsWith('@') && props.data.content.slice(1, props.data.replyTargetUserName.length+1) === props.data.replyTargetUserName
+                      ? props.data.content.slice(props.data.replyTargetUserName.length+1)
+                      : props.data.content
+                    }</span>
+                  </>
+                  : <span>{props.data.content}</span>
+              }
+
+            </div>
           </div>
       }
       <div className='flex flex-row justify-between items-center pt-[8px]' id='comment-foot'>

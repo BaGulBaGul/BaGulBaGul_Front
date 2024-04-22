@@ -52,13 +52,15 @@ function Comments(props: { postId: any; setCount: any; setOpenD: any; setTargetM
   const [comments, setComments] = useState<CommentProps[]>([]);
 
   const [page, setPage] = useState({ current: 0, total: 0, });
-  const handleMore = () => { setPageInfo(page, setPage, page.current + 1) }
+  const handleMore = () => { 
+    props.setLoading(true)
+    setPageInfo(page, setPage, page.current + 1) }
 
   const initialSet = useRef(false);
   useEffectComment('CMT', `/api/post/${props.postId}/comment?size=10&page=${page.current}`, initialSet, page, setPage,
     props.setCount, props.isLoading, props.setLoading, setComments, comments)
-
-  if (props.isLoading) { return <LoadingSkeleton type='CMT' /> }
+  console.log('&& ', comments)
+  if (props.isLoading && page.current === 0) { return <LoadingSkeleton type='CMT' /> }
   else {
     return (
       <>

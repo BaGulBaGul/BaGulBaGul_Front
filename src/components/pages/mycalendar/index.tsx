@@ -4,7 +4,7 @@ import { Tab, Tabs, Box, Button, ThemeProvider, Checkbox, Divider } from '@mui/m
 import TabPanel from '@/components/common/TabPanel';
 import { CalendarBlock } from '@/components/common/EventBlock';
 import { likeEvents, postData, partyData } from '@/components/common/Data';
-import { likeButtonTheme1, likeButtonTheme2, tabTheme, deleteButtonTheme } from '@/components/common/Themes';
+import { tabTheme, deleteButtonTheme } from '@/components/common/Themes';
 import { krLocale } from '@/components/common/CalendarLocale';
 
 import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";

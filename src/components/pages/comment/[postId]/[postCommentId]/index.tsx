@@ -132,7 +132,10 @@ function Replies(props: { setCount: any; setOpenD: any; setTargetM: any; handleM
   const [children, setChildren] = useState<CommentProps[]>([]);
 
   const [page, setPage] = useState({ current: 0, total: 0, });
-  const handleMore = () => { setPageInfo(page, setPage, page.current + 1) }
+  const handleMore = () => {
+    props.setLoadingR(true)
+    setPageInfo(page, setPage, page.current + 1)
+  }
 
   const initialSet = useRef(false);
   useEffectComment('RPL', `/api/post/comment/${props.postCommentId}/children?size=10&page=${page.current}`, initialSet, page, setPage,
