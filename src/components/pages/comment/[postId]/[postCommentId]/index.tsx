@@ -50,9 +50,7 @@ const index = () => {
   const mentionRef = useRef<HTMLDivElement>(null);
   const replyRef = useRef<HTMLInputElement>(null);
 
-  const [open, setOpen] = useState(false);
-  const handleClickOpen = () => { setOpen(true); };
-  const handleClose = () => { setOpen(false); };
+  // const handleClose = () => { setOpen(false); };
   // 멘션 대상 설정
   const switchMention = (data: { id: number, name: string }) => {
     setMentioning(true)
@@ -65,16 +63,12 @@ const index = () => {
       || (mentioning && mentionRef && mentionRef.current !== null && mentionRef.current.children.namedItem('mention-highlight') !== null
         && mentionRef.current.innerText.length + 1 > (mentionRef.current.children.namedItem('mention-highlight')?.innerHTML.length ?? 0))) {
       setTmpTarget({ id: data.userId, name: data.userName ?? '' })
-      handleClickOpen()
+      let confirmSwitch = confirm("작성 중이던 댓글을 삭제하고 새로운 댓글을 작성하시겠습니까?");
+      if (tmpTarget !== undefined && confirmSwitch) {
+        switchMention(tmpTarget)
+      }
     } // 없는 경우 바로 멘션 대상 설정 및 변경
     else if (data.commentChildId) { switchMention({ id: data.commentChildId, name: data.userName ?? '' }) }
-  }
-
-  const handleDialog = () => {
-    if (tmpTarget !== undefined) {
-      switchMention(tmpTarget)
-      handleClose()
-    }
   }
 
   useEffect(() => {
@@ -113,18 +107,6 @@ const index = () => {
             <LoadingSkeleton type='RPL' />
           </div>
       }
-      <ThemeProvider theme={mentionDialogTheme}>
-        <Dialog open={open} onClose={handleClose} >
-          <DialogContent>
-            {/* confirm 으로 변경하기 */}
-            <DialogContentText>작성 중이던 댓글을 삭제하고<br /> 새로운 댓글을 작성하시겠습니까?</DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose} className='btn-mention-keep'>계속 작성</Button>
-            <Button onClick={handleDialog} className='btn-mention-delete'>삭제</Button>
-          </DialogActions>
-        </Dialog >
-      </ThemeProvider>
       <MemoizedReplyFooter mentioning={mentioning} setMentioning={setMentioning} postCommentId={params.postCommentId} target={mentionTarget}
         mentionRef={mentionRef} replyRef={replyRef} setLoadingC={setLoadingC} setLoadingR={setLoadingR} />
       <CommentDrawer open={openD} toggleDrawer={toggleDrawer} setOpenM={setOpenM} handleDelete={handleDelete} />
