@@ -128,7 +128,8 @@ export function ModifyInput(props: { open: boolean; setOpenM: any; target?: Comm
   const handleModify = () => {
     console.log(props.target?.postCommentId)
     console.log(mdfRef.current?.value)
-    if (mdfRef.current && mdfRef.current.value.length > 0 && props.target) {
+    if (mdfRef.current?.value.replace(/\n$/, '').replace(/ /g, '').length === 0) { alert('댓글 내용을 입력해주세요.') }
+    else if (mdfRef.current && mdfRef.current.value.length > 0 && props.target) {
       call(`/api/post/comment/${props.target.postCommentId}`, "PATCH", { "content": mdfRef.current.value })
         .then((response) => {
           console.log(response)
@@ -176,8 +177,8 @@ export function ModifyInputR(props: { open: boolean; setOpenM: any; target?: Com
         .then((response) => {
           console.log(response);
           props.setLoading(true)
+          props.setTarget(undefined);
           props.setOpenM(false);
-          // props.setTarget(undefined);
         }).catch((error) => console.error(error));
     }
   }
@@ -238,19 +239,23 @@ export function ModifyInputR(props: { open: boolean; setOpenM: any; target?: Com
           </AppBar>
           <Divider />
           <div className='mention-reply-section' ref={mdfRef} contentEditable onFocus={handleFocus}
-            onKeyUp={handleCaret} onKeyDown={handleCaret} onMouseUp={handleCaret} suppressContentEditableWarning={true}
-            role="combobox" spellCheck="false" >
+            onKeyUp={handleCaret} onKeyDown={handleCaret} onMouseUp={handleCaret} suppressContentEditableWarning={true} >
             {
               props.target && props.target.replyTargetUserName
                 ? <>
                   <span contentEditable={false} id='mention-highlight' className='text-primary-blue'>{`@${props.target.replyTargetUserName} `}</span>
-                  <span className='w-full' contentEditable suppressContentEditableWarning={true}>{
+                  {/* <span className='w-full' contentEditable suppressContentEditableWarning={true}>{
                     props.target.content.startsWith('@') && props.target.content.slice(1, props.target.replyTargetUserName.length + 1) === props.target.replyTargetUserName
                       ? props.target.content.slice(props.target.replyTargetUserName.length + 2)
-                      : props.target.content
-                  }</span>
+                      : props.target.content ?? ''
+                  }</span> */}
+                  {
+                    props.target.content.startsWith('@') && props.target.content.slice(1, props.target.replyTargetUserName.length + 1) === props.target.replyTargetUserName
+                      ? props.target.content.slice(props.target.replyTargetUserName.length + 2)
+                      : props.target.content ?? ''
+                  }
                 </>
-                : <span className='w-full' contentEditable  suppressContentEditableWarning={true}>{props.target?.content}</span>
+                : <span className='w-full' contentEditable suppressContentEditableWarning={true}>{props.target?.content ?? ''}</span>
             }
           </div>
           <Button onClick={handleModify}>수정 완료</Button>

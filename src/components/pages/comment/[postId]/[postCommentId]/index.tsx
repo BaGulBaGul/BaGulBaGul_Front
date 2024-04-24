@@ -19,6 +19,12 @@ const index = () => {
 
   const [openM, setOpenM] = useState(false);
   const [targetM, setTargetM] = useState<CommentMProps | undefined>();
+  console.log(targetM)
+  // useEffect(() => {
+  //   if (targetM !== undefined) {
+  //     setTargetM(undefined)
+  //   }
+  // }, [openM])
 
   const params = useParams()
   const [isLoadingC, setLoadingC] = useState(true)
