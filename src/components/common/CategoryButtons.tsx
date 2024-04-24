@@ -19,8 +19,7 @@ export default function CategoryButtons(props: CategoryButtonProps) {
 
   return (
     <div className='overflow-hidden	h-[46px]'>
-      {/* <div className='h-[76px] py-[10px] px-[16px] overflow-x-scroll overflow-y-hide whitespace-nowrap cateBtns'> */}
-      <div className='h-[76px] py-[10px] px-[16px] overflow-x-auto overflow-y-hide whitespace-nowrap cateBtns'>
+      <div className='h-[76px] py-[10px] px-[16px] cateBtns'>
         <ThemeProvider theme={categoryButtonTheme}>
           <ToggleButtonGroup value={props.selectedCate} onChange={handleCate}>
             {categories.map((cate, idx) =>

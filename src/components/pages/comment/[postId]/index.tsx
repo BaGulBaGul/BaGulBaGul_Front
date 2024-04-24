@@ -1,124 +1,105 @@
 "use client";
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useParams } from 'next/navigation';
-
-import { Button, IconButton, ThemeProvider, TextField } from '@mui/material';
+import { call } from "@/service/ApiService";
+import { Button, ThemeProvider, TextField } from '@mui/material';
 import { SubHeaderCnt } from '@/components/layout/subHeader';
-import { FormatDateTime } from '@/service/Functions';
-import { commentTheme, replyButtonTheme } from '@/components/common/Themes';
-import { call } from '@/service/ApiService';
-import { commentData } from '@/components/common/Data';
-
-export interface CommentProps {
-  commentChildCount: number; commentId: number; content: string; createdAt: string;
-  likeCount: number; myLike: Boolean; userId: number; username?: string; userName?: string; user_profile?: string;
-}
+import { setPageInfo, useEffectComment } from '@/service/Functions';
+import { commentTheme } from '@/components/common/Themes';
+import { LoadingSkeleton, MoreButton } from '@/components/common';
+import { CommentBlock, CommentDrawer, CommentMProps, CommentProps, ModifyInput } from '@/components/common/Comment';
 
 const index = () => {
+  const [count, setCount] = useState(0);
+  const [isLoading, setLoading] = useState(true)
+
+  // menu drawer
+  const [openD, setOpenD] = useState(0);
+  const toggleDrawer = (newOpen: number) => () => { setOpenD(newOpen); };
+
+  const [openM, setOpenM] = useState(false);
+  const [targetM, setTargetM] = useState<CommentMProps | undefined>();
+
   const params = useParams()
 
-  const [comments, setComments] = useState<CommentProps[]>([]);
-  function setCommentList(currentComments: []) {
-    const newComments = comments.concat(currentComments)
-    const newCommentsSet = new Set(newComments)
-    const newCommentsList = Array.from(newCommentsSet);
-    console.log(newComments, ' | ', newCommentsSet)
-    setComments(newCommentsList);
+  const handleDelete = () => {
+    let confirmDelete = confirm("댓글을 삭제하시겠습니까?");
+    if (targetM && confirmDelete) {
+      console.log(targetM.content)
+      call(`/api/post/comment/${targetM.postCommentId}`, "DELETE", null)
+        .then((response) => {
+          console.log(response)
+          // props.initialSet.current = false;
+          setLoading(true)
+        }).catch((error) => console.error(error));
+    }
   }
-
-  const [page, setPage] = useState({ current: 0, total: 0, });
-  function setPageInfo(currentPage: number) {
-    setPage({ ...page, current: currentPage });
-  }
-  const [count, setCount] = useState(0);
-
-  const initialSet = useRef(false);
-  useEffect(() => {
-    let apiURL = `/api/post/${params.postId}/comment?size=10&page=${page.current}`;
-    console.log("$$$", apiURL)
-    call(apiURL, "GET", null)
-      .then((response) => {
-        console.log(response.data);
-        if (response.data.empty === false) {
-          // 페이지값 초기설정
-          if (!initialSet.current) {
-            setPage({ current: 0, total: response.data.totalPages })
-            initialSet.current = true;
-            setCount(response.data.totalElements)
-          }
-          setCommentList(response.data.content)
-        }
-      })
-  }, [page])
 
   return (
     <>
-      <SubHeaderCnt name='글 댓글' url={"/"} cnt={count} />
-      <div className='flex flex-col w-full min-h-[100vh] pb-[76px] bg-gray1'>
-        {
-          comments.map((comment: CommentProps, idx: number) => (
-            <div className={idx % 2 == 0 ? 'bg-white px-[16px] py-[12px]' : 'bg-gray1 px-[16px] py-[12px]'}>
-              <CommentBlock data={comment} key={`cmt-${idx}`} currentURL={`${params.postId}`} />
-            </div>
-          ))
-        }
-      </div>
-      <CommentFooter />
+      <SubHeaderCnt name='글 댓글' cnt={count} />
+      <Comments postId={params.postId} setCount={setCount} setOpenD={setOpenD} setTargetM={setTargetM}
+        isLoading={isLoading} setLoading={setLoading} />
+      <CommentFooter postId={params.postId} setLoading={setLoading} />
+      <CommentDrawer open={openD} toggleDrawer={toggleDrawer} setOpenM={setOpenM} handleDelete={handleDelete} />
+      <ModifyInput open={openM} setOpenM={setOpenM} target={targetM} setTarget={setTargetM} setLoading={setLoading} />
     </>
   )
 }
 export default index;
 
-export function CommentBlock(props: { data: CommentProps; currentURL: string; }) {
-  let createdD = FormatDateTime(props.data.createdAt, 1)
-  return (
-    <div>
-      <div className='flex flex-row justify-between pb-[10px]' id='comment-head'>
-        <div className='flex flex-row items-center'>
-          <a className="flex place-items-center" href="/">
-            <img src="/main_profile.svg" width={24} height={24} />
-          </a>
-          <div className='text-sm ps-[8px]'>{props.data.username}</div>
-        </div>
-        <IconButton disableRipple className='p-0'><img src='/comment_etc.svg' width={24} height={24} /></IconButton>
-      </div>
-      <div className='text-sm text-gray3 pb-[6px]' id='comment-body'>{props.data.content}</div>
-      <div className='flex flex-row text-xs text-gray3' id='comment-datetime'>
-        <p className='pe-[6px]'>{createdD.date}</p><p>{createdD.time}</p>
-      </div>
-      <div className='flex flex-row justify-between items-center pt-[8px]' id='comment-foot'>
-        <a href={`${props.currentURL}/${props.data.commentId}`}>
-          <ThemeProvider theme={replyButtonTheme}>
-            {
-              props.data.commentChildCount > 0
-                ? <Button className={'flex flex-row text-[12px] border-primary-blue text-primary-blue'}>
-                  <p>답글</p><p className='ps-[4px]'>{props.data.commentChildCount}</p>
-                </Button>
-                : <Button className={'flex flex-row text-[12px]'}>답글</Button>
-            }
-          </ThemeProvider>
-        </a>
-        <div className='flex flex-row items-center' id='comment-likes'>
-          {
-            props.data.myLike
-              ? <img src="/comment_like_1.svg" width={24} height={24} />
-              : <img src="/comment_like.svg" width={24} height={24} />
+function Comments(props: { postId: any; setCount: any; setOpenD: any; setTargetM: any; isLoading: boolean; setLoading: any; }) {
+  const [comments, setComments] = useState<CommentProps[]>([]);
+
+  const [page, setPage] = useState({ current: 0, total: 0, });
+  const handleMore = () => { 
+    props.setLoading(true)
+    setPageInfo(page, setPage, page.current + 1) }
+
+  const initialSet = useRef(false);
+  useEffectComment('CMT', `/api/post/${props.postId}/comment?size=10&page=${page.current}`, initialSet, page, setPage,
+    props.setCount, props.isLoading, props.setLoading, setComments, comments)
+  console.log('&& ', comments)
+  if (props.isLoading && page.current === 0) { return <LoadingSkeleton type='CMT' /> }
+  else {
+    return (
+      <>
+        <div className='flex flex-col w-full min-h-[calc(100vh-104px)] pb-[49px] bg-gray1'>
+          {comments.map((comment: CommentProps, idx: number) => (
+            <div key={`cmt-${idx}`} className={idx % 2 == 0 ? 'bg-[#FFF] px-[16px] py-[12px]' : 'bg-gray1 px-[16px] py-[12px]'}>
+              <CommentBlock opt='CMT' data={comment} currentURL={`${props.postId}`} setOpenD={props.setOpenD} setTargetM={props.setTargetM} />
+            </div>
+          ))
           }
-          {
-            props.data.likeCount !== 0 ? <p className='text-xs text-gray3 ps-[2px]'>{props.data.likeCount}</p> : <></>
+          {page.total > 1 && page.current + 1 < page.total
+            ? <MoreButton onClick={handleMore} />
+            : <></>
           }
         </div>
-      </div>
-    </div>
-  )
+      </>
+    )
+  }
 }
 
-function CommentFooter() {
+function CommentFooter(props: { postId: any; setLoading: any; }) {
+  const cmtRef = useRef<HTMLInputElement>(null);
+  const handleComment = () => {
+    if (cmtRef.current && cmtRef.current.value.length > 0) {
+      console.log(cmtRef.current.value)
+      call(`/api/post/${props.postId}/comment`, "POST", { "content": cmtRef.current.value })
+        .then((response) => {
+          console.log(response)
+          props.setLoading(true)
+          if (cmtRef.current) { cmtRef.current.value = '' }
+        }).catch((error) => console.error(error));
+    }
+  }
+
   return (
     <ThemeProvider theme={commentTheme}>
       <div className="flex flex-row comment-input">
-        <TextField placeholder='댓글을 입력해주세요.' fullWidth multiline />
-        <Button className='text-sm w-[70px] h-[48px]'>등록</Button>
+        <TextField placeholder='댓글을 입력해주세요.' fullWidth multiline inputRef={cmtRef} />
+        <Button className='text-[14px] w-[70px] h-[48px]' onClick={handleComment}>등록</Button>
       </div>
     </ThemeProvider>
   )

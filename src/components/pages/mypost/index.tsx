@@ -1,10 +1,11 @@
 "use client";
 import { useState } from 'react';
-import { Tab, Tabs, Box, Button, ThemeProvider, Checkbox, FormControl, FormControlLabel, FormGroup, } from '@mui/material';
+import { Tab, Tabs, Box, ThemeProvider, IconButton, } from '@mui/material';
 import TabPanel from '@/components/common/TabPanel';
 import { partyData } from '@/components/common/Data';
-import { likeButtonTheme1, likeButtonTheme2, tabTheme } from '@/components/common/Themes';
+import { tabTheme } from '@/components/common/Themes';
 import { FormatDateRange } from '@/service/Functions';
+import { PostEditIcn, PostDeleteIcn } from '@/components/common/Icon';
 
 const index = () => {
   return (
@@ -45,31 +46,33 @@ function LikedTab() {
           ))
         }
       </TabPanel>
-      <TabPanel value={value} index={1}>
-        Item 2<br />Item 2<br />Item 2<br />Item 2<br />Item 2<br />Item 2<br />Item 2<br />Item 2<br />Item 2<br />
-        Item 2<br />Item 2<br />Item 2<br />Item 2<br />Item 2<br />Item 2<br />Item 2<br />Item 2<br />Item 2<br />
-        Item 2<br />Item 2<br />Item 2<br />Item 2<br />Item 2<br />Item 2<br />Item 2<br />Item 2<br />Item 2<br />
+      <TabPanel value={value} index={1}  classn='mt-[60px]'>
+      {
+          partyData.map((item, idx) => (
+            <MyPostBlock data={item} key={`like-${idx}`} />
+          ))
+        }
       </TabPanel>
     </Box>
   )
 
-  interface MyPostProps { title: string; startDate: any; endDate: any; content: string; img_url: string; }
+  interface MyPostProps { title: string; startDate: any; endDate: any; content: string; headImageUrl: string; }
   function MyPostBlock(props: {data: MyPostProps}) {
     return (
       <div className='flex flex-row px-[16px] py-[18px] gap-[20px]'>
-        <img className='rounded-[4px] h-[104px] w-[84px] min-w-[84px] object-cover' src={props.data.img_url} />
+        <img className='rounded-[4px] h-[104px] w-[84px] min-w-[84px] object-cover' src={props.data.headImageUrl} />
         <div className='flex flex-col justify-between w-full'>
           <div className='flex flex-col'>
             <div className='flex flex-row justify-between'>
               <span className='text-[14px] text-gray3'>{FormatDateRange(props.data.startDate, props.data.endDate)}</span>
-              <div className='flex flex-row gap-[6px]'>
-                <ThemeProvider theme={likeButtonTheme1}><Button disableRipple>수정</Button></ThemeProvider>
-                <ThemeProvider theme={likeButtonTheme2}><Button disableRipple>삭제</Button></ThemeProvider>
+              <div className='flex flex-row gap-[2px]'>
+                <IconButton disableRipple className='p-0'><PostEditIcn /></IconButton>
+                <IconButton disableRipple className='p-0'><PostDeleteIcn /></IconButton>
               </div>
             </div>
             <span className='text-[16px] font-semibold'>{props.data.title}</span>
           </div>
-          <span className='text-[12px] text-gray3 block description max-w-[278px]'>{props.data.content}</span>
+          <span className='text-[12px] text-gray3 description max-w-[278px]'>{props.data.content}</span>
         </div>
       </div>
     )

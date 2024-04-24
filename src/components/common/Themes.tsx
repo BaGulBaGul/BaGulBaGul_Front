@@ -1,4 +1,4 @@
-import { Button, createTheme, ThemeProvider } from '@mui/material';
+import { createTheme } from '@mui/material';
 import { styled } from '@mui/system';
 
 export const filterChipTheme = createTheme({
@@ -8,11 +8,12 @@ export const filterChipTheme = createTheme({
       styleOverrides: {
         root: {
           padding: '2px 8px !important', border: '0.5px solid #C1C1C1 !important', borderRadius: '20px !important',
-          fontSize: '14px !important', fontWeight: '400', lineHeight: '160%',
-          color: '#6C6C6C !important', gap: '2px'
+          fontSize: '14px !important', fontWeight: '400', lineHeight: '160%', color: '#6C6C6C !important',
+          height: '26px',
+          '&:not(:last-child)': { marginRight: '4px' }
         },
         label: { padding: '0 !important' },
-        deleteIcon: { margin: '0 !important' }
+        deleteIcon: { margin: '0 !important', height: '22px' }
       }
     }
   }
@@ -24,8 +25,7 @@ export const suggestChipTheme = createTheme({
       styleOverrides: {
         root: {
           padding: '2px 8px !important', border: '1px solid #C1C1C1 !important', borderRadius: '14px !important',
-          fontSize: '14px !important', fontWeight: '400', lineHeight: '160%',
-          color: '#1E1E1E !important'
+          fontSize: '14px !important', fontWeight: '400', lineHeight: '160%', color: '#1E1E1E !important'
         },
         label: { padding: '0 !important' },
       }
@@ -36,11 +36,7 @@ export const suggestChipTheme = createTheme({
 export const categoryButtonTheme = createTheme({
   components: {
     MuiButtonBase: { defaultProps: { disableRipple: true, }, },
-    MuiToggleButtonGroup: {
-      styleOverrides: {
-        root: { gap: '4px' }
-      }
-    },
+    MuiToggleButtonGroup: { styleOverrides: { root: { gap: '4px' } } },
     MuiToggleButton: {
       styleOverrides: {
         root: {
@@ -103,43 +99,6 @@ export const hashtagButtonTheme = createTheme({
             backgroundColor: '#6C6C6C !important', color: '#FCFCFC !important',
             border: '0.5px solid #6C6C6C !important',
           },
-          // '&:not(:last-child)': {
-          //   marginRight: '10px'
-          // }
-        }
-      }
-    }
-  },
-});
-interface HashtagButtonProps { tag: string; }
-export function HashtagButton(props: HashtagButtonProps) {
-  return (
-    <ThemeProvider theme={hashtagButtonTheme}>
-      <Button>
-        <div className='flex flex-row'>
-          <span className='pe-[2px]'>#</span>
-          <span>{props.tag}</span>
-        </div>
-      </Button>
-    </ThemeProvider>
-
-  )
-}
-
-export const commentButtonTheme = createTheme({
-  components: {
-    MuiButtonBase: { defaultProps: { disableRipple: true, }, },
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          backgroundColor: '#FFFFFF !important', color: '#4A6AFE',
-          fontSize: '14px', borderRadius: 0,
-          '&:hover': {
-            backgroundColor: '#FFFFFF !important', color: '#1E1E1E'
-          },
-          '&:active': {
-            backgroundColor: '#FFFFFF !important', color: '#6C6C6C', fontWeight: 600,
-          }
         }
       }
     }
@@ -151,7 +110,8 @@ export const commentTheme = createTheme({
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
-          borderRadius: 0, position: 'relative', padding: '15px 24px', fontSize: 14,
+          borderRadius: 0, position: 'relative', padding: '13px 24px', fontSize: 14,
+          lineHeight: '160%',
           '&::placeholder': { color: '#C1C1C1' }
         },
         notchedOutline: { border: '0' }
@@ -163,12 +123,8 @@ export const commentTheme = createTheme({
         root: {
           backgroundColor: '#FFFFFF !important', color: '#4A6AFE',
           fontSize: '14px', borderRadius: 0, fontWeight: 400,
-          '&:hover': {
-            backgroundColor: '#FFFFFF !important', color: '#1E1E1E'
-          },
-          '&:active': {
-            backgroundColor: '#FFFFFF !important', color: '#6C6C6C', fontWeight: 600,
-          }
+          '&:hover': { backgroundColor: '#FFFFFF !important', color: '#1E1E1E' },
+          '&:active': { backgroundColor: '#FFFFFF !important', color: '#6C6C6C', fontWeight: 600, }
         }
       }
     }
@@ -183,18 +139,107 @@ export const replyButtonTheme = createTheme({
         root: {
           border: '0.5px solid #C1C1C1', padding: '2px 4px',
           color: '#1E1E1E', minWidth: 'unset', fontWeight: 400,
-          '&:hover': {
-            border: '0.5px solid #4A6AFE', backgroundColor: 'transparent'
-          },
+          '&:hover': { border: '0.5px solid #4A6AFE', backgroundColor: 'transparent' },
           '&:active': {
-            border: '0.5px solid #4A6AFE',
-            backgroundColor: '#4A6AFE !important', color: '#FCFCFC !important'
+            border: '0.5px solid #4A6AFE', backgroundColor: '#4A6AFE !important', color: '#FCFCFC !important'
           }
         }
       }
     }
   },
 });
+
+export const mentionDialogTheme = createTheme({
+  components: {
+    MuiButtonBase: { defaultProps: { disableRipple: true, }, },
+    MuiPaper: {
+      styleOverrides: { root: { borderRadius: '8px', width: '250px', } }
+    },
+    MuiDialogContent: {
+      styleOverrides: { root: { paddingTop: '20px', paddingBottom: '8px' } }
+    },
+    MuiDialogContentText: {
+      styleOverrides: { root: { fontSize: '14px', lineHeight: '160%', textAlign: 'center', } }
+    },
+    MuiDialogActions: {
+      styleOverrides: { root: { justifyContent: 'center', padding: '12px' } }
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          width: '108px', fontSize: '14px', lineHeight: '160%', fontWeight: '400',
+          borderRadius: '4px', padding: '4px',
+          '&:hover, &:active': { backgroundColor: '#4A6AFE', color: '#FCFCFC' },
+          '&.btn-mention-keep': { backgroundColor: '#ECECEC', color: '#1E1E1E' },
+          '&.btn-mention-delete': { backgroundColor: '#4A6AFE', color: '#FCFCFC' },
+        }
+      }
+    }
+  }
+})
+
+export const commentMenuTheme = createTheme({
+  components: {
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          borderTopLeftRadius: '8px !important', borderTopRightRadius: '8px !important',
+          paddingBottom: '40px !important',
+        },
+      }
+    },
+    MuiList: { styleOverrides: { root: { padding: '0px' } } },
+    MuiListItemButton: { styleOverrides: { root: { padding: '20px 16px' } } },
+    MuiListItemText: {
+      styleOverrides: {
+        root: { margin: '0px' },
+        primary: { fontSize: '14px', },
+      }
+    },
+  },
+});
+
+export const modifyCommentTheme = createTheme({
+  components: {
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#FFF', boxShadow: 'unset',
+          color: '#1E1E1E', fontSize: '18px', lineHeight: '160%',
+          position: 'relative', padding: '0px !important'
+        }
+      }
+    },
+    MuiToolbar: {
+      styleOverrides: {
+        root: {
+          display: 'flex', justifyContent: 'space-between', flexDirection: 'row', padding: '18px 24px'
+        }
+      }
+    },
+    MuiIconButton: { styleOverrides: { root: { padding: '0px' } } },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          fontSize: '16px', color: '#FCFCFC', lineHeight: '140%',
+          backgroundColor: '#4A6AFE !important', width: '100%',
+          paddingTop: '20px', paddingBottom: '35px', borderRadius: '0px',
+          position: 'fixed', bottom: '0px', left: '0px',
+        }
+      }
+    },
+    MuiTextField: { styleOverrides: { root: { height: '100%' } } },
+    MuiInputBase: {
+      styleOverrides: {
+        root: { padding: '12px 16px !important', },
+        input: {
+          height: 'calc(100vh - 161px) !important', fontSize: '14px', lineHeight: '160%', color: '#6C6C6C',
+        }
+      }
+    },
+    MuiOutlinedInput: { styleOverrides: { root: { border: 'none', "& fieldset": { border: 'none' }, } } }
+  }
+})
 
 export const noEventButtonTheme = createTheme({
   components: {
@@ -204,12 +249,9 @@ export const noEventButtonTheme = createTheme({
         root: {
           border: '1px solid #4A6AFE', padding: '4px 8px', minWidth: 'unset',
           color: '#4A6AFE', fontSize: '14px', fontWeight: 400, lineHeight: '140%',
-          '&:hover': {
-            border: '1px solid #4A6AFE', backgroundColor: 'transparent'
-          },
+          '&:hover': { border: '1px solid #4A6AFE', backgroundColor: 'transparent' },
           '&:active': {
-            border: '1px solid #4A6AFE',
-            backgroundColor: '#4A6AFE !important', color: '#FCFCFC'
+            border: '1px solid #4A6AFE', backgroundColor: '#4A6AFE !important', color: '#FCFCFC'
           }
         }
       }
@@ -227,12 +269,9 @@ export const writeFabTheme = createTheme({
           backgroundColor: '#4A6AFE !important', color: '#FCFCFC',
           fontWeight: 600, fontSize: '18px', lineHeight: '140%',
           borderRadius: '50px !important', boxShadow: 'none',
-          '&:hover': {
-            border: '0.5px solid #4A6AFE', backgroundColor: 'transparent'
-          },
+          '&:hover': { border: '0.5px solid #4A6AFE', backgroundColor: 'transparent' },
           '&:active': {
-            border: '0.5px solid #4A6AFE',
-            backgroundColor: '#4A6AFE !important', color: '#FCFCFC'
+            border: '0.5px solid #4A6AFE', backgroundColor: '#4A6AFE !important', color: '#FCFCFC'
           }
         }
       }
@@ -247,42 +286,11 @@ export const scrollFabTheme = createTheme({
       styleOverrides: {
         root: {
           width: '50px', height: '50px', padding: '15px !important',
-          backgroundColor: '#FCFCFC !important',
-          borderRadius: '100% !important', boxShadow: 'none',
+          backgroundColor: '#FCFCFC !important', borderRadius: '100% !important', boxShadow: 'none',
           filter: 'drop-shadow(1px 1px 6px #00000040)',
         }
       }
     },
-  },
-});
-
-export const likeButtonTheme1 = createTheme({
-  components: {
-    // MuiButtonBase: { defaultProps: { disableRipple: true, }, },
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          fontSize: '12px !important', fontWeight: '400', lineHeight: '160%',
-          color: '#000', backgroundColor: '#EAEAEA !important',
-          borderRadius: '2px!important', padding: '2px 4px', minWidth: 'unset',
-          "&.Mui-disabled": { color: '#000', },
-        }
-      }
-    }
-  },
-});
-export const likeButtonTheme2 = createTheme({
-  components: {
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          fontSize: '12px !important', fontWeight: '400', lineHeight: '160%',
-          color: '#000', backgroundColor: '#C1C1C1 !important',
-          borderRadius: '2px!important', padding: '2px 4px', minWidth: 'unset',
-          "&.Mui-disabled": { color: '#000', },
-        }
-      }
-    }
   },
 });
 
@@ -314,38 +322,7 @@ export const viewCheckTheme = createTheme({
         icon: <img src="/checkbox.svg" width={16} height={16} />,
       },
     },
-    MuiButtonBase: {
-      styleOverrides: {
-        root: { padding: '0 !important' }
-      }
-    }
-  },
-});
-
-export const viewToggleTheme = createTheme({
-  components: {
-    MuiButtonBase: { defaultProps: { disableRipple: true, }, },
-    MuiToggleButtonGroup: {
-      styleOverrides: {
-        root: { gap: '4px' }
-      }
-    },
-    MuiToggleButton: {
-      styleOverrides: {
-        root: {
-          fontSize: '14px !important', fontWeight: '400', lineHeight: '150%',
-          color: '#1E1E1E!important', padding: '2px 8px', minWidth: 'unset',
-          border: '0.5px solid #C1C1C1 !important', borderRadius: '20px!important',
-          '&:hover, &:focus': {
-            border: '0.5px solid #4A6AFE !important', backgroundColor: 'transparent'
-          },
-          '&.Mui-selected': {
-            backgroundColor: '#4A6AFE', color: '#FCFCFC !important', fontWeight: '600',
-            border: '0.5px solid #4A6AFE !important'
-          }
-        }
-      }
-    }
+    MuiButtonBase: { styleOverrides: { root: { padding: '0 !important' } } }
   },
 });
 
@@ -363,9 +340,8 @@ export const viewRadioTheme = createTheme({
       defaultProps: {
         checkedIcon: <img src="/radio_1.svg" width={18} height={18} />,
         icon: <img src="/radio_0.svg" width={18} height={18} />,
-      }, styleOverrides: {
-        root: { padding: 0, paddingRight: '4px !important' },
-      }
+      },
+      styleOverrides: { root: { padding: 0, paddingRight: '4px !important' }, }
     },
     MuiButton: {
       styleOverrides: {
@@ -394,41 +370,17 @@ export const viewRadioTheme = createTheme({
 export const viewSwitchTheme = createTheme({
   components: {
     MuiButtonBase: { defaultProps: { disableRipple: true, }, },
-    MuiToggleButtonGroup: {
-      styleOverrides: {
-        root: { gap: '4px !important' }
-      }
-    },
+    MuiToggleButtonGroup: { styleOverrides: { root: { backgroundColor: '#ECECEC', borderRadius: '20px', } } },
     MuiToggleButton: {
       styleOverrides: {
         root: {
           fontSize: '14px !important', fontWeight: '400', lineHeight: '160%',
-          color: '#1E1E1E!important', padding: '2px 8px', minWidth: 'unset',
-          border: '0.5px solid #C1C1C1 !important', borderRadius: '20px!important',
-          '&:hover, &:focus': {
-            backgroundColor: 'transparent', color: '#6C6C6C !important',
-            border: '0.5px solid #6C6C6C !important'
-          },
+          color: '#6C6C6C!important', padding: '2px 8px', minWidth: 'unset',
+          border: 'transparent !important', borderRadius: '20px!important',
+          '&:hover, &:focus': { backgroundColor: 'transparent' },
           '&.Mui-selected, &.Mui-selected:hover': {
-            backgroundColor: '#ECECEC', color: '#6C6C6C !important',
-            border: '0.5px solid #C1C1C1 !important'
-          }
-        }
-      }
-    },
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          fontSize: '14px !important', fontWeight: '400', lineHeight: '160%',
-          color: '#1E1E1E!important', padding: '2px 8px', minWidth: 'unset',
-          border: '0.5px solid #C1C1C1 !important', borderRadius: '20px!important',
-          '&:hover, &:focus': {
-            backgroundColor: 'transparent', color: '#6C6C6C !important',
-            border: '0.5px solid #6C6C6C !important'
-          },
-          '&.Mui-selected, &.Mui-selected:hover': {
-            backgroundColor: '#ECECEC', color: '#6C6C6C !important',
-            border: '0.5px solid #C1C1C1 !important'
+            backgroundColor: '#4A6AFE', color: '#FCFCFC !important', fontWeight: '600',
+            boxShadow: '1px 0px 2px #00000033',
           }
         }
       }
@@ -449,21 +401,12 @@ export const shareDialogTheme = createTheme({
     MuiDialogTitle: {
       styleOverrides: {
         root: {
-          padding: '22px 18px 31.5px',
-          fontWeight: '600', fontSize: '18px', lineHeight: '140%',
+          padding: '22px 18px 31.5px', fontWeight: '600', fontSize: '18px', lineHeight: '140%',
         }
       }
     },
-    MuiDialogContent: {
-      styleOverrides: {
-        root: { fontSize: '12px' }
-      }
-    },
-    MuiIconButton: {
-      styleOverrides: {
-        root: { padding: 0, }
-      }
-    }
+    MuiDialogContent: { styleOverrides: { root: { fontSize: '12px' } } },
+    MuiIconButton: { styleOverrides: { root: { padding: 0, } } }
   }
 })
 
@@ -486,57 +429,23 @@ export const tabTheme = createTheme({
         }
       }
     },
-  },
-});
-
-export const selectTheme = createTheme({
-  components: {
-    MuiPaper: {
+    MuiToggleButtonGroup: {
       styleOverrides: {
-        root: {
-          marginTop: '5px !important',
-          border: '0.5px solid #C1C1C1', borderRadius: '2px !important',
-        }
+        root: { padding: '10px 16px', gap: '16px', borderRadius: '0px !important' }
       }
     },
-    MuiButtonBase: {
-      defaultProps: { disableRipple: true, },
-    },
-    MuiInputBase: {
+    MuiToggleButton: {
       styleOverrides: {
         root: {
-          width: '70px', padding: '3px 8px', cursor: 'pointer',
-          fontSize: '14px !important', fontWeight: '400', lineHeight: '160%',
-          color: '#6C6C6C!important', borderRadius: '2px!important',
-          '&:before, &:after': { border: 'none !important' },
-          '&:hover, &:focus, &:active': {
-            backgroundColor: '#ECECEC', color: '#1E1E1E !important'
+          border: 'none !important', fontSize: '18px', lineHeight: '140%',
+          padding: '0px', paddingBottom: '3px', fontWeight: 400, color: '#1E1E1E',
+          "&.Mui-selected": {
+            fontWeight: 600, backgroundColor: 'transparent !important',
+            borderBottom: '1px solid #1E1E1E !important', borderRadius: '0px !important',
+            paddingBottom: '2px !important',
           },
-        },
-        input: {
-          padding: '0 !important',
-          '&:focus': { backgroundColor: 'transparent' }
+          "&:hover": { backgroundColor: 'transparent !important' }
         }
-      }
-    },
-    MuiMenuItem: {
-      styleOverrides: {
-        root: {
-          fontSize: '14px !important', padding: '3px 8px', minHeight: 'unset',
-          '&.Mui-selected, &.Mui-selected:hover': { backgroundColor: '#ECECEC' },
-          '&+&': { borderTop: '0.5px solid #C1C1C1 !important' }
-        }
-      }
-    },
-    MuiList: {
-      styleOverrides: {
-        root: { padding: '0 !important', }
-      }
-    },
-    MuiTabs: {
-      styleOverrides: {
-        root: {},
-        flexContainer: { justifyContent: 'space-between !important' }
       }
     }
   },
@@ -546,14 +455,10 @@ export const viewTheme = createTheme({
   components: {
     MuiPaper: {
       styleOverrides: {
-        root: {
-          borderRadius: 0, borderTopLeftRadius: '8px', borderTopRightRadius: '8px',
-        }
+        root: { borderRadius: 0, borderTopLeftRadius: '8px', borderTopRightRadius: '8px', }
       }
     },
-    MuiButtonBase: {
-      defaultProps: { disableRipple: true, },
-    },
+    MuiButtonBase: { defaultProps: { disableRipple: true, }, },
     MuiButton: {
       styleOverrides: {
         root: {
@@ -574,11 +479,7 @@ export const viewTheme = createTheme({
         }
       }
     },
-    MuiList: {
-      styleOverrides: {
-        root: { padding: '0 !important', }
-      }
-    },
+    MuiList: { styleOverrides: { root: { padding: '0 !important', } } },
   },
 });
 
@@ -619,8 +520,7 @@ export const doneChipTheme = createTheme({
       styleOverrides: {
         root: {
           fontSize: '12px !important', height: 'unset', lineHeight: '160%',
-          color: '#6C6C6C!important',
-          backgroundColor: '#FFF27E',
+          color: '#1E1E1E!important', backgroundColor: '#FFF27E',
           borderRadius: '2px!important', padding: '2px 4px',
         },
         label: { padding: 0 }
@@ -631,22 +531,12 @@ export const doneChipTheme = createTheme({
 
 export const searchInputTheme = createTheme({
   components: {
-    MuiTextField: {
-      styleOverrides: {
-        root: { width: '100%' }
-      }
-    },
+    MuiTextField: { styleOverrides: { root: { width: '100%' } } },
     MuiOutlinedInput: {
       styleOverrides: {
-        root: {
-          fontSize: '14px', lineHeight: '160%', height: '22px',
-        },
-        input: {
-          padding: '0 !important',
-        },
-        notchedOutline: {
-          border: 0,
-        }
+        root: { fontSize: '14px', lineHeight: '160%', height: '22px', },
+        input: { padding: '0 !important', },
+        notchedOutline: { border: 0, }
       }
     }
   }

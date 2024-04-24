@@ -4,11 +4,10 @@ import { Tab, Tabs, Box, Button, ThemeProvider, Checkbox, Divider } from '@mui/m
 import TabPanel from '@/components/common/TabPanel';
 import { CalendarBlock } from '@/components/common/EventBlock';
 import { likeEvents, postData, partyData } from '@/components/common/Data';
-import { likeButtonTheme1, likeButtonTheme2, tabTheme, deleteButtonTheme } from '@/components/common/Themes';
+import { tabTheme, deleteButtonTheme } from '@/components/common/Themes';
 import { krLocale } from '@/components/common/CalendarLocale';
 
 import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
-// import { Calendar } from "react-modern-calendar-datepicker";
 import { Calendar } from '@hassanmojab/react-modern-calendar-datepicker'
 
 const index = () => {
@@ -70,7 +69,7 @@ function LikedTab() {
         </div>
       </Box>
       {/* // * CalendarBlock 수정 필요 */}
-      {/* <TabPanel value={value} index={0}>
+      <TabPanel value={value} index={0}>
         {postData.map((post, idx) => (
           idx === 0
             ? <CalendarBlock data={post} key={`rec-${idx}`} />
@@ -99,37 +98,7 @@ function LikedTab() {
               <CalendarBlock data={post} key={`party-${idx}`} />
             </>
         ))}
-      </TabPanel> */}
+      </TabPanel>
     </Box>
   )
-
-  interface LikePostProps { title: string; date: string; type: string; eventId: number; }
-  function LikePostBlock(props: LikePostProps) {
-    const [checked, setChecked] = useState(true);
-    const handleChange = (event: any) => { setChecked(!checked); };
-
-    return (
-      <div className='flex flex-col px-[16px] py-[10px] gap-[4px]'>
-        <div className='flex flex-row gap-[6px]'>
-          <ThemeProvider theme={likeButtonTheme1}>
-            <Button disabled>{likeEvents[props.eventId]}</Button>
-          </ThemeProvider>
-          {
-            props.type === 'ACCOMPANY'
-              ? <ThemeProvider theme={likeButtonTheme2}><Button disabled>모집글</Button></ThemeProvider>
-              : <></>
-          }
-        </div>
-        <div className='flex flex-row justify-between items-center'>
-          <div className='flex flex-col'>
-            <span className='text-[12px] text-[#757575]'>{props.date}</span>
-            <span className='text-[14px]'>{props.title}</span>
-          </div>
-          <Checkbox icon={<img src="/detail_like.svg" width={24} height={24} />}
-            checkedIcon={<img src="/detail_like_1.svg" width={24} height={24} />}
-            checked={checked} onChange={handleChange} />
-        </div>
-      </div>
-    )
-  }
 }

@@ -1,11 +1,6 @@
-import Search from '@/components/pages/searched'
-import SubHeader from '@/components/layout/subHeader'
-import { HeaderNonMain } from '@/components/layout/header'; '@/components/layout/header';
-
+import Searched from '@/components/pages/searched'
 export default function Page() {
     return (
-      <>
-        <Search />
-      </>
+      <Searched />
     );
   }

@@ -1,55 +1,82 @@
-import { Button, ThemeProvider, IconButton, Chip, Checkbox } from "@mui/material";
-import { categoryButtonTheme, suggestChipTheme } from "./Themes";
-import { FormatDateRange } from "@/service/Functions";
+import { ThemeProvider, IconButton, Chip, Checkbox } from "@mui/material";
+import { doneChipTheme, suggestChipTheme } from "./Themes";
+import { FormatDate, FormatDateRange, ParamProps, RecruitProps } from "@/service/Functions";
 import HashtagAccordion from "./HashtagAccordion";
-import Link from "next/link";
-import { postData } from "./Data";
 import { useEffect, useState } from "react";
 import { call } from "@/service/ApiService";
+import { DividerDot } from "./Icon";
 
+export interface TabBlockProps {
+  opt: number; events: never[]; page: { current: number; total: number; }; setPage: any; isLoading: boolean;
+  params?: ParamProps, setParams?: any
+}
 
 // - tab item : 페스티벌
 export interface PostProps {
-  headImageUrl: string; title: string; userImage: string; userName: string; abstractLocation?: string;
-  startDate: any; endDate: any; categories: string[]; content?: string; tags?: string[]; id?: number;
+  id?: number; headImageUrl: string; title: string; userImage: string; userName: string; abstractLocation?: string;
+  startDate: any; endDate: any; categories: string[]; content?: string; tags?: string[]; type?: string;
+  currentHeadCount?: number; totalHeadCount?: number;
 }
 
-export function FestivalBlock(props: { data: PostProps }) {
+export function EventBlock(props: { data: PostProps }) {
   let urlLink = `/event/${props.data.id}`
   return (
-    <div>
-      <div className='flex flex-col py-[18px] px-[16px]'>
-        <div className='flex flex-col justify-between'>
-          <div className='flex flex-row items-center justify-between pb-[10px]'>
-            <div className='flex flex-col w-[230px]'>
-              <div className='flex flex-row gap-[4px]'>
-                <ThemeProvider theme={categoryButtonTheme}>
-                  {
-                    // 카테고리 제한 추가 시 상단 코드로 변경
-                    // props.data.categories.map((cate, idx) => <Button disabled key={`cate-${idx}`}>{cate}</Button>)
-                    props.data.categories.slice(0, 2).map((cate, idx) => <Button disabled key={`cate-${idx}`}>{cate}</Button>)
-                  }
-                </ThemeProvider>
-              </div>
-              <Link href={urlLink} className='flex flex-col gap-[4px] mt-[16px] mb-[4px]'>
-                <p className='truncate text-[16px] font-semibold leading-[140%]'>{props.data.title}</p>
-                <div className="flex flex-row text-[14px] text-gray3-text leading-[160%]">
-                  <p>{FormatDateRange(props.data.startDate, props.data.endDate)}</p>
-                  <p>, {props.data.abstractLocation}</p>
-                </div>
-              </Link>
-              <div className='flex flex-row gap-[4px]'>
-                <img className='rounded-full w-[24px] h-[24px]' src='/main_profile.svg' />
-                <p className='text-sm text-gray3-text self-center'>user</p>
-                {/* <img className='rounded-full w-[24px] h-[24px]' src={props.data.userImage} />
-                  <p className='text-sm text-gray3-text self-center'>{props.data.userName}</p> */}
-              </div>
+    <div className="flex flex-col py-[18px] px-[16px] justify-between">
+      <a href={urlLink} className='flex flex-row items-center justify-between'>
+        <div className='flex flex-col w-[230px] h-[116px] justify-between'>
+          <div className='flex flex-col gap-[4px]'>
+            <p className='truncate text-[16px] font-semibold leading-[140%]'>{props.data.title}</p>
+            <div className="flex flex-col text-[14px] text-gray3 leading-[160%] gap-[4px]">
+              <p>{props.data.abstractLocation}</p>
+              <p>{FormatDateRange(props.data.startDate, props.data.endDate)}</p>
             </div>
-            <img className='rounded-lg w-[92px] h-[116px] object-cover' src={props.data.headImageUrl ?? '/default_list_thumb3x.png'} />
           </div>
-          {props.data.tags ? <HashtagAccordion tag={props.data.tags} /> : <></>}
+          <div className='flex flex-row items-center gap-[4px] text-[14px]'>
+            <img className='rounded-full w-[24px] h-[24px]' src='/main_profile.svg' />
+            {/* <img className='rounded-full w-[24px] h-[24px]' src={props.data.userImage ?? '/main_profile.svg'} /> */}
+            <p className='text-black'>{props.data.userName}</p>
+            {
+              props.data.type === 'PARTY'
+                ? <>
+                  <DividerDot />
+                  <p className='text-gray3'>{`${props.data.currentHeadCount}/${props.data.totalHeadCount}(명)`}</p>
+                  {
+                    props.data.currentHeadCount === props.data.totalHeadCount
+                      ? <ThemeProvider theme={doneChipTheme}><Chip label="모집완료" /></ThemeProvider>
+                      : <></>
+                  }
+                </>
+                : <></>
+            }
+          </div>
         </div>
-      </div>
+        <img className='rounded-[4px] w-[92px] h-[116px] object-cover' src={props.data.headImageUrl ?? '/default_list_thumb3x.png'} />
+      </a>
+      {props.data.tags ? <div className="pt-[10px]"><HashtagAccordion tag={props.data.tags} /></div> : <></>}
+    </div>
+  )
+}
+
+export function RecruitBlock(props: { data: RecruitProps }) {
+  let urlLink = `/recruitment/${props.data.id}`
+  return (
+    <div className='flex flex-col py-[18px] px-[16px]'>
+      <a className='flex flex-col gap-[4px]' href={urlLink}>
+        <p className='truncate text-[16px]'>{props.data.title}</p>
+        <p className='text-[14px] text-gray3'>{FormatDate(props.data.startDate, 0)}</p>
+        <div className='flex flex-row items-center gap-[8px]'>
+          <div className='flex flex-row items-center gap-[4px] text-[14px]'>
+            <img className='w-[24px] h-[24px]' src="/main_profile.svg" />
+            <p className="text-black">{props.data.username}</p>
+            <DividerDot />
+            <p className='text-gray3'>{`${props.data.headCount}/${props.data.headCountMax}(명)`}</p>
+          </div>
+          {
+            props.data.state === "PROCEEDING" ? <></> : <ThemeProvider theme={doneChipTheme}><Chip label="모집완료" /></ThemeProvider>
+          }
+        </div>
+      </a>
+      {props.data.tags ? <HashtagAccordion tag={props.data.tags} /> : <></>}
     </div>
   )
 }
@@ -60,19 +87,19 @@ export function CalendarBlock(props: { data: PostProps }) {
       <div className='flex flex-col py-[18px] px-[16px]'>
         <div className='flex flex-col justify-between'>
           <div className='flex flex-row items-center pb-[10px] gap-[20px]'>
-            <img className='rounded-lg w-[84px] h-[104px] object-cover' src={props.data.headImageUrl} />
+            <img className='rounded-[4px] w-[84px] h-[104px] object-cover' src={props.data.headImageUrl} />
             <div className='flex flex-col w-[278px] h-[104px] gap-[20px] justify-between'>
               <div className='flex flex-col'>
                 <div className="flex flex-row justify-between items-center">
-                  <div className="flex flex-row text-sm text-gray3-text">
+                  <div className="flex flex-row text-[14px] text-gray3">
                     <p>{FormatDateRange(props.data.startDate, props.data.endDate)}</p>
                     <p>, {props.data.abstractLocation}</p>
                   </div>
                   <IconButton disableRipple className='p-0'><img src='/calendar_delete.svg' /></IconButton>
                 </div>
-                <p className='truncate text-base font-semibold'>{props.data.title}</p>
+                <p className='truncate text-[16px] font-semibold'>{props.data.title}</p>
               </div>
-              <span className='text-[12px] text-gray3-text block description max-w-[278px]'>{props.data.content}</span>
+              <span className='text-[12px] text-gray3 description max-w-[278px]'>{props.data.content}</span>
             </div>
           </div>
         </div>
@@ -83,33 +110,31 @@ export function CalendarBlock(props: { data: PostProps }) {
 
 // searched
 export function ResultBlock(props: { data: PostProps }) {
-  const [checked, setChecked] = useState(true);
-  const handleChange = (event: any) => { setChecked(!checked); };
-
+  let urlLink = `/event/${props.data.id}`
   return (
-    <div>
-      <div className='flex flex-col py-[18px] px-[16px]'>
-        <div className='flex flex-col justify-between'>
-          <div className='flex flex-row items-center pb-[10px] gap-[20px]'>
-            <img className='rounded-lg w-[84px] h-[104px] object-cover' src={props.data.headImageUrl ?? '/default_list_thumb3x.png'} />
-            <div className='flex flex-col w-[278px] h-[104px] gap-[20px] justify-between'>
-              <div className='flex flex-col'>
-                <div className="flex flex-row justify-between items-center">
-                  <div className="flex flex-row text-[14px] text-gray3">
-                    <p>{FormatDateRange(props.data.startDate, props.data.endDate)}</p>
-                    <p>, {props.data.abstractLocation}</p>
-                  </div>
-                  <Checkbox icon={<img src="/detail_like.svg" width={20} height={20} />}
-                    checkedIcon={<img src="/detail_like_1.svg" width={20} height={20} />}
-                    checked={checked} onChange={handleChange} style={{ padding: 0 }} />
-                </div>
-                <p className='truncate text-base font-semibold'>{props.data.title}</p>
-              </div>
-              <span className='text-[12px] text-gray3 block description max-w-[278px]'>{props.data.content}</span>
-            </div>
-          </div>
+    <div className="flex flex-col py-[18px] px-[16px] justify-between">
+      <a href={urlLink} className='flex flex-col gap-[4px]'>
+        <p className='truncate text-[16px] font-semibold leading-[140%]'>{props.data.title}</p>
+        <p className="text-[14px] text-gray3 leading-[160%]">{FormatDateRange(props.data.startDate, props.data.endDate)}</p>
+        <div className='flex flex-row items-center gap-[4px] text-[14px]'>
+          <img className='rounded-full w-[24px] h-[24px]' src='/main_profile.svg' />
+          <p className='text-black'>{props.data.userName}</p>
+          {
+            props.data.type === 'PARTY'
+              ? <>
+                <DividerDot />
+                <p className='text-gray3'>{`${props.data.currentHeadCount}/${props.data.totalHeadCount}(명)`}</p>
+                {
+                  props.data.currentHeadCount === props.data.totalHeadCount
+                    ? <ThemeProvider theme={doneChipTheme}><Chip label="모집완료" /></ThemeProvider>
+                    : <></>
+                }
+              </>
+              : <></>
+          }
         </div>
-      </div>
+      </a>
+      {props.data.tags ? <HashtagAccordion tag={props.data.tags} /> : <></>}
     </div>
   )
 }
@@ -117,8 +142,11 @@ export function ResultBlock(props: { data: PostProps }) {
 export function SuggestBlock(props: { type: number }) {
   const [suggestions, setSuggestions] = useState<any[]>([])
   useEffect(() => {
-    let apiURL = `/api/event?size=10`
-    console.log('** ', apiURL)
+    console.log(' :: suggestblock: ', props.type)
+    // if (props.type > 0) {
+    let apiURL = `/api/event?size=5&sort=likeCount,desc`
+
+    console.log('** suggest : ', apiURL)
     call(apiURL, "GET", null)
       .then((response) => {
         console.log(response.data);
@@ -126,6 +154,7 @@ export function SuggestBlock(props: { type: number }) {
           setSuggestions(response.data.content)
         }
       })
+    // }
   }, [])
 
   const SuggestText = () => {
@@ -133,12 +162,12 @@ export function SuggestBlock(props: { type: number }) {
       <div className="flex flex-col gap-[8px]">
         <span className="text-[14px] leading-[160%]">혹시 이건 어떠세요?</span>
         <div className="flex flex-row gap-[6px] flex-wrap w-[382px]">
-          {
+          { // 자주 찾는 검색어, 1~2줄
             suggestions.map((s, idx) =>
-            <ThemeProvider theme={suggestChipTheme}>
-              <a href={`/event/${s.id}`}><Chip label={s.title} variant="outlined" /></a>
-            </ThemeProvider>
-          )
+              <ThemeProvider theme={suggestChipTheme} key={`st-${idx}`}>
+                <a href={`/event/${s.id}`}><Chip label={s.title} variant="outlined" /></a>
+              </ThemeProvider>
+            )
           }
         </div>
       </div>
@@ -149,7 +178,7 @@ export function SuggestBlock(props: { type: number }) {
       <div className="overflow-hidden	h-[204px]">
         <div className="flex flex-row gap-[16px] overflow-x-auto overflow-y-hide whitespace-nowrap">
           {suggestions.map((s, idx) =>
-            <div className="flex flex-col w-[120px] gap-[12px]">
+            <div className="flex flex-col w-[120px] gap-[12px]" key={`si-${idx}`}>
               <img className='h-[148px] rounded-[5.65px] object-cover' src={s.headImageUrl ?? '/default_list_thumb3x.png'} />
               <div className="flex flex-col text-[14px] leading-[160%]">
                 <span className="font-semibold truncate">{s.title}</span>
@@ -163,7 +192,7 @@ export function SuggestBlock(props: { type: number }) {
   }
 
   return (
-    <div className="flex flex-col px-[16px] py-[20px] gap-[16px] bg-white-text">
+    <div className="flex flex-col px-[16px] py-[20px] gap-[16px] bg-[#FFF]">
       <SuggestText />
       {props.type > 0 ? <SuggestImage /> : <></>}
     </div>

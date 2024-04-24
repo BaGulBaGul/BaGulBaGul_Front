@@ -19,8 +19,8 @@ import { API_BASE_URL } from "../api-config";
 //   })
 // }
 
-export async function call(api:string, method:string, request?:any) {
-  interface Options { headers: Headers; url: string; method: string; body?: string; credentials: RequestCredentials}
+export async function call(api: string, method: string, request?: any) {
+  interface Options { headers: Headers; url: string; method: string; body?: string; credentials: RequestCredentials }
   let options: Options = {
     headers: new Headers({
       "Content-Type": "application/json",

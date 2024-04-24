@@ -1,4 +1,4 @@
-export const valueList = ['FESTIVAL', 'LOCAL_EVENT', 'PARTY']
+export const tabList = ['FESTIVAL', 'LOCAL_EVENT', 'PARTY']
 
 export const postData = [
   {
@@ -65,9 +65,9 @@ export const postData = [
 
 export const partyData = [
   {
-    img_url: '/images/party1.png',
+    headImageUrl: '/images/party1.png',
     title: '책과 어울리는 와인파티',
-    user_profile: '/images/profile_pic.png',
+    userImage: '/images/profile_pic.png',
     userName: '와파와파',
     startDate: '2023-05-27T13:18:08.827Z',
     endDate: '2023-05-28T13:18:08.827Z',
@@ -76,9 +76,9 @@ export const partyData = [
     tags: ['책', '와인', '연희동', '북카페']
   },
   {
-    img_url: '/images/party2.gif',
+    headImageUrl: '/images/party2.gif',
     title: '종강파티 하실 분 구해요',
-    user_profile: '/images/profile_pic.png',
+    userImage: '/images/profile_pic.png',
     userName: '파티조아',
     startDate: '2023-05-26T13:18:08.827Z',
     endDate: '2023-05-28T13:18:08.827Z',
@@ -87,9 +87,9 @@ export const partyData = [
     tags: ['종강파티', '기말고사', '6월', '건대입구', '종강파티', '기말고사', '6월', '건대입구']
   },
   {
-    img_url: '/images/party3.png',
+    headImageUrl: '/images/party3.png',
     title: '여름에 어울리는 영화파티',
-    user_profile: '/images/profile_pic.png',
+    userImage: '/images/profile_pic.png',
     userName: '미니이동진',
     startDate: '2023-05-13T13:18:08.827Z',
     endDate: '2023-05-14T13:18:08.827Z',
@@ -98,9 +98,9 @@ export const partyData = [
     tags: ['여름', '영화', '팝콘', '대실']
   },
   {
-    img_url: '/images/party1.png',
+    headImageUrl: '/images/party1.png',
     title: '책과 어울리는 와인파티',
-    user_profile: '/images/profile_pic.png',
+    userImage: '/images/profile_pic.png',
     userName: '와파와파',
     startDate: '2023-05-27T13:18:08.827Z',
     endDate: '2023-05-28T13:18:08.827Z',
@@ -109,9 +109,9 @@ export const partyData = [
     tags: ['책', '와인', '연희동', '북카페']
   },
   {
-    img_url: '/images/party2.gif',
+    headImageUrl: '/images/party2.gif',
     title: '종강파티 하실 분 구해요',
-    user_profile: '/images/profile_pic.png',
+    userImage: '/images/profile_pic.png',
     userName: '파티조아',
     startDate: '2023-05-26T13:18:08.827Z',
     endDate: '2023-05-28T13:18:08.827Z',
@@ -120,9 +120,9 @@ export const partyData = [
     tags: ['종강파티', '기말고사', '6월', '건대입구', '종강파티', '기말고사', '6월', '건대입구']
   },
   {
-    img_url: '/images/party3.png',
+    headImageUrl: '/images/party3.png',
     title: '여름에 어울리는 영화파티',
-    user_profile: '/images/profile_pic.png',
+    userImage: '/images/profile_pic.png',
     userName: '미니이동진',
     startDate: '2023-05-13T13:18:08.827Z',
     endDate: '2023-05-14T13:18:08.827Z',
@@ -131,9 +131,9 @@ export const partyData = [
     tags: ['여름', '영화', '팝콘', '대실']
   },
   {
-    img_url: '/images/party1.png',
+    headImageUrl: '/images/party1.png',
     title: '책과 어울리는 와인파티',
-    user_profile: '/images/profile_pic.png',
+    userImage: '/images/profile_pic.png',
     userName: '와파와파',
     startDate: '2023-05-27T13:18:08.827Z',
     endDate: '2023-05-28T13:18:08.827Z',
@@ -142,9 +142,9 @@ export const partyData = [
     tags: ['책', '와인', '연희동', '북카페']
   },
   {
-    img_url: '/images/party2.gif',
+    headImageUrl: '/images/party2.gif',
     title: '종강파티 하실 분 구해요',
-    user_profile: '/images/profile_pic.png',
+    userImage: '/images/profile_pic.png',
     userName: '파티조아',
     startDate: '2023-05-26T13:18:08.827Z',
     endDate: '2023-05-28T13:18:08.827Z',
@@ -153,9 +153,9 @@ export const partyData = [
     tags: ['종강파티', '기말고사', '6월', '건대입구', '종강파티', '기말고사', '6월', '건대입구']
   },
   {
-    img_url: '/images/party3.png',
+    headImageUrl: '/images/party3.png',
     title: '여름에 어울리는 영화파티',
-    user_profile: '/images/profile_pic.png',
+    userImage: '/images/profile_pic.png',
     userName: '미니이동진',
     startDate: '2023-05-13T13:18:08.827Z',
     endDate: '2023-05-14T13:18:08.827Z',
@@ -272,7 +272,7 @@ export const likeData = [
     type: 'FESTIVAL',
     content: '※일반 티켓은 2023년 4월 18일(화) 오후 6시부터 예매 가능하며, 한정 수량 소진 시 예매가 조기 마감될 수 있습니다. ※본 공연은 일일권과 양일권 모두 구매 가능합니다.',
     address: '서울특별시 마포구',
-    img_url: '/images/rec2.jpg',
+    headImageUrl: '/images/rec2.jpg',
   },
   {
     title: '피크페스티벌 같이 가실 분',
@@ -299,7 +299,7 @@ export const likeData = [
     type: 'FESTIVAL',
     content: '- 3일권은 [제15회 서울재즈페스티벌 2023] 5월 26일(금) - 28일(일), 공연기간 모든 일자 관람이 가능한 3일권 티켓입니다.',
     address: '서울특별시 송파구',
-    img_url: '/images/rec3.jpg',
+    headImageUrl: '/images/rec3.jpg',
   },
   {
     title: '서재패 2일차 동행 구해요',
@@ -326,7 +326,7 @@ export const likeData = [
     type: 'FESTIVAL',
     content: '- 3일권은 [제15회 서울재즈페스티벌 2023] 5월 26일(금) - 28일(일), 공연기간 모든 일자 관람이 가능한 3일권 티켓입니다.',
     address: '서울특별시 송파구',
-    img_url: '/images/rec3.jpg',
+    headImageUrl: '/images/rec3.jpg',
   },
   {
     title: '피크페스티벌 2일차 동행 구해요',
@@ -347,7 +347,7 @@ export const likeData = [
     type: 'FESTIVAL',
     content: '- 3일권은 [제15회 서울재즈페스티벌 2023] 5월 26일(금) - 28일(일), 공연기간 모든 일자 관람이 가능한 3일권 티켓입니다.',
     address: '서울특별시 송파구',
-    img_url: '/images/rec3.jpg',
+    headImageUrl: '/images/rec3.jpg',
   },
   {
     title: '서재패 2일차 동행 구해욤',

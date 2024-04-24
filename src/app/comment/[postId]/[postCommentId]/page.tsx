@@ -8,7 +8,7 @@ export default function Page() {
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
     const onScroll = (e: any) => {
-      setScrolled(e.target.documentElement.scrollTop > 750);
+      setScrolled(e.target.documentElement.scrollTop > 150);
     };
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);

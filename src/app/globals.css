@@ -4,8 +4,10 @@
 
 html,
 body,
-.MuiTypography-root, .MuiButtonBase-root,
-.MuiChip-root, .MuiInputBase-root {
+.MuiTypography-root,
+.MuiButtonBase-root,
+.MuiChip-root,
+.MuiInputBase-root {
   font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif !important;
   text-transform: unset
 }
@@ -14,13 +16,13 @@ em {
   font-style: unset;
 }
 
-.slider-detail {
-  color: white;
+.slick-track {
+  min-width: 4710px;
 }
 
-.slick-arrow {
+/* .slick-arrow {
   display: none;
-}
+} */
 
 .slick-arrow:before {
   content: "" !important;
@@ -65,15 +67,18 @@ em {
 .cateBtns {
   white-space: nowrap;
   overflow-x: auto;
+  overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
   -ms-overflow-style: -ms-autohiding-scrollbar;
 }
-.cateBtns::-webkit-scrollbar {
-  display: none; }
 
-.MuiToggleButton-standard+.MuiToggleButton-standard {
-  margin-left: 10px;
+.cateBtns::-webkit-scrollbar {
+  display: none;
 }
+
+/* .MuiToggleButton-standard+.MuiToggleButton-standard {
+  margin-left: 10px;
+} */
 
 .container {
   width: 100%;
@@ -101,10 +106,14 @@ em {
 }
 
 .comment-input {
-  position: fixed; min-height: 48px;
-  bottom: 0px; left: 0px; right: 0px;
+  position: fixed;
+  min-height: 48px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
   border-top: 1px solid #4A6AFE;
   background-color: #FFFFFF;
+  z-index: 100;
 }
 
 .slick-dots {
@@ -147,7 +156,7 @@ em {
   display: none;
 }
 
-.select-icon {
+/* .select-icon {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -167,7 +176,7 @@ em {
   top: calc(50% - 0.5em);
   pointer-events: none;
   color: rgba(0, 0, 0, 0.54);
-}
+} */
 
 .description {
   display: -webkit-box;
@@ -188,87 +197,12 @@ em {
   padding: 0px !important;
 }
 
-.SearchCalendar .Calendar__header {
-  padding: 16px 24px !important;
-}
-
-.SearchCalendar .Calendar__monthArrow {
-  width: 24px; height: 24px;
-  background-image: url(../../public/chevron-left.svg);
-}
-.SearchCalendar .Calendar__monthArrowWrapper.-right {
-  transform: unset;
-}
-.SearchCalendar .Calendar__monthArrowWrapper.-left {
-  transform: rotate(180deg);
-}
-
-.SearchCalendar .Calendar__monthText,
-.SearchCalendar .Calendar__yearText {
-  font-size: 18px !important; line-height: 140% !important;
-}
-
-.SearchCalendar .Calendar__weekDays {
-  font-size: 14px !important;
-  color: #000000 !important;
-  margin-top: 8px !important;
-  margin-bottom: 0px !important;
-  padding: 8px 24px !important;
-}
-
-.SearchCalendar .Calendar__monthSelectorAnimationWrapper,
-.SearchCalendar .Calendar__yearSelectorAnimationWrapper {
-  height: calc(100% - 55px) !important;
-}
-
-.SearchCalendar .Calendar__sectionWrapper{
-  padding: 4px 22px 8px 22px;
-  min-height: 312px;
-}
-
-.SearchCalendar .Calendar__section {
-  padding: 4px 22px 8px 22px;
-}
-.SearchCalendar .Calendar__section.-hiddenPrevious{
-  transform: translateX(-95%) ;
-}
-.SearchCalendar .Calendar__section.-hiddenNext {
-  transform: translateX(95%) ;
-}
-
-.SearchCalendar .Calendar__day {
-  padding: 0px !important; margin: 0px !important;
-  height: 42px; font-size: 14px !important;
-  width: 42px !important;
-  line-height: 160% !important;
-}
-
-.SearchCalendar .Calendar__weekRow {
-  padding: 4px 0px;
-  gap: 7px;
-}
-
-.SearchCalendar .Calendar__day.-selected, 
-.SearchCalendar .Calendar__day.-selectedStart, 
-.SearchCalendar .Calendar__day.-selectedEnd {
-  background: #FFF27E !important;
-  color: #000000 !important;
-}
-.SearchCalendar .Calendar__day.-selectedBetween {
-  background: rgba(255, 242, 126, 0.3) !important;
-  color: #000000 !important;
-}
-
-.SearchCalendar .Calendar__day.-ltr.-selectedStart,
-.SearchCalendar .Calendar__day.-ltr.-selectedEnd,
-.SearchCalendar .Calendar__day.-selectedBetween {
-  border-radius: 100% !important;
-}
-
 .FilterCalendar {
   width: 380px !important;
-  max-width: unset !important; min-height: unset !important;
-  padding: 0px !important; box-shadow: none !important;
+  max-width: unset !important;
+  min-height: unset !important;
+  padding: 0px !important;
+  box-shadow: none !important;
 }
 
 .FilterCalendar .Calendar__header {
@@ -276,27 +210,40 @@ em {
 }
 
 .FilterCalendar .Calendar__monthArrow {
-  width: 24px; height: 24px;
+  width: 24px;
+  height: 24px;
   background-image: url(../../public/chevron-left.svg);
 }
+
 .FilterCalendar .Calendar__monthArrowWrapper.-right {
   transform: unset;
 }
+
 .FilterCalendar .Calendar__monthArrowWrapper.-left {
   transform: rotate(180deg);
 }
 
 .FilterCalendar .Calendar__monthYear {
-  display: flex; flex-direction: row; gap: 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
 }
+
 .FilterCalendar .Calendar__monthText {
-  font-size: 18px !important; line-height: 140% !important;
-  padding: 0 !important; margin: 0 !important; order: 2;
+  font-size: 18px !important;
+  line-height: 140% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  order: 2;
 }
+
 .FilterCalendar .Calendar__yearText {
-  font-size: 18px !important; line-height: 140% !important;
-  padding: 0 !important; order: 1;
+  font-size: 18px !important;
+  line-height: 140% !important;
+  padding: 0 !important;
+  order: 1;
 }
+
 .FilterCalendar .Calendar__yearText::after {
   content: "년";
 }
@@ -314,7 +261,7 @@ em {
   height: calc(100% - 55px) !important;
 }
 
-.FilterCalendar .Calendar__sectionWrapper{
+.FilterCalendar .Calendar__sectionWrapper {
   padding: 4px 22px 8px 22px;
   min-height: 312px;
 }
@@ -322,16 +269,20 @@ em {
 .FilterCalendar .Calendar__section {
   padding: 4px 22px 8px 22px;
 }
-.FilterCalendar .Calendar__section.-hiddenPrevious{
-  transform: translateX(-95%) ;
+
+.FilterCalendar .Calendar__section.-hiddenPrevious {
+  transform: translateX(-95%);
 }
+
 .FilterCalendar .Calendar__section.-hiddenNext {
-  transform: translateX(95%) ;
+  transform: translateX(95%);
 }
 
 .FilterCalendar .Calendar__day {
-  padding: 0px !important; margin: 0px !important;
-  height: 42px; font-size: 14px !important;
+  padding: 0px !important;
+  margin: 0px !important;
+  height: 42px;
+  font-size: 14px !important;
   width: 42px !important;
   line-height: 160% !important;
 }
@@ -341,12 +292,13 @@ em {
   gap: 7px;
 }
 
-.FilterCalendar .Calendar__day.-selected, 
-.FilterCalendar .Calendar__day.-selectedStart, 
+.FilterCalendar .Calendar__day.-selected,
+.FilterCalendar .Calendar__day.-selectedStart,
 .FilterCalendar .Calendar__day.-selectedEnd {
   background: #FFF27E !important;
   color: #000000 !important;
 }
+
 .FilterCalendar .Calendar__day.-selectedBetween {
   background: rgba(255, 242, 126, 0.3) !important;
   color: #000000 !important;
@@ -361,34 +313,42 @@ em {
 
 .MyCalendar .Calendar__header {
   padding: 16px 36px !important;
-  display: flex; flex-direction: row;
+  display: flex;
+  flex-direction: row;
   justify-content: space-between;
 }
 
 .MyCalendar .Calendar__monthArrow {
-  width: 24px; height: 24px;
+  width: 24px;
+  height: 24px;
   background-image: url(../../public/chevron-left.svg);
 }
+
 .MyCalendar .Calendar__monthArrowWrapper.-right {
   order: 2;
-  transform: unset; padding: 0;
+  transform: unset;
+  padding: 0;
 }
+
 .MyCalendar .Calendar__monthArrowWrapper.-left {
   order: 3;
-  transform: rotate(180deg); padding: 0;
+  transform: rotate(180deg);
+  padding: 0;
 }
 
 .MyCalendar .Calendar__monthYearContainer {
   width: 270px;
   flex: unset !important;
 }
+
 .MyCalendar .Calendar__monthYear {
   left: 20px;
 }
 
 .MyCalendar .Calendar__monthText {
   order: 1;
-  font-size: 18px !important; line-height: 140% !important;
+  font-size: 18px !important;
+  line-height: 140% !important;
   font-weight: 600;
   pointer-events: none;
 }
@@ -405,6 +365,7 @@ em {
   padding: 8px 24px;
   gap: 12px;
 }
+
 .MyCalendar .Calendar__weekDay {
   width: 42px;
 }
@@ -414,7 +375,7 @@ em {
   height: calc(100% - 55px) !important;
 }
 
-.MyCalendar .Calendar__sectionWrapper{
+.MyCalendar .Calendar__sectionWrapper {
   padding: 4px 24px 8px 24px;
   min-height: 312px;
 }
@@ -422,16 +383,20 @@ em {
 .MyCalendar .Calendar__section {
   padding: 4px 24px 8px 24px;
 }
-.MyCalendar .Calendar__section.-hiddenPrevious{
-  transform: translateX(-95%) ;
+
+.MyCalendar .Calendar__section.-hiddenPrevious {
+  transform: translateX(-95%);
 }
+
 .MyCalendar .Calendar__section.-hiddenNext {
-  transform: translateX(95%) ;
+  transform: translateX(95%);
 }
 
 .MyCalendar .Calendar__day {
-  padding: 0px !important; margin: 0px !important;
-  height: 42px; font-size: 14px !important;
+  padding: 0px !important;
+  margin: 0px !important;
+  height: 42px;
+  font-size: 14px !important;
   width: 42px !important;
   line-height: 160% !important;
 }
@@ -441,12 +406,13 @@ em {
   gap: 12px;
 }
 
-.MyCalendar .Calendar__day.-selected, 
-.MyCalendar .Calendar__day.-selectedStart, 
+.MyCalendar .Calendar__day.-selected,
+.MyCalendar .Calendar__day.-selectedStart,
 .MyCalendar .Calendar__day.-selectedEnd {
   background: #FFF27E !important;
   color: #000000 !important;
 }
+
 .MyCalendar .Calendar__day.-selectedBetween {
   background: rgba(255, 242, 126, 0.3) !important;
   color: #000000 !important;
@@ -472,8 +438,10 @@ em {
 }
 
 .MyCalendar .Calendar__day.eventDay:not(.-selectedStart):not(.-selectedBetween):not(.-selectedEnd):not(.-selected):not(.-today)::after {
-  background: #4A6AFE; opacity: 1;
-  width: 16px; height: 1px;
+  background: #4A6AFE;
+  opacity: 1;
+  width: 16px;
+  height: 1px;
   bottom: 10px;
   content: '';
   position: absolute;
@@ -486,17 +454,30 @@ em {
 
 /* testing input */
 div.editor-body {
-  width:100%; height:100%;
-  overflow-y:auto; overflow-x:none;
-  border-top:solid 1px #eee; border-bottom:solid 1px #eee;
-  position:relative; box-sizing:border-box;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: none;
+  position: relative;
+  box-sizing: border-box;
 }
 
 .mention-reply-section {
-  padding: 15px 24px;
+  padding: 13px 24px;
   font-size: 14px;
-
+  outline: none;
+  user-select: text;
+  -webkit-user-select: text;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  height: 100%;
 }
+
 .mention-reply-section:focus {
   outline: none;
 }
+
+/* 
+.slide {
+  min-width: 195px !important
+} */

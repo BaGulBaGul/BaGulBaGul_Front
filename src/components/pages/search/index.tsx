@@ -1,21 +1,25 @@
 "use client";
-import { Dispatch, SetStateAction, useRef, useState } from 'react';
-import { useNavigate } from "react-router-dom";
-import { IconButton, TextField, ThemeProvider, Divider, Button, Backdrop, Paper, FormControl } from '@mui/material';
-import { ViewButton, ViewSelect } from '@/components/common';
-import { searchInputTheme, searchFreqTheme, deleteButtonTheme } from '@/components/common/Themes';
-import { krLocale } from '@/components/common/CalendarLocale';
+import { useEffect, useRef, useState } from 'react';
+import { IconButton, TextField, ThemeProvider, Divider, Button, Backdrop, ToggleButtonGroup, ToggleButton } from '@mui/material';
+import { CategoryButtons, ViewButton, ViewFilterApplied, ViewSelect } from '@/components/common';
+import { searchInputTheme, searchFreqTheme, deleteButtonTheme, tabTheme } from '@/components/common/Themes';
 import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
-import { DayRange, Calendar, Day } from '@hassanmojab/react-modern-calendar-datepicker'
+import { DayRange } from '@hassanmojab/react-modern-calendar-datepicker'
 import { useRouter } from 'next/navigation';
-import { RangeProps, getParams, useEffectFilter, useEffectFilterApplied, useEffectParam } from '@/service/Functions';
+import { RangeProps, getParams, useEffectFilter, useEffectFilterApplied } from '@/service/Functions';
 
 const index = () => {
+  const [tab, setTab] = useState(0);
+  const handleTab = (event: React.MouseEvent<HTMLElement>, newTab: number | null) => {
+    if (newTab !== null) { setTab(newTab); }
+  };
+  const [selectedCate, setSelectedCate] = useState<string[]>([]);
+
   // 정렬기준(default 최신순), 날짜, 참여인원, 규모
   const [sort, setSort] = useState('createdAt,desc');
   const [dayRange, setDayRange] = useState<DayRange>({ from: undefined, to: undefined });
   // * temporary name
-  const [participants, setParticipants] = useState(0);
+  const [ptcp, setParticipants] = useState(0);
   const [headCount, setHeadCount] = useState<RangeProps>({ from: undefined, to: undefined });
 
   // 적용된 필터들, 적용된 필터 개수, 현재 변경된 필터
@@ -24,31 +28,45 @@ const index = () => {
   const [changed, setChanged] = useState<{ key: string, value: string | number | RangeProps | undefined }>({ key: '', value: undefined })
 
   const [open, setOpen] = useState(false);
-  const handleClose = () => { setOpen(false) }
+  // const handleClose = () => { setOpen(false) }
 
-  useEffectFilter([sort, dayRange, participants, headCount], ['sort', 'dayRange', 'participants', 'headCount'], setChanged)
+  useEffectFilter([sort, dayRange, ptcp, headCount], ['sort', 'dayRange', 'ptcp', 'headCount'], setChanged)
   useEffectFilterApplied([filters, sort], filters, setFilters, changed, sort, setFilterCnt)
 
   return (
     <div className='flex flex-col w-full h-screen bg-gray1'>
-      <div className='bg-white'>
+      <div className='bg-[#FFF]'>
         <SearchBar setOpen={setOpen} filterCnt={filterCnt}
           params={{
-            sort: sort, startDate: dayRange.from === null || dayRange.from === undefined
-              ? '' : `${dayRange.from.year}-${String(dayRange.from.month).padStart(2, "0")}-${String(dayRange.from.day).padStart(2, "0")}T00:00:00`,
-            endDate: dayRange.to === null || dayRange.to === undefined
-              ? '' : `${dayRange.to.year}-${String(dayRange.to.month).padStart(2, "0")}-${String(dayRange.to.day).padStart(2, "0")}T23:59:59`,
-            participants: participants ?? '',
-            headCountMax: headCount.from === null || headCount.from === undefined ? '' : headCount.from,
-            headCountMin: headCount.to === null || headCount.to === undefined ? '' : headCount.to,
-          }} />
+            ct: selectedCate.length > 0 ? selectedCate : undefined,
+            sort: sort, sD: dayRange.from === null || dayRange.from === undefined
+              ? '' : `${dayRange.from.year}${String(dayRange.from.month).padStart(2, "0")}${String(dayRange.from.day).padStart(2, "0")}`,
+            eD: dayRange.to === null || dayRange.to === undefined
+              ? '' : `${dayRange.to.year}${String(dayRange.to.month).padStart(2, "0")}${String(dayRange.to.day).padStart(2, "0")}`,
+            ptcp: ptcp > 0 ? ptcp : '',
+            hcMin: headCount.from === null || headCount.from === undefined || headCount.from <= 0 ? '' : headCount.from,
+            hcMax: headCount.to === null || headCount.to === undefined || headCount.to <= 0 ? '' : headCount.to,
+          }} tab={tab} />
+        <div className='bg-[#FFF] relative z-10'>
+          <ViewFilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters}
+            sort={sort} dayRange={dayRange} setDayRange={setDayRange} participants={ptcp}
+            setParticipants={setParticipants} headCount={headCount} setHeadCount={setHeadCount} />
+        </div>
+        <ThemeProvider theme={tabTheme}>
+          <ToggleButtonGroup value={tab} exclusive onChange={handleTab} >
+            <ToggleButton value={0}>페스티벌</ToggleButton>
+            <ToggleButton value={1}>지역행사</ToggleButton>
+            <ToggleButton value={2}>파티</ToggleButton>
+          </ToggleButtonGroup>
+        </ThemeProvider>
+        <CategoryButtons selectedCate={selectedCate} setSelectedCate={setSelectedCate} />
         <Divider />
         <div>
           <FrequentSearches />
           <RecentSearches />
           <Backdrop open={open} className='z-paper'>
-            <ViewSelect sort={sort} setSort={setSort} handleClose={handleClose} dayRange={dayRange} setDayRange={setDayRange}
-              participants={participants} setParticipants={setParticipants} headCount={headCount} setHeadCount={setHeadCount} />
+            <ViewSelect sort={sort} setSort={setSort} setOpen={setOpen} dayRange={dayRange} setDayRange={setDayRange}
+              participants={ptcp} setParticipants={setParticipants} headCount={headCount} setHeadCount={setHeadCount} />
           </Backdrop>
         </div>
       </div>
@@ -57,25 +75,33 @@ const index = () => {
 }
 export default index;
 
-function SearchBar(props: { setOpen: any; filterCnt: number; params: any; }) {
+function SearchBar(props: { setOpen: any; filterCnt: number; params: any; tab: number; }) {
   const handleOpen = () => { props.setOpen(true) }
 
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter()
-  const handleSearch = () => {
-    console.log(inputRef.current ? inputRef.current.value : '()()()()()(')
-    if (inputRef.current && inputRef.current.value !== '') {
-      router.push(`/searched?query=${encodeURIComponent(encodeURIComponent(inputRef.current.value))}&${getParams(props.params)}`)
-      // navigate({ pathname: '/search', search: inputRef.current.value });
+
+  const [title, setTitle] = useState('')
+  const handleSearch = (event: any) => {
+    if ((event.type === 'keydown' && event.key === 'Enter') || event.type === 'click') {
+      if (inputRef.current && inputRef.current.value !== '') {
+        event.preventDefault();
+        console.log('^^ SearchBar /search', inputRef.current.value);
+        setTitle(encodeURIComponent(encodeURIComponent(inputRef.current.value)))
+      }
     }
   }
+
+  useEffect(() => {
+    if (title.length > 0) { router.push(`/searched?query=${title}&${getParams(props.params)}&tab_id=${props.tab}`) }
+  }, [title])
 
   return (
     <div className='flex flex-row mx-[16px] my-[18px] gap-[16px] items-center'>
       <IconButton disableRipple className='p-0'><img src='/search_back.svg' /></IconButton>
       <div className='flex flex-row w-full justify-between'>
         <div className='flex flex-row bg-gray1 px-[8px] py-[4px] gap-[8px] w-full max-w-[268px]'>
-          <ThemeProvider theme={searchInputTheme}><TextField placeholder="피크페스티벌" inputRef={inputRef} required /></ThemeProvider>
+          <ThemeProvider theme={searchInputTheme}><TextField placeholder="피크페스티벌" inputRef={inputRef} onKeyDown={handleSearch} required /></ThemeProvider>
           <IconButton onClick={handleSearch} disableRipple className='p-0' ><img src='/search_magnifying.svg' /></IconButton>
         </div>
         <ViewButton handleOpen={handleOpen} cnt={props.filterCnt} fs={14} />
@@ -146,13 +172,3 @@ function RecentSearches() {
     </div>
   )
 }
-
-// interface SearchCalendarProps { dayRange: DayRange; setDayRange: Dispatch<SetStateAction<DayRange>>; }
-// export function SearchCalendar(props: SearchCalendarProps) {
-//   return (
-//     <Paper className="absolute top-[93px] w-[380px] rounded-[8px]" onClick={(e) => e.stopPropagation()}>
-//       <Calendar value={props.dayRange} onChange={props.setDayRange} locale={krLocale}
-//         calendarClassName="SearchCalendar" />
-//     </Paper>
-//   )
-// }

@@ -9,7 +9,7 @@ export default function Page() {
       <>
         <header className='relative z-10'>
           <HeaderNonMain />
-          <SubHeader name={name} url={"/"} />
+          <SubHeader name={name} />
         </header>
         <Post />
       </>

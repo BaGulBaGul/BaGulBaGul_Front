@@ -29,10 +29,9 @@ export function ViewButton(props: ViewButtonProps) {
 }
 
 interface ViewSelectProps {
-  sort: string; setSort: any; handleClose: any; dayRange: DayRange; setDayRange: any;
+  sort: string; setSort: any; setOpen: any; routeToFilter?: any; /*handleClose: any;*/ dayRange: DayRange; setDayRange: any;
   participants: number; setParticipants: any; headCount?: { from?: number, to?: number }; setHeadCount?: any;
   proceeding?: boolean; setProceeding?: any;
-
 }
 export function ViewSelect(props: ViewSelectProps) {
   // 정렬
@@ -59,12 +58,20 @@ export function ViewSelect(props: ViewSelectProps) {
     } else { return '0' }
   }
 
+  const handleClose = () => {
+    props.setOpen(false)
+    setOpenCal(false)
+    setOpenParti(false)
+    setOpenHead(false)
+    if (props.routeToFilter !== undefined) { props.routeToFilter(); }
+  }
+
   return (
     <ThemeProvider theme={viewTheme}>
       <Paper className="w-screen absolute bottom-0">
         <div className="flex px-[16px] py-[20px] w-full justify-between items-center border-b-[0.5px] border-gray2">
           <span className="text-[14px] font-semibold">바글바글 필터</span>
-          <IconButton disableRipple onClick={props.handleClose} className="p-0"><img src='/popup_close.svg' /></IconButton>
+          <IconButton disableRipple onClick={handleClose} className="p-0"><img src='/popup_close.svg' /></IconButton>
         </div>
         <div className="flex flex-col px-[16px] pb-[20px] gap-[16px]">
           <ThemeProvider theme={viewRadioTheme}>
@@ -133,7 +140,7 @@ export function ViewSelect(props: ViewSelectProps) {
               <Collapse in={openParti} timeout="auto" className="filter-collapse">
                 <div className="flex flex-row justify-between mt-[8px]">
                   <span className="text-[14px] leading-[160%]">인원 수</span>
-                  <PartiNumberInput value={props.participants ?? 0} min={1}
+                  <PartiNumberInput value={props.participants ?? 0} min={0}
                     onInputChange={(event) => {
                       props.setParticipants(Number.isNaN(Number(event.target.value)) ? undefined : Number(event.target.value))
                     }}
@@ -165,7 +172,7 @@ export function ViewSelect(props: ViewSelectProps) {
                       <div className="flex flex-row justify-between">
                         <div className="flex flex-row justify-between border border-gray2 rounded-[8px] w-[180px] px-[16px] py-[5px]">
                           <span className="text-[14px] leading-[160%] w-[49px]">최소인원</span>
-                          <HeadNumberInput placeholder="1명" value={props.headCount.from ?? 0} min={1}
+                          <HeadNumberInput placeholder="1명" value={props.headCount.from ?? 0} min={0}
                             onInputChange={(event) => {
                               props.setHeadCount({ from: Number.isNaN(Number(event.target.value)) ? undefined : Number(event.target.value), to: props.headCount!.to })
                             }}
