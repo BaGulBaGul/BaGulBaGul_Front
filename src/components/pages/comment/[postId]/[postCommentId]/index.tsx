@@ -7,7 +7,7 @@ import { SubHeaderCnt } from '@/components/layout/subHeader';
 import { call } from '@/service/ApiService';
 import { setPageInfo, useEffectComment } from '@/service/Functions';
 import { LoadingSkeleton, MoreButton } from '@/components/common';
-import { CommentBlock, CommentDrawer, CommentMProps, CommentProps, ModifyInput } from '@/components/common/Comment';
+import { CommentBlock, CommentDrawer, CommentMProps, CommentProps, ModifyInputR } from '@/components/common/Comment';
 
 const index = () => {
   const [count, setCount] = useState(0);
@@ -122,7 +122,7 @@ const index = () => {
       <MemoizedReplyFooter mentioning={mentioning} setMentioning={setMentioning} postCommentId={params.postCommentId} target={mentionTarget}
         mentionRef={mentionRef} replyRef={replyRef} setLoadingC={setLoadingC} setLoadingR={setLoadingR} />
       <CommentDrawer open={openD} toggleDrawer={toggleDrawer} setOpenM={setOpenM} handleDelete={handleDelete} />
-      <ModifyInput open={openM} setOpenM={setOpenM} target={targetM} setTarget={setTargetM} />
+      <ModifyInputR open={openM} setOpenM={setOpenM} target={targetM} setTarget={setTargetM} setLoading={setLoadingR} />
     </>
   )
 }
@@ -234,6 +234,8 @@ function ReplyFooter(props: {
           props.setLoadingR(true)
           if (props.replyRef.current) { props.replyRef.current.value = '' }
         }).catch((error) => console.error(error));
+    } else {
+      alert('댓글 내용을 입력해주세요.')
     }
   }
 

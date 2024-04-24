@@ -1,5 +1,5 @@
 import { ThemeProvider, Drawer, Box, List, ListItem, ListItemButton, ListItemText, Divider, Dialog, AppBar, Toolbar, IconButton, TextField, Button, Checkbox } from "@mui/material";
-import { Fragment, useRef, useState, MouseEvent } from "react";
+import { Fragment, useRef, useState, MouseEvent, FocusEvent } from "react";
 import { commentMenuTheme, modifyCommentTheme, replyButtonTheme } from "./Themes";
 import { FormatDateTime, applyLike } from "@/service/Functions";
 import { CmtLikeIcn } from "./Icon";
@@ -10,7 +10,7 @@ export interface CommentProps {
   likeCount: number; myLike: boolean; userId: number; username?: string; userName?: string; userProfileImageUrl?: string;
   replyTargetUserName?: string;
 }
-export interface CommentMProps { postCommentId: number; content: string; userId?: number; mentionTarget?: string; } // 댓글수정용
+export interface CommentMProps { postCommentId: number; content: string; userId?: number; replyTargetUserName?: string; } // 댓글수정용
 
 export function CommentBlock(props: { opt: string; data: CommentProps; currentURL?: string; setOpenD: any; setTargetM: any; handleMention?: any; }) {
   let createdD = FormatDateTime(props.data.createdAt, 1)
@@ -23,7 +23,7 @@ export function CommentBlock(props: { opt: string; data: CommentProps; currentUR
   const handleToggle = (e: MouseEvent) => {
     e.stopPropagation();
     props.setOpenD(props.opt === 'CMT' ? 1 : 2)
-    props.setTargetM({ postCommentId: props.data.commentId ?? props.data.commentChildId, content: props.data.content })
+    props.setTargetM({ postCommentId: props.data.commentId ?? props.data.commentChildId, content: props.data.content, userId: props.data.userId, replyTargetUserName: props.data.replyTargetUserName })
   }
   return (
     <div>
@@ -60,14 +60,13 @@ export function CommentBlock(props: { opt: string; data: CommentProps; currentUR
                   ? <>
                     <span className="text-primary-blue">@{props.data.replyTargetUserName} </span>
                     <span>{
-                      props.data.content.startsWith('@') && props.data.content.slice(1, props.data.replyTargetUserName.length+1) === props.data.replyTargetUserName
-                      ? props.data.content.slice(props.data.replyTargetUserName.length+1)
-                      : props.data.content
+                      props.data.content.startsWith('@') && props.data.content.slice(1, props.data.replyTargetUserName.length + 1) === props.data.replyTargetUserName
+                        ? props.data.content.slice(props.data.replyTargetUserName.length + 1)
+                        : props.data.content
                     }</span>
                   </>
                   : <span>{props.data.content}</span>
               }
-
             </div>
           </div>
       }
@@ -153,6 +152,107 @@ export function ModifyInput(props: { open: boolean; setOpenM: any; target?: Comm
           </AppBar>
           <Divider />
           <TextField multiline defaultValue={props.target?.content} inputRef={mdfRef} />
+          <Button onClick={handleModify}>수정 완료</Button>
+        </Dialog>
+      </Fragment>
+    </ThemeProvider>
+  )
+}
+
+export function ModifyInputR(props: { open: boolean; setOpenM: any; target?: CommentMProps; setTarget: any; setLoading?: any; }) {
+  const mdfRef = useRef<HTMLDivElement>(null);
+  const handleClose = () => {
+    props.setTarget(undefined);
+    props.setOpenM(false);
+  };
+  const handleModify = () => {
+    // mdfRef.current?.innerHTML === '<br>' || 
+    if (mdfRef.current?.innerText.replace(/\n$/, '').replace(/ /g, '').length === 0) { alert('댓글 내용을 입력해주세요.') }
+    else if (mdfRef.current && mdfRef.current.innerText.length > 0 && props.target) {
+      let mentionTag = mdfRef.current.children.namedItem('mention-highlight')
+      console.log(`{ "content": ${mdfRef.current.innerText}, "replyTargetPostCommentChildId": ${mentionTag !== null ? props.target.replyTargetUserName : null} }`)
+      call(`/api/post/comment/children/${props.target.postCommentId}`, "PATCH",
+        { "content": mdfRef.current.innerText, "replyTargetPostCommentChildId": mentionTag !== null ? props.target.replyTargetUserName : null })
+        .then((response) => {
+          console.log(response);
+          props.setLoading(true)
+          props.setOpenM(false);
+          // props.setTarget(undefined);
+        }).catch((error) => console.error(error));
+    }
+  }
+
+  // 
+  const moveCaretEnd = (el: HTMLDivElement) => {
+    var range = document.createRange();
+    var sel = window.getSelection();
+    if (el.childNodes && el.children.namedItem('mention-highlight') !== null) {
+      if (el.childNodes.length > 1) { range.setStart(el.childNodes[1], 0); }
+      range.collapse(true);
+      if (sel !== null) {
+        sel.removeAllRanges();
+        sel.addRange(range);
+      }
+    }
+  }
+  const handleFocus = (e: FocusEvent<HTMLInputElement>) => {
+    var el = e.currentTarget as HTMLInputElement
+    moveCaretEnd(el);
+    el.focus();
+  }
+
+  const handleCaret = (e: any) => {
+    let el = mdfRef.current
+    let caretOffset = 0;
+    let winSel = window.getSelection()
+    if (winSel !== null && winSel !== undefined && el !== null) {
+      var range = winSel.getRangeAt(0);
+      var preCaretRange = range.cloneRange();
+      preCaretRange.selectNodeContents(el);
+      preCaretRange.setEnd(range.endContainer, range.endOffset);
+      caretOffset = preCaretRange.toString().length;
+
+      if (caretOffset === 0) { moveCaretEnd(el) }
+      else if (props.target && props.target.replyTargetUserName) {
+        if (caretOffset === (props.target.replyTargetUserName.length + 1)) {
+          if (e.type === 'keydown' && e.code === 'ArrowLeft') {
+            e.preventDefault();
+            return false;
+          }
+        }
+      }
+    }
+  }
+  // 
+
+  return (
+    <ThemeProvider theme={modifyCommentTheme}>
+      <Fragment>
+        <Dialog fullScreen open={props.open} onClose={handleClose} >
+          <AppBar>
+            <Toolbar>
+              <IconButton edge="start" color="inherit" onClick={handleClose} ><img src='/arrow_prev.svg' /></IconButton>
+              <p>댓글 수정</p>
+              <p className='w-[24px] h-[24px]'></p>
+            </Toolbar>
+          </AppBar>
+          <Divider />
+          <div className='mention-reply-section' ref={mdfRef} contentEditable onFocus={handleFocus}
+            onKeyUp={handleCaret} onKeyDown={handleCaret} onMouseUp={handleCaret} suppressContentEditableWarning={true}
+            role="combobox" spellCheck="false" >
+            {
+              props.target && props.target.replyTargetUserName
+                ? <>
+                  <span contentEditable={false} id='mention-highlight' className='text-primary-blue'>{`@${props.target.replyTargetUserName} `}</span>
+                  <span className='w-full' contentEditable suppressContentEditableWarning={true}>{
+                    props.target.content.startsWith('@') && props.target.content.slice(1, props.target.replyTargetUserName.length + 1) === props.target.replyTargetUserName
+                      ? props.target.content.slice(props.target.replyTargetUserName.length + 2)
+                      : props.target.content
+                  }</span>
+                </>
+                : <span className='w-full' contentEditable  suppressContentEditableWarning={true}>{props.target?.content}</span>
+            }
+          </div>
           <Button onClick={handleModify}>수정 완료</Button>
         </Dialog>
       </Fragment>

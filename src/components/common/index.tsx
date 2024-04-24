@@ -1,6 +1,6 @@
 import CategoryButtons from './CategoryButtons'
 import { EventBlock, RecruitBlock, CalendarBlock, ResultBlock, SuggestBlock } from './EventBlock'
-import { CommentBlock, CommentDrawer, ModifyInput } from './Comment'
+import { CommentBlock, CommentDrawer, ModifyInput, ModifyInputR } from './Comment'
 import HashtagAccordion, { HashtagButton } from './HashtagAccordion'
 import MoreButton from './MoreButton'
 import NoEvent from './NoEvent'
@@ -18,7 +18,7 @@ import { Detail } from './Detail'
 export {
   CategoryButtons,
   EventBlock, RecruitBlock, CalendarBlock, ResultBlock, SuggestBlock,
-  CommentBlock, CommentDrawer, ModifyInput,
+  CommentBlock, CommentDrawer, ModifyInput, ModifyInputR,
   HashtagAccordion,HashtagButton,
   MoreButton,
   NoEvent,
