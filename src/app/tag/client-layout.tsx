@@ -6,6 +6,6 @@ export function ClientRootLayout({ children }: { children: React.ReactNode }) {
   const searchParams = useSearchParams()
   const router = useRouter()
   return (
-    <SearchLayout opt='TTL' sp={searchParams} router={router} children={children} />
+    <SearchLayout opt='TAG' sp={searchParams} router={router} children={children} />
   );
 }

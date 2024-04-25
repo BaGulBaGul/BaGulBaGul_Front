@@ -1,5 +1,7 @@
 import CategoryButtons from './CategoryButtons'
-import { EventBlock, RecruitBlock, CalendarBlock, ResultBlock, SuggestBlock } from './EventBlock'
+import { EventBlock, RecruitBlock, CalendarBlock } from './EventBlock'
+import { TabBlock, ResultBlock, SuggestBlock, SearchTabs, SearchBar } from './Search'
+import { SearchLayout } from './SearchLayout'
 import { CommentBlock, CommentDrawer, ModifyInput, ModifyInputR } from './Comment'
 import HashtagAccordion, { HashtagButton } from './HashtagAccordion'
 import MoreButton from './MoreButton'
@@ -17,7 +19,9 @@ import { Detail } from './Detail'
 
 export {
   CategoryButtons,
-  EventBlock, RecruitBlock, CalendarBlock, ResultBlock, SuggestBlock,
+  EventBlock, RecruitBlock, CalendarBlock, 
+  TabBlock, ResultBlock, SuggestBlock, SearchTabs, SearchBar,
+  SearchLayout,
   CommentBlock, CommentDrawer, ModifyInput, ModifyInputR,
   HashtagAccordion,HashtagButton,
   MoreButton,

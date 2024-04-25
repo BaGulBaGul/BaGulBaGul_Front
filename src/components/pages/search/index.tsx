@@ -38,7 +38,7 @@ const index = () => {
       <div className='bg-[#FFF]'>
         <SearchBar setOpen={setOpen} filterCnt={filterCnt}
           params={{
-            ct: selectedCate.length > 0 ? selectedCate : undefined,
+            ct: selectedCate.length > 0 ? selectedCate : '',
             sort: sort, sD: dayRange.from === null || dayRange.from === undefined
               ? '' : `${dayRange.from.year}${String(dayRange.from.month).padStart(2, "0")}${String(dayRange.from.day).padStart(2, "0")}`,
             eD: dayRange.to === null || dayRange.to === undefined

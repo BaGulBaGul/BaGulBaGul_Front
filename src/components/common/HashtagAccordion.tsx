@@ -55,7 +55,7 @@ interface HashtagButtonProps { tag: string; }
 export function HashtagButton(props: HashtagButtonProps) {
   return (
     <ThemeProvider theme={hashtagButtonTheme}>
-      <Button href={`/searched?tag=${props.tag}&tab_id=0`}>
+      <Button href={`/tag?tag=${props.tag}&tab_id=0`}>
         <div className='flex flex-row'>
           <span className='pe-[2px]'>#</span>
           <span>{props.tag}</span>
