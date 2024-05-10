@@ -1,11 +1,11 @@
 "use client";
 import { Dispatch, SetStateAction, useEffect, useRef, useState, FocusEvent, memo } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter,  } from 'next/navigation';
 import { ThemeProvider, TextField, Button, Divider } from '@mui/material';
 import { commentTheme } from '@/components/common/Themes';
 import { SubHeaderCnt } from '@/components/layout/subHeader';
 import { call } from '@/service/ApiService';
-import { setPageInfo, useEffectComment, useEffectRefreshComment } from '@/service/Functions';
+import { setPageInfo, useEffectRefreshComment } from '@/service/Functions';
 import { LoadingSkeleton, MoreButton } from '@/components/common';
 import { CommentBlock, CommentDrawer, CommentMProps, CommentProps, ModifyInputR } from '@/components/common/Comment';
 
@@ -19,17 +19,13 @@ const index = () => {
 
   const [openM, setOpenM] = useState(false);
   const [targetM, setTargetM] = useState<CommentMProps | undefined>();
-  console.log(targetM)
-  // useEffect(() => {
-  //   if (targetM !== undefined) {
-  //     setTargetM(undefined)
-  //   }
-  // }, [openM])
 
   const params = useParams()
   const [isLoadingC, setLoadingC] = useState(true)
   const [isLoadingR, setLoadingR] = useState(true)
   const [comment, setComment] = useState<CommentProps>()
+
+  const router = useRouter()
 
   useEffect(() => {
     if (isLoadingC) {
@@ -37,9 +33,13 @@ const index = () => {
       console.log("###", apiURL)
       call(apiURL, "GET", null)
         .then((response) => {
-          console.log(response.data);
-          setComment(response.data);
-          setLoadingC(false)
+          if (response.data !== null) {
+            console.log(response);
+            setComment(response.data);
+            setLoadingC(false)
+          } else {
+            router.replace(`/comment/${params.postId}`)
+          }
         })
     }
   }, [isLoadingC])
@@ -134,29 +134,26 @@ function Replies(props: {
   }
 
   const initialSet = useRef(false);
-  // useEffectComment('RPL', `/api/post/comment/${props.postCommentId}/children?sort=createdAt,desc&size=10&page=${page.current}`, initialSet, page, setPage,
-  //   props.setCount, props.isLoadingR, props.setLoadingR, setChildren, children)
-
   useEffectRefreshComment('RPL', `/api/post/comment/${props.postCommentId}/children?sort=createdAt,desc&size=10`, initialSet, page, setPage,
     props.setCount, props.isLoadingR, props.setLoadingR, setChildren, props.tmp, props.setTmp, props.setTmpP, props.tmpP)
 
   // if (props.isLoadingR) { return <LoadingSkeleton type='RPL' /> }
   // else {
-    return (
-      <div className='flex flex-col w-full'>
-        {children.map((comment: CommentProps, idx: number) => (
-          <div className={idx % 2 == 0 ? 'bg-[#FFF] ps-[48px] pe-[16px] py-[12px]' : 'bg-gray1 ps-[48px] pe-[16px] py-[12px]'} key={`reply-${idx}`} >
-            <CommentBlock opt="RPL" data={comment} key={`cmt-${idx}`} setOpenD={props.setOpenD} setTargetM={props.setTargetM} handleMention={props.handleMention} />
-          </div>
-        ))
-        }
-        {page.total > 1 && page.current + 1 < page.total
-          ? <MoreButton onClick={handleMore} />
-          : <></>
-        }
-      </div>
-    )
-  }
+  return (
+    <div className='flex flex-col w-full'>
+      {children.map((comment: CommentProps, idx: number) => (
+        <div className={idx % 2 == 0 ? 'bg-[#FFF] ps-[48px] pe-[16px] py-[12px]' : 'bg-gray1 ps-[48px] pe-[16px] py-[12px]'} key={`reply-${idx}`} >
+          <CommentBlock opt="RPL" data={comment} key={`cmt-${idx}`} setOpenD={props.setOpenD} setTargetM={props.setTargetM} handleMention={props.handleMention} />
+        </div>
+      ))
+      }
+      {page.total > 1 && page.current + 1 < page.total
+        ? <MoreButton onClick={handleMore} />
+        : <></>
+      }
+    </div>
+  )
+}
 // }
 
 function ReplyFooter(props: {
@@ -226,7 +223,6 @@ function ReplyFooter(props: {
           props.setMentioning(false);
         }).catch((error) => console.error(error));
     } else if (props.replyRef.current && props.replyRef.current.value.length > 0) {
-      // console.log('reply: ', props.replyRef.current.value)
       call(`/api/post/comment/${props.postCommentId}/children`, "POST",
         { "content": props.replyRef.current.value })
         .then((response) => {

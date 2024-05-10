@@ -169,12 +169,11 @@ export function ModifyInputR(props: { open: boolean; setOpenM: any; target?: Com
     props.setOpenM(false);
   };
   const handleModify = () => {
-    // mdfRef.current?.innerHTML === '<br>' || 
     if (mdfRef.current?.innerText.replace(/\n$/, '').replace(/ /g, '').length === 0) { alert('댓글 내용을 입력해주세요.') }
     else if (mdfRef.current && mdfRef.current.innerText.length > 0 && props.target) {
       let mentionTag = mdfRef.current.children.namedItem('mention-highlight')
       console.log(`/api/post/comment/children/${props.target.postCommentId}`)
-      console.log(`{ "content": ${mdfRef.current.innerText}, "replyTargetUserId": ${(props.target.replyTargetUserName !== undefined && mentionTag === null) ? null : 0 }}`)
+      console.log(`{ "content": ${mdfRef.current.innerText}, "replyTargetUserId": ${(props.target.replyTargetUserName !== undefined && mentionTag === null) ? null : 0}}`)
       call(`/api/post/comment/children/${props.target.postCommentId}`, "PATCH",
         { "content": mdfRef.current.innerText, "replyTargetUserId": (props.target.replyTargetUserName !== undefined && mentionTag === null) ? null : 0 })
         .then((response) => {
@@ -188,7 +187,6 @@ export function ModifyInputR(props: { open: boolean; setOpenM: any; target?: Com
     }
   }
 
-  // 
   const moveCaretEnd = (el: HTMLDivElement) => {
     var range = document.createRange();
     var sel = window.getSelection();
@@ -249,11 +247,6 @@ export function ModifyInputR(props: { open: boolean; setOpenM: any; target?: Com
               props.target && props.target.replyTargetUserName
                 ? <>
                   <span contentEditable={false} id='mention-highlight' className='text-primary-blue'>{`@${props.target.replyTargetUserName} `}</span>
-                  {/* <span className='w-full' contentEditable suppressContentEditableWarning={true}>{
-                    props.target.content.startsWith('@') && props.target.content.slice(1, props.target.replyTargetUserName.length + 1) === props.target.replyTargetUserName
-                      ? props.target.content.slice(props.target.replyTargetUserName.length + 2)
-                      : props.target.content ?? ''
-                  }</span> */}
                   {
                     props.target.content.startsWith('@') && props.target.content.slice(1, props.target.replyTargetUserName.length + 1) === props.target.replyTargetUserName
                       ? props.target.content.slice(props.target.replyTargetUserName.length + 2)
