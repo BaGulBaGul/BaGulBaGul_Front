@@ -9,16 +9,17 @@ const index = () => {
   const params = useParams()
   const [data, setData] = useState<any>({})
   const [liked, setLiked] = useState(false)
+  const [likeCount, setLikeCount] = useState<number>()
   // * 임시 로그인여부 파악용
   const [loginfo, setLoginfo] = useState(false)
 
-  useEffectDetail(`/api/event/recruitment/${params.recruitId}`, `/api/event/recruitment/${params.recruitId}/ismylike`, setData, setLoading, setLiked, setLoginfo)
+  useEffectDetail(`/api/event/recruitment/${params.recruitId}`, `/api/event/recruitment/${params.recruitId}/ismylike`, setData, setLoading, setLiked, setLikeCount, setLoginfo)
 
   const handleLike = () => {
-    applyLike(loginfo, liked, `/api/event/recruitment/${params.recruitId}/like`, setLiked)
+    applyLike(loginfo, liked, `/api/event/recruitment/${params.recruitId}/like`, setLiked, setLikeCount)
   }
 
   if (isLoading) { return <LoadingSkeleton type='DTLR' /> }
-  if (Object.keys(data).length > 0) { return <Detail opt='RCT' data={data} liked={liked} handleLike={handleLike} /> }
+  if (Object.keys(data).length > 0) { return <Detail opt='RCT' data={data} liked={liked} likeCount={likeCount} handleLike={handleLike} /> }
 }
 export default index;

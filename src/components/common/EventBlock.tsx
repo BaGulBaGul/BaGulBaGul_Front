@@ -1,9 +1,7 @@
-import { ThemeProvider, IconButton, Chip, Checkbox } from "@mui/material";
-import { doneChipTheme, suggestChipTheme } from "./Themes";
+import { ThemeProvider, IconButton, Chip } from "@mui/material";
+import { doneChipTheme } from "./Themes";
 import { FormatDate, FormatDateRange, ParamProps, RecruitProps } from "@/service/Functions";
 import HashtagAccordion from "./HashtagAccordion";
-import { useEffect, useState } from "react";
-import { call } from "@/service/ApiService";
 import { DividerDot } from "./Icon";
 
 export interface TabBlockProps {

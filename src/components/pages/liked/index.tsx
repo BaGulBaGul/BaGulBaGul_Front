@@ -40,47 +40,40 @@ function LikedTab() {
             <Tab label="파티" />
           </Tabs>
         </ThemeProvider>
-        {
-          value === 2
-            ? <></>
-            : <ViewsCheck />
-        }
+        {value === 2 ? <></> : <ViewsCheck />}
       </Box>
       <TabPanel value={value} index={0} classn='mt-[60px]'>
-        {
-          likeData.map((item, idx) => {
-            if (item !== undefined && view === item.type) {
-              return (
-                <>{
-                  item.type === 'ACCOMPANY'
-                    ? <LikedAccompanyBlock data={item} key={`like-${idx}`} />
-                    : <LikedPostBlock data={item} key={`like-${idx}`} />
-                }</>
-              )
-            }
-          })
+        {likeData.map((item, idx) => {
+          if (item !== undefined && view === item.type) {
+            return (
+              <>{
+                item.type === 'ACCOMPANY'
+                  ? <LikedAccompanyBlock data={item} key={`like-${idx}`} />
+                  : <LikedPostBlock data={item} key={`like-${idx}`} />
+              }</>
+            )
+          }
+        })
         }
       </TabPanel>
       <TabPanel value={value} index={1} classn='mt-[60px]'>
-        {
-          likeData.map((item, idx) => {
-            if (item !== undefined && view === item.type) {
-              return (
-                <>{
-                  item.type === 'ACCOMPANY'
-                    ? <LikedAccompanyBlock data={item} key={`like-${idx}`} />
-                    : <LikedPostBlock data={item} key={`like-${idx}`} />
-                }</>
-              )
-            }
-          })
+        {likeData.map((item, idx) => {
+          if (item !== undefined && view === item.type) {
+            return (
+              <>{
+                item.type === 'ACCOMPANY'
+                  ? <LikedAccompanyBlock data={item} key={`like-${idx}`} />
+                  : <LikedPostBlock data={item} key={`like-${idx}`} />
+              }</>
+            )
+          }
+        })
         }
       </TabPanel>
       <TabPanel value={value} index={2} classn='mt-[60px]'>
-        {
-          partyData.map((item, idx) => (
-            <LikedPostBlock data={item} key={`like-${idx}`} />
-          ))
+        {partyData.map((item, idx) => (
+          <LikedPostBlock data={item} key={`like-${idx}`} />
+        ))
         }
       </TabPanel>
     </Box>

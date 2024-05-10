@@ -15,10 +15,10 @@ export interface CommentMProps { postCommentId: number; content: string; userId?
 export function CommentBlock(props: { opt: string; data: CommentProps; currentURL?: string; setOpenD: any; setTargetM: any; handleMention?: any; }) {
   let createdD = FormatDateTime(props.data.createdAt, 1)
   const [liked, setLiked] = useState(props.data.myLike ?? false)
+  const [likeCount, setLikeCount] = useState<number>(props.data.likeCount ?? undefined)
   const handleLike = () => {
     let apiURL = props.opt === 'CMT' ? `/api/post/comment/${props.data.commentId}/like` : `/api/post/comment/children/${props.data.commentChildId}/like`
-    // applyLike(loginfo, liked, `/api/post/comment/${props.data.commentId}/like`, setLiked)
-    applyLike(true, liked, apiURL, setLiked)
+    applyLike(true, liked, apiURL, setLiked, setLikeCount)
   }
   const handleToggle = (e: MouseEvent) => {
     e.stopPropagation();
@@ -89,7 +89,7 @@ export function CommentBlock(props: { opt: string; data: CommentProps; currentUR
         <div className='flex flex-row items-center' id='comment-likes'>
           <Checkbox icon={<CmtLikeIcn val={false} />} checkedIcon={<CmtLikeIcn val={true} />} checked={liked} onChange={handleLike}
             disableRipple className='p-0' />
-          {props.data.likeCount !== 0 ? <p className='text-[12px] text-gray3 ps-[2px]'>{props.data.likeCount}</p> : <></>}
+          {likeCount > 0 ? <p className='text-[12px] text-gray3 ps-[2px]'>{likeCount}</p> : <></>}
         </div>
       </div>
     </div>
@@ -119,7 +119,7 @@ export function CommentDrawer(props: { open: number; toggleDrawer: any; setOpenM
   )
 }
 
-export function ModifyInput(props: { open: boolean; setOpenM: any; target?: CommentMProps; setTarget: any; setLoading?: any; }) {
+export function ModifyInput(props: { open: boolean; setOpenM: any; target?: CommentMProps; setTarget: any; setLoading?: any; setTmp: any; setTmpP: any; }) {
   const mdfRef = useRef<HTMLInputElement>(null);
   const handleClose = () => {
     props.setTarget(undefined);
@@ -133,6 +133,8 @@ export function ModifyInput(props: { open: boolean; setOpenM: any; target?: Comm
       call(`/api/post/comment/${props.target.postCommentId}`, "PATCH", { "content": mdfRef.current.value })
         .then((response) => {
           console.log(response)
+          props.setTmp([])
+          props.setTmpP(undefined)
           props.setLoading(true)
           props.setTarget(undefined);
           props.setOpenM(false);
@@ -160,7 +162,7 @@ export function ModifyInput(props: { open: boolean; setOpenM: any; target?: Comm
   )
 }
 
-export function ModifyInputR(props: { open: boolean; setOpenM: any; target?: CommentMProps; setTarget: any; setLoading?: any; }) {
+export function ModifyInputR(props: { open: boolean; setOpenM: any; target?: CommentMProps; setTarget: any; setLoading?: any; setTmp: any; setTmpP: any; }) {
   const mdfRef = useRef<HTMLDivElement>(null);
   const handleClose = () => {
     props.setTarget(undefined);
@@ -171,11 +173,14 @@ export function ModifyInputR(props: { open: boolean; setOpenM: any; target?: Com
     if (mdfRef.current?.innerText.replace(/\n$/, '').replace(/ /g, '').length === 0) { alert('댓글 내용을 입력해주세요.') }
     else if (mdfRef.current && mdfRef.current.innerText.length > 0 && props.target) {
       let mentionTag = mdfRef.current.children.namedItem('mention-highlight')
-      console.log(`{ "content": ${mdfRef.current.innerText}, "replyTargetPostCommentChildId": ${mentionTag !== null ? props.target.replyTargetUserName : null} }`)
+      console.log(`/api/post/comment/children/${props.target.postCommentId}`)
+      console.log(`{ "content": ${mdfRef.current.innerText}, "replyTargetUserId": ${(props.target.replyTargetUserName !== undefined && mentionTag === null) ? null : 0 }}`)
       call(`/api/post/comment/children/${props.target.postCommentId}`, "PATCH",
-        { "content": mdfRef.current.innerText, "replyTargetPostCommentChildId": mentionTag !== null ? props.target.replyTargetUserName : null })
+        { "content": mdfRef.current.innerText, "replyTargetUserId": (props.target.replyTargetUserName !== undefined && mentionTag === null) ? null : 0 })
         .then((response) => {
           console.log(response);
+          props.setTmp([])
+          props.setTmpP(undefined)
           props.setLoading(true)
           props.setTarget(undefined);
           props.setOpenM(false);

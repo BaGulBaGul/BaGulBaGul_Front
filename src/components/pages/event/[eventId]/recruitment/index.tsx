@@ -23,8 +23,6 @@ function RecruitTab() {
   const [recruits, setRecruits] = useState<RecruitProps[]>([]);
 
   const [params, setParams] = useState<ParamProps | undefined>();
-  // **********************************
-  const [proceeding, setProceeding] = useState(false);
 
   const [page, setPage] = useState({ current: 0, total: 0, });
   const initialSet = useRef(false);
@@ -34,6 +32,7 @@ function RecruitTab() {
     setLoading(true);
     setParams({
       page: 0, sort: searchParams.get('sort') ?? 'createdAt,desc',
+      state: searchParams.get('sort') && searchParams.get('state') === 'p' ? 'PROCEEDING' : '',
       startDate: searchParams.get('sD') ? String2ISO((searchParams.get('sD'))) : '',
       endDate: searchParams.get('eD') ? String2ISO((searchParams.get('eD'))) : '',
       leftHeadCount: searchParams.get('ptcp') ?? ''
@@ -67,32 +66,14 @@ function RecruitTab() {
   else {
     return (
       <>
-        {
-          recruits.map((post, idx) => {
-            if (proceeding) {
-              return (
-                post.state === "PROCEEDING"
-                  ? <div key={`recruit-${idx}`}>
-                    {idx === 0 ? <></> : <Divider />}
-                    <RecruitBlock data={post} />
-                  </div>
-                  : <></>
-              )
-            } else {
-              return (
-                <div key={`recruit-${idx}`}>
-                  {idx === 0 ? <></> : <Divider />}
-                  <RecruitBlock data={post} />
-                </div>
-              )
-            }
-          }
-          )
-        }
-        {
-          page.total > 1 && page.current + 1 < page.total
-            ? <MoreButton onClick={handleMore} /> : <></>
-        }
+        {recruits.map((post, idx) => (
+          <div key={`recruit-${idx}`}>
+            {idx === 0 ? <></> : <Divider />}
+            <RecruitBlock data={post} />
+          </div>
+        )
+        )}
+        {page.total > 1 && page.current + 1 < page.total ? <MoreButton onClick={handleMore} /> : <></>}
       </>
     )
   }

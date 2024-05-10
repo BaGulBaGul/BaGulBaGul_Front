@@ -16,7 +16,7 @@ export interface PostTitleProps {
   views: number; userName?: string; username?: string; categories?: string[];
 }
 
-export const Detail = (props: { opt: string; data: any; eventId?: any; liked: boolean; handleLike: any; }) => {
+export const Detail = (props: { opt: string; data: any; eventId?: any; liked: boolean; likeCount?: number; handleLike: any; }) => {
   const [popopen, setPopopen] = useState(false);
   const handleOpen = () => { setPopopen(true) }
   const handleClose = () => { setPopopen(false) }
@@ -44,7 +44,7 @@ export const Detail = (props: { opt: string; data: any; eventId?: any; liked: bo
             : <></>
           }
           <ShareDialog handleClose={handleClose} popopen={popopen} sharingURL={pathname} />
-          <PostTools opt='EVT' handleOpen={handleOpen} likeCount={props.data.likeCount} liked={props.liked} handleLike={props.handleLike}
+          <PostTools opt='EVT' handleOpen={handleOpen} likeCount={props.likeCount} liked={props.liked} handleLike={props.handleLike}
             commentCount={props.data.commentCount} commentURL={commentURL} />
         </div>
         { // 페스티벌, 지역행사는 '모집글 보러가기' 버튼 배치
@@ -64,15 +64,13 @@ export const Detail = (props: { opt: string; data: any; eventId?: any; liked: bo
           <PostInfo opt='RCT' headCount={props.data.totalHeadCount} currentHeadCount={props.data.currentHeadCount} />
           <div className='pb-[30px]'>
             <PostContent content={props.data.content} />
-            {props.data.tags !== undefined && props.data.tags.length > 0
-              ? <PostContentTag tags={props.data.tags} /> : <></>
-            }
+            {props.data.tags !== undefined && props.data.tags.length > 0 ? <PostContentTag tags={props.data.tags} /> : <></>}
           </div>
         </div>
         <ShareDialog handleClose={handleClose} popopen={popopen} sharingURL={pathname} />
         <div>
           <Divider />
-          <PostTools opt='RCT' handleOpen={handleOpen} likeCount={props.data.likeCount} liked={props.liked} handleLike={props.handleLike}
+          <PostTools opt='RCT' handleOpen={handleOpen} likeCount={props.likeCount} liked={props.liked} handleLike={props.handleLike}
             commentCount={props.data.commentCount} commentURL={commentURL} />
         </div>
       </div>
@@ -245,7 +243,7 @@ function PostContentMap(props: { address: string; lat: number; lng: number; }) {
   )
 }
 
-interface PostToolsProps { opt: string; handleOpen: any; likeCount: number; liked: boolean; handleLike: any; commentCount: number; commentURL: string; }
+interface PostToolsProps { opt: string; handleOpen: any; likeCount?: number; liked: boolean; handleLike: any; commentCount: number; commentURL: string; }
 function PostTools(props: PostToolsProps) {
   return (
     <div className='flex flex-row justify-between py-[30px] px-[16px]'>

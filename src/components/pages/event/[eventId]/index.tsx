@@ -10,16 +10,17 @@ const index = () => {
   const params = useParams()
   const [data, setData] = useState<any>({})
   const [liked, setLiked] = useState(false)
+  const [likeCount, setLikeCount] = useState<number>()
   // * 임시 로그인여부 파악용
   const [loginfo, setLoginfo] = useState(false)
 
   type typeType = { [key: string]: string; }
   const typeString: typeType = { 'FESTIVAL': '페스티벌', 'LOCAL_EVENT': '지역행사', 'PARTY': '파티' }
 
-  useEffectDetail(`/api/event/${params.eventId}`, `/api/event/${params.eventId}/ismylike`, setData, setLoading, setLiked, setLoginfo)
+  useEffectDetail(`/api/event/${params.eventId}`, `/api/event/${params.eventId}/ismylike`, setData, setLoading, setLiked, setLikeCount, setLoginfo)
 
   const handleLike = () => {
-    applyLike(loginfo, liked, `/api/event/${params.eventId}/like`, setLiked)
+    applyLike(loginfo, liked, `/api/event/${params.eventId}/like`, setLiked, setLikeCount)
   }
 
   return (
@@ -29,7 +30,7 @@ const index = () => {
         {isLoading
           ? <LoadingSkeleton type='DTLE' />
           : Object.keys(data).length > 0
-            ? <Detail opt='EVT' data={data} eventId={params.eventId} liked={liked} handleLike={handleLike} /> : <></>
+            ? <Detail opt='EVT' data={data} eventId={params.eventId} liked={liked} likeCount={likeCount} handleLike={handleLike} /> : <></>
         }
       </div>
     </>

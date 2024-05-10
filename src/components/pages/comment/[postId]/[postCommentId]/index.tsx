@@ -1,11 +1,11 @@
 "use client";
 import { Dispatch, SetStateAction, useEffect, useRef, useState, FocusEvent, memo } from 'react';
 import { useParams } from 'next/navigation';
-import { ThemeProvider, TextField, Button, Dialog, DialogActions, DialogContent, DialogContentText, Divider } from '@mui/material';
-import { commentTheme, mentionDialogTheme } from '@/components/common/Themes';
+import { ThemeProvider, TextField, Button, Divider } from '@mui/material';
+import { commentTheme } from '@/components/common/Themes';
 import { SubHeaderCnt } from '@/components/layout/subHeader';
 import { call } from '@/service/ApiService';
-import { setPageInfo, useEffectComment } from '@/service/Functions';
+import { setPageInfo, useEffectComment, useEffectRefreshComment } from '@/service/Functions';
 import { LoadingSkeleton, MoreButton } from '@/components/common';
 import { CommentBlock, CommentDrawer, CommentMProps, CommentProps, ModifyInputR } from '@/components/common/Comment';
 
@@ -75,6 +75,9 @@ const index = () => {
     if (mentioning && mentionRef && mentionRef.current) { mentionRef.current.focus() }
   }, [mentionTarget])
 
+  const [tmp, setTmp] = useState<any[]>([])
+  const [tmpP, setTmpP] = useState<number>();
+
   const handleDelete = () => { // * 삭제되는게 코멘트인 경우 어떻게 처리할지??
     let confirmDelete = confirm("댓글을 삭제하시겠습니까?");
     if (targetM && confirmDelete) {
@@ -83,6 +86,8 @@ const index = () => {
       call(apiURL, "DELETE", null)
         .then((response) => {
           console.log(response)
+          setTmp([])
+          setTmpP(undefined)
           setLoadingC(true)
           setLoadingR(true)
         }).catch((error) => console.error(error));
@@ -99,7 +104,7 @@ const index = () => {
               <CommentBlock opt='CMT' data={comment} currentURL='' setOpenD={setOpenD} setTargetM={setTargetM} />
             </div>
             <Replies setCount={setCount} setOpenD={setOpenD} setTargetM={setTargetM} handleMention={handleMention} postCommentId={params.postCommentId}
-              isLoadingR={isLoadingR} setLoadingR={setLoadingR} />
+              isLoadingR={isLoadingR} setLoadingR={setLoadingR} tmp={tmp} setTmp={setTmp} setTmpP={setTmpP} tmpP={tmpP} />
           </div>
           : <div className='flex flex-col gap-[2px]'>
             <LoadingSkeleton type='CMT' />
@@ -108,15 +113,18 @@ const index = () => {
           </div>
       }
       <MemoizedReplyFooter mentioning={mentioning} setMentioning={setMentioning} postCommentId={params.postCommentId} target={mentionTarget}
-        mentionRef={mentionRef} replyRef={replyRef} setLoadingC={setLoadingC} setLoadingR={setLoadingR} />
+        mentionRef={mentionRef} replyRef={replyRef} setLoadingC={setLoadingC} setLoadingR={setLoadingR} setTmp={setTmp} setTmpP={setTmpP} />
       <CommentDrawer open={openD} toggleDrawer={toggleDrawer} setOpenM={setOpenM} handleDelete={handleDelete} />
-      <ModifyInputR open={openM} setOpenM={setOpenM} target={targetM} setTarget={setTargetM} setLoading={setLoadingR} />
+      <ModifyInputR open={openM} setOpenM={setOpenM} target={targetM} setTarget={setTargetM} setLoading={setLoadingR} setTmp={setTmp} setTmpP={setTmpP} />
     </>
   )
 }
 export default index;
 
-function Replies(props: { setCount: any; setOpenD: any; setTargetM: any; handleMention: any; postCommentId: any; isLoadingR: boolean; setLoadingR: any }) {
+function Replies(props: {
+  setCount: any; setOpenD: any; setTargetM: any; handleMention: any; postCommentId: any; isLoadingR: boolean; setLoadingR: any
+  tmp: any[]; setTmp: any; setTmpP: any; tmpP?: number;
+}) {
   const [children, setChildren] = useState<CommentProps[]>([]);
 
   const [page, setPage] = useState({ current: 0, total: 0, });
@@ -126,11 +134,14 @@ function Replies(props: { setCount: any; setOpenD: any; setTargetM: any; handleM
   }
 
   const initialSet = useRef(false);
-  useEffectComment('RPL', `/api/post/comment/${props.postCommentId}/children?size=10&page=${page.current}`, initialSet, page, setPage,
-    props.setCount, props.isLoadingR, props.setLoadingR, setChildren, children)
+  // useEffectComment('RPL', `/api/post/comment/${props.postCommentId}/children?sort=createdAt,desc&size=10&page=${page.current}`, initialSet, page, setPage,
+  //   props.setCount, props.isLoadingR, props.setLoadingR, setChildren, children)
 
-  if (props.isLoadingR) { return <LoadingSkeleton type='RPL' /> }
-  else {
+  useEffectRefreshComment('RPL', `/api/post/comment/${props.postCommentId}/children?sort=createdAt,desc&size=10`, initialSet, page, setPage,
+    props.setCount, props.isLoadingR, props.setLoadingR, setChildren, props.tmp, props.setTmp, props.setTmpP, props.tmpP)
+
+  // if (props.isLoadingR) { return <LoadingSkeleton type='RPL' /> }
+  // else {
     return (
       <div className='flex flex-col w-full'>
         {children.map((comment: CommentProps, idx: number) => (
@@ -146,11 +157,11 @@ function Replies(props: { setCount: any; setOpenD: any; setTargetM: any; handleM
       </div>
     )
   }
-}
+// }
 
 function ReplyFooter(props: {
   mentioning: boolean; setMentioning: Dispatch<SetStateAction<boolean>>; postCommentId: any; target: any; mentionRef: any; replyRef: any;
-  setLoadingC: any; setLoadingR: any;
+  setLoadingC: any; setLoadingR: any; setTmp: any; setTmpP: any;
 }) {
   const [value, setValue] = useState('')
   const handleInput = (e: any) => {
@@ -207,6 +218,8 @@ function ReplyFooter(props: {
         { "content": props.mentionRef.current.innerText, "replyTargetPostCommentChildId": props.target.id })
         .then((response) => {
           console.log(response)
+          props.setTmp([])
+          props.setTmpP(undefined)
           props.setLoadingC(true)
           props.setLoadingR(true)
           if (props.mentionRef.current) { props.mentionRef.current.innerText = '' }
@@ -218,6 +231,8 @@ function ReplyFooter(props: {
         { "content": props.replyRef.current.value })
         .then((response) => {
           console.log(response)
+          props.setTmp([])
+          props.setTmpP(undefined)
           props.setLoadingC(true)
           props.setLoadingR(true)
           if (props.replyRef.current) { props.replyRef.current.value = '' }

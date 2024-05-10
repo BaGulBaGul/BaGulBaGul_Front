@@ -29,7 +29,7 @@ export function ClientRootLayout({ children }: { children: React.ReactNode }) {
 
   const routeToFilter = () => {
     let params = {
-      sort: sort ?? '',
+      sort: sort ?? '', state: proceeding ? 'p' : '',
       sD: dayRange.from === null || dayRange.from === undefined
         ? '' : `${dayRange.from.year}${String(dayRange.from.month).padStart(2, "0")}${String(dayRange.from.day).padStart(2, "0")}`,
       eD: dayRange.to === null || dayRange.to === undefined
@@ -40,7 +40,6 @@ export function ClientRootLayout({ children }: { children: React.ReactNode }) {
   }
 
   useEffect(() => {
-    console.log('useEffect - routeToFilter')
     routeToFilter()
   }, [rt])
 

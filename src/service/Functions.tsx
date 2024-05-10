@@ -1,5 +1,5 @@
 import { tabList } from "@/components/common/Data";
-import { Dispatch, MutableRefObject, SetStateAction, useEffect, useRef } from "react";
+import { Dispatch, MutableRefObject, SetStateAction, useEffect, useRef, useState } from "react";
 import { createSearchParams } from 'react-router-dom'
 import { DayValue } from "react-modern-calendar-datepicker";
 import { call } from "./ApiService";
@@ -139,20 +139,39 @@ export function setPageInfo(page: any, setPage: any, currentPage: number, params
 
 
 // 이벤트 저장 리스트 업데이트
-export function setUniqueList(opt: string, currentList: [], setItems: any, items?: EventProps[] | RecruitProps[], itemsC?: CommentProps[]) {
+export function setUniqueList(opt: string, currentList: any[], setItems: any, items?: EventProps[] | RecruitProps[], itemsC?: CommentProps[]) {
   if (opt === 'EVT' && items) {
     const newItems = items.concat(currentList)
     const ids = newItems.map(({ id }) => id);
     const filtered = newItems.filter(({ id }, index: number) => !ids.includes(id, index + 1));
     setItems(filtered);
+    // } else if (opt === 'CMT' && itemsC) {
+    //   console.log('**********************************')
+    //   console.log('c: ', currentList)
+    //   const newItems = itemsC.concat(currentList)
+    //   console.log('itemsC: ', itemsC)
+    //   console.log('n: ', newItems)
+    //   const ids = newItems.map(({ commentId }) => commentId);
+    //   const filtered = newItems.filter(({ commentId }, index: number) => !ids.includes(commentId, index + 1));
+    //   setItems(filtered);
+    //   console.log('f: ', filtered)
   } else if (opt === 'CMT' && itemsC) {
-    console.log('**********************************')
-    console.log('c: ', currentList)
-    const newItems = itemsC.concat(currentList)
-    console.log('itemsC: ', itemsC)
+    console.log('**************** setUniqueList ******************')
+    // console.log('c: ', currentList)
+    const newItems = currentList.length > 0 ? itemsC.concat(currentList) : itemsC
+    // console.log('itemsC: ', itemsC)
+
     console.log('n: ', newItems)
     const ids = newItems.map(({ commentId }) => commentId);
-    const filtered = newItems.filter(({ commentId }, index: number) => !ids.includes(commentId, index + 1));
+
+    const filtered = newItems.filter(({ commentId }, index: number) =>
+      index === 0 || index > 0 && !(ids.slice(0, index)).includes(commentId)
+    );
+    // const filtered = Array.from(new Set(newItems.map((item: any) => item.commentId))) // -> id만 출력됨
+
+    // let setObj = new Set(newItems.map(JSON.stringify));
+    // let filtered = Array.from(setObj).map(JSON.parse);
+
     setItems(filtered);
     console.log('f: ', filtered)
   } else if (opt === 'RPL' && itemsC) {
@@ -263,7 +282,7 @@ export const useEffectCntFilter = (searchParams: any, setFilters: any, setFilter
 
 export interface ParamProps {
   title?: string; page: number; categories?: string[] | undefined; type?: string | undefined; sort?: string | undefined;
-  tags?: string; startDate?: string | undefined; endDate?: string | undefined; leftHeadCount?: string | undefined;
+  state?: string; tags?: string; startDate?: string | undefined; endDate?: string | undefined; leftHeadCount?: string | undefined;
   totalHeadCountMax?: string | undefined; totalHeadCountMin?: string | undefined;
 }
 
@@ -303,12 +322,13 @@ export const useEffectCallAPI = (params: any, initialSet: MutableRefObject<boole
 
 
 // 상세화면
-export const useEffectDetail = (urlDetail: string, urlCheckLike: string, setData: any, setLoading: any, setLiked: any, setLoginfo: any) => {
+export const useEffectDetail = (urlDetail: string, urlCheckLike: string, setData: any, setLoading: any, setLiked: any, setLikeCount: any, setLoginfo: any) => {
   useEffect(() => {
     call(urlDetail, "GET", null)
       .then((response) => {
         console.log(response.data);
         setData(response.data);
+        setLikeCount(response.data.likeCount);
         setLoading(false);
       })
     call(urlCheckLike, "GET", null)
@@ -322,21 +342,13 @@ export const useEffectDetail = (urlDetail: string, urlCheckLike: string, setData
   }, [])
 }
 
-export const applyLike = (loginfo: boolean, liked: boolean, url: string, setLiked: any,) => {
+export const applyLike = (loginfo: boolean, liked: boolean, url: string, setLiked: any, setLikeCount: any) => {
   if (loginfo) {
-    if (!liked) {
-      call(url, "POST", null)
-        .then((response) => {
-          console.log('liked')
-          setLiked(true)
-        }).catch((error) => console.error(error));
-    } else {
-      call(url, "DELETE", null)
-        .then((response) => {
-          console.log('unliked')
-          setLiked(false)
-        }).catch((error) => console.error(error));
-    }
+    call(url, liked ? "DELETE" : "POST", null)
+      .then((response) => {
+        setLiked(!liked)
+        setLikeCount(response.data.likeCount)
+      }).catch((error) => console.error(error));
   }
 }
 
@@ -354,14 +366,58 @@ export const useEffectComment = (opt: string, url: string, initialSet: MutableRe
           if (!initialSet.current) {
             setPage({ current: 0, total: response.data.totalPages })
             initialSet.current = true;
-            setCount(response.data.totalElements)
           }
           // setUniqueList(opt, response.data.content, setComments, undefined, comments)
           console.log('response: ', response.data.content)
           setUniqueList(opt, response.data.content, setComments, undefined, comments)
+          setCount(response.data.totalElements)
         }
         setLoading(false)
       })
     }
   }, [page, isLoading])
+}
+
+// 댓글 대댓글
+export const useEffectRefreshComment = (opt: string, url: string, initialSet: MutableRefObject<boolean>, page: any, setPage: any,
+  setCount: any, isLoading: boolean, setLoading: any, setComments: any, tmp: any[], setTmp: any, setTmpP: any, tmpP?: number) => {
+  useEffect(() => {
+    var tmpA: any[] = [];
+    console.log('useEffectRefreshComment (1)')
+    console.log('(1) tmpA: ', tmpA)
+    async function fetchComment() {
+      if (isLoading) {
+        for (let p = 0; p < page.current + 1; p++) {
+          await call(`${url}&page=${p}`, "GET", null).then((response: any) => {
+            console.log(`${url}&page=${p}`)
+            if (!response.data.empty) {
+              if (p === 0) {
+                // 페이지값 초기설정
+                if (!initialSet.current) {
+                  setPage({ current: 0, total: response.data.totalPages })
+                  initialSet.current = true;
+                }
+                setCount(response.data.totalElements)
+              }
+              console.log('response: ', response.data.content)
+              response.data.content.forEach(function(d:any) {tmpA.push(d)})
+              console.log('(1) - tmpC: ', tmpA)
+              setTmpP(p)
+            }
+          })
+        }
+        setTmp(tmpA)
+      }
+    }
+    fetchComment();
+  }, [page, isLoading])
+  useEffect(() => {
+    console.log('useEffectRefreshComment (2) ', tmpP, page.current)
+    if (tmpP === page.current && tmp.length > 0) {
+      console.log('----- for loop end ---')
+      console.log('tmp: ', tmp)
+      setUniqueList(opt, [], setComments, undefined, tmp)
+      setLoading(false)
+    }
+  }, [tmp])
 }

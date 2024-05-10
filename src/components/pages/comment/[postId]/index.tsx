@@ -4,7 +4,7 @@ import { useParams } from 'next/navigation';
 import { call } from "@/service/ApiService";
 import { Button, ThemeProvider, TextField } from '@mui/material';
 import { SubHeaderCnt } from '@/components/layout/subHeader';
-import { setPageInfo, useEffectComment } from '@/service/Functions';
+import { setPageInfo, useEffectRefreshComment } from '@/service/Functions';
 import { commentTheme } from '@/components/common/Themes';
 import { LoadingSkeleton, MoreButton } from '@/components/common';
 import { CommentBlock, CommentDrawer, CommentMProps, CommentProps, ModifyInput } from '@/components/common/Comment';
@@ -22,6 +22,9 @@ const index = () => {
 
   const params = useParams()
 
+  const [tmp, setTmp] = useState<any[]>([])
+  const [tmpP, setTmpP] = useState<number>();
+
   const handleDelete = () => {
     let confirmDelete = confirm("댓글을 삭제하시겠습니까?");
     if (targetM && confirmDelete) {
@@ -30,38 +33,43 @@ const index = () => {
         .then((response) => {
           console.log(response)
           // props.initialSet.current = false;
+          setTmp([])
+          setTmpP(undefined)
           setLoading(true)
         }).catch((error) => console.error(error));
     }
   }
 
+
   return (
     <>
       <SubHeaderCnt name='글 댓글' cnt={count} />
       <Comments postId={params.postId} setCount={setCount} setOpenD={setOpenD} setTargetM={setTargetM}
-        isLoading={isLoading} setLoading={setLoading} />
-      <CommentFooter postId={params.postId} setLoading={setLoading} />
+        isLoading={isLoading} setLoading={setLoading} tmp={tmp} setTmp={setTmp} setTmpP={setTmpP} tmpP={tmpP} />
+      <CommentFooter postId={params.postId} setLoading={setLoading} setTmp={setTmp} setTmpP={setTmpP} />
       <CommentDrawer open={openD} toggleDrawer={toggleDrawer} setOpenM={setOpenM} handleDelete={handleDelete} />
-      <ModifyInput open={openM} setOpenM={setOpenM} target={targetM} setTarget={setTargetM} setLoading={setLoading} />
+      <ModifyInput open={openM} setOpenM={setOpenM} target={targetM} setTarget={setTargetM} setLoading={setLoading} setTmp={setTmp} setTmpP={setTmpP} />
     </>
   )
 }
 export default index;
 
-function Comments(props: { postId: any; setCount: any; setOpenD: any; setTargetM: any; isLoading: boolean; setLoading: any; }) {
+function Comments(props: { postId: any; setCount: any; setOpenD: any; setTargetM: any; isLoading: boolean; setLoading: any; 
+  tmp: any[]; setTmp: any; setTmpP: any; tmpP?: number; }) {
   const [comments, setComments] = useState<CommentProps[]>([]);
 
   const [page, setPage] = useState({ current: 0, total: 0, });
-  const handleMore = () => { 
+  const handleMore = () => {
     props.setLoading(true)
-    setPageInfo(page, setPage, page.current + 1) }
+    setPageInfo(page, setPage, page.current + 1)
+  }
 
   const initialSet = useRef(false);
-  useEffectComment('CMT', `/api/post/${props.postId}/comment?size=10&page=${page.current}`, initialSet, page, setPage,
-    props.setCount, props.isLoading, props.setLoading, setComments, comments)
-  console.log('&& ', comments)
-  if (props.isLoading && page.current === 0) { return <LoadingSkeleton type='CMT' /> }
-  else {
+  useEffectRefreshComment('CMT', `/api/post/${props.postId}/comment?sort=createdAt,desc&size=10`, initialSet, page, setPage,
+    props.setCount, props.isLoading, props.setLoading, setComments, props.tmp, props.setTmp, props.setTmpP, props.tmpP)
+  // console.log('&& ', comments)
+  // if (props.isLoading && page.current === 0) { return <LoadingSkeleton type='CMT' /> }
+  // else {
     return (
       <>
         <div className='flex flex-col w-full min-h-[calc(100vh-104px)] pb-[49px] bg-gray1'>
@@ -78,10 +86,10 @@ function Comments(props: { postId: any; setCount: any; setOpenD: any; setTargetM
         </div>
       </>
     )
-  }
+  // }
 }
 
-function CommentFooter(props: { postId: any; setLoading: any; }) {
+function CommentFooter(props: { postId: any; setLoading: any; setTmp: any; setTmpP: any; }) {
   const cmtRef = useRef<HTMLInputElement>(null);
   const handleComment = () => {
     if (cmtRef.current && cmtRef.current.value.length > 0) {
@@ -89,6 +97,8 @@ function CommentFooter(props: { postId: any; setLoading: any; }) {
       call(`/api/post/${props.postId}/comment`, "POST", { "content": cmtRef.current.value })
         .then((response) => {
           console.log(response)
+          props.setTmp([])
+          props.setTmpP(undefined)
           props.setLoading(true)
           if (cmtRef.current) { cmtRef.current.value = '' }
         }).catch((error) => console.error(error));
