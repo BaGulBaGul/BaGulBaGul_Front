@@ -2,8 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-html,
-body,
+html, body,
 .MuiTypography-root,
 .MuiButtonBase-root,
 .MuiChip-root,
@@ -12,17 +11,12 @@ body,
   text-transform: unset
 }
 
-em {
-  font-style: unset;
+em { font-style: unset;
 }
 
 .slick-track {
   min-width: 4710px;
 }
-
-/* .slick-arrow {
-  display: none;
-} */
 
 .slick-arrow:before {
   content: "" !important;
@@ -75,10 +69,6 @@ em {
 .cateBtns::-webkit-scrollbar {
   display: none;
 }
-
-/* .MuiToggleButton-standard+.MuiToggleButton-standard {
-  margin-left: 10px;
-} */
 
 .container {
   width: 100%;
@@ -476,8 +466,3 @@ div.editor-body {
 .mention-reply-section:focus {
   outline: none;
 }
-
-/* 
-.slide {
-  min-width: 195px !important
-} */

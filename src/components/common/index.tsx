@@ -15,6 +15,7 @@ import { ViewButton, ViewSelect } from './ViewFilter'
 import { ViewFilterApplied } from './ViewFilterApplied'
 import { LoadingSkeleton, LoadingCircle } from './Loading'
 import { Detail } from './Detail'
+import SignIn from './SignIn'
 
 
 export {
@@ -32,5 +33,6 @@ export {
   ShareDialog,
   ScrollToTop,
   LoadingSkeleton, LoadingCircle,
-  Detail
+  Detail,
+  SignIn
 }

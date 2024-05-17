@@ -221,10 +221,11 @@ export const modifyCommentTheme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          fontSize: '16px', color: '#FCFCFC', lineHeight: '140%',
-          backgroundColor: '#4A6AFE !important', width: '100%',
-          paddingTop: '20px', paddingBottom: '35px', borderRadius: '0px',
-          position: 'fixed', bottom: '0px', left: '0px',
+          position: 'fixed', bottom: '0px', left: '0px', right: '0px',
+          display: 'flex', flexDirection: 'row', width: '100%', borderRadius: '0px',
+          justifyContent: 'center', paddingTop: '20px', paddingBottom: '35px',
+          backgroundColor: '#4A6AFE !important', color: '#FCFCFC',
+          fontSize: '16px', lineHeight: '140%', zIndex: '400'
         }
       }
     },
@@ -561,6 +562,64 @@ export const searchFreqTheme = createTheme({
         }
       }
     }
+  }
+})
+
+export const signInTheme = createTheme({
+  components: {
+    MuiAppBar: {
+      styleOverrides: {
+        root: { backgroundColor: '#FFF', boxShadow: 'unset', }
+      }
+    },
+    MuiToolbar: {
+      styleOverrides: {
+        root: {
+          display: 'flex', justifyContent: 'end', flexDirection: 'row', padding: '10px 16px'
+        }
+      }
+    },
+    MuiButton: {
+      defaultProps: { disableRipple: true, },
+      styleOverrides: {
+        root: {
+          fontSize: '15px', fontWeight: '500', color: '#000000', height: '45px',
+          backgroundColor: '#FEE500 !important', borderRadius: '12px',
+        }
+      }
+    },
+  }
+})
+
+export const joinTheme = createTheme({
+  components: {
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          fontSize: '14px', color: '#6C6C6C',
+          '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: '#C1C1C1 !important', },
+          '&.Mui-focused .MuiOutlinedInput-notchedOutline': { border: '1px solid #6C6C6C !important', },
+        },
+        input: { padding: '11px 14px', lineHeight: '160%', '&::placeholder': { color: '#C1C1C1', } },
+      },
+    },
+  }
+})
+
+export const FooterBtnTheme = createTheme({
+  components: {
+    MuiButton: {
+      defaultProps: { disableRipple: true, },
+      styleOverrides: {
+        root: {
+          position: 'fixed', bottom: '0px', left: '0px', right: '0px',
+          display: 'flex', flexDirection: 'row', width: '100%', borderRadius: '0px',
+          justifyContent: 'center', paddingTop: '20px', paddingBottom: '35px',
+          backgroundColor: '#4A6AFE !important', color: '#FCFCFC',
+          fontSize: '16px', lineHeight: '140%', zIndex: '400', fontWeight: '400',
+        }
+      }
+    },
   }
 })
 

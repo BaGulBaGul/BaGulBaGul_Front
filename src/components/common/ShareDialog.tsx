@@ -33,7 +33,7 @@ export default function ShareDialog(props: ShareDialogProps) {
 
     // - using navigator clipboard api
     try {
-      await navigator.clipboard.writeText('http://localhost:3000' + props.sharingURL);
+      await navigator.clipboard.writeText(process.env.NEXT_PUBLIC_FRONT_BASE_URL + props.sharingURL);
       alert('클립보드에 URL이 복사되었습니다.\n공유할 곳에 붙여넣기 해주세요.')
     } catch (err) {
       // alert('링크 복사를 실패했습니다.')

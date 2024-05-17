@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Box, Backdrop } from '@mui/material';
 import { CategoryButtons, ViewButton, ViewSelect, RecCarousel, PostTab, ViewFilterApplied } from '@/components/common';
 import { RangeProps, getParams, String2Day, useEffectCntFilter } from '@/service/Functions';
@@ -8,6 +8,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 
 export function ClientRootLayout({ children }: { children: React.ReactNode }) {
   const searchParams = useSearchParams()
+
   //type
   const [tab, setTab] = useState(Number(searchParams.get('tab_id')) ?? 0);
   const handleChange = (e: React.SyntheticEvent, newValue: number) => { setTab(newValue); };
@@ -26,6 +27,17 @@ export function ClientRootLayout({ children }: { children: React.ReactNode }) {
   const [filterCnt, setFilterCnt] = useState(0)
   // searchParams로 넘어온 필터 count
   useEffectCntFilter(searchParams, setFilters, setFilterCnt, sort)
+
+  // // ** 적용된 필터 있는 경우 자동으로 스크롤되도록 -> 적용안됨
+  // const sRef = useRef<HTMLDivElement>()
+  // useEffect(() => {
+  //   // let element = document.getElementById('post-root');
+  //   if (sRef.current && (Array.from(searchParams).length > 2 || (Array.from(searchParams).length === 2
+  //     && !(searchParams.get('sort') === 'createdAt,desc' && searchParams.get('tab_id') === '0')))) {
+  //     console.log('-@-@-@- !!! ', Array.from(searchParams).length)
+  //     sRef.current.scrollIntoView()
+  //   }
+  // }, [])
 
   const router = useRouter()
   const [rt, setRt] = useState(false)
@@ -53,10 +65,11 @@ export function ClientRootLayout({ children }: { children: React.ReactNode }) {
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => { setOpen(true) }
-  
+
   return (
     <div className='flex flex-col w-full pt-[44px]'>
       <RecCarousel />
+      {/* <Box className='w-full px-0' id='post-root' ref={sRef}> */}
       <Box className='w-full px-0'>
         <Box className='sticky top-[44px] bg-[#FFF] relative z-10 px-[16px] pt-[20px] pb-[10px]'>
           <div className='flex justify-between items-center'>
