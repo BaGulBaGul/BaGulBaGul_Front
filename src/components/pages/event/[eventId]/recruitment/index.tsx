@@ -2,14 +2,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useParams, useSearchParams } from 'next/navigation';
 import { Divider } from '@mui/material';
-import { LoadingCircle, LoadingSkeleton, MoreButton } from '@/components/common';
+import { LoadingCircle, LoadingSkeleton, MoreButton, ParamProps, RListProps } from '@/components/common';
 import { call } from '@/service/ApiService';
-import { ParamProps, RecruitProps, String2ISO, getParams, setPageInfo, setUniqueList } from "@/service/Functions";
+import { String2ISO, getParams, setPageInfo, setUniqueList } from "@/service/Functions";
 import { RecruitBlock } from "@/components/common/EventBlock";
 
 const index = () => {
   return (
-    <div className='flex flex-col w-full pt-[104px] pb-[44px]'>
+    <div className='flex flex-col w-full pt-[104px] pb-[77px]'>
       <RecruitTab />
     </div>
   )
@@ -20,7 +20,7 @@ function RecruitTab() {
   const prms = useParams()
   const searchParams = useSearchParams()
   const [isLoading, setLoading] = useState(true)
-  const [recruits, setRecruits] = useState<RecruitProps[]>([]);
+  const [recruits, setRecruits] = useState<RListProps[]>([]);
 
   const [params, setParams] = useState<ParamProps | undefined>();
 

@@ -1,10 +1,10 @@
 import { tabList } from "@/components/common/Data";
-import { Dispatch, MutableRefObject, SetStateAction, useEffect, useRef } from "react";
+import { MutableRefObject, useEffect, useRef } from "react";
 import { createSearchParams } from 'react-router-dom'
-import { DayValue } from "react-modern-calendar-datepicker";
 import { call } from "./ApiService";
-import { DayRange } from "@hassanmojab/react-modern-calendar-datepicker";
+import { DayValue, DayRange } from "@hassanmojab/react-modern-calendar-datepicker";
 import { CommentProps } from "@/components/common/Comment";
+import { ListProps, ParamProps, RListProps } from "@/components/common";
 
 export const FormatDate = (dateStr: any, type: number) => {
   const dateD = new Date(dateStr);
@@ -105,29 +105,6 @@ export const sortLabel = (sort: string) => {
   }
 }
 
-export interface PostTabsProps {
-  events: never[]; value: number; handleChange: any; filterCnt: number; filters: string[],
-  setFilters: Dispatch<SetStateAction<string[]>>; sort: string; setSort: Dispatch<SetStateAction<string>>;
-  dayRange: DayRange; setDayRange: any; participants: number; setParticipants: any;
-  headCount: { from: undefined | number, to: undefined | number }; setHeadCount: any;
-  page: { current: number; total: number; }; setPageInfo: any;
-  selectedCate: string[]; setSelectedCate: Dispatch<SetStateAction<string[]>>;
-  open?: boolean; setOpen?: any;
-}
-
-export interface RangeProps { from: undefined | number, to: undefined | number }
-
-export interface EventProps {
-  id: number; abstractLocation: string; categories: string[];
-  tags: string[]; title: string; type: string; userName: string; userImage: string;
-  startDate: string; endDate: string; lastModifiedAt: string; headImageUrl: string;
-  currentHeadCount: number; totalHeadCount: number;
-}
-export interface RecruitProps {
-  title: string; user_profile: string; username: string; state: string;
-  startDate: any; tags?: string[]; id?: number; headCount?: number; headCountMax?: number;
-}
-
 export function setPageInfo(page: any, setPage: any, currentPage: number, params?: ParamProps, setParams?: any) {
   setPage({ ...page, current: currentPage });
   if (params !== undefined && setParams !== undefined) {
@@ -136,11 +113,15 @@ export function setPageInfo(page: any, setPage: any, currentPage: number, params
 }
 
 // 이벤트 저장 리스트 업데이트
-export function setUniqueList(opt: string, currentList: any[], setItems: any, items?: EventProps[] | RecruitProps[], itemsC?: CommentProps[]) {
+export function setUniqueList(opt: string, currentList: any[], setItems: any, items?: ListProps[] | RListProps[], itemsC?: CommentProps[]) {
   if (opt === 'EVT' && items) {
-    const newItems = items.concat(currentList)
-    const ids = newItems.map(({ id }) => id);
-    const filtered = newItems.filter(({ id }, index: number) => !ids.includes(id, index + 1));
+    const newItems = currentList.length > 0 ? items.concat(currentList) : items
+    const ids = newItems.map(({ post }) => post.postId);
+    console.log('ids: ', ids)
+    const filtered = newItems.filter(({ post }, index: number) =>
+      index === 0 || index > 0 && !(ids.slice(0, index)).includes(post.postId)
+    );
+    console.log('filtered: ', filtered)
     setItems(filtered);
   } else if (opt === 'CMT' && itemsC) {
     console.log('**************** setUniqueList ******************')
@@ -225,9 +206,9 @@ export const useEffectFilterApplied = (dependencies: any[], filters: string[], s
       }
     }
   }, [changed])
-  
+
   useEffect(() => { // 필터 개수 판단
-    if (filters.length === 1 && sort === 'createdAt,desc') { setFilterCnt(0) } 
+    if (filters.length === 1 && sort === 'createdAt,desc') { setFilterCnt(0) }
     else if (filters.length > 0) { setFilterCnt(filters.length) }
   }, dependencies)
 }
@@ -251,12 +232,6 @@ export const useEffectCntFilter = (searchParams: any, setFilters: any, setFilter
       else { setFilterCnt(paramFilter.length) }
     }
   }, [searchParams])
-}
-
-export interface ParamProps {
-  title?: string; page: number; categories?: string[] | undefined; type?: string | undefined; sort?: string | undefined;
-  state?: string; tags?: string; startDate?: string | undefined; endDate?: string | undefined; leftHeadCount?: string | undefined;
-  totalHeadCountMax?: string | undefined; totalHeadCountMin?: string | undefined;
 }
 
 // call event list api with filters
@@ -299,7 +274,7 @@ export const useEffectDetail = (urlDetail: string, urlCheckLike: string, setData
       .then((response) => {
         console.log(response.data);
         setData(response.data);
-        setLikeCount(response.data.likeCount);
+        setLikeCount(response.data.post.likeCount);
         setLoading(false);
       })
     call(urlCheckLike, "GET", null)

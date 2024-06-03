@@ -20,6 +20,6 @@ const index = () => {
   }
 
   if (isLoading) { return <LoadingSkeleton type='DTLR' /> }
-  if (Object.keys(data).length > 0) { return <Detail opt='RCT' data={data} liked={liked} likeCount={likeCount} handleLike={handleLike} /> }
+  if (Object.keys(data).length > 0) { return <Detail opt='RCT' dataR={data} liked={liked} likeCount={likeCount} handleLike={handleLike} /> }
 }
 export default index;

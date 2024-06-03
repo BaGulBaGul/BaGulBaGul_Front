@@ -16,8 +16,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
   transition: theme.transitions.create('transform', { duration: theme.transitions.duration.shortest })
 }));
 
-interface HashtagAccordionProps { tag: string[]; }
-export default function HashtagAccordion(props: HashtagAccordionProps) {
+export default function HashtagAccordion(props: { tag: string[]; }) {
   const ref = createRef<HTMLDivElement>();
   const [expanded, setExpanded] = useState(false);
   const [showMore, setShowMore] = useState(false);
@@ -51,8 +50,7 @@ export default function HashtagAccordion(props: HashtagAccordionProps) {
   }
 }
 
-interface HashtagButtonProps { tag: string; }
-export function HashtagButton(props: HashtagButtonProps) {
+export function HashtagButton(props: { tag: string; }) {
   return (
     <ThemeProvider theme={hashtagButtonTheme}>
       <Button href={`/tag?tag=${props.tag}&tab_id=0`}>

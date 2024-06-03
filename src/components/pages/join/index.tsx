@@ -64,7 +64,8 @@ const index = () => {
 }
 export default index;
 
-function JoinBlock(props: { opt: string, nameChecked?: boolean, setNameChecked?: any, nameRef?: MutableRefObject<any>, emailRef?: MutableRefObject<any>}) {
+interface JoinBlockProps { opt: string, nameChecked?: boolean, setNameChecked?: any, nameRef?: MutableRefObject<any>, emailRef?: MutableRefObject<any> }
+function JoinBlock(props: JoinBlockProps) {
   const nameRegEx = /^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,12}$/
   // * 존재하는 닉네임 확인 필요
   const handleNameCheck = () => {

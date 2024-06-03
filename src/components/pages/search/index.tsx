@@ -1,12 +1,12 @@
 "use client";
 import { useEffect, useRef, useState } from 'react';
 import { IconButton, TextField, ThemeProvider, Divider, Button, Backdrop, ToggleButtonGroup, ToggleButton } from '@mui/material';
-import { CategoryButtons, ViewButton, ViewFilterApplied, ViewSelect } from '@/components/common';
+import { CategoryButtons, RangeProps, ViewButton, ViewFilterApplied, ViewSelect } from '@/components/common';
 import { searchInputTheme, searchFreqTheme, deleteButtonTheme, tabTheme } from '@/components/common/Themes';
 import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
 import { DayRange } from '@hassanmojab/react-modern-calendar-datepicker'
 import { useRouter } from 'next/navigation';
-import { RangeProps, getParams, useEffectFilter, useEffectFilterApplied } from '@/service/Functions';
+import { getParams, useEffectFilter, useEffectFilterApplied } from '@/service/Functions';
 
 const index = () => {
   const [tab, setTab] = useState(0);

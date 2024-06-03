@@ -1,8 +1,8 @@
-import { FormatDateRange, ParamProps, String2ISO, setPageInfo, useEffectCallAPI } from "@/service/Functions"
-import { PostProps, TabBlockProps } from "./EventBlock"
+import { FormatDateRange, String2ISO, setPageInfo, useEffectCallAPI } from "@/service/Functions"
+import { TabBlockProps } from "./EventBlock"
 import { LoadingSkeleton } from "./Loading"
 import { DividerDot, TagIcn } from "./Icon"
-import { HashtagAccordion, MoreButton, NoEvent, TabPanel, ViewButton } from "."
+import { HashtagAccordion, ListProps, MoreButton, NoEvent, ParamProps, TabPanel, ViewButton } from "."
 import { Chip, Divider, IconButton, TextField, ThemeProvider } from "@mui/material"
 import { doneChipTheme, searchInputTheme, suggestChipTheme } from "./Themes"
 import { useEffect, useRef, useState } from "react"
@@ -50,21 +50,21 @@ export const TabBlock = (props: TabBlockProps) => {
   }
 }
 
-export function ResultBlock(props: { data: PostProps }) {
-  let urlLink = `/event/${props.data.id}`
+export function ResultBlock(props: { data: ListProps }) {
+  let urlLink = `/event/${props.data.event.eventId}`
   return (
     <div className="flex flex-col py-[18px] px-[16px] justify-between">
       <a href={urlLink} className='flex flex-col gap-[4px]'>
-        <p className='truncate text-[16px] font-semibold leading-[140%]'>{props.data.title}</p>
-        <p className="text-[14px] text-gray3 leading-[160%]">{FormatDateRange(props.data.startDate, props.data.endDate)}</p>
+        <p className='truncate text-[16px] font-semibold leading-[140%]'>{props.data.post.title}</p>
+        <p className="text-[14px] text-gray3 leading-[160%]">{FormatDateRange(props.data.event.startDate, props.data.event.endDate)}</p>
         <div className='flex flex-row items-center gap-[4px] text-[14px]'>
           <img className='rounded-full w-[24px] h-[24px]' src='/main_profile.svg' />
-          <p className='text-black'>{props.data.userName}</p>
-          {props.data.type === 'PARTY'
+          <p className='text-black'>{props.data.post.writer.userName}</p>
+          {props.data.event.type === 'PARTY'
             ? <>
               <DividerDot />
-              <p className='text-gray3'>{`${props.data.currentHeadCount}/${props.data.totalHeadCount}(명)`}</p>
-              {props.data.currentHeadCount === props.data.totalHeadCount
+              <p className='text-gray3'>{`${props.data.event.currentHeadCount}/${props.data.event.maxHeadCount}(명)`}</p>
+              {props.data.event.currentHeadCount === props.data.event.maxHeadCount
                 ? <ThemeProvider theme={doneChipTheme}><Chip label="모집완료" /></ThemeProvider>
                 : <></>
               }
@@ -73,13 +73,13 @@ export function ResultBlock(props: { data: PostProps }) {
           }
         </div>
       </a>
-      {props.data.tags ? <HashtagAccordion tag={props.data.tags} /> : <></>}
+      {props.data.post.tags ? <HashtagAccordion tag={props.data.post.tags} /> : <></>}
     </div>
   )
 }
 
 export function SuggestBlock(props: { type: number }) {
-  const [suggestions, setSuggestions] = useState<any[]>([])
+  const [suggestions, setSuggestions] = useState<ListProps[]>([])
   useEffect(() => {
     console.log(' :: suggestblock: ', props.type)
     let apiURL = `/api/event?size=5&sort=likeCount,desc`
@@ -101,7 +101,7 @@ export function SuggestBlock(props: { type: number }) {
           { // 자주 찾는 검색어, 1~2줄
             suggestions.map((s, idx) =>
               <ThemeProvider theme={suggestChipTheme} key={`st-${idx}`}>
-                <a href={`/event/${s.id}`}><Chip label={s.title} variant="outlined" /></a>
+                <a href={`/event/${s.event.eventId}`}><Chip label={s.post.title} variant="outlined" /></a>
               </ThemeProvider>
             )
           }
@@ -115,10 +115,10 @@ export function SuggestBlock(props: { type: number }) {
         <div className="flex flex-row gap-[16px] overflow-x-auto overflow-y-hide whitespace-nowrap">
           {suggestions.map((s, idx) =>
             <div className="flex flex-col w-[120px] gap-[12px]" key={`si-${idx}`}>
-              <img className='h-[148px] rounded-[5.65px] object-cover' src={s.headImageUrl ?? '/default_list_thumb3x.png'} />
+              <img className='h-[148px] rounded-[5.65px] object-cover' src={s.post.headImageUrl ?? '/default_list_thumb3x.png'} />
               <div className="flex flex-col text-[14px] leading-[160%]">
-                <span className="font-semibold truncate">{s.title}</span>
-                <span>{FormatDateRange(s.startDate, s.endDate)}</span>
+                <span className="font-semibold truncate">{s.post.title}</span>
+                <span>{FormatDateRange(s.event.startDate, s.event.endDate)}</span>
               </div>
             </div>
           )}
@@ -193,7 +193,8 @@ export function SearchTabs(props: { opt: string; sp: ReadonlyURLSearchParams }) 
   )
 }
 
-export function SearchBar(props: { title?: string; tag?: string; setOpen: any; filterCnt: number; setTitle?: any; handleRt?: any; }) {
+interface SearchBarProps { title?: string; tag?: string; setOpen: any; filterCnt: number; setTitle?: any; handleRt?: any; }
+export function SearchBar(props: SearchBarProps) {
   const handleOpen = () => { props.setOpen(true) }
   if (props.title) {
     const inputRef = useRef<HTMLInputElement>(null);

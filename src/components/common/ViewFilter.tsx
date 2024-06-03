@@ -78,7 +78,7 @@ export function ViewSelect(props: ViewSelectProps) {
             {
               props.proceeding !== undefined
                 ? <div className="flex flex-row pt-[10px] justify-between" id="filter-proceeding">
-                  <div className="text-[14px] font-semibold leading-[160%] pb-[2px]">모집 중만 보기</div>
+                  <div className="text-[14px] leading-[160%] pb-[2px]">모집 중만 보기</div>
                   <ThemeProvider theme={viewCheckTheme}>
                     <FormControl>
                       <FormControlLabel control={<Checkbox checked={props.proceeding} onChange={handleProceeding} />} label="" />

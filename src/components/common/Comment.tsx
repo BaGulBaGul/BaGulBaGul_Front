@@ -119,7 +119,11 @@ export function CommentDrawer(props: { open: number; toggleDrawer: any; setOpenM
   )
 }
 
-export function ModifyInput(props: { open: boolean; setOpenM: any; target?: CommentMProps; setTarget: any; setLoading?: any; setTmp: any; setTmpP: any; }) {
+
+interface ModifyProps {
+  open: boolean; setOpenM: any; target?: CommentMProps; setTarget: any; setLoading?: any; setTmp: any; setTmpP: any;
+}
+export function ModifyInput(props: ModifyProps) {
   const mdfRef = useRef<HTMLInputElement>(null);
   const handleClose = () => {
     props.setTarget(undefined);
@@ -162,7 +166,7 @@ export function ModifyInput(props: { open: boolean; setOpenM: any; target?: Comm
   )
 }
 
-export function ModifyInputR(props: { open: boolean; setOpenM: any; target?: CommentMProps; setTarget: any; setLoading?: any; setTmp: any; setTmpP: any; }) {
+export function ModifyInputR(props: ModifyProps) {
   const mdfRef = useRef<HTMLDivElement>(null);
   const handleClose = () => {
     props.setTarget(undefined);

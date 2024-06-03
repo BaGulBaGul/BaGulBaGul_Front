@@ -1,77 +1,73 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ArrowNext, ArrowPrev } from "./Arrow";
-import { Button, Checkbox, Chip, Divider, IconButton, ThemeProvider } from "@mui/material";
+import { Button, Chip, Divider, IconButton, ThemeProvider } from "@mui/material";
 import { accompanyChipTheme, categoryButtonTheme, slideChipTheme } from "./Themes";
 import Slider from "react-slick";
 import { postData } from "./Data";
 import { FormatDate, FormatDateRange, FormatDateTime } from "@/service/Functions";
 import { HashtagButton } from "./HashtagAccordion";
-import { LikeIcn } from "./Icon";
-import { ShareDialog } from ".";
+import { LikeIcn, CalIcn } from "./Icon";
+import { DetailProps, RDetailProps, ShareDialog } from ".";
 import { PostFooter } from "../layout/footer";
 
-export interface PostTitleProps {
-  title: string; startDate: any; endDate?: any; type?: string;
-  views: number; userName?: string; username?: string; categories?: string[];
-}
-
-export const Detail = (props: { opt: string; data: any; eventId?: any; liked: boolean; likeCount?: number; handleLike: any; }) => {
+export const Detail = (props: { opt: string; data?: DetailProps; dataR?: RDetailProps; liked: boolean; likeCount?: number; handleLike: any; saved?: boolean; handleCalendar?: any; }) => {
   const [popopen, setPopopen] = useState(false);
   const handleOpen = () => { setPopopen(true) }
   const handleClose = () => { setPopopen(false) }
 
   const pathname = usePathname();
-  let commentURL = `/comment/${props.data.postId}`
+  let commentURL = props.data ? `/comment/${props.data.post.postId}` : props.dataR ? `/comment/${props.dataR.post.postId}` : '';
 
-  if (props.opt === 'EVT') {
+  if (props.opt === 'EVT' && props.data) {
     return (
       <div>
-        <div className={props.data.type !== 'PARTY' ? 'flex flex-col w-full pt-[104px] pb-[46px]' : 'flex flex-col w-full pt-[104px]'}>
-          {props.data.imageUrls.length > 0
+        <div className={props.data.event.type !== 'PARTY' ? 'flex flex-col w-full pt-[104px] pb-[77px]' : 'flex flex-col w-full pt-[104px]'}>
+          {props.data.post.imageUrls.length > 0
             ? <PostSlide />
             : <img className='h-[280px] object-cover' src='/default_detail_thumb3x.png' />
           }
-          <PostTitle title={props.data.title} startDate={props.data.startDate} endDate={props.data.endDate}
-            type={props.data.type} views={props.data.views} userName={props.data.userName} categories={props.data.categories} />
+          <PostTitle title={props.data.post.title} startDate={props.data.event.startDate} endDate={props.data.event.endDate}
+            type={props.data.event.type} views={props.data.post.views} userName={props.data.post.writer.userName} categories={props.data.event.categories} />
           <Divider />
-          <PostInfo opt='EVT' type={props.data.type} startDate={props.data.startDate} endDate={props.data.endDate} headCountMax={props.data.headCountMax} headCount={props.data.headCount} />
-          <PostContent content={props.data.content} />
-          {/* <PostContentMap address={props.data.fullLocation} lat={props.data.latitudeLocation} lng={props.data.longitudeLocation} /> */}
-          <PostContentMap address={props.data.fullLocation} lat={33.450701} lng={126.570667} />
-          {props.data.tags !== undefined && props.data.tags.length > 0
-            ? <PostContentTag tags={props.data.tags} />
+          <PostInfo opt='EVT' type={props.data.event.type} startDate={props.data.event.startDate} endDate={props.data.event.endDate}
+            headCountMax={props.data.event.maxHeadCount} headCount={props.data.event.currentHeadCount} />
+          <PostContent content={props.data.post.content} />
+          {/* <PostContentMap address={props.data.event.fullLocation} lat={props.data.event.latitudeLocation} lng={props.data.event.longitudeLocation} /> */}
+          <PostContentMap address={props.data.event.fullLocation} lat={33.450701} lng={126.570667} />
+          {props.data.post.tags !== undefined && props.data.post.tags.length > 0
+            ? <PostContentTag tags={props.data.post.tags} />
             : <></>
           }
           <ShareDialog handleClose={handleClose} popopen={popopen} sharingURL={pathname} />
           <PostTools opt='EVT' handleOpen={handleOpen} likeCount={props.likeCount} liked={props.liked} handleLike={props.handleLike}
-            commentCount={props.data.commentCount} commentURL={commentURL} />
+            commentCount={props.data.post.commentCount} commentURL={commentURL} saved={props.saved} handleCalendar={props.handleCalendar} />
         </div>
         { // 페스티벌, 지역행사는 '모집글 보러가기' 버튼 배치
-          props.data.type !== 'PARTY' ? <PostFooter title='모집글 보러가기' path={`/event/${props.eventId}/recruitment`} /> : <></>
+          props.data.event.type !== 'PARTY' ? <PostFooter title='모집글 보러가기' path={`/event/${props.data.event.eventId}/recruitment`} /> : <></>
         }
       </div>
     )
-  } else {
+  } else if (props.opt === 'RCT' && props.dataR) {
     return (
       <div className='flex flex-col w-full min-h-screen pt-[104px] justify-between'>
-        <div>
-          {props.data.imageUrls.length > 0
+        <div className='flex flex-col w-full'>
+          {props.dataR.post.imageUrls.length > 0
             ? <PostSlide /> : <img className='h-[280px] object-cover' src='/default_detail_thumb3x.png' />
           }
-          <PostTitle title={props.data.title} startDate={props.data.startDate} views={props.data.views} username={props.data.username} />
+          <PostTitle title={props.dataR.post.title} startDate={props.dataR.recruitment.startDate} views={props.dataR.post.views} username={props.dataR.post.writer.userName} />
           <Divider />
-          <PostInfo opt='RCT' headCount={props.data.totalHeadCount} currentHeadCount={props.data.currentHeadCount} />
+          <PostInfo opt='RCT' headCount={props.dataR.recruitment.maxHeadCount} currentHeadCount={props.dataR.recruitment.currentHeadCount} />
           <div className='pb-[30px]'>
-            <PostContent content={props.data.content} />
-            {props.data.tags !== undefined && props.data.tags.length > 0 ? <PostContentTag tags={props.data.tags} /> : <></>}
+            <PostContent content={props.dataR.post.content} />
+            {props.dataR.post.tags !== undefined && props.dataR.post.tags.length > 0 ? <PostContentTag tags={props.dataR.post.tags} /> : <></>}
           </div>
         </div>
         <ShareDialog handleClose={handleClose} popopen={popopen} sharingURL={pathname} />
         <div>
           <Divider />
           <PostTools opt='RCT' handleOpen={handleOpen} likeCount={props.likeCount} liked={props.liked} handleLike={props.handleLike}
-            commentCount={props.data.commentCount} commentURL={commentURL} />
+            commentCount={props.dataR.post.commentCount} commentURL={commentURL} />
         </div>
       </div>
     )
@@ -100,6 +96,10 @@ function PostSlide() {
   )
 }
 
+interface PostTitleProps {
+  title: string; startDate: any; endDate?: any; type?: string;
+  views: number; userName?: string; username?: string; categories?: string[];
+}
 function PostTitle(props: PostTitleProps) {
   const dateString = props.type !== undefined && props.type !== 'PARTY' ? FormatDateRange(props.startDate, props.endDate) : FormatDate(props.startDate, 0)
   return (
@@ -137,7 +137,10 @@ function PostTitle(props: PostTitleProps) {
   )
 }
 
-function PostInfo(props: { opt: string; type?: string; startDate?: any; endDate?: any; headCount: number; headCountMax?: number; currentHeadCount?: number; }) {
+interface PostInfoProps {
+  opt: string; type?: string; startDate?: any; endDate?: any; headCount: number; headCountMax?: number; currentHeadCount?: number;
+}
+function PostInfo(props: PostInfoProps) {
   let startD = FormatDateTime(props.startDate, 0)
   let endD = FormatDateTime(props.endDate, 0)
   return (<>
@@ -146,17 +149,11 @@ function PostInfo(props: { opt: string; type?: string; startDate?: any; endDate?
         ? <div className='flex flex-col px-[16px] pt-[30px] text-[14px] leading-[160%]' id='p-info'>
           <div className='flex flex-row pb-[6px]'>
             <p className='font-semibold pe-[20px]'>시작일시</p>
-            {startD !== undefined
-              ? <><p className='pe-[10px]'>{startD.date}</p><p>{startD.time}</p></>
-              : <p>—</p>
-            }
+            {startD !== undefined ? <><p className='pe-[10px]'>{startD.date}</p><p>{startD.time}</p></> : <p>—</p>}
           </div>
           <div className='flex flex-row pb-[6px]'>
             <p className='font-semibold pe-[20px]'>종료일시</p>
-            {endD !== undefined
-              ? <><p className='pe-[10px]'>{endD.date}</p><p>{endD.time}</p></>
-              : <p>—</p>
-            }
+            {endD !== undefined ? <><p className='pe-[10px]'>{endD.date}</p><p>{endD.time}</p></> : <p>—</p>}
           </div>
           <div className='flex flex-row items-center'>
             <p className='font-semibold pe-[20px]'>참여인원</p>
@@ -243,30 +240,26 @@ function PostContentMap(props: { address: string; lat: number; lng: number; }) {
   )
 }
 
-interface PostToolsProps { opt: string; handleOpen: any; likeCount?: number; liked: boolean; handleLike: any; commentCount: number; commentURL: string; }
+interface PostToolsProps {
+  opt: string; handleOpen: any; likeCount?: number; liked: boolean; handleLike: any; commentCount: number;
+  commentURL: string; saved?: boolean; handleCalendar?: any;
+}
 function PostTools(props: PostToolsProps) {
   return (
     <div className='flex flex-row justify-between py-[30px] px-[16px]'>
       <div className='flex flex-row gap-[10px]'>
-        <div className='flex flex-row items-center'>
-          <div className='flex flex-row items-center gap-[4px]'>
-            <Checkbox icon={<LikeIcn val={false} />} checkedIcon={<LikeIcn val={true} />} checked={props.liked} onChange={props.handleLike}
-              disableRipple className='p-0' />
-            <p className='text-gray3 text-[14px]'>{props.likeCount}</p>
-          </div>
-        </div>
-        <div className='flex flex-row items-center'>
-          <a className='flex flex-row items-center gap-[4px]' href={props.commentURL}>
-            <img src='/detail_comment.svg' />
-            <p className='text-gray3 text-[14px]'>{props.commentCount}</p>
-          </a>
-        </div>
+        <Button className="flex flex-row items0center gap-[4px] p-0 min-w-fit" disableRipple onClick={props.handleLike}>
+          <LikeIcn val={props.liked} />
+          <p className='text-gray3 text-[14px] font-normal'>{props.likeCount}</p>
+        </Button>
+        <Button className="flex flex-row items0center gap-[4px] p-0 min-w-fit" disableRipple href={props.commentURL}>
+          <img src='/detail_comment.svg' />
+          <p className='text-gray3 text-[14px] font-normal'>{props.commentCount}</p>
+        </Button>
       </div>
 
       <div className='flex flex-row gap-[10px]'>
-        {
-          props.opt === 'EVT' ? <IconButton disableRipple className='p-0'><img src='/post_calendar.svg' /></IconButton> : <></>
-        }
+        {props.opt === 'EVT' && props.saved !== undefined ? <IconButton disableRipple onClick={props.handleCalendar} className='p-0'><CalIcn val={props.saved}/></IconButton> : <></>}
         <IconButton disableRipple onClick={props.handleOpen} className='p-0'><img src='/detail_share.svg' /></IconButton>
       </div>
     </div>

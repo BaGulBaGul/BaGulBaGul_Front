@@ -54,8 +54,11 @@ const index = () => {
 }
 export default index;
 
-function Comments(props: { postId: any; setCount: any; setOpenD: any; setTargetM: any; isLoading: boolean; setLoading: any; 
-  tmp: any[]; setTmp: any; setTmpP: any; tmpP?: number; }) {
+interface CommentsProps {
+  postId: any; setCount: any; setOpenD: any; setTargetM: any; isLoading: boolean; setLoading: any;
+  tmp: any[]; setTmp: any; setTmpP: any; tmpP?: number;
+}
+function Comments(props: CommentsProps) {
   const [comments, setComments] = useState<CommentProps[]>([]);
 
   const [page, setPage] = useState({ current: 0, total: 0, });
@@ -70,22 +73,22 @@ function Comments(props: { postId: any; setCount: any; setOpenD: any; setTargetM
   // console.log('&& ', comments)
   // if (props.isLoading && page.current === 0) { return <LoadingSkeleton type='CMT' /> }
   // else {
-    return (
-      <>
-        <div className='flex flex-col w-full min-h-[calc(100vh-104px)] pb-[49px] bg-gray1'>
-          {comments.map((comment: CommentProps, idx: number) => (
-            <div key={`cmt-${idx}`} className={idx % 2 == 0 ? 'bg-[#FFF] px-[16px] py-[12px]' : 'bg-gray1 px-[16px] py-[12px]'}>
-              <CommentBlock opt='CMT' data={comment} currentURL={`${props.postId}`} setOpenD={props.setOpenD} setTargetM={props.setTargetM} />
-            </div>
-          ))
-          }
-          {page.total > 1 && page.current + 1 < page.total
-            ? <MoreButton onClick={handleMore} />
-            : <></>
-          }
-        </div>
-      </>
-    )
+  return (
+    <>
+      <div className='flex flex-col w-full min-h-[calc(100vh-104px)] pb-[49px] bg-gray1'>
+        {comments.map((comment: CommentProps, idx: number) => (
+          <div key={`cmt-${idx}`} className={idx % 2 == 0 ? 'bg-[#FFF] px-[16px] py-[12px]' : 'bg-gray1 px-[16px] py-[12px]'}>
+            <CommentBlock opt='CMT' data={comment} currentURL={`${props.postId}`} setOpenD={props.setOpenD} setTargetM={props.setTargetM} />
+          </div>
+        ))
+        }
+        {page.total > 1 && page.current + 1 < page.total
+          ? <MoreButton onClick={handleMore} />
+          : <></>
+        }
+      </div>
+    </>
+  )
   // }
 }
 
