@@ -53,28 +53,51 @@ export const TabBlock = (props: TabBlockProps) => {
 export function ResultBlock(props: { data: ListProps }) {
   let urlLink = `/event/${props.data.event.eventId}`
   return (
-    <div className="flex flex-col py-[18px] px-[16px] justify-between">
-      <a href={urlLink} className='flex flex-col gap-[4px]'>
-        <p className='truncate text-[16px] font-semibold leading-[140%]'>{props.data.post.title}</p>
-        <p className="text-[14px] text-gray3 leading-[160%]">{FormatDateRange(props.data.event.startDate, props.data.event.endDate)}</p>
-        <div className='flex flex-row items-center gap-[4px] text-[14px]'>
-          <img className='rounded-full w-[24px] h-[24px]' src='/main_profile.svg' />
-          <p className='text-black'>{props.data.post.writer.userName}</p>
-          {props.data.event.type === 'PARTY'
-            ? <>
-              <DividerDot />
-              <p className='text-gray3'>{`${props.data.event.currentHeadCount}/${props.data.event.maxHeadCount}(명)`}</p>
-              {props.data.event.currentHeadCount === props.data.event.maxHeadCount
-                ? <ThemeProvider theme={doneChipTheme}><Chip label="모집완료" /></ThemeProvider>
-                : <></>
-              }
-            </>
-            : <></>
-          }
+    // <div className="flex flex-col py-[18px] px-[16px] justify-between">
+    //   <a href={urlLink} className='flex flex-col gap-[4px]'>
+    //     <p className='truncate text-[16px] font-semibold leading-[140%]'>{props.data.post.title}</p>
+    //     <p className="text-[14px] text-gray3 leading-[160%]">{FormatDateRange(props.data.event.startDate, props.data.event.endDate)}</p>
+    //     <div className='flex flex-row items-center gap-[4px] text-[14px]'>
+    //       <img className='rounded-full w-[24px] h-[24px]' src='/main_profile.svg' />
+    //       <p className='text-black'>{props.data.post.writer.userName}</p>
+    //       {props.data.event.type === 'PARTY'
+    //         ? <>
+    //           <DividerDot />
+    //           <p className='text-gray3'>{`${props.data.event.currentHeadCount}/${props.data.event.maxHeadCount}(명)`}</p>
+    //           {props.data.event.currentHeadCount === props.data.event.maxHeadCount
+    //             ? <ThemeProvider theme={doneChipTheme}><Chip label="모집완료" /></ThemeProvider>
+    //             : <></>
+    //           }
+    //         </>
+    //         : <></>
+    //       }
+    //     </div>
+    //   </a>
+    //   {props.data.post.tags ? <HashtagAccordion tag={props.data.post.tags} /> : <></>}
+    // </div>
+    <a href={urlLink} className='flex py-[18px] px-[16px] justify-between'>
+      <div className='flex flex-row items-center pb-[10px] gap-[20px] w-full'>
+        <img className='rounded-[4px] w-[84px] h-[104px] object-cover' src={props.data.post.headImageUrl ?? '/default_list_thumb3x.png'} />
+        <div className='flex flex-col h-[104px] gap-[20px] justify-between'>
+          <div className='flex flex-col'>
+            <div className="flex flex-row justify-between items-center">
+              <div className="flex flex-row text-[14px] text-gray3">
+                <p>{FormatDateRange(props.data.event.startDate, props.data.event.endDate)}</p>
+                <p>, {props.data.event.abstractLocation}</p>
+              </div>
+            </div>
+            <p className='truncate text-[16px] font-semibold'>{props.data.post.title}</p>
+          </div>
+          <span className='text-[12px] text-gray3 description'>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consectetur turpis congue massa laoreet rutrum. 
+            Donec facilisis posuere dui. Sed augue nisl, tempor vitae malesuada vitae, pellentesque in diam. 
+            Nam elementum ac ipsum non ullamcorper. Vivamus eu nibh eget sem dignissim rutrum ut ac nunc. 
+            Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Donec dignissim suscipit faucibus. 
+            Aenean dignissim blandit egestas.
+          </span>
         </div>
-      </a>
-      {props.data.post.tags ? <HashtagAccordion tag={props.data.post.tags} /> : <></>}
-    </div>
+      </div>
+    </a>
   )
 }
 
@@ -134,7 +157,6 @@ export function SuggestBlock(props: { type: number }) {
     </div>
   )
 }
-
 
 export function SearchTabs(props: { opt: string; sp: ReadonlyURLSearchParams }) {
   // const searchParams = useSearchParams()

@@ -91,3 +91,8 @@ export interface RDetailProps {
     createdAt: any; lastModifiedAt: any;
   }
 }
+
+export interface CalProps {
+  eventId: number; type: string; title: string; content: string; headImageUrl: string;
+  abstractLocation: string; startTime: string; endTime: string;
+}

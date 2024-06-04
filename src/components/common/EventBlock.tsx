@@ -3,18 +3,11 @@ import { doneChipTheme } from "./Themes";
 import { FormatDate, FormatDateRange } from "@/service/Functions";
 import HashtagAccordion from "./HashtagAccordion";
 import { DividerDot } from "./Icon";
-import { ListProps, ParamProps, RListProps } from ".";
+import { CalProps, ListProps, ParamProps, RListProps } from ".";
 
 export interface TabBlockProps {
   opt: number; events: never[]; page: { current: number; total: number; }; setPage: any; isLoading: boolean;
   params?: ParamProps, setParams?: any
-}
-
-// - tab item : 페스티벌
-export interface PostProps {
-  id?: number; headImageUrl: string; title: string; userImage: string; userName: string; abstractLocation?: string;
-  startDate: any; endDate: any; categories: string[]; content?: string; tags?: string[]; type?: string;
-  currentHeadCount?: number; totalHeadCount?: number;
 }
 
 export function EventBlock(props: { data: ListProps }) {
@@ -80,27 +73,23 @@ export function RecruitBlock(props: { data: RListProps }) {
   )
 }
 
-export function CalendarBlock(props: { data: PostProps }) {
+export function CalendarBlock(props: { data: CalProps }) {
   return (
-    <div>
-      <div className='flex flex-col py-[18px] px-[16px]'>
-        <div className='flex flex-col justify-between'>
-          <div className='flex flex-row items-center pb-[10px] gap-[20px]'>
-            <img className='rounded-[4px] w-[84px] h-[104px] object-cover' src={props.data.headImageUrl} />
-            <div className='flex flex-col w-[278px] h-[104px] gap-[20px] justify-between'>
-              <div className='flex flex-col'>
-                <div className="flex flex-row justify-between items-center">
-                  <div className="flex flex-row text-[14px] text-gray3">
-                    <p>{FormatDateRange(props.data.startDate, props.data.endDate)}</p>
-                    <p>, {props.data.abstractLocation}</p>
-                  </div>
-                  <IconButton disableRipple className='p-0'><img src='/calendar_delete.svg' /></IconButton>
-                </div>
-                <p className='truncate text-[16px] font-semibold'>{props.data.title}</p>
+    <div className='flex py-[18px] px-[16px] justify-between'>
+      <div className='flex flex-row items-center pb-[10px] gap-[20px] w-full'>
+        <img className='rounded-[4px] w-[84px] h-[104px] object-cover' src={props.data.headImageUrl ?? '/default_list_thumb3x.png'} />
+        <div className='flex flex-col w-full h-[104px] gap-[20px] justify-between'>
+          <div className='flex flex-col'>
+            <div className="flex flex-row justify-between items-center">
+              <div className="flex flex-row text-[14px] text-gray3">
+                <p>{FormatDateRange(props.data.startTime, props.data.endTime)}</p>
+                <p>, {props.data.abstractLocation}</p>
               </div>
-              <span className='text-[12px] text-gray3 description max-w-[278px]'>{props.data.content}</span>
+              <IconButton disableRipple className='p-0'><img src='/calendar_delete.svg' /></IconButton>
             </div>
+            <p className='truncate text-[16px] font-semibold'>{props.data.title}</p>
           </div>
+          <span className='text-[12px] text-gray3 description'>{props.data.content}</span>
         </div>
       </div>
     </div>

@@ -4,7 +4,7 @@ import { createSearchParams } from 'react-router-dom'
 import { call } from "./ApiService";
 import { DayValue, DayRange } from "@hassanmojab/react-modern-calendar-datepicker";
 import { CommentProps } from "@/components/common/Comment";
-import { ListProps, ParamProps, RListProps } from "@/components/common";
+import { CalProps, ListProps, ParamProps, RListProps } from "@/components/common";
 
 export const FormatDate = (dateStr: any, type: number) => {
   const dateD = new Date(dateStr);
@@ -113,7 +113,7 @@ export function setPageInfo(page: any, setPage: any, currentPage: number, params
 }
 
 // 이벤트 저장 리스트 업데이트
-export function setUniqueList(opt: string, currentList: any[], setItems: any, items?: ListProps[] | RListProps[], itemsC?: CommentProps[]) {
+export function setUniqueList(opt: string, currentList: any[], setItems: any, items?: ListProps[] | RListProps[], itemsCmt?: CommentProps[], itemsCal?: CalProps[]) {
   if (opt === 'EVT' && items) {
     const newItems = currentList.length > 0 ? items.concat(currentList) : items
     const ids = newItems.map(({ post }) => post.postId);
@@ -123,9 +123,9 @@ export function setUniqueList(opt: string, currentList: any[], setItems: any, it
     );
     console.log('filtered: ', filtered)
     setItems(filtered);
-  } else if (opt === 'CMT' && itemsC) {
+  } else if (opt === 'CMT' && itemsCmt) {
     console.log('**************** setUniqueList ******************')
-    const newItems = currentList.length > 0 ? itemsC.concat(currentList) : itemsC
+    const newItems = currentList.length > 0 ? itemsCmt.concat(currentList) : itemsCmt
     console.log('n: ', newItems)
     const ids = newItems.map(({ commentId }) => commentId);
     const filtered = newItems.filter(({ commentId }, index: number) =>
@@ -133,11 +133,18 @@ export function setUniqueList(opt: string, currentList: any[], setItems: any, it
     );
     setItems(filtered);
     console.log('f: ', filtered)
-  } else if (opt === 'RPL' && itemsC) {
-    const newItems = currentList.length > 0 ? itemsC.concat(currentList) : itemsC
+  } else if (opt === 'RPL' && itemsCmt) {
+    const newItems = currentList.length > 0 ? itemsCmt.concat(currentList) : itemsCmt
     const ids = newItems.map(({ commentChildId }) => commentChildId);
     const filtered = newItems.filter(({ commentChildId }, index: number) =>
       index === 0 || index > 0 && !(ids.slice(0, index)).includes(commentChildId)
+    );
+    setItems(filtered);
+  } else if (opt === 'CAL' && itemsCal) {
+    const newItems = currentList.length > 0 ? itemsCal.concat(currentList) : itemsCal
+    const ids = newItems.map(({ eventId }) => eventId);
+    const filtered = newItems.filter(({ eventId }, index: number) =>
+      index === 0 || index > 0 && !(ids.slice(0, index)).includes(eventId)
     );
     setItems(filtered);
   }

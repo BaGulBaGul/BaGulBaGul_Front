@@ -1,5 +1,5 @@
 "use client";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Tab, Tabs, Box, Button, ThemeProvider, Checkbox, Divider } from '@mui/material';
 import TabPanel from '@/components/common/TabPanel';
 import { CalendarBlock } from '@/components/common/EventBlock';
@@ -9,16 +9,20 @@ import { krLocale } from '@/components/common/CalendarLocale';
 
 import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
 import { Calendar } from '@hassanmojab/react-modern-calendar-datepicker'
+import { CalProps, NoEvent } from '@/components/common';
+import { call } from '@/service/ApiService';
+import { setUniqueList } from '@/service/Functions';
 
 const index = () => {
-  const [focusDay, setFocusDay] = useState('');
+  let now = new Date();
+  const [focusDay, setFocusDay] = useState({ day: now.getDate(), month: now.getMonth() + 1, year: now.getFullYear() });
 
-  const testdates = ['2023-11-08T13:18:08.827Z', '2023-11-13T13:18:08.827Z', '2023-11-23T13:18:08.827Z', '2023-11-28T13:18:08.827Z']
+  const testdates = ['2024-06-08T13:18:08.827Z', '2024-06-13T13:18:08.827Z', '2024-06-23T13:18:08.827Z', '2024-06-28T13:18:08.827Z']
 
   return (
     <div className='flex flex-col w-full pb-[10px] mt-[60px]'>
       <MyCalendar focusDay={focusDay} setFocusDay={setFocusDay} eventDays={testdates} />
-      <LikedTab />
+      <CalTab focusDay={focusDay} />
     </div>
   )
 }
@@ -32,25 +36,34 @@ export function MyCalendar(props: { focusDay: any; setFocusDay: any; eventDays?:
   })
 
   return (
-    <div>
-      <Calendar value={props.focusDay} onChange={props.setFocusDay} locale={krLocale}
-        calendarClassName="MyCalendar" customDaysClassName={eventDays} />
+    <div className='flex flex-col w-full items-center'>
+      <div className='w-[414px]'>
+        <Calendar value={props.focusDay} onChange={props.setFocusDay} locale={krLocale}
+          calendarClassName="MyCalendar" customDaysClassName={eventDays} />
+      </div>
     </div>
   )
 }
 
-function LikedTab() {
+function CalTab(props: { focusDay: any; }) {
   const [value, setValue] = useState(0);
   const handleChange = (event: React.SyntheticEvent, newValue: number) => { setValue(newValue); };
 
-  const [view, setView] = useState({ festival: true, accompany: true });
-  const handleView = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if ((view.festival !== view.accompany) && !e.target.checked) {
-      setView({ festival: true, accompany: true })
-    } else {
-      setView({ ...view, [e.target.value]: e.target.checked });
-    }
-  }
+  const [events, setEvents] = useState<CalProps[]>([]);
+
+  useEffect(() => {
+    let dateS = `${props.focusDay.year}-${String(props.focusDay.month).padStart(2, "0")}-${String(props.focusDay.day).padStart(2, "0")}`
+    let apiURL = `/api/user/calendar/event?searchStartTime=${dateS}T00:00:00&searchEndTime=${dateS}T23:59:59`
+    call(apiURL, "GET", null)
+      .then((response) => {
+        console.log(response);
+        if (response.data.length > 0) {
+          setUniqueList('CAL', response.data, setEvents, undefined, undefined, events)
+        } else {
+          setEvents([])
+        }
+      })
+  }, [props.focusDay])
 
   return (
     <Box className='w-full px-0'>
@@ -68,35 +81,35 @@ function LikedTab() {
       </Box>
       {/* // * CalendarBlock 수정 필요 */}
       <TabPanel value={value} index={0}>
-        {postData.map((post, idx) => (
-          idx === 0
-            ? <CalendarBlock data={post} key={`rec-${idx}`} />
-            : <>
-              <Divider />
-              <CalendarBlock data={post} key={`rec-${idx}`} />
-            </>
-        ))}
+        <CalTabBlock events={events} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        {postData.map((post, idx) => (
-          idx === 0
-            ? <CalendarBlock data={post} key={`rec-${idx}`} />
-            : <>
-              <Divider />
-              <CalendarBlock data={post} key={`rec-${idx}`} />
-            </>
-        ))}
+        <CalTabBlock events={events} />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        {partyData.map((post, idx) => (
-          idx === 0
-            ? <CalendarBlock data={post} key={`party-${idx}`} />
-            : <>
-              <Divider />
-              <CalendarBlock data={post} key={`party-${idx}`} />
-            </>
-        ))}
+        <CalTabBlock events={events} />
       </TabPanel>
     </Box>
+  )
+}
+
+const CalTabBlock = (props: { events?: CalProps[]; }) => {
+  return (
+    <div>
+      {props.events && props.events.length > 0
+        ? <>
+          {props.events.map((post, idx) => (
+            <div key={`event-${idx}`}>
+              {idx === 0 ? <></> : <Divider />}
+              <CalendarBlock data={post} key={`cal-${idx}`} />
+            </div>
+          ))}
+          {/* {props.page.total > 1 && props.page.current + 1 < props.page.total
+              ? <MoreButton onClick={handleMore} /> : <></>
+            } */}
+        </>
+        : <NoEvent text1="찾는 행사가 없어요." text2="지금 인기 있는 페스티벌을 만나보세요." buttonText={"페스티벌 인기순 보러가기"} />
+      }
+    </div>
   )
 }
