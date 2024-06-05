@@ -1,12 +1,12 @@
 "use client";
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { call } from "@/service/ApiService";
 import { Button, ThemeProvider, TextField } from '@mui/material';
 import { SubHeaderCnt } from '@/components/layout/subHeader';
 import { setPageInfo, useEffectRefreshComment } from '@/service/Functions';
 import { commentTheme } from '@/components/common/Themes';
-import { LoadingSkeleton, MoreButton } from '@/components/common';
+import { LoadingSkeleton, MoreButton, ScrollToTop } from '@/components/common';
 import { CommentBlock, CommentDrawer, CommentMProps, CommentProps, ModifyInput } from '@/components/common/Comment';
 
 const index = () => {
@@ -39,7 +39,6 @@ const index = () => {
         }).catch((error) => console.error(error));
     }
   }
-
 
   return (
     <>
@@ -75,7 +74,7 @@ function Comments(props: CommentsProps) {
   // else {
   return (
     <>
-      <div className='flex flex-col w-full min-h-[calc(100vh-104px)] pb-[49px] bg-gray1'>
+      <div className='flex flex-col w-full min-h-[calc(100vh-104px)] pb-[88px] bg-gray1'>
         {comments.map((comment: CommentProps, idx: number) => (
           <div key={`cmt-${idx}`} className={idx % 2 == 0 ? 'bg-[#FFF] px-[16px] py-[12px]' : 'bg-gray1 px-[16px] py-[12px]'}>
             <CommentBlock opt='CMT' data={comment} currentURL={`${props.postId}`} setOpenD={props.setOpenD} setTargetM={props.setTargetM} />
@@ -108,12 +107,25 @@ function CommentFooter(props: { postId: any; setLoading: any; setTmp: any; setTm
     }
   }
 
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const onScroll = (e: any) => {
+      setScrolled(e.target.documentElement.scrollTop > 150);
+    };
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <ThemeProvider theme={commentTheme}>
-      <div className="flex flex-row comment-input">
-        <TextField placeholder='댓글을 입력해주세요.' fullWidth multiline inputRef={cmtRef} />
-        <Button className='text-[14px] w-[70px] h-[48px]' onClick={handleComment}>등록</Button>
-      </div>
-    </ThemeProvider>
+    <div className='comment-wrap'>
+      <ThemeProvider theme={commentTheme}>
+        {!scrolled ? <></> :
+          <div className='flex justify-end pb-[16px] pe-[15px]'><ScrollToTop /></div>}
+        <div className="flex flex-row comment-input">
+          <TextField placeholder='댓글을 입력해주세요.' fullWidth multiline inputRef={cmtRef} maxRows={5} />
+          <Button className='text-[14px] w-[70px] h-[48px]' onClick={handleComment}>등록</Button>
+        </div>
+      </ThemeProvider>
+    </div>
   )
 }

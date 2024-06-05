@@ -95,15 +95,20 @@ em { font-style: unset;
   gap: 10px;
 }
 
-.comment-input {
+.comment-wrap {
   position: fixed;
-  min-height: 48px;
   bottom: 0px;
   left: 0px;
   right: 0px;
+  z-index: 100;
+  pointer-events: none;
+}
+.comment-input {
+  min-height: 48px;
   border-top: 1px solid #4A6AFE;
   background-color: #FFFFFF;
-  z-index: 100;
+  pointer-events:auto;
+  padding-bottom: 40px;
 }
 
 .slick-dots {
@@ -145,28 +150,6 @@ em { font-style: unset;
 .slick-dots li button:before {
   display: none;
 }
-
-/* .select-icon {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  width: 1em;
-  height: 1em;
-  display: inline-block;
-  fill: currentColor;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-  -webkit-transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-  transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-  font-size: 1.5rem;
-  position: absolute;
-  right: 0;
-  top: calc(50% - 0.5em);
-  pointer-events: none;
-  color: rgba(0, 0, 0, 0.54);
-} */
 
 .description {
   display: -webkit-box;
@@ -454,7 +437,7 @@ div.editor-body {
 }
 
 .mention-reply-section {
-  padding: 13px 24px;
+  /* padding: 13px 24px; */
   font-size: 14px;
   outline: none;
   user-select: text;
@@ -462,6 +445,7 @@ div.editor-body {
   white-space: pre-wrap;
   word-wrap: break-word;
   height: 100%;
+  max-height: 110px;
 }
 
 .mention-reply-section:focus {

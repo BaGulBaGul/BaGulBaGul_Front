@@ -1,12 +1,12 @@
 "use client";
 import { Dispatch, SetStateAction, useEffect, useRef, useState, FocusEvent, memo } from 'react';
-import { useParams, useRouter,  } from 'next/navigation';
+import { useParams, useRouter, } from 'next/navigation';
 import { ThemeProvider, TextField, Button, Divider } from '@mui/material';
 import { commentTheme } from '@/components/common/Themes';
 import { SubHeaderCnt } from '@/components/layout/subHeader';
 import { call } from '@/service/ApiService';
 import { setPageInfo, useEffectRefreshComment } from '@/service/Functions';
-import { LoadingSkeleton, MoreButton } from '@/components/common';
+import { LoadingSkeleton, MoreButton, ScrollToTop } from '@/components/common';
 import { CommentBlock, CommentDrawer, CommentMProps, CommentProps, ModifyInputR } from '@/components/common/Comment';
 
 const index = () => {
@@ -99,7 +99,7 @@ const index = () => {
       <SubHeaderCnt name='답글' cnt={count} />
       {
         !isLoadingC && comment !== undefined
-          ? <div className='flex flex-col w-full min-h-[calc(100vh-104px)] pb-[49px] bg-gray1'>
+          ? <div className='flex flex-col w-full min-h-[calc(100vh-104px)] pb-[88px] bg-gray1'>
             <div className='bg-[#FFF] px-[16px] py-[12px] mb-[2px]'>
               <CommentBlock opt='CMT' data={comment} currentURL='' setOpenD={setOpenD} setTargetM={setTargetM} />
             </div>
@@ -238,28 +238,43 @@ function ReplyFooter(props: {
     }
   }
 
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const onScroll = (e: any) => {
+      setScrolled(e.target.documentElement.scrollTop > 150);
+    };
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   function MentionInput() {
     return (
       <div className='editor-body wrapper'>
         {props.mentioning
-          ? <div className='mention-reply-section' ref={props.mentionRef} contentEditable onInput={handleInput} onFocus={handleFocus}
-            onKeyUp={handleCaret} onKeyDown={handleCaret} onMouseUp={handleCaret} suppressContentEditableWarning={true} >
-            <span contentEditable={false} id='mention-highlight' className='text-primary-blue'>{`@${props.target.name} `}</span>
-            <span className='w-full' contentEditable></span>
+          ? <div className='mx-[24px] my-[13px] overflow-y-auto'>
+            <div className='mention-reply-section' ref={props.mentionRef} contentEditable onInput={handleInput} onFocus={handleFocus}
+              onKeyUp={handleCaret} onKeyDown={handleCaret} onMouseUp={handleCaret} suppressContentEditableWarning={true} >
+              <span contentEditable={false} id='mention-highlight' className='text-primary-blue'>{`@${props.target.name} `}</span>
+              <span className='w-full' contentEditable></span>
+            </div>
           </div>
-          : <TextField placeholder='댓글을 입력해주세요.' defaultValue={value.replace(/\n$/, '')} autoFocus inputRef={props.replyRef} fullWidth multiline />
+          : <TextField placeholder='댓글을 입력해주세요.' defaultValue={value.replace(/\n$/, '')} autoFocus inputRef={props.replyRef} fullWidth multiline maxRows={5} />
         }
       </div>
     )
   }
 
   return (
-    <ThemeProvider theme={commentTheme}>
-      <div className="flex flex-row comment-input">
-        <MentionInput />
-        <Button className='text-[16px] w-[70px] h-[48px]' onClick={handleComment}>등록</Button>
-      </div>
-    </ThemeProvider>
+    <div className='comment-wrap'>
+      <ThemeProvider theme={commentTheme}>
+        {!scrolled ? <></> :
+          <div className='flex justify-end pb-[16px] pe-[15px]'><ScrollToTop /></div>}
+        <div className="flex flex-row comment-input">
+          <MentionInput />
+          <Button className='text-[16px] w-[70px] h-[48px]' onClick={handleComment}>등록</Button>
+        </div>
+      </ThemeProvider>
+    </div>
   )
 }
 // Dialog 열렸을 때 작성 중이던 내용 유지 위해 memo

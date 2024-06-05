@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { Tab, Tabs, Box, Button, ThemeProvider, Checkbox, Divider } from '@mui/material';
 import TabPanel from '@/components/common/TabPanel';
 import { CalendarBlock } from '@/components/common/EventBlock';
-import { postData, partyData } from '@/components/common/Data';
 import { tabTheme, deleteButtonTheme } from '@/components/common/Themes';
 import { krLocale } from '@/components/common/CalendarLocale';
 
