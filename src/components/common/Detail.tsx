@@ -33,8 +33,7 @@ export const Detail = (props: { opt: string; data?: DetailProps; dataR?: RDetail
           <PostInfo opt='EVT' type={props.data.event.type} startDate={props.data.event.startDate} endDate={props.data.event.endDate}
             headCountMax={props.data.event.maxHeadCount} headCount={props.data.event.currentHeadCount} />
           <PostContent content={props.data.post.content} />
-          {/* <PostContentMap address={props.data.event.fullLocation} lat={props.data.event.latitudeLocation} lng={props.data.event.longitudeLocation} /> */}
-          <PostContentMap address={props.data.event.fullLocation} lat={33.450701} lng={126.570667} />
+          <PostContentMap address={props.data.event.fullLocation} lat={props.data.event.latitudeLocation} lng={props.data.event.longitudeLocation} />
           {props.data.post.tags !== undefined && props.data.post.tags.length > 0
             ? <PostContentTag tags={props.data.post.tags} />
             : <></>
@@ -195,41 +194,21 @@ function PostContentTag(props: { tags: string[] }) {
   )
 }
 
-// const kakao = window.Kakao;
 function PostContentMap(props: { address: string; lat: number; lng: number; }) {
-  // const [mapSuccess, setMapSuccess] = useState(true);
-
   useEffect(() => {
     var container = document.getElementById('map');
-    let options = {
-      center: new window.kakao.maps.LatLng(props.lat, props.lng),
-      level: 4,
-    }
+    let options = { center: new window.kakao.maps.LatLng(props.lat, props.lng), level: 4, }
     const map = new window.kakao.maps.Map(container, options)
     var coords = new window.kakao.maps.LatLng(props.lat, props.lng);
     var marker = new window.kakao.maps.Marker({ map: map, position: coords });
-    // var geocoder = new window.kakao.maps.services.Geocoder();
-
-    // geocoder.addressSearch(props.address, function (result: any, status: any) {
-    //   if (status === window.kakao.maps.services.Status.OK) {
-    //     setMapSuccess(true);
-    //     var coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
-    //     var marker = new window.kakao.maps.Marker({ map: map, position: coords });
-    //     map.setCenter(coords);
-    //   } else {
-    //     setMapSuccess(false);
-    //   }
-    // })
+    window.kakao.maps.event.addListener(marker, 'click', function () {
+      window.open(`https://map.kakao.com/link/map/${String(props.lat)},${String(props.lng)}`);
+    });
   }, [])
 
   return (
     <div className='pt-[30px] w-full'>
       <div className='w-full h-[246px]' id='map'>
-        {/* {
-          mapSuccess
-          ? <></>
-          : <div className=''></div>
-        } */}
         <div className=''></div>
       </div>
       <div className='flex flex-row px-[16px] pt-[6px] text-[14px] leading-[160%]' id='p-info'>
@@ -259,7 +238,7 @@ function PostTools(props: PostToolsProps) {
       </div>
 
       <div className='flex flex-row gap-[10px]'>
-        {props.opt === 'EVT' && props.saved !== undefined ? <IconButton disableRipple onClick={props.handleCalendar} className='p-0'><CalIcn val={props.saved}/></IconButton> : <></>}
+        {props.opt === 'EVT' && props.saved !== undefined ? <IconButton disableRipple onClick={props.handleCalendar} className='p-0'><CalIcn val={props.saved} /></IconButton> : <></>}
         <IconButton disableRipple onClick={props.handleOpen} className='p-0'><img src='/detail_share.svg' /></IconButton>
       </div>
     </div>

@@ -6,9 +6,11 @@ import { call } from '@/service/ApiService';
 import { useSearchParams } from 'next/navigation';
 
 const index = () => {
-  const [nameChecked, setNameChecked] = useState(false)
+  const [nameChecked, setNameChecked] = useState<boolean>()
+  const [emailChecked, setEmailChecked] = useState<boolean>()
   const [toP1, setToP1] = useState(false)
   const [toP2, setToP2] = useState(false)
+  const btnActive = !toP2 ? !nameChecked : !(nameChecked && emailChecked)
 
   const searchParams = useSearchParams()
   const nameRef = useRef<any>(null)
@@ -52,11 +54,11 @@ const index = () => {
             <JoinBlock opt='nnm' nameChecked={nameChecked} setNameChecked={setNameChecked} nameRef={nameRef} />
           </div>
           <div className={toP1 ? 'slideOutRight animated hidden' : toP2 ? 'flex flex-col items-center slideInRight animated' : 'hidden'}>
-            <JoinBlock opt='eml' emailRef={emailRef} />
+            <JoinBlock opt='eml' setEmailChecked={setEmailChecked} emailRef={emailRef} />
           </div>
         </div>
         <ThemeProvider theme={FooterBtnTheme}>
-          <Button onClick={handleNext}>다음</Button>
+          <Button onClick={handleNext} disabled={btnActive}>다음</Button>
         </ThemeProvider>
       </div>
     </>
@@ -64,16 +66,25 @@ const index = () => {
 }
 export default index;
 
-interface JoinBlockProps { opt: string, nameChecked?: boolean, setNameChecked?: any, nameRef?: MutableRefObject<any>, emailRef?: MutableRefObject<any> }
+interface JoinBlockProps { opt: string, nameChecked?: boolean, setNameChecked?: any, nameRef?: MutableRefObject<any>, setEmailChecked?: any; emailRef?: MutableRefObject<any> }
 function JoinBlock(props: JoinBlockProps) {
   const nameRegEx = /^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,12}$/
+  const emailRegEx = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+
   // * 존재하는 닉네임 확인 필요
   const handleNameCheck = () => {
-    if (props.nameRef && props.nameRef.current !== null && props.nameRef.current.value.length > 0) {
+    if (props.nameRef && props.nameRef.current !== null) {
       if (nameRegEx.test(props.nameRef.current.value)) {
         props.setNameChecked(true);
       } else { props.setNameChecked(false); }
     }
+  }
+  const handleEmailCheck = () => {
+    if (props.emailRef && props.emailRef.current !== null) {
+      if (emailRegEx.test(props.emailRef.current.value)) {
+        props.setEmailChecked(true);
+      } else { props.setEmailChecked(false); }
+    } else { props.setEmailChecked(false); }
   }
 
   return (
@@ -87,7 +98,7 @@ function JoinBlock(props: JoinBlockProps) {
       <ThemeProvider theme={joinTheme}>
         {props.opt === 'nnm'
           ? <TextField variant="outlined" placeholder='bageul01' inputRef={props.nameRef} onChange={handleNameCheck} />
-          : <TextField variant="outlined" inputRef={props.emailRef} type="email" placeholder='bageul01@naver.com' />
+          : <TextField variant="outlined" inputRef={props.emailRef} type="email" placeholder='bageul01@naver.com' onChange={handleEmailCheck} />
         }
       </ThemeProvider>
       {props.opt === 'nnm' ? <NameCheck nameChecked={props.nameChecked} /> : <></>}
@@ -100,11 +111,13 @@ function NameCheck(props: { nameChecked?: boolean }) {
     <>
       {props.nameChecked
         ? <p className='text-[12px] text-primary-blue'>사용가능한 아이디입니다.</p>
-        : <div className='text-[12px] text-[#FF0000]'>
-          <p>-이미 존재하는 닉네임입니다.</p>
-          <p>-닉네임은 2~12글자, 숫자를 입력해주세요.</p>
-          <p>-공백, 특수문자는 닉네임으로 사용할 수 없습니다.</p>
-        </div>
+        : props.nameChecked === false
+          ? <div className='text-[12px] text-[#FF0000]'>
+            <p>-이미 존재하는 닉네임입니다.</p>
+            <p>-닉네임은 2~12글자, 숫자를 입력해주세요.</p>
+            <p>-공백, 특수문자는 닉네임으로 사용할 수 없습니다.</p>
+          </div>
+          : <></>
       }
     </>
   )

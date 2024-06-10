@@ -617,6 +617,7 @@ export const FooterBtnTheme = createTheme({
           justifyContent: 'center', paddingTop: '20px', paddingBottom: '35px',
           backgroundColor: '#4A6AFE !important', color: '#FCFCFC',
           fontSize: '16px', lineHeight: '140%', zIndex: '400', fontWeight: '400',
+          "&:disabled": { opacity: '50%', color: '#FCFCFC' }
         }
       }
     },
