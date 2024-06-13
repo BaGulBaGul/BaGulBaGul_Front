@@ -135,9 +135,10 @@ export const CmtLikeIcn = (props: { val: boolean }) => {
 
 export const TagIcn = () => {
   return (
-    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="18px" height="18px" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M9.94922 11.1641H7.46094L7.00977 13.8984H6.01172L6.46289 11.1641H5L5.16406 10.1797H6.62012L7.03027 7.71875H5.58789L5.73828 6.73438H7.1875L7.63867 4H8.63672L8.18555 6.73438H10.6738L11.125 4H12.123L11.6719 6.73438H13.1484L12.9844 7.71875H11.5146L11.1045 10.1797H12.5605L12.3965 11.1641H10.9473L10.4961 13.8984H9.49805L9.94922 11.1641ZM10.1064 10.1797L10.5166 7.71875H8.02832L7.61816 10.1797H10.1064Z" fill="#1E1E1E" />
       <circle cx="9" cy="9" r="8.75" stroke="#1E1E1E" stroke-width="0.5" />
     </svg>
+
   )
 }

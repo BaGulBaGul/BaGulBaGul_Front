@@ -19,7 +19,7 @@ const index = () => {
   const testdates = ['2024-06-08T13:18:08.827Z', '2024-06-13T13:18:08.827Z', '2024-06-23T13:18:08.827Z', '2024-06-28T13:18:08.827Z']
 
   return (
-    <div className='flex flex-col w-full pb-[10px] mt-[60px]'>
+    <div className='flex flex-col w-full pb-[10px] mt-[60px] bg-gray1'>
       <MyCalendar focusDay={focusDay} setFocusDay={setFocusDay} eventDays={testdates} />
       <CalTab focusDay={focusDay} />
     </div>
@@ -98,7 +98,7 @@ const CalTabBlock = (props: { events?: CalProps[]; }) => {
       {props.events && props.events.length > 0
         ? <>
           {props.events.map((post, idx) => (
-            <div key={`event-${idx}`}>
+            <div key={`event-${idx}`} className='bg-white'>
               {idx === 0 ? <></> : <Divider />}
               <CalendarBlock data={post} key={`cal-${idx}`} />
             </div>

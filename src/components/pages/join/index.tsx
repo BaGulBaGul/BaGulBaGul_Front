@@ -1,6 +1,6 @@
 "use client";
 import { Button, IconButton, TextField, ThemeProvider } from '@mui/material';
-import { FooterBtnTheme, joinTheme } from '@/components/common/Themes';
+import { FooterBtnTheme, joinTheme, JoinBtnTheme } from '@/components/common/Themes';
 import { MutableRefObject, useRef, useState } from 'react';
 import { call } from '@/service/ApiService';
 import { useSearchParams } from 'next/navigation';
@@ -27,14 +27,26 @@ const index = () => {
     if (!toP2 && nameChecked) {
       setToP1(false)
       setToP2(true)
-    } else if (toP2 && nameChecked) {
-      console.log(`{"email": ${emailRef.current.value}, "joinToken": ${searchParams.get('join_token')}, "nickname": ${nameRef.current.value}}`)
-      // call('/api/user/join/social', "POST", {"email": emailRef.current.value, "joinToken": searchParams.get('join_token'), "nickname": nameRef.current.value})
-      // .then((response) => {
-      //   console.log(response.data);
-      // })
     }
   }
+  const handleJoin = (opt: number, e: any) => {
+    if (toP2 && nameChecked) {
+      if (opt === 0) {
+        console.log(`{"joinToken": ${searchParams.get('join_token')}, "nickname": ${nameRef.current.value}}`)
+        // call('/api/user/join/social', "POST", {"joinToken": searchParams.get('join_token'), "nickname": nameRef.current.value})
+        // .then((response) => {
+        //   console.log(response.data);
+        // })
+      } else if (opt === 1 && emailChecked) {
+        console.log(`{"email": ${emailRef.current.value}, "joinToken": ${searchParams.get('join_token')}, "nickname": ${nameRef.current.value}}`)
+        // call('/api/user/join/social', "POST", {"email": emailRef.current.value, "joinToken": searchParams.get('join_token'), "nickname": nameRef.current.value})
+        // .then((response) => {
+        //   console.log(response.data);
+        // })
+      }
+    }
+  }
+
   return (
     <>
       <div className="fixed top-0 left-0 right-0 flex-row flex w-full h-[60px] justify-between px-[17.84px] py-[15.6px] bg-[#FFF]">
@@ -54,19 +66,20 @@ const index = () => {
             <JoinBlock opt='nnm' nameChecked={nameChecked} setNameChecked={setNameChecked} nameRef={nameRef} />
           </div>
           <div className={toP1 ? 'slideOutRight animated hidden' : toP2 ? 'flex flex-col items-center slideInRight animated' : 'hidden'}>
-            <JoinBlock opt='eml' setEmailChecked={setEmailChecked} emailRef={emailRef} />
+            <JoinBlock opt='eml' emailChecked={emailChecked} setEmailChecked={setEmailChecked} emailRef={emailRef} />
           </div>
         </div>
-        <ThemeProvider theme={FooterBtnTheme}>
-          <Button onClick={handleNext} disabled={btnActive}>다음</Button>
-        </ThemeProvider>
+        <JoinFooter opt={toP2 ? 'eml' : 'nnm'} handleNext={handleNext} handleJoin={handleJoin} btnActive={btnActive} />
       </div>
     </>
   )
 }
 export default index;
 
-interface JoinBlockProps { opt: string, nameChecked?: boolean, setNameChecked?: any, nameRef?: MutableRefObject<any>, setEmailChecked?: any; emailRef?: MutableRefObject<any> }
+interface JoinBlockProps {
+  opt: string; nameChecked?: boolean; setNameChecked?: any; nameRef?: MutableRefObject<any>;
+  emailChecked?: boolean; setEmailChecked?: any; emailRef?: MutableRefObject<any>
+}
 function JoinBlock(props: JoinBlockProps) {
   const nameRegEx = /^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,12}$/
   const emailRegEx = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
@@ -101,25 +114,52 @@ function JoinBlock(props: JoinBlockProps) {
           : <TextField variant="outlined" inputRef={props.emailRef} type="email" placeholder='bageul01@naver.com' onChange={handleEmailCheck} />
         }
       </ThemeProvider>
-      {props.opt === 'nnm' ? <NameCheck nameChecked={props.nameChecked} /> : <></>}
+      <CheckText opt={props.opt} nameChecked={props.nameChecked} emailChecked={props.emailChecked} />
     </div>
   )
 }
 
-function NameCheck(props: { nameChecked?: boolean }) {
-  return (
-    <>
-      {props.nameChecked
-        ? <p className='text-[12px] text-primary-blue'>사용가능한 아이디입니다.</p>
-        : props.nameChecked === false
-          ? <div className='text-[12px] text-[#FF0000]'>
-            <p>-이미 존재하는 닉네임입니다.</p>
-            <p>-닉네임은 2~12글자, 숫자를 입력해주세요.</p>
-            <p>-공백, 특수문자는 닉네임으로 사용할 수 없습니다.</p>
-          </div>
+function CheckText(props: { opt: string; nameChecked?: boolean; emailChecked?: boolean; }) {
+  if (props.opt === 'nnm') {
+    return (
+      <>
+        {props.nameChecked
+          ? <p className='text-[12px] text-primary-blue'>사용가능한 아이디입니다.</p>
+          : props.nameChecked === false
+            ? <div className='text-[12px] text-[#FF0000]'>
+              <p>-이미 존재하는 닉네임입니다.</p>
+              <p>-닉네임은 2~12글자, 숫자를 입력해주세요.</p>
+              <p>-공백, 특수문자는 닉네임으로 사용할 수 없습니다.</p>
+            </div>
+            : <></>
+        }
+      </>
+    )
+  } else if (props.opt === 'eml') {
+    return (
+      <>
+        {props.emailChecked === false
+          ? <p className='text-[12px] text-[#FF0000]'>유효한 이메일 주소를 작성해주세요.</p>
           : <></>
-      }
-    </>
+        }
+      </>
+    )
+  }
+}
+
+function JoinFooter(props: { opt: string; handleNext: any; handleJoin: any; btnActive: boolean }) {
+  return (
+    props.opt === 'nnm'
+      ? <ThemeProvider theme={FooterBtnTheme}>
+        <Button onClick={props.handleNext} disabled={props.btnActive}>다음</Button>
+      </ThemeProvider>
+      : <div className='flex flex-row justify-center gap-[16px] px-[16px] py-[24px] fixed bottom-0 right-0 left-0'>
+        <ThemeProvider theme={JoinBtnTheme}>
+          <Button className='join-skip' onClick={(e) => { props.handleJoin(0, e) }}>건너뛰기</Button>
+          <Button className='join-email' onClick={(e) => { props.handleJoin(1, e) }} disabled={props.btnActive}>회원가입 완료</Button>
+        </ThemeProvider>
+      </div>
+
   )
 }
 

@@ -2,9 +2,9 @@ import { FormatDateRange, String2ISO, setPageInfo, useEffectCallAPI } from "@/se
 import { TabBlockProps } from "./EventBlock"
 import { LoadingSkeleton } from "./Loading"
 import { DividerDot, TagIcn } from "./Icon"
-import { HashtagAccordion, ListProps, MoreButton, NoEvent, ParamProps, TabPanel, ViewButton } from "."
+import { HashtagAccordion, HashtagButton, ListProps, MoreButton, NoEvent, ParamProps, TabPanel, ViewButton } from "."
 import { Chip, Divider, IconButton, TextField, ThemeProvider } from "@mui/material"
-import { doneChipTheme, searchInputTheme, suggestChipTheme } from "./Themes"
+import { doneChipTheme, searchInputTheme } from "./Themes"
 import { useEffect, useRef, useState } from "react"
 import { call } from "@/service/ApiService"
 import { ReadonlyURLSearchParams } from "next/navigation"
@@ -123,9 +123,7 @@ export function SuggestBlock(props: { type: number }) {
         <div className="flex flex-row gap-[6px] flex-wrap w-[382px]">
           { // 자주 찾는 검색어, 1~2줄
             suggestions.map((s, idx) =>
-              <ThemeProvider theme={suggestChipTheme} key={`st-${idx}`}>
-                <a href={`/event/${s.event.eventId}`}><Chip label={s.post.title} variant="outlined" /></a>
-              </ThemeProvider>
+              <HashtagButton tag={s.post.title} key={`st-${idx}`} />
             )
           }
         </div>
@@ -249,9 +247,9 @@ export function SearchBar(props: SearchBarProps) {
         <div className='flex flex-row mx-[16px] my-[18px] gap-[16px] items-center'>
           <IconButton disableRipple className='p-0'><img src='/search_back.svg' /></IconButton>
           <div className='flex flex-row w-full justify-between'>
-            <div className='flex flex-row px-[4px] py-[2px] gap-[2px] w-full max-w-[268px] text-[14px] items-center'>
+            <div className='flex flex-row px-[4px] py-[2px] gap-[2px] items-center'>
               <TagIcn />
-              <span>{props.tag}</span>
+              <div className="inline-block align-middle text-[14px] leading-[160%]">{props.tag}</div>
             </div>
             <ViewButton handleOpen={handleOpen} cnt={props.filterCnt} fs={14} />
           </div>

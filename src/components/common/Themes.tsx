@@ -19,20 +19,6 @@ export const filterChipTheme = createTheme({
   }
 });
 
-export const suggestChipTheme = createTheme({
-  components: {
-    MuiChip: {
-      styleOverrides: {
-        root: {
-          padding: '2px 8px !important', border: '1px solid #C1C1C1 !important', borderRadius: '14px !important',
-          fontSize: '14px !important', fontWeight: '400', lineHeight: '160%', color: '#1E1E1E !important'
-        },
-        label: { padding: '0 !important' },
-      }
-    }
-  }
-});
-
 export const categoryButtonTheme = createTheme({
   components: {
     MuiButtonBase: { defaultProps: { disableRipple: true, }, },
@@ -617,13 +603,30 @@ export const FooterBtnTheme = createTheme({
           justifyContent: 'center', paddingTop: '20px', paddingBottom: '35px',
           backgroundColor: '#4A6AFE !important', color: '#FCFCFC',
           fontSize: '16px', lineHeight: '140%', zIndex: '400', fontWeight: '400',
-          "&:disabled": { opacity: '50%', color: '#FCFCFC' }
+          '&:disabled': { backgroundColor: '#6C6C6C !important', color: '#FCFCFC' }
         }
       }
     },
   }
 })
 
+export const JoinBtnTheme = createTheme({
+  components: {
+    MuiButton: {
+      defaultProps: { disableRipple: true, },
+      styleOverrides: {
+        root: {
+          display: 'flex', flexDirection: 'row', width: '183px', borderRadius: '4px',
+          justifyContent: 'center', padding: '16px',
+          fontSize: '16px', lineHeight: '140%', fontWeight: '400',
+          '&.join-skip': {backgroundColor: 'transparent !important', color: '#4A6AFE', border: '1px solid #4A6AFE'},
+          '&.join-email': {backgroundColor: '#4A6AFE !important', color: '#FCFCFC',},
+          '&:disabled': { backgroundColor: '#6C6C6C !important', color: '#FCFCFC' }
+        }
+      }
+    },
+  }
+})
 
 export const HeadInputRoot = styled('div')(
   ({ theme }) => `

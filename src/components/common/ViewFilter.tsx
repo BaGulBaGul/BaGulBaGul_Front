@@ -29,7 +29,7 @@ export function ViewButton(props: ViewButtonProps) {
 }
 
 interface ViewSelectProps {
-  sort: string; setSort: any; setOpen: any; routeToFilter?: any; /*handleClose: any;*/ dayRange: DayRange; setDayRange: any;
+  sort: string; setSort: any; setOpen: any; routeToFilter?: any; dayRange: DayRange; setDayRange: any;
   participants: number; setParticipants: any; headCount?: { from?: number, to?: number }; setHeadCount?: any;
   proceeding?: boolean; setProceeding?: any;
 }
@@ -75,6 +75,17 @@ export function ViewSelect(props: ViewSelectProps) {
         </div>
         <div className="flex flex-col px-[16px] pb-[20px] gap-[16px]">
           <ThemeProvider theme={viewRadioTheme}>
+            {/* {true
+              ? <div className="flex flex-row pt-[10px] justify-between" id="filter-proceeding">
+                <div className="text-[14px] leading-[160%] pb-[2px]">종료된 행사 제외하기</div>
+                <ThemeProvider theme={viewCheckTheme}>
+                  <FormControl>
+                    <FormControlLabel control={<Checkbox checked={props.proceeding} onChange={handleProceeding} />} label="" />
+                  </FormControl>
+                </ThemeProvider>
+              </div>
+              : <></>
+            } */}
             {
               props.proceeding !== undefined
                 ? <div className="flex flex-row pt-[10px] justify-between" id="filter-proceeding">
