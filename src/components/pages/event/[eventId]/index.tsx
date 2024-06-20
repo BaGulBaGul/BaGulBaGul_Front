@@ -20,7 +20,7 @@ const index = () => {
   const typeString: typeType = { 'FESTIVAL': '페스티벌', 'LOCAL_EVENT': '지역행사', 'PARTY': '파티' }
 
   // * 캘린더 추가됐는지 여부 체크 추가 필요
-  useEffectDetail(`/api/event/${params.eventId}`, `/api/event/${params.eventId}/ismylike`, setData, setLoading, setLiked, setLikeCount, setLoginfo)
+  useEffectDetail(`/api/event/${params.eventId}`, `/api/event/${params.eventId}/ismylike`, setData, setLoading, setLiked, setLikeCount, setLoginfo, setSaved, params.eventId)
 
   const handleLike = () => {
     applyLike(loginfo, liked, `/api/event/${params.eventId}/like`, setLiked, setLikeCount)
@@ -28,7 +28,7 @@ const index = () => {
   const handleCalendar = () => {
     if (loginfo) {
       if (!saved) {
-        call(`/api/user/calendar/event?eventId=${params.eventId}`, "POST", null)
+        call(`/api/user/calendar/event/${params.eventId}`, "POST", null)
           .then((response) => {
             if (response.errorCode === 'C00000') {
               setSaved(true)
@@ -36,7 +36,7 @@ const index = () => {
             }
           }).catch((error) => console.error(error));
       } else {
-        call(`/api/user/calendar/event?eventId=${params.eventId}`, "DELETE", null)
+        call(`/api/user/calendar/event/${params.eventId}`, "DELETE", null)
           .then((response) => {
             if (response.errorCode === 'C00000') {
               setSaved(false)

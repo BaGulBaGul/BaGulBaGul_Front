@@ -84,12 +84,24 @@ function JoinBlock(props: JoinBlockProps) {
   const nameRegEx = /^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,12}$/
   const emailRegEx = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
+  const [usableName, setUsableName] = useState({ regex: false, unique: false })
+
   // * 존재하는 닉네임 확인 필요
   const handleNameCheck = () => {
     if (props.nameRef && props.nameRef.current !== null) {
       if (nameRegEx.test(props.nameRef.current.value)) {
-        props.setNameChecked(true);
-      } else { props.setNameChecked(false); }
+        call(`/api/user/join/check-duplicate-username?username=${props.nameRef.current.value}`, "GET", null)
+          .then((response) => {
+            console.log(response.data);
+            if (response.errorCode === 'C00000') {
+              setUsableName({ regex: true, unique: !response.data.duplicate })
+              props.setNameChecked(!response.data.duplicate);
+            }
+          })
+      } else {
+        setUsableName({ regex: false, unique: false })
+        props.setNameChecked(false);
+      }
     }
   }
   const handleEmailCheck = () => {
@@ -114,12 +126,12 @@ function JoinBlock(props: JoinBlockProps) {
           : <TextField variant="outlined" inputRef={props.emailRef} type="email" placeholder='bageul01@naver.com' onChange={handleEmailCheck} />
         }
       </ThemeProvider>
-      <CheckText opt={props.opt} nameChecked={props.nameChecked} emailChecked={props.emailChecked} />
+      <CheckText opt={props.opt} usableName={usableName} nameChecked={props.nameChecked} emailChecked={props.emailChecked} />
     </div>
   )
 }
 
-function CheckText(props: { opt: string; nameChecked?: boolean; emailChecked?: boolean; }) {
+function CheckText(props: { opt: string; usableName: { regex: boolean, unique: boolean }; nameChecked?: boolean; emailChecked?: boolean; }) {
   if (props.opt === 'nnm') {
     return (
       <>
@@ -127,9 +139,15 @@ function CheckText(props: { opt: string; nameChecked?: boolean; emailChecked?: b
           ? <p className='text-[12px] text-primary-blue'>사용가능한 아이디입니다.</p>
           : props.nameChecked === false
             ? <div className='text-[12px] text-[#FF0000]'>
-              <p>-이미 존재하는 닉네임입니다.</p>
-              <p>-닉네임은 2~12글자, 숫자를 입력해주세요.</p>
-              <p>-공백, 특수문자는 닉네임으로 사용할 수 없습니다.</p>
+              {props.usableName.regex && !props.usableName.unique
+                ? <p>-이미 존재하는 닉네임입니다.</p> : <></>
+              }
+              {props.usableName.regex ? <></>
+                : <>
+                  <p>-닉네임은 2~12글자, 숫자를 입력해주세요.</p>
+                  <p>-공백, 특수문자는 닉네임으로 사용할 수 없습니다.</p>
+                </>
+              }
             </div>
             : <></>
         }

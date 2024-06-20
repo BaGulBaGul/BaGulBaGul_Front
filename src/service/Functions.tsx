@@ -275,7 +275,9 @@ export const useEffectCallAPI = (params: any, initialSet: MutableRefObject<boole
 
 
 // 상세화면
-export const useEffectDetail = (urlDetail: string, urlCheckLike: string, setData: any, setLoading: any, setLiked: any, setLikeCount: any, setLoginfo: any) => {
+export const useEffectDetail = (
+  urlDetail: string, urlCheckLike: string, setData: any, setLoading: any, setLiked: any, setLikeCount: any, setLoginfo: any, setSaved?: any, eventId?: any
+) => {
   useEffect(() => {
     call(urlDetail, "GET", null)
       .then((response) => {
@@ -292,6 +294,15 @@ export const useEffectDetail = (urlDetail: string, urlCheckLike: string, setData
           setLoginfo(true)
         }
       }).catch((error) => console.error('not signed in'));
+    if (setSaved !== undefined) {
+      call(`/api/user/calendar/event/${eventId}/exists`, "GET", null)
+        .then((response) => {
+          console.log(response.data);
+          if (response.data) {
+            setSaved(response.data.exists)
+          }
+        }).catch((error) => console.error(''));
+    }
   }, [])
 }
 
