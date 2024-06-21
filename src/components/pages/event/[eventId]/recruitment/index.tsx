@@ -4,8 +4,9 @@ import { useParams, useSearchParams } from 'next/navigation';
 import { Divider } from '@mui/material';
 import { LoadingCircle, LoadingSkeleton, MoreButton, ParamProps, RListProps } from '@/components/common';
 import { call } from '@/service/ApiService';
-import { String2ISO, getParams, setPageInfo, setUniqueList } from "@/service/Functions";
+import { getParams, setPageInfo, setUniqueList } from "@/service/Functions";
 import { RecruitBlock } from "@/components/common/EventBlock";
+import dayjs from "dayjs";
 
 const index = () => {
   return (
@@ -33,8 +34,8 @@ function RecruitTab() {
     setParams({
       page: 0, sort: searchParams.get('sort') ?? 'createdAt,desc',
       state: searchParams.get('sort') && searchParams.get('state') === 'p' ? 'PROCEEDING' : '',
-      startDate: searchParams.get('sD') ? String2ISO((searchParams.get('sD'))) : '',
-      endDate: searchParams.get('eD') ? String2ISO((searchParams.get('eD'))) : '',
+      startDate: searchParams.get('sD') ? `${dayjs(searchParams.get('sD')).format('YYYY-MM-DD')}T00:00:00` : '',
+      endDate: searchParams.get('eD') ? `${dayjs(searchParams.get('eD')).format('YYYY-MM-DD')}T23:59:59` : '',
       leftHeadCount: searchParams.get('ptcp') ?? ''
     })
   }, [searchParams])

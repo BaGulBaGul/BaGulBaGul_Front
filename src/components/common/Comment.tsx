@@ -1,9 +1,10 @@
 import { ThemeProvider, Drawer, Box, List, ListItem, ListItemButton, ListItemText, Divider, Dialog, AppBar, Toolbar, IconButton, TextField, Button, Checkbox } from "@mui/material";
 import { Fragment, useRef, useState, MouseEvent, FocusEvent } from "react";
 import { commentMenuTheme, modifyCommentTheme, replyButtonTheme } from "./Themes";
-import { FormatDateTime, applyLike } from "@/service/Functions";
+import { applyLike } from "@/service/Functions";
 import { CmtLikeIcn } from "./Icon";
 import { call } from "@/service/ApiService";
+import dayjs from "dayjs";
 
 export interface CommentProps {
   commentChildCount?: number; commentId?: number; commentChildId?: number; content: string; createdAt: string;
@@ -13,7 +14,6 @@ export interface CommentProps {
 export interface CommentMProps { postCommentId: number; content: string; userId?: number; replyTargetUserName?: string; } // 댓글수정용
 
 export function CommentBlock(props: { opt: string; data: CommentProps; currentURL?: string; setOpenD: any; setTargetM: any; handleMention?: any; }) {
-  let createdD = FormatDateTime(props.data.createdAt, 1)
   const [liked, setLiked] = useState(props.data.myLike ?? false)
   const [likeCount, setLikeCount] = useState<number>(props.data.likeCount ?? undefined)
   const handleLike = () => {
@@ -41,7 +41,7 @@ export function CommentBlock(props: { opt: string; data: CommentProps; currentUR
             </div>
             <div className='text-[14px] text-gray3 pb-[6px]' id='comment-body'>{props.data.content}</div>
             <div className='flex flex-row text-[12px] text-gray3' id='comment-datetime'>
-              <p className='pe-[6px]'>{createdD.date}</p><p>{createdD.time}</p>
+              <p className='pe-[6px]'>{dayjs(props.data.createdAt).format('YY.MM.DD')}</p><p>{dayjs(props.data.createdAt).format('HH:mm')}</p>
             </div>
           </>
           : <div onClick={(e) => { props.handleMention(props.data) }}>
@@ -83,7 +83,7 @@ export function CommentBlock(props: { opt: string; data: CommentProps; currentUR
             </ThemeProvider>
           </a>
           : <div className='flex flex-row text-[12px] text-gray3' id='comment-datetime'>
-            <p className='pe-[6px]'>{createdD.date}</p><p>{createdD.time}</p>
+            <p className='pe-[6px]'>{dayjs(props.data.createdAt).format('YY.MM.DD')}</p><p>{dayjs(props.data.createdAt).format('HH:mm')}</p>
           </div>
         }
         <div className='flex flex-row items-center' id='comment-likes'>

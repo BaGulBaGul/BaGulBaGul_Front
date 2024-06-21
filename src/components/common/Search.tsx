@@ -1,4 +1,4 @@
-import { FormatDateRange, String2ISO, setPageInfo, useEffectCallAPI } from "@/service/Functions"
+import { FormatDateRange, setPageInfo, useEffectCallAPI } from "@/service/Functions"
 import { TabBlockProps } from "./EventBlock"
 import { LoadingSkeleton } from "./Loading"
 import { DividerDot, TagIcn } from "./Icon"
@@ -9,6 +9,7 @@ import { useEffect, useRef, useState } from "react"
 import { call } from "@/service/ApiService"
 import { ReadonlyURLSearchParams } from "next/navigation"
 import { tabList } from "./Data"
+import dayjs from "dayjs"
 
 export const TabBlock = (props: TabBlockProps) => {
   const handleMore = () => { setPageInfo(props.page, props.setPage, props.page.current + 1, props.params, props.setParams) }
@@ -172,12 +173,13 @@ export function SearchTabs(props: { opt: string; sp: ReadonlyURLSearchParams }) 
     setEvents([])
     setLoading(true);
     if (props.opt === 'TTL') {
+      console.log('** ')
       setParams({
         title: decodeURIComponent(decodeURIComponent(props.sp.get('query') ?? '')),
         page: 0, categories: props.sp.getAll('ct') ?? '',
         type: tabList[Number(props.sp.get('tab_id')) ?? 0], sort: props.sp.get('sort') ?? 'createdAt,desc',
-        startDate: props.sp.get('sD') ? String2ISO((props.sp.get('sD'))) : '',
-        endDate: props.sp.get('eD') ? String2ISO((props.sp.get('eD'))) : '',
+        startDate: props.sp.get('sD') ? `${dayjs(props.sp.get('sD')).format('YYYY-MM-DD')}T00:00:00` : '',
+        endDate: props.sp.get('eD') ? `${dayjs(props.sp.get('eD')).format('YYYY-MM-DD')}T23:59:59` : '',
         leftHeadCount: props.sp.get('ptcp') ?? '', totalHeadCountMax: props.sp.get('hcMax') ?? '',
         totalHeadCountMin: props.sp.get('hcMin') ?? '',
       })
@@ -186,8 +188,8 @@ export function SearchTabs(props: { opt: string; sp: ReadonlyURLSearchParams }) 
         tags: decodeURIComponent(decodeURIComponent(props.sp.get('tag') ?? '')),
         page: 0, categories: props.sp.getAll('ct') ?? '',
         type: tabList[Number(props.sp.get('tab_id')) ?? 0], sort: props.sp.get('sort') ?? 'createdAt,desc',
-        startDate: props.sp.get('sD') ? String2ISO((props.sp.get('sD'))) : '',
-        endDate: props.sp.get('eD') ? String2ISO((props.sp.get('eD'))) : '',
+        startDate: props.sp.get('sD') ? `${dayjs(props.sp.get('sD')).format('YYYY-MM-DD')}T00:00:00` : '',
+        endDate: props.sp.get('eD') ? `${dayjs(props.sp.get('eD')).format('YYYY-MM-DD')}T23:59:59` : '',
         leftHeadCount: props.sp.get('ptcp') ?? '', totalHeadCountMax: props.sp.get('hcMax') ?? '',
         totalHeadCountMin: props.sp.get('hcMin') ?? '',
       })

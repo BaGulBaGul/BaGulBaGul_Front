@@ -1,9 +1,10 @@
 import { ThemeProvider, IconButton, Chip } from "@mui/material";
 import { doneChipTheme } from "./Themes";
-import { FormatDate, FormatDateRange } from "@/service/Functions";
+import { FormatDateRange } from "@/service/Functions";
 import HashtagAccordion from "./HashtagAccordion";
 import { DividerDot } from "./Icon";
 import { CalProps, ListProps, ParamProps, RListProps } from ".";
+import dayjs from "dayjs";
 
 export interface TabBlockProps {
   opt: number; events: never[]; page: { current: number; total: number; }; setPage: any; isLoading: boolean;
@@ -55,7 +56,7 @@ export function RecruitBlock(props: { data: RListProps }) {
     <div className='flex flex-col py-[18px] px-[16px]'>
       <a className='flex flex-col gap-[4px]' href={urlLink}>
         <p className='truncate text-[16px]'>{props.data.post.title}</p>
-        <p className='text-[14px] text-gray3'>{FormatDate(props.data.recruitment.startDate, 0)}</p>
+        <p className='text-[14px] text-gray3'>{dayjs(props.data.recruitment.startDate).format('YY.MM.DD')}</p>
         <div className='flex flex-row items-center gap-[8px]'>
           <div className='flex flex-row items-center gap-[4px] text-[14px]'>
             <img className='w-[24px] h-[24px]' src="/main_profile.svg" />

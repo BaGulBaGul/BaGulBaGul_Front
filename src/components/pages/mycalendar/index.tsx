@@ -11,10 +11,11 @@ import { Calendar } from '@hassanmojab/react-modern-calendar-datepicker'
 import { CalProps, NoEvent } from '@/components/common';
 import { call } from '@/service/ApiService';
 import { getDaysArray, setUniqueList } from '@/service/Functions';
+import dayjs from 'dayjs';
 
 const index = () => {
-  let now = new Date();
-  const [focusDay, setFocusDay] = useState({ day: now.getDate(), month: now.getMonth() + 1, year: now.getFullYear() });
+  let now = dayjs();
+  const [focusDay, setFocusDay] = useState({ day: now.date(), month: now.month() + 1, year: now.year() });
   const [eventDates, setEventDates] = useState([]);
 
   return (
@@ -29,8 +30,8 @@ export default index;
 export function MyCalendar(props: { focusDay: any; setFocusDay: any; eventDays?: any; }) {
   let eventDays: any = []
   props.eventDays.forEach((date: string) => {
-    const dateD = new Date(date)
-    eventDays.push({ year: dateD.getFullYear(), month: dateD.getMonth() + 1, day: dateD.getDate(), className: 'eventDay' })
+    const dateD = dayjs(date)
+    eventDays.push({ year: dateD.year(), month: dateD.month() + 1, day: dateD.date(), className: 'eventDay' })
   })
 
   return (
@@ -51,7 +52,7 @@ function CalTab(props: { focusDay: any; setEventDates: any; }) {
 
   useEffect(() => {
     let sD = `${props.focusDay.year}-${String(props.focusDay.month).padStart(2, "0")}-01`
-    let eD = `${props.focusDay.year}-${String(props.focusDay.month).padStart(2, "0")}-${new Date(props.focusDay.year, props.focusDay.month, 0).getDate()}`
+    let eD = `${props.focusDay.year}-${String(props.focusDay.month).padStart(2, "0")}-${dayjs(`${props.focusDay.year}-${props.focusDay.month}-01`).daysInMonth()}`
     let apiURL1 = `/api/user/calendar/event?searchStartTime=${sD}T00:00:00&searchEndTime=${eD}T23:59:59`
     console.log(apiURL1)
     call(apiURL1, "GET", null)

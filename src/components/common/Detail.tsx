@@ -5,11 +5,12 @@ import { Button, Chip, Divider, IconButton, ThemeProvider } from "@mui/material"
 import { accompanyChipTheme, categoryButtonTheme, slideChipTheme } from "./Themes";
 import Slider from "react-slick";
 import { postData } from "./Data";
-import { FormatDate, FormatDateRange, FormatDateTime } from "@/service/Functions";
+import { FormatDateRange } from "@/service/Functions";
 import { HashtagButton } from "./HashtagAccordion";
 import { LikeIcn, CalIcn } from "./Icon";
 import { DetailProps, RDetailProps, ShareDialog } from ".";
 import { PostFooter } from "../layout/footer";
+import dayjs from "dayjs";
 
 export const Detail = (props: { opt: string; data?: DetailProps; dataR?: RDetailProps; liked: boolean; likeCount?: number; handleLike: any; saved?: boolean; handleCalendar?: any; }) => {
   const [popopen, setPopopen] = useState(false);
@@ -100,7 +101,7 @@ interface PostTitleProps {
   views: number; userName?: string; username?: string; categories?: string[];
 }
 function PostTitle(props: PostTitleProps) {
-  const dateString = props.type !== undefined && props.type !== 'PARTY' ? FormatDateRange(props.startDate, props.endDate) : FormatDate(props.startDate, 0)
+  const dateString = props.type !== undefined && props.type !== 'PARTY' ? FormatDateRange(props.startDate, props.endDate) : dayjs(props.startDate).format('YY.MM.DD')
   return (
     <div className='flex flex-col px-[16px] py-[20px]'>
       <div className='flex flex-row justify-between pt-[10px]'>
@@ -140,35 +141,38 @@ interface PostInfoProps {
   opt: string; type?: string; startDate?: any; endDate?: any; headCount: number; headCountMax?: number; currentHeadCount?: number;
 }
 function PostInfo(props: PostInfoProps) {
-  let startD = FormatDateTime(props.startDate, 0)
-  let endD = FormatDateTime(props.endDate, 0)
   return (<>
-    {
-      props.opt === 'EVT'
-        ? <div className='flex flex-col px-[16px] pt-[30px] text-[14px] leading-[160%]' id='p-info'>
-          <div className='flex flex-row pb-[6px]'>
-            <p className='font-semibold pe-[20px]'>시작일시</p>
-            {startD !== undefined ? <><p className='pe-[10px]'>{startD.date}</p><p>{startD.time}</p></> : <p>—</p>}
-          </div>
-          <div className='flex flex-row pb-[6px]'>
-            <p className='font-semibold pe-[20px]'>종료일시</p>
-            {endD !== undefined ? <><p className='pe-[10px]'>{endD.date}</p><p>{endD.time}</p></> : <p>—</p>}
-          </div>
-          <div className='flex flex-row items-center'>
-            <p className='font-semibold pe-[20px]'>참여인원</p>
-            <p>{props.headCountMax ?? '-'}명</p>
-            {props.type === 'PARTY'
-              ? <p className='ps-[4px]'>
-                <ThemeProvider theme={accompanyChipTheme}><Chip label={`${props.headCount ?? 0}명 참여 중`} /></ThemeProvider>
-              </p>
-              : <></>
-            }
-          </div>
+    {props.opt === 'EVT'
+      ? <div className='flex flex-col px-[16px] pt-[30px] text-[14px] leading-[160%]' id='p-info'>
+        <div className='flex flex-row pb-[6px]'>
+          <p className='font-semibold pe-[20px]'>시작일시</p>
+          {props.startDate !== undefined
+            ? <><p className='pe-[10px]'>{dayjs(props.startDate).format('YY.MM.DD(dd)')}</p><p>{dayjs(props.startDate).format('HH:mm')}</p></>
+            : <p>—</p>
+          }
         </div>
-        : <div className='flex flex-row px-[16px] pt-[30px] text-[14px] leading-[160%]' id='p-info'>
-          <p className='font-semibold pe-[10px]'>모집인원</p>
-          <p className='pe-[6px]'>{props.headCount}명</p>
+        <div className='flex flex-row pb-[6px]'>
+          <p className='font-semibold pe-[20px]'>종료일시</p>
+          {props.endDate !== undefined
+            ? <><p className='pe-[10px]'>{dayjs(props.endDate).format('YY.MM.DD(dd)')}</p><p>{dayjs(props.endDate).format('HH:mm')}</p></>
+            : <p>—</p>
+          }
         </div>
+        <div className='flex flex-row items-center'>
+          <p className='font-semibold pe-[20px]'>참여인원</p>
+          <p>{props.headCountMax ?? '-'}명</p>
+          {props.type === 'PARTY'
+            ? <p className='ps-[4px]'>
+              <ThemeProvider theme={accompanyChipTheme}><Chip label={`${props.headCount ?? 0}명 참여 중`} /></ThemeProvider>
+            </p>
+            : <></>
+          }
+        </div>
+      </div>
+      : <div className='flex flex-row px-[16px] pt-[30px] text-[14px] leading-[160%]' id='p-info'>
+        <p className='font-semibold pe-[10px]'>모집인원</p>
+        <p className='pe-[6px]'>{props.headCount}명</p>
+      </div>
     }
   </>
   )

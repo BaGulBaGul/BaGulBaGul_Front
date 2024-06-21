@@ -2,7 +2,7 @@ import { MutableRefObject, useEffect, useRef } from "react";
 import { createSearchParams } from 'react-router-dom'
 import { tabList } from "@/components/common/Data";
 import { call } from "./ApiService";
-import { DayValue, DayRange } from "@hassanmojab/react-modern-calendar-datepicker";
+import { DayValue } from "@hassanmojab/react-modern-calendar-datepicker";
 
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
@@ -13,63 +13,18 @@ import timezone from 'dayjs/plugin/timezone';
 import { CommentProps } from "@/components/common/Comment";
 import { CalProps, ListProps, ParamProps, RListProps } from "@/components/common";
 
-export const FormatDate = (dateStr: any, type: number) => {
-  const dateD = new Date(dateStr);
-  let date, month, year;
-  date = dateD.getDate();
-  month = dateD.getMonth() + 1;
-  year = dateD.getFullYear();
-
-  date = date.toString().padStart(2, '0');
-  month = month.toString().padStart(2, '0');
-  if (type === 0) {
-    return `${year.toString().slice(2)}.${month}.${date}`;
-  }
-}
-
-export const FormatDateTime = (dateStr: any, type: number) => {
-  const dateD = new Date(dateStr);
-  let date, month, year, time, weekday;
-  date = dateD.getDate();
-  month = dateD.getMonth() + 1;
-  year = dateD.getFullYear();
-  time = dateD.toLocaleTimeString("en-GB", { hour: "numeric", minute: "numeric" });
-  weekday = dateD.getDay();
-
-  date = date.toString().padStart(2, '0');
-  month = month.toString().padStart(2, '0');
-
-  const dayText = ['일', '월', '화', '수', '목', '금', '토']
-
-  if (type === 0) {
-    return { date: `${year.toString().slice(2)}.${month}.${date}(${dayText[weekday]})`, time: `${time}` };
-  } else {
-    return { date: `${year.toString().slice(2)}.${month}.${date}`, time: `${time}` };
-  }
-}
+// dayjs 설정
+dayjs.extend(isSameOrBefore);
+dayjs.locale('ko');
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.tz.setDefault('Asia/Seoul');
 
 export const FormatDateRange = (startDate: any, endDate: any) => {
-  const sDate = new Date(startDate);
-  const eDate = new Date(endDate);
-  let sDay, sMonth, sYear, eDay, eMonth, eYear;
-  sDay = sDate.getDate();
-  sMonth = sDate.getMonth() + 1;
-  sYear = sDate.getFullYear();
-
-  sDay = sDay.toString().padStart(2, '0');
-  sMonth = sMonth.toString().padStart(2, '0');
-
-  eDay = eDate.getDate();
-  eMonth = eDate.getMonth() + 1;
-  eYear = eDate.getFullYear();
-
-  eDay = eDay.toString().padStart(2, '0');
-  eMonth = eMonth.toString().padStart(2, '0');
-
-  if (sYear === eYear) {
-    return `${sYear.toString().slice(2)}.${sMonth}.${sDay} - ${eMonth}.${eDay}`;
-  } else if (sYear < eYear) {
-    return `${sYear.toString().slice(2)}.${sMonth}.${sDay} - ${eYear.toString().slice(2)}.${eMonth}.${eDay}`;
+  if (dayjs(startDate).year() === dayjs(endDate).year()) {
+    return `${dayjs(startDate).format('YY.MM.DD')} - ${dayjs(endDate).format('MM.DD')}`;
+  } else if (dayjs(startDate).year() < dayjs(endDate).year()) {
+    return `${dayjs(startDate).format('YY.MM.DD')} - ${dayjs(endDate).format('YY.MM.DD')}`;
   }
 }
 
@@ -89,17 +44,6 @@ export const String2Day = (date: string | null) => {
   if (date === null) { return undefined }
   else {
     return { year: Number(date.substring(0, 4)), month: Number(date.substring(4, 6)), day: Number(date.substring(6, 8)) }
-  }
-}
-
-export const String2ISO = (date: string | null) => {
-  if (date === null) { return undefined }
-  else {
-    let y = date.substring(0, 4);
-    let m = date.substring(4, 6);
-    let d = date.substring(6, 8);
-    const tmp = new Date(Number(y), Number(m) - 1, Number(d));
-    return tmp.toISOString().slice(0, -5)
   }
 }
 
@@ -362,13 +306,6 @@ export const useEffectRefreshComment = (opt: string, url: string, initialSet: Mu
     }
   }, [tmp])
 }
-
-// dayjs 설정
-dayjs.extend(isSameOrBefore);
-dayjs.locale('ko');
-dayjs.extend(utc);
-dayjs.extend(timezone);
-dayjs.tz.setDefault('Asia/Seoul');
 
 export const getDaysArray = function (events: CalProps[], setEventDates: any) {
   const arr: string[] = [];

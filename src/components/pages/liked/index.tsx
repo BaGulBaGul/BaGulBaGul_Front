@@ -4,7 +4,8 @@ import { Tab, Tabs, Box, ThemeProvider, Checkbox, ToggleButton, ToggleButtonGrou
 import TabPanel from '@/components/common/TabPanel';
 import { likeData, partyData } from '@/components/common/Data';
 import { viewSwitchTheme, tabTheme } from '@/components/common/Themes';
-import { FormatDateRange, FormatDate } from '@/service/Functions';
+import { FormatDateRange } from '@/service/Functions';
+import dayjs from 'dayjs';
 
 const index = () => {
   return (
@@ -125,7 +126,7 @@ function LikedTab() {
       <div className='flex flex-col px-[16px] py-[18px] gap-[4px]'>
         <div className='flex flex-row justify-between items-start'>
           <div className='flex flex-col gap-[4px]'>
-            <span className='text-[14px] text-gray3'>{FormatDate(props.data.startDate, 0)}</span>
+            <span className='text-[14px] text-gray3'>{dayjs(props.data.startDate).format('YY.MM.DD')}</span>
             <span className='text-[16px]'>{props.data.title}</span>
             <span className='text-[14px] text-gray3'>{props.data.event_title}</span>
           </div>

@@ -4,9 +4,10 @@ import { Divider, ThemeProvider, Fab } from '@mui/material';
 import { TabPanel, MoreButton, EventBlock, NoEvent, LoadingSkeleton, LoadingCircle, ParamProps } from '@/components/common';
 import { writeFabTheme } from '@/components/common/Themes'
 import { tabList } from '@/components/common/Data';
-import { String2ISO, setPageInfo, useEffectCallAPI } from '@/service/Functions';
+import { setPageInfo, useEffectCallAPI } from '@/service/Functions';
 import { useSearchParams } from 'next/navigation';
 import { TabBlockProps } from '@/components/common/EventBlock';
+import dayjs from 'dayjs';
 
 const index = () => (<PostTabs />);
 export default index;
@@ -30,8 +31,8 @@ function PostTabs() {
     setParams({
       page: 0, categories: searchParams.getAll('ct'),
       type: tabList[Number(searchParams.get('tab_id')) ?? 0], sort: searchParams.get('sort') ?? 'createdAt,desc',
-      startDate: searchParams.get('sD') ? String2ISO((searchParams.get('sD'))) : '',
-      endDate: searchParams.get('eD') ? String2ISO((searchParams.get('eD'))) : '',
+      startDate: searchParams.get('sD') ? `${dayjs(searchParams.get('sD')).format('YYYY-MM-DD')}T00:00:00` : '',
+      endDate: searchParams.get('eD') ? `${dayjs(searchParams.get('eD')).format('YYYY-MM-DD')}T23:59:59` : '',
       leftHeadCount: searchParams.get('ptcp') ?? '', totalHeadCountMax: searchParams.get('hcMax') ?? '',
       totalHeadCountMin: searchParams.get('hcMin') ?? ''
     })
