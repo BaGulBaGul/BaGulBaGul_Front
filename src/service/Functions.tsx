@@ -1,8 +1,15 @@
-import { tabList } from "@/components/common/Data";
 import { MutableRefObject, useEffect, useRef } from "react";
 import { createSearchParams } from 'react-router-dom'
+import { tabList } from "@/components/common/Data";
 import { call } from "./ApiService";
 import { DayValue, DayRange } from "@hassanmojab/react-modern-calendar-datepicker";
+
+import dayjs from 'dayjs';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import 'dayjs/locale/ko';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+
 import { CommentProps } from "@/components/common/Comment";
 import { CalProps, ListProps, ParamProps, RListProps } from "@/components/common";
 
@@ -355,3 +362,24 @@ export const useEffectRefreshComment = (opt: string, url: string, initialSet: Mu
     }
   }, [tmp])
 }
+
+// dayjs 설정
+dayjs.extend(isSameOrBefore);
+dayjs.locale('ko');
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.tz.setDefault('Asia/Seoul');
+
+export const getDaysArray = function (events: CalProps[], setEventDates: any) {
+  const arr: string[] = [];
+  console.log(events)
+  events.forEach(function (event) {
+    let sD = dayjs(event.startTime).set('hour', 0).set('minute', 0).set('second', 0)
+    let eD = dayjs(event.endTime).set('hour', 23).set('minute', 59).set('second', 59)
+    for (var dt = sD; dt.isSameOrBefore(eD); dt = dt.add(1, 'day')) {
+      let dtS = dt.format('YYYY-MM-DD')
+      if (!arr.includes(dtS)) { arr.push(dtS); }
+    }
+  });
+  setEventDates(arr)
+};

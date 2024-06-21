@@ -10,18 +10,17 @@ import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
 import { Calendar } from '@hassanmojab/react-modern-calendar-datepicker'
 import { CalProps, NoEvent } from '@/components/common';
 import { call } from '@/service/ApiService';
-import { setUniqueList } from '@/service/Functions';
+import { getDaysArray, setUniqueList } from '@/service/Functions';
 
 const index = () => {
   let now = new Date();
   const [focusDay, setFocusDay] = useState({ day: now.getDate(), month: now.getMonth() + 1, year: now.getFullYear() });
-
-  const testdates = ['2024-06-08T13:18:08.827Z', '2024-06-13T13:18:08.827Z', '2024-06-23T13:18:08.827Z', '2024-06-28T13:18:08.827Z']
+  const [eventDates, setEventDates] = useState([]);
 
   return (
-    <div className='flex flex-col w-full pb-[10px] mt-[60px] bg-gray1'>
-      <MyCalendar focusDay={focusDay} setFocusDay={setFocusDay} eventDays={testdates} />
-      <CalTab focusDay={focusDay} />
+    <div className='flex flex-col w-full h-full pb-[10px] mt-[60px] bg-gray1'>
+      <MyCalendar focusDay={focusDay} setFocusDay={setFocusDay} eventDays={eventDates} />
+      <CalTab focusDay={focusDay} setEventDates={setEventDates} />
     </div>
   )
 }
@@ -35,7 +34,7 @@ export function MyCalendar(props: { focusDay: any; setFocusDay: any; eventDays?:
   })
 
   return (
-    <div className='flex flex-col w-full items-center'>
+    <div className='flex flex-col w-full items-center bg-[#FFF]'>
       <div className='w-[414px]'>
         <Calendar value={props.focusDay} onChange={props.setFocusDay} locale={krLocale}
           calendarClassName="MyCalendar" customDaysClassName={eventDays} />
@@ -44,16 +43,28 @@ export function MyCalendar(props: { focusDay: any; setFocusDay: any; eventDays?:
   )
 }
 
-function CalTab(props: { focusDay: any; }) {
+function CalTab(props: { focusDay: any; setEventDates: any; }) {
   const [value, setValue] = useState(0);
   const handleChange = (event: React.SyntheticEvent, newValue: number) => { setValue(newValue); };
 
   const [events, setEvents] = useState<CalProps[]>([]);
 
   useEffect(() => {
+    let sD = `${props.focusDay.year}-${String(props.focusDay.month).padStart(2, "0")}-01`
+    let eD = `${props.focusDay.year}-${String(props.focusDay.month).padStart(2, "0")}-${new Date(props.focusDay.year, props.focusDay.month, 0).getDate()}`
+    let apiURL1 = `/api/user/calendar/event?searchStartTime=${sD}T00:00:00&searchEndTime=${eD}T23:59:59`
+    console.log(apiURL1)
+    call(apiURL1, "GET", null)
+      .then((response) => {
+        console.log(response);
+        if (response.data.length > 0) {
+          console.log('** ', response.data.length)
+          getDaysArray(response.data, props.setEventDates);
+        }
+      })
     let dateS = `${props.focusDay.year}-${String(props.focusDay.month).padStart(2, "0")}-${String(props.focusDay.day).padStart(2, "0")}`
-    let apiURL = `/api/user/calendar/event?searchStartTime=${dateS}T00:00:00&searchEndTime=${dateS}T23:59:59`
-    call(apiURL, "GET", null)
+    let apiURL2 = `/api/user/calendar/event?searchStartTime=${dateS}T00:00:00&searchEndTime=${dateS}T23:59:59`
+    call(apiURL2, "GET", null)
       .then((response) => {
         console.log(response);
         if (response.data.length > 0) {
