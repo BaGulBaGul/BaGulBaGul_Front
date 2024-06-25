@@ -8,7 +8,7 @@ import { postData } from "./Data";
 import { FormatDateRange } from "@/service/Functions";
 import { HashtagButton } from "./HashtagAccordion";
 import { LikeIcn, CalIcn } from "./Icon";
-import { DetailProps, RDetailProps, ShareDialog } from ".";
+import { DetailProps, NoUser, RDetailProps, ShareDialog } from ".";
 import { PostFooter } from "../layout/footer";
 import dayjs from "dayjs";
 
@@ -28,8 +28,8 @@ export const Detail = (props: { opt: string; data?: DetailProps; dataR?: RDetail
             ? <PostSlide />
             : <img className='h-[280px] object-cover' src='/default_detail_thumb3x.png' />
           }
-          <PostTitle title={props.data.post.title} startDate={props.data.event.startDate} endDate={props.data.event.endDate}
-            type={props.data.event.type} views={props.data.post.views} userName={props.data.post.writer.userName} categories={props.data.event.categories} />
+          <PostTitle title={props.data.post.title} startDate={props.data.event.startDate} endDate={props.data.event.endDate} type={props.data.event.type}
+            views={props.data.post.views} userId={props.data.post.writer.userId} userName={props.data.post.writer.userName} categories={props.data.event.categories} />
           <Divider />
           <PostInfo opt='EVT' type={props.data.event.type} startDate={props.data.event.startDate} endDate={props.data.event.endDate}
             headCountMax={props.data.event.maxHeadCount} headCount={props.data.event.currentHeadCount} />
@@ -55,7 +55,7 @@ export const Detail = (props: { opt: string; data?: DetailProps; dataR?: RDetail
           {props.dataR.post.imageUrls.length > 0
             ? <PostSlide /> : <img className='h-[280px] object-cover' src='/default_detail_thumb3x.png' />
           }
-          <PostTitle title={props.dataR.post.title} startDate={props.dataR.recruitment.startDate} views={props.dataR.post.views} username={props.dataR.post.writer.userName} />
+          <PostTitle title={props.dataR.post.title} startDate={props.dataR.recruitment.startDate} views={props.dataR.post.views} userId={props.dataR.post.writer.userId} userName={props.dataR.post.writer.userName} />
           <Divider />
           <PostInfo opt='RCT' headCount={props.dataR.recruitment.maxHeadCount} currentHeadCount={props.dataR.recruitment.currentHeadCount} />
           <div className='pb-[30px]'>
@@ -98,7 +98,7 @@ function PostSlide() {
 
 interface PostTitleProps {
   title: string; startDate: any; endDate?: any; type?: string;
-  views: number; userName?: string; username?: string; categories?: string[];
+  views: number; userId: number; userName: string; categories?: string[];
 }
 function PostTitle(props: PostTitleProps) {
   const dateString = props.type !== undefined && props.type !== 'PARTY' ? FormatDateRange(props.startDate, props.endDate) : dayjs(props.startDate).format('YY.MM.DD')
@@ -117,20 +117,22 @@ function PostTitle(props: PostTitleProps) {
       </div>
       <div className='flex flex-row justify-between items-center pt-[4px]'>
         <div className='flex flex-row items-center'>
-          <div className='me-[4px] rounded-full overflow-hidden w-[24px] h-[24px]'>
-            {/* 프로필 이미지 적용 필요 */}
-            <img className='w-[24px] h-[24px]' src={"/images/profile_pic.png"} />
-          </div>
-          <p className='text-[14px] text-gray3'>{props.userName ?? props.username}</p>
+          {props.userId === null ? <NoUser />
+            : <>
+              <div className='me-[4px] rounded-full overflow-hidden w-[24px] h-[24px]'>
+                <img className='w-[24px] h-[24px]' src={"/images/profile_pic.png"} />
+              </div>
+              <p className='text-[14px] text-gray3'>{props.userName}</p>
+            </>
+          }
         </div>
-        {
-          props.categories !== undefined
-            ? <div className='flex flex-row gap-[8px]'>
-              <ThemeProvider theme={categoryButtonTheme}>
-                {props.categories.map((cate, idx) => (<Button key={`cate-${idx}`}>{cate}</Button>))}
-              </ThemeProvider>
-            </div>
-            : <></>
+        {props.categories !== undefined
+          ? <div className='flex flex-row gap-[8px]'>
+            <ThemeProvider theme={categoryButtonTheme}>
+              {props.categories.map((cate, idx) => (<Button key={`cate-${idx}`}>{cate}</Button>))}
+            </ThemeProvider>
+          </div>
+          : <></>
         }
       </div>
     </div>

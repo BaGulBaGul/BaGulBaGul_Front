@@ -16,7 +16,7 @@ import { IconButton } from '@mui/material';
 //           <a href="/search"><img src="/main_icon_search.svg" /></a>
 //         </p>
 //         <a className="flex place-items-center" href="/mypage">
-//           <img src="/main_profile.svg" alt="마이페이지 아이콘" width={24} height={24} />
+//           <img src="/profile_main.svg" alt="마이페이지 아이콘" width={24} height={24} />
 //         </a>
 //       </div>
 //     </header>
@@ -35,7 +35,7 @@ import { IconButton } from '@mui/material';
 //           <a href="/search"><img src="/main_icon_search.svg" /></a>
 //         </p>
 //         <a className="flex place-items-center" href="/mypage">
-//           <img src="/main_profile.svg" alt="마이페이지 아이콘" width={24} height={24} />
+//           <img src="/profile_main.svg" alt="마이페이지 아이콘" width={24} height={24} />
 //         </a>
 //       </div>
 //     </header>
@@ -53,7 +53,7 @@ import { IconButton } from '@mui/material';
 //           <a href="/search"><img src="/main_icon_search.svg" /></a>
 //         </p>
 //         <a className="flex place-items-center" href="/mypage">
-//           <img src="/main_profile.svg" alt="마이페이지 아이콘" width={24} height={24} />
+//           <img src="/profile_main.svg" alt="마이페이지 아이콘" width={24} height={24} />
 //         </a>
 //       </div>
 //     </header>
@@ -97,7 +97,7 @@ function Header() {
 
           </a>
           <IconButton onClick={handleProfile} className='p-0' disableRipple>
-            <img src="/main_profile.svg" alt="마이페이지 아이콘" width={24} height={24} /></IconButton>
+            <img src="/profile_main.svg" alt="마이페이지 아이콘" width={24} height={24} /></IconButton>
         </div>
       </header>
       <SignIn open={open} setOpen={setOpen} />
@@ -117,7 +117,7 @@ export function HeaderNonMain() {
           <a href="/search"><img src="/main_icon_search.svg" /></a>
         </p>
         <a className="flex place-items-center" href="/mypage">
-          <img src="/main_profile.svg" alt="마이페이지 아이콘" width={24} height={24} />
+          <img src="/profile_main.svg" alt="마이페이지 아이콘" width={24} height={24} />
         </a>
       </div>
     </header>
@@ -135,7 +135,7 @@ export function HeaderNotFixed() {
           <a href="/search"><img src="/main_icon_search.svg" /></a>
         </p>
         <a className="flex place-items-center" href="/mypage">
-          <img src="/main_profile.svg" alt="마이페이지 아이콘" width={24} height={24} />
+          <img src="/profile_main.svg" alt="마이페이지 아이콘" width={24} height={24} />
         </a>
       </div>
     </header>

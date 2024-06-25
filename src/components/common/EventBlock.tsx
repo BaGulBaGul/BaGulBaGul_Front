@@ -3,7 +3,7 @@ import { doneChipTheme } from "./Themes";
 import { FormatDateRange } from "@/service/Functions";
 import HashtagAccordion from "./HashtagAccordion";
 import { DividerDot } from "./Icon";
-import { CalProps, ListProps, ParamProps, RListProps } from ".";
+import { CalProps, ListProps, NoUser, ParamProps, RListProps } from ".";
 import dayjs from "dayjs";
 
 export interface TabBlockProps {
@@ -25,21 +25,24 @@ export function EventBlock(props: { data: ListProps }) {
             </div>
           </div>
           <div className='flex flex-row items-center gap-[4px] text-[14px]'>
-            <img className='rounded-full w-[24px] h-[24px]' src='/main_profile.svg' />
-            {/* <img className='rounded-full w-[24px] h-[24px]' src={props.data.post.writer.userProfileImageUrl ?? '/main_profile.svg'} /> */}
-            <p className='text-black'>{props.data.post.writer.userName}</p>
-            {
-              props.data.event.type === 'PARTY'
-                ? <>
-                  <DividerDot />
-                  <p className='text-gray3'>{`${props.data.event.currentHeadCount}/${props.data.event.maxHeadCount}(명)`}</p>
-                  {
-                    props.data.event.currentHeadCount === props.data.event.maxHeadCount
-                      ? <ThemeProvider theme={doneChipTheme}><Chip label="모집완료" /></ThemeProvider>
-                      : <></>
-                  }
-                </>
-                : <></>
+            {props.data.post.writer.userId === null ? <NoUser />
+              : <>
+                {/* <img className='rounded-full w-[24px] h-[24px]' src={props.data.post.writer.userProfileImageUrl ?? '/profile_main.svg'} /> */}
+                <img className='rounded-full w-[24px] h-[24px]' src="/profile_main.svg" />
+                <p className="text-black">{props.data.post.writer.userName}</p>
+              </>
+            }
+            {props.data.event.type === 'PARTY'
+              ? <>
+                <DividerDot />
+                <p className='text-gray3'>{`${props.data.event.currentHeadCount}/${props.data.event.maxHeadCount}(명)`}</p>
+                {
+                  props.data.event.currentHeadCount === props.data.event.maxHeadCount
+                    ? <ThemeProvider theme={doneChipTheme}><Chip label="모집완료" /></ThemeProvider>
+                    : <></>
+                }
+              </>
+              : <></>
             }
           </div>
         </div>
@@ -59,8 +62,13 @@ export function RecruitBlock(props: { data: RListProps }) {
         <p className='text-[14px] text-gray3'>{dayjs(props.data.recruitment.startDate).format('YY.MM.DD')}</p>
         <div className='flex flex-row items-center gap-[8px]'>
           <div className='flex flex-row items-center gap-[4px] text-[14px]'>
-            <img className='w-[24px] h-[24px]' src="/main_profile.svg" />
-            <p className="text-black">{props.data.post.writer.userName}</p>
+            {props.data.post.writer.userId === null ? <NoUser />
+              : <>
+                {/* <img className='rounded-full w-[24px] h-[24px]' src={props.data.post.writer.userProfileImageUrl ?? '/profile_main.svg'} /> */}
+                <img className='rounded-full w-[24px] h-[24px]' src="/profile_main.svg" />
+                <p className="text-black">{props.data.post.writer.userName}</p>
+              </>
+            }
             <DividerDot />
             <p className='text-gray3'>{`${props.data.recruitment.currentHeadCount}/${props.data.recruitment.maxHeadCount}(명)`}</p>
           </div>

@@ -5,6 +5,7 @@ import { applyLike } from "@/service/Functions";
 import { CmtLikeIcn } from "./Icon";
 import { call } from "@/service/ApiService";
 import dayjs from "dayjs";
+import { NoUser } from "./NoEvent";
 
 export interface CommentProps {
   commentChildCount?: number; commentId?: number; commentChildId?: number; content: string; createdAt: string;
@@ -32,10 +33,16 @@ export function CommentBlock(props: { opt: string; data: CommentProps; currentUR
           ? <>
             <div className='flex flex-row justify-between pb-[10px]' id='comment-head'>
               <div className='flex flex-row items-center'>
-                <a className="flex place-items-center" href="/">
-                  <img src="/main_profile.svg" width={24} height={24} />
-                </a>
-                <div className='text-[14px] ps-[8px]'>{props.data.username ?? props.data.userName}</div>
+                {props.data.userId === null ? <NoUser />
+                  : <>
+                    {/* <img className='rounded-full w-[24px] h-[24px]' src={props.data.userProfileImageUrl ?? '/profile_main.svg'} /> */}
+                    <img className='rounded-full w-[24px] h-[24px]' src="/profile_main.svg" />
+                    <p className="text-[14px] ps-[8px]">{props.data.username}</p>
+                  </>
+                }
+                {/* <a className="flex place-items-center" href="/">
+                  <img src="/profile_main.svg" width={24} height={24} />
+                </a> */}
               </div>
               <IconButton disableRipple className='p-0' onClick={(e) => handleToggle(e)}><img src='/comment_etc.svg' width={24} height={24} /></IconButton>
             </div>
@@ -47,10 +54,13 @@ export function CommentBlock(props: { opt: string; data: CommentProps; currentUR
           : <div onClick={(e) => { props.handleMention(props.data) }}>
             <div className='flex flex-row justify-between pb-[10px]' id='comment-head'>
               <div className='flex flex-row items-center'>
-                <a className="flex place-items-center" href="/">
-                  <img src="/main_profile.svg" width={24} height={24} />
-                </a>
-                <div className='text-[14px] ps-[8px]'>{props.data.username ?? props.data.userName}</div>
+                {props.data.userId === null ? <NoUser />
+                  : <>
+                    {/* <img className='rounded-full w-[24px] h-[24px]' src={props.data.userProfileImageUrl ?? '/profile_main.svg'} /> */}
+                    <img className='rounded-full w-[24px] h-[24px]' src="/profile_main.svg" />
+                    <p className="text-[14px] ps-[8px]">{props.data.userName}</p>
+                  </>
+                }
               </div>
               <IconButton disableRipple className='p-0' onClick={(e) => handleToggle(e)}><img src='/comment_etc.svg' width={24} height={24} /></IconButton>
             </div>

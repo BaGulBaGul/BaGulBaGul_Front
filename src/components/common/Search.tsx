@@ -59,7 +59,7 @@ export function ResultBlock(props: { data: ListProps }) {
     //     <p className='truncate text-[16px] font-semibold leading-[140%]'>{props.data.post.title}</p>
     //     <p className="text-[14px] text-gray3 leading-[160%]">{FormatDateRange(props.data.event.startDate, props.data.event.endDate)}</p>
     //     <div className='flex flex-row items-center gap-[4px] text-[14px]'>
-    //       <img className='rounded-full w-[24px] h-[24px]' src='/main_profile.svg' />
+    //       <img className='rounded-full w-[24px] h-[24px]' src='/profile_main.svg' />
     //       <p className='text-black'>{props.data.post.writer.userName}</p>
     //       {props.data.event.type === 'PARTY'
     //         ? <>

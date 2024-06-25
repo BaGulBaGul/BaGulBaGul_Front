@@ -397,6 +397,39 @@ export const shareDialogTheme = createTheme({
   }
 })
 
+export const noUserDialogTheme = createTheme({
+  components: {
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          margin: 0, borderRadius: '8px',
+          maxHeight: 'unset', maxWidth: 'unset', height: '180px', width: '250px'
+        }
+      }
+    },
+    MuiDialogTitle: {
+      styleOverrides: {
+        root: {
+          padding: '20px 18px 12px', fontWeight: '600', fontSize: '18px', lineHeight: '140%',
+          display: 'flex', flexDirection: 'row', justifyContent: 'space-between'
+        }
+      }
+    },
+    MuiDialogContent: {
+      styleOverrides: {
+        root: {
+          fontSize: '12px', paddingTop: '4px !important', paddingBottom: '8px', textAlign: 'center',
+          display: 'flex', flexDirection: 'row', justifyContent: 'center',
+        }
+      }
+    },
+    MuiDialogActions: { styleOverrides: { root: { padding: '12px 15px' } } },
+    MuiButtonBase: { defaultProps: { disableRipple: true, }, },
+    MuiButton: { styleOverrides: { root: { backgroundColor: '#4A6AFE !important', color: '#ECECEC', width: '100%', paddingTop: '4px' } } },
+    MuiIconButton: { styleOverrides: { root: { padding: 0, } } }
+  }
+})
+
 export const tabTheme = createTheme({
   components: {
     MuiButtonBase: { defaultProps: { disableRipple: true, }, },
@@ -619,8 +652,8 @@ export const JoinBtnTheme = createTheme({
           display: 'flex', flexDirection: 'row', width: '183px', borderRadius: '4px',
           justifyContent: 'center', padding: '16px',
           fontSize: '16px', lineHeight: '140%', fontWeight: '400',
-          '&.join-skip': {backgroundColor: 'transparent !important', color: '#4A6AFE', border: '1px solid #4A6AFE'},
-          '&.join-email': {backgroundColor: '#4A6AFE !important', color: '#FCFCFC',},
+          '&.join-skip': { backgroundColor: 'transparent !important', color: '#4A6AFE', border: '1px solid #4A6AFE' },
+          '&.join-email': { backgroundColor: '#4A6AFE !important', color: '#FCFCFC', },
           '&:disabled': { backgroundColor: '#6C6C6C !important', color: '#FCFCFC' }
         }
       }

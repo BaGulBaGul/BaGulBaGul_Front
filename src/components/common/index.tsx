@@ -5,7 +5,7 @@ import { SearchLayout } from './SearchLayout'
 import { CommentBlock, CommentDrawer, ModifyInput, ModifyInputR } from './Comment'
 import HashtagAccordion, { HashtagButton } from './HashtagAccordion'
 import MoreButton from './MoreButton'
-import NoEvent from './NoEvent'
+import { NoEvent, NoUser } from './NoEvent'
 import PostTab from './PostTab'
 import { RecCarousel } from './RecCarousel'
 import ScrollToTop from './ScrollToTop'
@@ -20,13 +20,13 @@ import SignIn from './SignIn'
 
 export {
   CategoryButtons,
-  EventBlock, RecruitBlock, CalendarBlock, 
+  EventBlock, RecruitBlock, CalendarBlock,
   TabBlock, ResultBlock, SuggestBlock, SearchTabs, SearchBar,
   SearchLayout,
   CommentBlock, CommentDrawer, ModifyInput, ModifyInputR,
-  HashtagAccordion,HashtagButton,
+  HashtagAccordion, HashtagButton,
   MoreButton,
-  NoEvent,
+  NoEvent, NoUser,
   PostTab, TabPanel,
   RecCarousel,
   ViewButton, ViewSelect, ViewFilterApplied,
@@ -48,11 +48,11 @@ export interface ParamProps {
 
 export interface ListProps {
   event: {
-    eventId: number; type: string; abstractLocation: string; currentHeadCount: number; maxHeadCount: number; 
+    eventId: number; type: string; abstractLocation: string; currentHeadCount: number; maxHeadCount: number;
     startDate: any; endDate: any; categories: string[];
   };
   post: {
-    postId: number; writer: {userId: number; userName: string; userProfileImageUrl: string;}; title: string; headImageUrl: string;
+    postId: number; writer: { userId: number; userName: string; userProfileImageUrl: string; }; title: string; headImageUrl: string;
     createdAt: any; lastModifiedAt: any; tags: string[]
   }
 }
@@ -74,7 +74,7 @@ export interface DetailProps {
     latitudeLocation: number; longitudeLocation: number; startDate: any; endDate: any; categories: string[];
   };
   post: {
-    postId: number; writer: {userId: number; userName: string; userProfileImageUrl: string;}; title: string; headImageUrl: string;
+    postId: number; writer: { userId: number; userName: string; userProfileImageUrl: string; }; title: string; headImageUrl: string;
     content: string; tags: string[]; imageIds: any[]; imageUrls: string[]; likeCount: number; commentCount: number; views: number;
     createdAt: any; lastModifiedAt: any;
   }
@@ -86,7 +86,7 @@ export interface RDetailProps {
     startDate: any; endDate: any;
   };
   post: {
-    postId: number; writer: {userId: number; userName: string; userProfileImageUrl: string;}; title: string; headImageUrl: string;
+    postId: number; writer: { userId: number; userName: string; userProfileImageUrl: string; }; title: string; headImageUrl: string;
     content: string; tags: string[]; imageIds: any[]; imageUrls: string[]; likeCount: number; commentCount: number; views: number;
     createdAt: any; lastModifiedAt: any;
   }
