@@ -30,7 +30,7 @@ const index = () => {
     }
   }
   const handleJoin = (opt: number, e: any) => {
-    if (toP2 && nameChecked) {
+    if (toP2 && nameChecked && searchParams.get('join_token') !== null) {
       if (opt === 0) {
         console.log(`{"joinToken": ${searchParams.get('join_token')}, "nickname": ${nameRef.current.value}}`)
         // call('/api/user/join/social', "POST", {"joinToken": searchParams.get('join_token'), "nickname": nameRef.current.value})
@@ -86,7 +86,6 @@ function JoinBlock(props: JoinBlockProps) {
 
   const [usableName, setUsableName] = useState({ regex: false, unique: false })
 
-  // * 존재하는 닉네임 확인 필요
   const handleNameCheck = () => {
     if (props.nameRef && props.nameRef.current !== null) {
       if (nameRegEx.test(props.nameRef.current.value)) {

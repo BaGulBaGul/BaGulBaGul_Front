@@ -588,7 +588,7 @@ export const signInTheme = createTheme({
   components: {
     MuiAppBar: {
       styleOverrides: {
-        root: { backgroundColor: '#FFF', boxShadow: 'unset', }
+        root: { backgroundColor: '#FFF', boxShadow: 'unset', padding: '0px' }
       }
     },
     MuiToolbar: {
@@ -603,7 +603,15 @@ export const signInTheme = createTheme({
       styleOverrides: {
         root: {
           fontSize: '15px', fontWeight: '500', color: '#000000', height: '45px',
-          backgroundColor: '#FEE500 !important', borderRadius: '12px',
+          backgroundColor: '#FEE500 !important', borderRadius: '12px'
+        }
+      }
+    },
+    MuiIconButton: {
+      defaultProps: { disableRipple: true, },
+      styleOverrides: {
+        root: {
+          padding: '0px'
         }
       }
     },

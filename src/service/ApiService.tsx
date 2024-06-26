@@ -1,5 +1,6 @@
 import axios from "axios";
 import { API_BASE_URL } from "../api-config";
+import { cookies } from 'next/headers'
 
 // export async function call(api:string, method:string, request?:any) {
 //   interface Options { url: string; method: string; body?: string; }
@@ -41,4 +42,11 @@ export async function call(api: string, method: string, request?: any) {
     }
     return response.text().then(text => { throw new Error(text) })
   })
+}
+
+export function isSigned() {
+  // const cookieStore = cookies()
+  // const hasCookie = cookieStore.has('Access_Token')
+  const allCookies = document.cookie;
+  console.log('hasCookie: ', allCookies)
 }

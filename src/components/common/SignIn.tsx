@@ -7,7 +7,6 @@ export default function SignIn(props: { open: boolean; setOpen: any; }) {
   const handleClose = () => {
     props.setOpen(false);
   };
-
   return (
     <ThemeProvider theme={signInTheme}>
       <Fragment>

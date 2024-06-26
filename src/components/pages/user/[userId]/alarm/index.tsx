@@ -44,13 +44,13 @@ const index = () => {
 
     return (
       <div className="flex w-full px-4 py-2.5 gap-[18px]">
-        <img src="alarm_comment.svg" width={20} height={20} />
+        <img src="/alarm_comment.svg" width={20} height={20} />
         <div className="flex flex-col gap-0.5 w-full">
           <text className={titleStyle}>{title} 글에 댓글이 달렸어요.</text>
           <text className={bodyStyle}>{body}</text>
           <text className={timeStyle}>{time}</text>
         </div>
-        <img src="X.svg" width={24} height={24} />
+        <img src="/X.svg" width={24} height={24} />
       </div>
     );
   };
@@ -61,12 +61,12 @@ const index = () => {
 
     return(
       <div className="flex w-full px-4 py-2.5 gap-[18px]">
-        <img src="alarm_comment.svg" width={20} height={20} />
+        <img src="/alarm_comment.svg" width={20} height={20} />
         <div className="flex flex-col gap-0.5 w-full">
           <text className={titleStyle}>{title} 글에 좋아요 10개가 달렸어요.</text>
           <text className={timeStyle}>{time}</text>
         </div>
-        <img src="X.svg" width={24} height={24} />
+        <img src="/X.svg" width={24} height={24} />
       </div>
     )
   }

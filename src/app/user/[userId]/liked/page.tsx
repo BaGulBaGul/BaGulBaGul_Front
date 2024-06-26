@@ -1,7 +1,7 @@
-import Liked from '@/components/pages/liked'
+import Liked from '@/components/pages/user/[userId]/liked'
 import { SubTopHeader } from '@/components/layout/subHeader';
 
-export default function Page() {
+export default function Page({ params }: { params: { userId: string | number } }) {
   return (
     <div>
       <div className='relative z-10'>
