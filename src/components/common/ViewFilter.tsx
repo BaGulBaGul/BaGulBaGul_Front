@@ -5,7 +5,7 @@ import {
   viewTheme, viewRadioTheme, HeadInputRoot, HeadInputElement, HeadButton, 
   PartiInputRoot, PartiInputElement, PartiButton, viewCheckTheme
 } from "./Themes";
-import { SmileyFace, CalendarIcn, AddIcn, RemoveIcn } from "./Icon";
+import { CalendarIcn, AddIcn, RemoveIcn, CmtLikeIcn } from "./Icon";
 import { handleDayData } from "@/service/Functions";
 import { krLocale } from '@/components/common/CalendarLocale';
 import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
@@ -140,7 +140,7 @@ export function ViewSelect(props: ViewSelectProps) {
                 <Button disableRipple onClick={handleOpenParti}
                   className={props.participants > 0 ? 'border-primary-blue ps-[4px] pe-[6px] py-[4px]' : 'ps-[4px] pe-[6px] py-[4px]'}>
                   <div className="flex flex-row gap-[4px]">
-                    <SmileyFace type={props.participants > 0 ? 1 : 0} />
+                    <CmtLikeIcn val={props.participants > 0} />
                     <span className="text-[14px] text-black self-start">
                       {props.participants >= 0 ? props.participants : 0}명
                     </span>
@@ -169,7 +169,7 @@ export function ViewSelect(props: ViewSelectProps) {
                         || (props.headCount.to !== undefined && props.headCount.to > 0)
                         ? 'border-primary-blue ps-[4px] pe-[6px] py-[4px]' : 'ps-[4px] pe-[6px] py-[4px]'}>
                       <div className="flex flex-row gap-[4px]">
-                        <SmileyFace type={(props.headCount.from !== undefined && props.headCount.from > 0) || (props.headCount.to !== undefined && props.headCount.to > 0) ? 1 : 0} />
+                        <CmtLikeIcn val={(props.headCount.from !== undefined && props.headCount.from > 0) || (props.headCount.to !== undefined && props.headCount.to > 0)} />
                         <div className="flex flex-row text-[14px] text-black self-start">
                           {headCountString(props.headCount.from, props.headCount.to)}명
                         </div>
