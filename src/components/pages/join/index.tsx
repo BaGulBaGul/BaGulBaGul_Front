@@ -3,7 +3,8 @@ import { Button, IconButton, TextField, ThemeProvider } from '@mui/material';
 import { FooterBtnTheme, joinTheme, JoinBtnTheme } from '@/components/common/Themes';
 import { MutableRefObject, useRef, useState } from 'react';
 import { call } from '@/service/ApiService';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
+
 
 const index = () => {
   const [nameChecked, setNameChecked] = useState<boolean>()
@@ -29,21 +30,36 @@ const index = () => {
       setToP2(true)
     }
   }
+
+  const router = useRouter();
   const handleJoin = (opt: number, e: any) => {
     if (toP2 && nameChecked && searchParams.get('join_token') !== null) {
       if (opt === 0) {
-        console.log(`{"joinToken": ${searchParams.get('join_token')}, "nickname": ${nameRef.current.value}}`)
-        // call('/api/user/join/social', "POST", {"joinToken": searchParams.get('join_token'), "nickname": nameRef.current.value})
-        // .then((response) => {
-        //   console.log(response.data);
-        // })
+        call('/api/user/join/social', "POST", { "joinToken": searchParams.get('join_token'), "nickname": nameRef.current.value })
+          .then((response) => {
+            if (response.errorCode === 'C00000') {
+              alert('회원가입이 완료되었습니다.')
+              router.replace('/')
+            } else {
+              alert('잘못된 접근 또는 인증토큰이 만료되었습니다. 다시 시도해주세요.')
+              router.replace('/')
+            }
+          })
       } else if (opt === 1 && emailChecked) {
-        console.log(`{"email": ${emailRef.current.value}, "joinToken": ${searchParams.get('join_token')}, "nickname": ${nameRef.current.value}}`)
-        // call('/api/user/join/social', "POST", {"email": emailRef.current.value, "joinToken": searchParams.get('join_token'), "nickname": nameRef.current.value})
-        // .then((response) => {
-        //   console.log(response.data);
-        // })
+        call('/api/user/join/social', "POST", { "email": emailRef.current.value, "joinToken": searchParams.get('join_token'), "nickname": nameRef.current.value })
+          .then((response) => {
+            if (response.errorCode === 'C00000') {
+              alert('회원가입이 완료되었습니다.')
+              router.replace('/')
+            } else {
+              alert('잘못된 접근 또는 인증토큰이 만료되었습니다. 다시 시도해주세요.')
+              router.replace('/')
+            }
+          })
       }
+    } else if (searchParams.get('join_token') === null) {
+      alert('잘못된 접근입니다. 다시 시도해주세요.')
+      router.replace('/')
     }
   }
 

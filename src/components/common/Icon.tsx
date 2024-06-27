@@ -4,7 +4,7 @@
 export const FilterArrowMore = () => {
   return (
     <svg width="16" height="23" viewBox="0 0 16 23" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path fill-rule="evenodd" clip-rule="evenodd" d="M3.07273 7.96362L2 9.03635L8 15.0364L14 9.03635L12.9273 7.96362L8 12.8909L3.07273 7.96362V7.96362Z" fill="currentColor" />
+      <path fillRule="evenodd" clipRule="evenodd" d="M3.07273 7.96362L2 9.03635L8 15.0364L14 9.03635L12.9273 7.96362L8 12.8909L3.07273 7.96362V7.96362Z" fill="currentColor" />
     </svg>
   )
 }
@@ -128,7 +128,7 @@ export const TagIcn = () => {
   return (
     <svg width="18px" height="18px" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M9.94922 11.1641H7.46094L7.00977 13.8984H6.01172L6.46289 11.1641H5L5.16406 10.1797H6.62012L7.03027 7.71875H5.58789L5.73828 6.73438H7.1875L7.63867 4H8.63672L8.18555 6.73438H10.6738L11.125 4H12.123L11.6719 6.73438H13.1484L12.9844 7.71875H11.5146L11.1045 10.1797H12.5605L12.3965 11.1641H10.9473L10.4961 13.8984H9.49805L9.94922 11.1641ZM10.1064 10.1797L10.5166 7.71875H8.02832L7.61816 10.1797H10.1064Z" fill="#1E1E1E" />
-      <circle cx="9" cy="9" r="8.75" stroke="#1E1E1E" stroke-width="0.5" />
+      <circle cx="9" cy="9" r="8.75" stroke="#1E1E1E" strokeWidth="0.5" />
     </svg>
   )
 }
@@ -136,8 +136,8 @@ export const TagIcn = () => {
 export const AlarmIcn = () => {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M18 8C18 6.4087 17.3679 4.88258 16.2426 3.75736C15.1174 2.63214 13.5913 2 12 2C10.4087 2 8.88258 2.63214 7.75736 3.75736C6.63214 4.88258 6 6.4087 6 8C6 15 3 17 3 17H21C21 17 18 15 18 8Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-      <path d="M13.7295 21C13.5537 21.3031 13.3014 21.5547 12.9978 21.7295C12.6941 21.9044 12.3499 21.9965 11.9995 21.9965C11.6492 21.9965 11.3049 21.9044 11.0013 21.7295C10.6977 21.5547 10.4453 21.3031 10.2695 21" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M18 8C18 6.4087 17.3679 4.88258 16.2426 3.75736C15.1174 2.63214 13.5913 2 12 2C10.4087 2 8.88258 2.63214 7.75736 3.75736C6.63214 4.88258 6 6.4087 6 8C6 15 3 17 3 17H21C21 17 18 15 18 8Z" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M13.7295 21C13.5537 21.3031 13.3014 21.5547 12.9978 21.7295C12.6941 21.9044 12.3499 21.9965 11.9995 21.9965C11.6492 21.9965 11.3049 21.9044 11.0013 21.7295C10.6977 21.5547 10.4453 21.3031 10.2695 21" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   )
 }
@@ -153,8 +153,8 @@ export const SmileIcn = () => {
 export const MailIcn = () => {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M5.6 6H18.4C19.28 6 20 6.72 20 7.6V17.2C20 18.08 19.28 18.8 18.4 18.8H5.6C4.72 18.8 4 18.08 4 17.2V7.6C4 6.72 4.72 6 5.6 6Z" stroke="#6C6C6C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-      <path d="M20 7.59961L12 13.1996L4 7.59961" stroke="#6C6C6C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M5.6 6H18.4C19.28 6 20 6.72 20 7.6V17.2C20 18.08 19.28 18.8 18.4 18.8H5.6C4.72 18.8 4 18.08 4 17.2V7.6C4 6.72 4.72 6 5.6 6Z" stroke="#6C6C6C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M20 7.59961L12 13.1996L4 7.59961" stroke="#6C6C6C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   )
 }
