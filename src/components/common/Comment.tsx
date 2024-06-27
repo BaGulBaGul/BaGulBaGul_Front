@@ -32,18 +32,13 @@ export function CommentBlock(props: { opt: string; data: CommentProps; currentUR
         props.opt === 'CMT'
           ? <>
             <div className='flex flex-row justify-between pb-[10px]' id='comment-head'>
-              <div className='flex flex-row items-center'>
-                {props.data.userId === null ? <NoUser />
-                  : <>
-                    {/* <img className='rounded-full w-[24px] h-[24px]' src={props.data.userProfileImageUrl ?? '/profile_main.svg'} /> */}
-                    <img className='rounded-full w-[24px] h-[24px]' src="/profile_main.svg" />
-                    <p className="text-[14px] ps-[8px]">{props.data.username}</p>
-                  </>
-                }
-                {/* <a className="flex place-items-center" href="/">
-                  <img src="/profile_main.svg" width={24} height={24} />
-                </a> */}
-              </div>
+              {props.data.userId === null ? <NoUser />
+                : <a href={`/user/${props.data.userId}`} className='flex flex-row items-center gap-[8px]'>
+                  {/* <img className='rounded-full w-[24px] h-[24px]' src={props.data.userProfileImageUrl ?? '/profile_main.svg'} /> */}
+                  <img className='rounded-full w-[24px] h-[24px]' src="/profile_main.svg" />
+                  <p className="text-[14px]">{props.data.username}</p>
+                </a>
+              }
               <IconButton disableRipple className='p-0' onClick={(e) => handleToggle(e)}><img src='/comment_etc.svg' width={24} height={24} /></IconButton>
             </div>
             <div className='text-[14px] text-gray3 pb-[6px]' id='comment-body'>{props.data.content}</div>
@@ -51,17 +46,15 @@ export function CommentBlock(props: { opt: string; data: CommentProps; currentUR
               <p className='pe-[6px]'>{dayjs(props.data.createdAt).format('YY.MM.DD')}</p><p>{dayjs(props.data.createdAt).format('HH:mm')}</p>
             </div>
           </>
-          : <div onClick={(e) => { props.handleMention(props.data) }}>
+          : <div onClick={(e) => { props.handleMention(props.data, e) }}>
             <div className='flex flex-row justify-between pb-[10px]' id='comment-head'>
-              <div className='flex flex-row items-center'>
-                {props.data.userId === null ? <NoUser />
-                  : <>
-                    {/* <img className='rounded-full w-[24px] h-[24px]' src={props.data.userProfileImageUrl ?? '/profile_main.svg'} /> */}
-                    <img className='rounded-full w-[24px] h-[24px]' src="/profile_main.svg" />
-                    <p className="text-[14px] ps-[8px]">{props.data.userName}</p>
-                  </>
-                }
-              </div>
+              {props.data.userId === null ? <NoUser />
+                : <a onClick={(e) => { e.stopPropagation(); }} href={`/user/${props.data.userId}`} className='flex flex-row items-center gap-[8px]'>
+                  {/* <img className='rounded-full w-[24px] h-[24px]' src={props.data.userProfileImageUrl ?? '/profile_main.svg'} /> */}
+                  <img className='rounded-full w-[24px] h-[24px]' src="/profile_main.svg" />
+                  <p className="text-[14px]">{props.data.userName}</p>
+                </a>
+              }
               <IconButton disableRipple className='p-0' onClick={(e) => handleToggle(e)}><img src='/comment_etc.svg' width={24} height={24} /></IconButton>
             </div>
             <div className='text-[14px] text-gray3 pb-[6px]' id='comment-body'>

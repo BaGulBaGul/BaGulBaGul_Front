@@ -57,7 +57,8 @@ const index = () => {
     setMentionTarget(data)
     setTmpTarget(undefined)
   }
-  const handleMention = (data: CommentProps) => {
+  const handleMention = (data: CommentProps, e: any) => {
+    e.stopPropagation();
     // 입력창에 작성 중인 댓글 있는 경우 타겟 임시 저장 후 Dialog
     if ((!mentioning && replyRef && replyRef.current !== null && replyRef.current.value.length > 0)
       || (mentioning && mentionRef && mentionRef.current !== null && mentionRef.current.children.namedItem('mention-highlight') !== null

@@ -116,16 +116,12 @@ function PostTitle(props: PostTitleProps) {
         </div>
       </div>
       <div className='flex flex-row justify-between items-center pt-[4px]'>
-        <div className='flex flex-row items-center'>
-          {props.userId === null ? <NoUser />
-            : <>
-              <div className='me-[4px] rounded-full overflow-hidden w-[24px] h-[24px]'>
-                <img className='w-[24px] h-[24px]' src={"/images/profile_pic.png"} />
-              </div>
-              <p className='text-[14px] text-gray3'>{props.userName}</p>
-            </>
-          }
-        </div>
+        {props.userId === null ? <NoUser />
+          : <a href={`/user/${props.userId}`} className='flex flex-row items-center gap-[4px]'>
+            <img className='w-[24px] h-[24px] rounded-full' src={"/images/profile_pic.png"} />
+            <p className='text-[14px] text-gray3'>{props.userName}</p>
+          </a>
+        }
         {props.categories !== undefined
           ? <div className='flex flex-row gap-[8px]'>
             <ThemeProvider theme={categoryButtonTheme}>

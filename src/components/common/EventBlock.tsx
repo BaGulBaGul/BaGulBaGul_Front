@@ -26,11 +26,11 @@ export function EventBlock(props: { data: ListProps }) {
           </div>
           <div className='flex flex-row items-center gap-[4px] text-[14px]'>
             {props.data.post.writer.userId === null ? <NoUser />
-              : <>
+              : <a href={`/user/${props.data.post.writer.userId}`} className='flex flex-row items-center gap-[4px]'>
                 {/* <img className='rounded-full w-[24px] h-[24px]' src={props.data.post.writer.userProfileImageUrl ?? '/profile_main.svg'} /> */}
                 <img className='rounded-full w-[24px] h-[24px]' src="/profile_main.svg" />
                 <p className="text-black">{props.data.post.writer.userName}</p>
-              </>
+              </a>
             }
             {props.data.event.type === 'PARTY'
               ? <>
@@ -63,11 +63,11 @@ export function RecruitBlock(props: { data: RListProps }) {
         <div className='flex flex-row items-center gap-[8px]'>
           <div className='flex flex-row items-center gap-[4px] text-[14px]'>
             {props.data.post.writer.userId === null ? <NoUser />
-              : <>
+              : <a href={`/user/${props.data.post.writer.userId}`} className='flex flex-row items-center gap-[4px]'>
                 {/* <img className='rounded-full w-[24px] h-[24px]' src={props.data.post.writer.userProfileImageUrl ?? '/profile_main.svg'} /> */}
                 <img className='rounded-full w-[24px] h-[24px]' src="/profile_main.svg" />
                 <p className="text-black">{props.data.post.writer.userName}</p>
-              </>
+              </a>
             }
             <DividerDot />
             <p className='text-gray3'>{`${props.data.recruitment.currentHeadCount}/${props.data.recruitment.maxHeadCount}(명)`}</p>
