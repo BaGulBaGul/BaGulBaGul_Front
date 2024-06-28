@@ -15,7 +15,6 @@ import { ViewButton, ViewSelect } from './ViewFilter'
 import { ViewFilterApplied } from './ViewFilterApplied'
 import { LoadingSkeleton, LoadingCircle } from './Loading'
 import { Detail } from './Detail'
-import SignIn from './SignIn'
 
 
 export {
@@ -34,7 +33,6 @@ export {
   ScrollToTop,
   LoadingSkeleton, LoadingCircle,
   Detail,
-  SignIn
 }
 
 export interface RangeProps { from: undefined | number, to: undefined | number }
@@ -95,4 +93,8 @@ export interface RDetailProps {
 export interface CalProps {
   eventId: number; type: string; title: string; content: string; headImageUrl: string;
   abstractLocation: string; startTime: string; endTime: string;
+}
+
+export interface UserInfoProps {
+  id: number; nickname: string; email: string; profileMessage: string; imageURI: string;
 }

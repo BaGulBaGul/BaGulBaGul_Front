@@ -122,7 +122,7 @@ export function ViewSelect(props: ViewSelectProps) {
                         props.dayRange.from === undefined || props.dayRange.from === null
                           ? <span>날짜를 선택하세요</span>
                           : props.dayRange.to === undefined || props.dayRange.to === null
-                            ? <span>{handleDayData(props.dayRange.from)}</span>
+                            ? <span>{handleDayData(props.dayRange.from)} - </span>
                             : <span>{`${handleDayData(props.dayRange.from)} - ${handleDayData(props.dayRange.to)}`}</span>
                       }
                     </span>

@@ -584,34 +584,16 @@ export const searchFreqTheme = createTheme({
   }
 })
 
-export const signInTheme = createTheme({
+export const KakaoButtonTheme = createTheme({
   components: {
-    MuiAppBar: {
-      styleOverrides: {
-        root: { backgroundColor: '#FFF', boxShadow: 'unset', padding: '0px' }
-      }
-    },
-    MuiToolbar: {
-      styleOverrides: {
-        root: {
-          display: 'flex', justifyContent: 'end', flexDirection: 'row', padding: '10px 16px'
-        }
-      }
-    },
     MuiButton: {
       defaultProps: { disableRipple: true, },
       styleOverrides: {
         root: {
           fontSize: '15px', fontWeight: '500', color: '#000000', height: '45px',
-          backgroundColor: '#FEE500 !important', borderRadius: '12px'
-        }
-      }
-    },
-    MuiIconButton: {
-      defaultProps: { disableRipple: true, },
-      styleOverrides: {
-        root: {
-          padding: '0px'
+          backgroundColor: '#FEE500 !important', borderRadius: '12px',
+          maxWidth: '350px', width: '100%', padding: '14px',
+          cursor: 'pointer', display: 'flex', justifyContent: 'center',
         }
       }
     },

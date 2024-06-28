@@ -1,18 +1,10 @@
-'use client'; // SignIn 사용 시 
 import React, { useState } from 'react'
 
-import { SignIn } from '../common'
 import { IconButton } from '@mui/material';
 import { AlarmIcn } from '../common/Icon';
-import { isSigned } from '@/service/ApiService';
+// import { isSigned } from '@/service/ApiService';
 
-function Header() {
-  const [open, setOpen] = useState<boolean>(false)
-  const handleProfile = () => {
-    setOpen(true)
-  }
-  isSigned()
-
+async function Header() {
   return (
     <>
       <header className="fixed top-0 left-0 right-0
@@ -25,14 +17,13 @@ function Header() {
           <p className="flex w-6 h-6 relative">
             <a href="/search"><img src="/main_icon_search.svg" /></a>
           </p>
-          <a className="flex place-items-center" href="/mypage">
-
+          <a className="flex place-items-center" href="/user/mypage">
+            <img src="/profile_main.svg" alt="마이페이지 아이콘" width={24} height={24} />
           </a>
-          <IconButton onClick={handleProfile} className='p-0' disableRipple>
-            <img src="/profile_main.svg" alt="마이페이지 아이콘" width={24} height={24} /></IconButton>
+          {/* <IconButton onClick={handleProfile} className='p-0' disableRipple>
+          </IconButton> */}
         </div>
       </header>
-      <SignIn open={open} setOpen={setOpen} />
     </>
   )
 }

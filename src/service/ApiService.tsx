@@ -1,6 +1,5 @@
 import axios from "axios";
 import { API_BASE_URL } from "../api-config";
-import { cookies } from 'next/headers'
 
 // export async function call(api:string, method:string, request?:any) {
 //   interface Options { url: string; method: string; body?: string; }
@@ -20,14 +19,12 @@ import { cookies } from 'next/headers'
 //   })
 // }
 
-export async function call(api: string, method: string, request?: any) {
+export async function call(api: string, method: string, request?: any, cookie?: string) {
   interface Options { headers: Headers; url: string; method: string; body?: string; credentials: RequestCredentials }
   let options: Options = {
-    headers: new Headers({
-      "Content-Type": "application/json",
-    }),
-    url: API_BASE_URL + api,
-    method: method,
+    headers: cookie === undefined ? new Headers({ "Content-Type": "application/json", })
+      : new Headers({ "Content-Type": "application/json", "Cookie": `Access_Token=${cookie}` }),
+    url: API_BASE_URL + api, method: method,
     credentials: 'include',
   };
 
@@ -36,7 +33,6 @@ export async function call(api: string, method: string, request?: any) {
   }
 
   return fetch(options.url, options).then(async (response) => {
-    console.log(`&&& ${response.status}`)
     if (response.status === 200) {
       return response.json();
     }
@@ -44,9 +40,24 @@ export async function call(api: string, method: string, request?: any) {
   })
 }
 
-export function isSigned() {
-  // const cookieStore = cookies()
-  // const hasCookie = cookieStore.has('Access_Token')
-  const allCookies = document.cookie;
-  console.log('hasCookie: ', allCookies)
-}
+// export async function isSigned() {
+//   const response = await call('/api/user/info', "GET", null)
+
+//   response.try(
+
+//   )
+//   catch(() => { console.log('** isSigned: ', response.errorCode) })
+
+//   if (response.errorCode === 'C00000') {
+//     console.log('isSigned: C00000 : ', response.data)
+//   } else {
+//     console.log('isSigned: ', response.errorCode)
+//   }
+//   // await call('/api/user/info', "GET", null)
+//   //   .then((response) => {
+//   //     if (response.errorCode === 'C00000') {
+//   //       console.log(response.data)
+//   //       return response.data;
+//   //     }
+//   //   }).catch((error) => { return null });
+// }
