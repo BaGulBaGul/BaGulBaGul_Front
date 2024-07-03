@@ -12,6 +12,7 @@ import timezone from 'dayjs/plugin/timezone';
 
 import { CommentProps } from "@/components/common/Comment";
 import { CalProps, ListProps, ParamProps, RListProps } from "@/components/common";
+import { LikeProps, LikeRProps } from "@/components/pages/user/[userId]/liked";
 
 // dayjs 설정
 dayjs.extend(isSameOrBefore);
@@ -64,40 +65,94 @@ export function setPageInfo(page: any, setPage: any, currentPage: number, params
 }
 
 // 이벤트 저장 리스트 업데이트
-export function setUniqueList(opt: string, currentList: any[], setItems: any, items?: ListProps[] | RListProps[], itemsCmt?: CommentProps[], itemsCal?: CalProps[]) {
-  if (opt === 'EVT' && items) {
-    const newItems = currentList.length > 0 ? items.concat(currentList) : items
-    const ids = newItems.map(({ post }) => post.postId);
+// export function setUniqueList(opt: string, currentList: any[], setItems: any,
+//   items?: ListProps[] | RListProps[], itemsCmt?: CommentProps[], itemsCal?: CalProps[], itemsL?: LikeProps[] | LikeRProps[]) {
+//   console.log('opt: ', opt)
+//   if (opt === 'EVT' && items) {
+//     const newItems = currentList.length > 0 ? items.concat(currentList) : items
+//     const ids = newItems.map(({ post }) => post.postId);
+//     console.log('ids: ', ids)
+//     const filtered = newItems.filter(({ post }, index: number) =>
+//       index === 0 || index > 0 && !(ids.slice(0, index)).includes(post.postId)
+//     );
+//     console.log('filtered: ', filtered)
+//     setItems(filtered);
+//   }
+//   else if (opt === 'L-EVT' && itemsL) {
+//     const newItems = currentList.length > 0 ? (itemsL as LikeProps[]).concat(currentList) : itemsL as LikeProps[]
+//     const ids = newItems.map(({ eventId }) => eventId);
+//     console.log('ids: ', ids)
+//     const filtered = newItems.filter(({ eventId }, index: number) =>
+//       index === 0 || index > 0 && !(ids.slice(0, index)).includes(eventId)
+//     );
+//     console.log('filtered: ', filtered)
+//     setItems(filtered);
+//   } else if (opt === 'L-RCT' && itemsL) {
+//     const newItems = currentList.length > 0 ? (itemsL as LikeRProps[]).concat(currentList) : itemsL as LikeRProps[]
+//     const ids = newItems.map(({ recruitmentId }) => recruitmentId);
+//     console.log('ids: ', ids)
+//     const filtered = newItems.filter(({ recruitmentId }, index: number) =>
+//       index === 0 || index > 0 && !(ids.slice(0, index)).includes(recruitmentId)
+//     );
+//     console.log('filtered: ', filtered)
+//     setItems(filtered);
+//   }
+//   else if (opt === 'CMT' && itemsCmt) {
+//     console.log('**************** setUniqueList ******************')
+//     const newItems = currentList.length > 0 ? itemsCmt.concat(currentList) : itemsCmt
+//     console.log('n: ', newItems)
+//     const ids = newItems.map(({ commentId }) => commentId);
+//     const filtered = newItems.filter(({ commentId }, index: number) =>
+//       index === 0 || index > 0 && !(ids.slice(0, index)).includes(commentId)
+//     );
+//     setItems(filtered);
+//     console.log('f: ', filtered)
+//   } else if (opt === 'RPL' && itemsCmt) {
+//     const newItems = currentList.length > 0 ? itemsCmt.concat(currentList) : itemsCmt
+//     const ids = newItems.map(({ commentChildId }) => commentChildId);
+//     const filtered = newItems.filter(({ commentChildId }, index: number) =>
+//       index === 0 || index > 0 && !(ids.slice(0, index)).includes(commentChildId)
+//     );
+//     setItems(filtered);
+//   } else if (opt === 'CAL' && itemsCal) {
+//     const newItems = currentList.length > 0 ? itemsCal.concat(currentList) : itemsCal
+//     const ids = newItems.map(({ eventId }) => eventId);
+//     const filtered = newItems.filter(({ eventId }, index: number) =>
+//       index === 0 || index > 0 && !(ids.slice(0, index)).includes(eventId)
+//     );
+//     setItems(filtered);
+//   }
+// }
+
+export function setUniqueList(opt: string, currentList: any[], setItems: any, items?: ListProps[] | RListProps[] | CommentProps[] | CalProps[] | LikeProps[] | LikeRProps[]) {
+
+  function setFilter(itms: any[], id: string, id2?: string,) {
+    const newItems = currentList.length > 0 ? itms.concat(currentList) : itms
+    const ids = newItems.map((post) => id2 ? post[id][id2] : post[id]);
     console.log('ids: ', ids)
-    const filtered = newItems.filter(({ post }, index: number) =>
-      index === 0 || index > 0 && !(ids.slice(0, index)).includes(post.postId)
+    const filtered = newItems.filter((post, index: number) =>
+      index === 0 || index > 0 && !(ids.slice(0, index)).includes(id2 ? post[id][id2] : post[id])
     );
     console.log('filtered: ', filtered)
     setItems(filtered);
-  } else if (opt === 'CMT' && itemsCmt) {
-    console.log('**************** setUniqueList ******************')
-    const newItems = currentList.length > 0 ? itemsCmt.concat(currentList) : itemsCmt
-    console.log('n: ', newItems)
-    const ids = newItems.map(({ commentId }) => commentId);
-    const filtered = newItems.filter(({ commentId }, index: number) =>
-      index === 0 || index > 0 && !(ids.slice(0, index)).includes(commentId)
-    );
-    setItems(filtered);
-    console.log('f: ', filtered)
-  } else if (opt === 'RPL' && itemsCmt) {
-    const newItems = currentList.length > 0 ? itemsCmt.concat(currentList) : itemsCmt
-    const ids = newItems.map(({ commentChildId }) => commentChildId);
-    const filtered = newItems.filter(({ commentChildId }, index: number) =>
-      index === 0 || index > 0 && !(ids.slice(0, index)).includes(commentChildId)
-    );
-    setItems(filtered);
-  } else if (opt === 'CAL' && itemsCal) {
-    const newItems = currentList.length > 0 ? itemsCal.concat(currentList) : itemsCal
-    const ids = newItems.map(({ eventId }) => eventId);
-    const filtered = newItems.filter(({ eventId }, index: number) =>
-      index === 0 || index > 0 && !(ids.slice(0, index)).includes(eventId)
-    );
-    setItems(filtered);
+  }
+
+  if (items) {
+    console.log('opt: ', opt)
+    switch (opt) {
+      case 'EVT':
+        setFilter(items as ListProps[] | RListProps[], 'post', 'postId'); break;
+      case 'CMT':
+        setFilter(items as CommentProps[], 'commentId'); break;
+      case 'RPL':
+        setFilter(items as CommentProps[], 'commentChildId'); break;
+      case 'CAL':
+        setFilter(items as CalProps[], 'eventId'); break;
+      case 'L-EVT':
+        setFilter(items as LikeProps[], 'eventId'); break;
+      case 'L-RCT':
+        setFilter(items as LikeRProps[], 'recruitmentId'); break;
+    }
   }
 }
 
@@ -257,12 +312,12 @@ export const useEffectDetail = (
   }, [])
 }
 
-export const applyLike = (loginfo: boolean, liked: boolean, url: string, setLiked: any, setLikeCount: any) => {
+export const applyLike = (loginfo: boolean, liked: boolean, url: string, setLiked: any, setLikeCount?: any) => {
   if (loginfo) {
     call(url, liked ? "DELETE" : "POST", null)
       .then((response) => {
         setLiked(!liked)
-        setLikeCount(response.data.likeCount)
+        if (setLikeCount !== undefined) { setLikeCount(response.data.likeCount) }
       }).catch((error) => console.error(error));
   }
 }
@@ -301,7 +356,7 @@ export const useEffectRefreshComment = (opt: string, url: string, initialSet: Mu
   useEffect(() => {
     console.log('useEffectRefreshComment (2) ', tmpP, page.current)
     if (tmpP === page.current && tmp.length > 0) {
-      setUniqueList(opt, [], setComments, undefined, tmp)
+      setUniqueList(opt, [], setComments, tmp)
       setLoading(false)
     }
   }, [tmp])

@@ -1,7 +1,9 @@
 "use client";
+import { UserInfoProps } from "@/components/common";
 import { CalendarIcn, LikeIcn, MailIcn, PostEditIcn, SmileIcn } from "@/components/common/Icon";
+import { call } from "@/service/ApiService";
 import { Button } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const index = (props: { user: string | number }) => {
   return (
@@ -27,6 +29,17 @@ const SetBlock = (props: { icon?: any; title: string; count: number; url: string
 }
 
 const MyPage = () => {
+  const [userinfo, setUserinfo] = useState<UserInfoProps>();
+
+  useEffect(() => {
+    call('/api/user/info', 'GET', null)
+    .then((response) => {
+      if(response.errorCode === "C00000") {
+        setUserinfo(response.data)
+      }
+    })
+  }, [])
+
   const IconChangeButton = () => {
     return (
       <button className="absolute z-10 w-[30px] h-[30px] right-0 bottom-0">
@@ -41,13 +54,13 @@ const MyPage = () => {
         <div className="flex flex-col gap-[8px]">
           <div className="flex flex-row px-[16px] py-[18px] gap-[16px] bg-[#FFF]" id='mypage-profile'>
             <div className="relative w-[77px] h-[70px] rounded-full">
-              <img src="/default_icon.svg" className="w-[70px] h-[70px] rounded-full" />
+              <img src={userinfo?.imageURI ?? "/default_icon.svg"} className="w-[70px] h-[70px] rounded-full" />
               <IconChangeButton />
             </div>
             <div className="flex flex-col">
-              <span className="font-semibold text-[18px] leading-[140%] text-black">USER</span>
-              <span className="text-[14px] leading-[160%] text-gray3">user@naver.com</span>
-              <span className="text-[14px] leading-[160%] text-gray3">바글이의 한마디를 적어주세요.</span>
+              <span className="font-semibold text-[18px] leading-[140%] text-black">{userinfo?.nickname ?? '-'}</span>
+              <span className="text-[14px] leading-[160%] text-gray3">{userinfo?.email ?? '-'}</span>
+              <span className="text-[14px] leading-[160%] text-gray3">{userinfo?.profileMessage ?? '바글이의 한마디를 적어주세요.'}</span>
             </div>
           </div>
           <div className="flex flex-col bg-[#FFF]" id='mypage-set1'>

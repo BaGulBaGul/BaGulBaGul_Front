@@ -229,11 +229,11 @@ function PostTools(props: PostToolsProps) {
   return (
     <div className='flex flex-row justify-between py-[30px] px-[16px]'>
       <div className='flex flex-row gap-[10px]'>
-        <Button className="flex flex-row items0center gap-[4px] p-0 min-w-fit" disableRipple onClick={props.handleLike}>
+        <Button className="flex flex-row items-center gap-[4px] p-0 min-w-fit" disableRipple onClick={props.handleLike}>
           <LikeIcn val={props.liked} />
           <p className='text-gray3 text-[14px] font-normal'>{props.likeCount}</p>
         </Button>
-        <Button className="flex flex-row items0center gap-[4px] p-0 min-w-fit" disableRipple href={props.commentURL}>
+        <Button className="flex flex-row items-center gap-[4px] p-0 min-w-fit" disableRipple href={props.commentURL}>
           <img src='/detail_comment.svg' />
           <p className='text-gray3 text-[14px] font-normal'>{props.commentCount}</p>
         </Button>

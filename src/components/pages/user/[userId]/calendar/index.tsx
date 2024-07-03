@@ -69,7 +69,7 @@ function CalTab(props: { focusDay: any; setEventDates: any; }) {
       .then((response) => {
         console.log(response);
         if (response.data.length > 0) {
-          setUniqueList('CAL', response.data, setEvents, undefined, undefined, events)
+          setUniqueList('CAL', response.data, setEvents, events)
         } else {
           setEvents([])
         }
