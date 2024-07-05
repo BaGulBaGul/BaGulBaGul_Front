@@ -2,7 +2,6 @@ import { MutableRefObject, useEffect, useRef } from "react";
 import { createSearchParams } from 'react-router-dom'
 import { tabList } from "@/components/common/Data";
 import { call } from "./ApiService";
-import { DayValue } from "@hassanmojab/react-modern-calendar-datepicker";
 
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
@@ -26,25 +25,6 @@ export const FormatDateRange = (startDate: any, endDate: any) => {
     return `${dayjs(startDate).format('YY.MM.DD')} - ${dayjs(endDate).format('MM.DD')}`;
   } else if (dayjs(startDate).year() < dayjs(endDate).year()) {
     return `${dayjs(startDate).format('YY.MM.DD')} - ${dayjs(endDate).format('YY.MM.DD')}`;
-  }
-}
-
-// handle datatype Day from calendar package 
-export const handleDayData = (date: DayValue, type: number = 0) => {
-  if (date !== null && date !== undefined) {
-    switch (type) {
-      case 0:
-        return `${date.year}.${String(date.month).padStart(2, "0")}.${String(date.day).padStart(2, "0")}`
-      case 1:
-        return `${String(date.month).padStart(2, "0")}.${String(date.day).padStart(2, "0")}`
-    }
-  }
-}
-
-export const String2Day = (date: string | null) => {
-  if (date === null) { return undefined }
-  else {
-    return { year: Number(date.substring(0, 4)), month: Number(date.substring(4, 6)), day: Number(date.substring(6, 8)) }
   }
 }
 
@@ -210,11 +190,13 @@ export const useEffectFilter = (dependencies: any[], dependencyNames: any = [], 
 export const useEffectFilterApplied = (dependencies: any[], filters: string[], setFilters: any, changed: any, sort: string, setFilterCnt: any) => {
   useEffect(() => {
     if (!filters.includes(changed.key)) { // filters에 key가 존재하지 않고 값이 유효 -> filters에 key 추가
-      if ((changed.value !== undefined) && JSON.stringify(changed.value) !== JSON.stringify({ from: undefined, to: undefined })) {
+      if ((changed.value !== undefined) && JSON.stringify(changed.value) !== JSON.stringify({ from: undefined, to: undefined })
+        && JSON.stringify(changed.value) !== JSON.stringify([null, null])) {
         setFilters(filters.concat(changed.key))
       }
     } else { // filters에 key가 존재하고 값이 유효하지 X -> filters에서 key 제외
-      if ((changed.value === undefined) || JSON.stringify(changed.value) === JSON.stringify({ from: undefined, to: undefined })) {
+      if ((changed.value === undefined) || JSON.stringify(changed.value) === JSON.stringify({ from: undefined, to: undefined })
+        && JSON.stringify(changed.value) !== JSON.stringify([null, null])) {
         setFilters(filters.filter((f) => f !== changed.key))
       }
     }
@@ -363,14 +345,14 @@ export const useEffectRefreshComment = (opt: string, url: string, initialSet: Mu
 }
 
 export const getDaysArray = function (events: CalProps[], setEventDates: any) {
-  const arr: string[] = [];
-  console.log(events)
+  const arr: Date[] = [];
   events.forEach(function (event) {
     let sD = dayjs(event.startTime).set('hour', 0).set('minute', 0).set('second', 0)
     let eD = dayjs(event.endTime).set('hour', 23).set('minute', 59).set('second', 59)
     for (var dt = sD; dt.isSameOrBefore(eD); dt = dt.add(1, 'day')) {
-      let dtS = dt.format('YYYY-MM-DD')
-      if (!arr.includes(dtS)) { arr.push(dtS); }
+      // let dtS = dt.format('YYYY-MM-DD')
+      let dtd = dt.toDate()
+      if (!arr.includes(dtd)) { arr.push(dtd); }
     }
   });
   setEventDates(arr)

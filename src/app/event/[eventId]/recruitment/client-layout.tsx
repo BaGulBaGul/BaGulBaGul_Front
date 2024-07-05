@@ -2,9 +2,9 @@
 import { useState, useEffect } from 'react';
 import { Backdrop } from '@mui/material';
 import { ViewButton, ViewSelect, ViewFilterApplied } from '@/components/common';
-import { getParams, String2Day, useEffectCntFilter } from '@/service/Functions';
-import { DayRange } from '@hassanmojab/react-modern-calendar-datepicker'
+import { getParams, useEffectCntFilter } from '@/service/Functions';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
+import dayjs from 'dayjs';
 
 export function ClientRootLayout({ children }: { children: React.ReactNode }) {
   const prms = useParams()
@@ -13,7 +13,7 @@ export function ClientRootLayout({ children }: { children: React.ReactNode }) {
   // 정렬기준(default 최신순), 날짜, 참여인원, 규모
   const [proceeding, setProceeding] = useState(false);
   const [sort, setSort] = useState(searchParams.get('sort') ?? 'createdAt,desc');
-  const [dayRange, setDayRange] = useState<DayRange>({ from: String2Day(searchParams.get('sD')), to: String2Day(searchParams.get('eD')) });
+  const [dateRange, setDateRange] = useState<[any, any]>([searchParams.get('sD') ?? null, searchParams.get('eD') ?? null]);
   const [participants, setParticipants] = useState(Number(searchParams.get('ptcp')) ?? 0);
 
   // 적용된 필터들, 적용된 필터 개수
@@ -27,13 +27,12 @@ export function ClientRootLayout({ children }: { children: React.ReactNode }) {
   // 필터 삭제 시 변경대로 redirect
   const handleRt = () => { setRt(!rt) }
 
+  const [startDate, endDate] = dateRange ?? [null, null];
   const routeToFilter = () => {
     let params = {
       sort: sort ?? '', state: proceeding ? 'p' : '',
-      sD: dayRange.from === null || dayRange.from === undefined
-        ? '' : `${dayRange.from.year}${String(dayRange.from.month).padStart(2, "0")}${String(dayRange.from.day).padStart(2, "0")}`,
-      eD: dayRange.to === null || dayRange.to === undefined
-        ? '' : `${dayRange.to.year}${String(dayRange.to.month).padStart(2, "0")}${String(dayRange.to.day).padStart(2, "0")}`,
+      sD: startDate !== null ? dayjs(startDate).format('YYYYMMDD') : '',
+      eD: endDate !== null ? dayjs(endDate).format('YYYYMMDD') : '',
       ptcp: participants > 0 ? participants : '',
     }
     router.push(Object.keys(params).length > 0 ? `/event/${prms.eventId}/recruitment?${getParams(params)}` : `/event/${prms.eventId}/recruitment`)
@@ -56,12 +55,11 @@ export function ClientRootLayout({ children }: { children: React.ReactNode }) {
         </div>
       </div>
       <div className='sticky top-[104px] bg-[#FFF] relative z-10'>
-        <ViewFilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters}
-          sort={sort} dayRange={dayRange} setDayRange={setDayRange} participants={participants}
-          setParticipants={setParticipants} handleRt={handleRt} />
+        <ViewFilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters} sort={sort} dateRange={dateRange} setDateRange={setDateRange}
+          participants={participants} setParticipants={setParticipants} handleRt={handleRt} />
       </div>
       <Backdrop open={open} className='z-paper'>
-        <ViewSelect sort={sort} setSort={setSort} setOpen={setOpen} routeToFilter={routeToFilter} dayRange={dayRange} setDayRange={setDayRange}
+        <ViewSelect sort={sort} setSort={setSort} setOpen={setOpen} routeToFilter={routeToFilter} dateRange={dateRange} setDateRange={setDateRange}
           participants={participants} setParticipants={setParticipants} proceeding={proceeding} setProceeding={setProceeding} />
       </Backdrop>
       {children}

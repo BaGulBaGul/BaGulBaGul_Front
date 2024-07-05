@@ -3,10 +3,9 @@ import { useEffect, useRef, useState } from 'react';
 import { IconButton, TextField, ThemeProvider, Divider, Button, Backdrop, ToggleButtonGroup, ToggleButton } from '@mui/material';
 import { CategoryButtons, RangeProps, ViewButton, ViewFilterApplied, ViewSelect } from '@/components/common';
 import { searchInputTheme, searchFreqTheme, deleteButtonTheme, tabTheme } from '@/components/common/Themes';
-import "@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css";
-import { DayRange } from '@hassanmojab/react-modern-calendar-datepicker'
 import { useRouter } from 'next/navigation';
 import { getParams, useEffectFilter, useEffectFilterApplied } from '@/service/Functions';
+import dayjs from 'dayjs';
 
 const index = () => {
   const [tab, setTab] = useState(0);
@@ -17,7 +16,7 @@ const index = () => {
 
   // 정렬기준(default 최신순), 날짜, 참여인원, 규모
   const [sort, setSort] = useState('createdAt,desc');
-  const [dayRange, setDayRange] = useState<DayRange>({ from: undefined, to: undefined });
+  const [dayRange, setDayRange] = useState<[any, any]>([null, null]);
   // * temporary name
   const [ptcp, setParticipants] = useState(0);
   const [headCount, setHeadCount] = useState<RangeProps>({ from: undefined, to: undefined });
@@ -33,23 +32,23 @@ const index = () => {
   useEffectFilter([sort, dayRange, ptcp, headCount], ['sort', 'dayRange', 'ptcp', 'headCount'], setChanged)
   useEffectFilterApplied([filters, sort], filters, setFilters, changed, sort, setFilterCnt)
 
+  const [startDate, endDate] = dayRange ?? [null, null];
   return (
     <div className='flex flex-col w-full h-screen bg-gray1'>
       <div className='bg-[#FFF]'>
         <SearchBar setOpen={setOpen} filterCnt={filterCnt}
           params={{
             ct: selectedCate.length > 0 ? selectedCate : '',
-            sort: sort, sD: dayRange.from === null || dayRange.from === undefined
-              ? '' : `${dayRange.from.year}${String(dayRange.from.month).padStart(2, "0")}${String(dayRange.from.day).padStart(2, "0")}`,
-            eD: dayRange.to === null || dayRange.to === undefined
-              ? '' : `${dayRange.to.year}${String(dayRange.to.month).padStart(2, "0")}${String(dayRange.to.day).padStart(2, "0")}`,
+            sort: sort,
+            sD: startDate !== null ? dayjs(startDate).format('YYYYMMDD') : '',
+            eD: endDate !== null ? dayjs(endDate).format('YYYYMMDD') : '',
             ptcp: ptcp > 0 ? ptcp : '',
             hcMin: headCount.from === null || headCount.from === undefined || headCount.from <= 0 ? '' : headCount.from,
             hcMax: headCount.to === null || headCount.to === undefined || headCount.to <= 0 ? '' : headCount.to,
           }} tab={tab} />
         <div className='bg-[#FFF] relative z-10'>
           <ViewFilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters}
-            sort={sort} dayRange={dayRange} setDayRange={setDayRange} participants={ptcp}
+            sort={sort} dateRange={dayRange} setDateRange={setDayRange} participants={ptcp}
             setParticipants={setParticipants} headCount={headCount} setHeadCount={setHeadCount} />
         </div>
         <ThemeProvider theme={tabTheme}>
@@ -65,7 +64,7 @@ const index = () => {
           <FrequentSearches />
           <RecentSearches />
           <Backdrop open={open} className='z-paper'>
-            <ViewSelect sort={sort} setSort={setSort} setOpen={setOpen} dayRange={dayRange} setDayRange={setDayRange}
+            <ViewSelect sort={sort} setSort={setSort} setOpen={setOpen} dateRange={dayRange} setDateRange={setDayRange}
               participants={ptcp} setParticipants={setParticipants} headCount={headCount} setHeadCount={setHeadCount} />
           </Backdrop>
         </div>

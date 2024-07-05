@@ -1,10 +1,10 @@
-import { String2Day, getParams, useEffectCntFilter } from "@/service/Functions";
-import { DayRange } from "@hassanmojab/react-modern-calendar-datepicker";
+import { getParams, useEffectCntFilter } from "@/service/Functions";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { ReadonlyURLSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { CategoryButtons, PostTab, RangeProps, SearchBar, ViewFilterApplied, ViewSelect } from ".";
 import { Box, Backdrop } from "@mui/material";
+import dayjs from 'dayjs';
 
 export const SearchLayout = (props: { opt: string; sp: ReadonlyURLSearchParams; router: AppRouterInstance; children: React.ReactNode; }) => {
   // type
@@ -14,7 +14,8 @@ export const SearchLayout = (props: { opt: string; sp: ReadonlyURLSearchParams; 
   // 정렬기준(default 최신순), 날짜, 참여인원, 규모
   const [selectedCate, setSelectedCate] = useState<string[]>(props.sp.getAll('ct') ?? []);
   const [sort, setSort] = useState(props.sp.get('sort') ?? 'createdAt,desc');
-  const [dayRange, setDayRange] = useState<DayRange>({ from: String2Day(props.sp.get('sD')), to: String2Day(props.sp.get('eD')) });
+  const [dateRange, setDateRange] = useState<[any, any]>([props.sp.get('sD') ?? null, props.sp.get('eD') ?? null]);
+
   const [participants, setParticipants] = useState(Number(props.sp.get('ptcp')) ?? 0);
   const [headCount, setHeadCount] = useState<RangeProps>({
     from: Number(props.sp.get('hcMin')) ?? undefined, to: Number(props.sp.get('hcMax')) ?? undefined
@@ -33,14 +34,13 @@ export const SearchLayout = (props: { opt: string; sp: ReadonlyURLSearchParams; 
   // 필터 삭제 시 변경대로 redirect
   const handleRt = () => { setRt(!rt) }
 
+  const [startDate, endDate] = dateRange ?? [null, null];
   const routeToFilter = () => {
     if (props.opt === 'TTL') {
       let params = {
         sort: sort ?? '', ct: selectedCate ?? '',
-        sD: dayRange.from === null || dayRange.from === undefined
-          ? '' : `${dayRange.from.year}${String(dayRange.from.month).padStart(2, "0")}${String(dayRange.from.day).padStart(2, "0")}`,
-        eD: dayRange.to === null || dayRange.to === undefined
-          ? '' : `${dayRange.to.year}${String(dayRange.to.month).padStart(2, "0")}${String(dayRange.to.day).padStart(2, "0")}`,
+        sD: startDate !== null ? dayjs(startDate).format('YYYYMMDD') : '',
+        eD: endDate !== null ? dayjs(endDate).format('YYYYMMDD') : '',
         ptcp: participants > 0 ? participants : '',
         hcMin: headCount.from === null || headCount.from === undefined || headCount.from <= 0 ? '' : headCount.from,
         hcMax: headCount.to === null || headCount.to === undefined || headCount.to <= 0 ? '' : headCount.to,
@@ -51,10 +51,8 @@ export const SearchLayout = (props: { opt: string; sp: ReadonlyURLSearchParams; 
     } else if (props.opt === 'TAG') {
       let params = {
         tag: tag, sort: sort ?? '', ct: selectedCate ?? '',
-        sD: dayRange.from === null || dayRange.from === undefined
-          ? '' : `${dayRange.from.year}${String(dayRange.from.month).padStart(2, "0")}${String(dayRange.from.day).padStart(2, "0")}`,
-        eD: dayRange.to === null || dayRange.to === undefined
-          ? '' : `${dayRange.to.year}${String(dayRange.to.month).padStart(2, "0")}${String(dayRange.to.day).padStart(2, "0")}`,
+        sD: startDate !== null ? dayjs(startDate).format('YYYYMMDD') : '',
+        eD: endDate !== null ? dayjs(endDate).format('YYYYMMDD') : '',
         ptcp: participants > 0 ? participants : '',
         hcMin: headCount.from === null || headCount.from === undefined || headCount.from <= 0 ? '' : headCount.from,
         hcMax: headCount.to === null || headCount.to === undefined || headCount.to <= 0 ? '' : headCount.to,
@@ -87,12 +85,12 @@ export const SearchLayout = (props: { opt: string; sp: ReadonlyURLSearchParams; 
         </Box>
         <div className='sticky top-[114px] bg-[#FFF] relative z-10'>
           <ViewFilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters}
-            sort={sort} dayRange={dayRange} setDayRange={setDayRange} participants={participants}
+            sort={sort} dateRange={dateRange} setDateRange={setDateRange} participants={participants}
             setParticipants={setParticipants} headCount={headCount} setHeadCount={setHeadCount} handleRt={handleRt} />
           <CategoryButtons selectedCate={selectedCate} setSelectedCate={setSelectedCate} />
         </div>
         <Backdrop open={open ?? false} className='z-paper'>
-          <ViewSelect sort={sort} setSort={setSort} setOpen={setOpen} routeToFilter={routeToFilter} dayRange={dayRange} setDayRange={setDayRange}
+          <ViewSelect sort={sort} setSort={setSort} setOpen={setOpen} routeToFilter={routeToFilter} dateRange={dateRange} setDateRange={setDateRange}
             participants={participants} setParticipants={setParticipants} headCount={headCount} setHeadCount={setHeadCount} />
         </Backdrop>
         {props.children}
