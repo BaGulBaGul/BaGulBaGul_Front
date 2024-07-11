@@ -1,9 +1,8 @@
-import { ThemeProvider, IconButton, Chip } from "@mui/material";
+import { ThemeProvider, Chip } from "@mui/material";
 import { doneChipTheme } from "./Themes";
-import { FormatDateRange } from "@/service/Functions";
-import HashtagAccordion from "./HashtagAccordion";
+import { FormatDateRange, typeString } from "@/service/Functions";
 import { DividerDot } from "./Icon";
-import { CalProps, ListProps, NoUser, ParamProps, RListProps } from ".";
+import { CalProps, ListProps, NoUser, ParamProps, RListProps, HashtagAccordion } from ".";
 import dayjs from "dayjs";
 
 export interface TabBlockProps {
@@ -32,17 +31,14 @@ export function EventBlock(props: { data: ListProps }) {
                 <p className="text-black">{props.data.post.writer.userName}</p>
               </a>
             }
-            {props.data.event.type === 'PARTY'
-              ? <>
+            {props.data.event.type !== 'PARTY' ? <></>
+              : <>
                 <DividerDot />
                 <p className='text-gray3'>{`${props.data.event.currentHeadCount}/${props.data.event.maxHeadCount}(명)`}</p>
-                {
-                  props.data.event.currentHeadCount === props.data.event.maxHeadCount
-                    ? <ThemeProvider theme={doneChipTheme}><Chip label="모집완료" /></ThemeProvider>
-                    : <></>
+                {props.data.event.currentHeadCount !== props.data.event.maxHeadCount ? <></>
+                  : <ThemeProvider theme={doneChipTheme}><Chip label="모집완료" /></ThemeProvider>
                 }
               </>
-              : <></>
             }
           </div>
         </div>
@@ -83,24 +79,23 @@ export function RecruitBlock(props: { data: RListProps }) {
 }
 
 export function CalendarBlock(props: { data: CalProps }) {
+  let urlLink = `/event/${props.data.eventId}`
   return (
-    <div className='flex py-[18px] px-[16px] justify-between'>
-      <div className='flex flex-row items-center pb-[10px] gap-[20px] w-full'>
-        <img className='rounded-[4px] w-[84px] h-[104px] object-cover' src={props.data.headImageUrl ?? '/default_list_thumb3x.png'} />
-        <div className='flex flex-col w-full h-[104px] gap-[20px] justify-between'>
-          <div className='flex flex-col'>
-            <div className="flex flex-row justify-between items-center">
-              <div className="flex flex-row text-[14px] text-gray3">
-                <p>{FormatDateRange(props.data.startTime, props.data.endTime)}</p>
-                <p>, {props.data.abstractLocation}</p>
-              </div>
-              <IconButton disableRipple className='p-0'><img src='/calendar_delete.svg' /></IconButton>
+    <a className='flex py-[18px] px-[16px] justify-between' href={urlLink}>
+      <div className='flex flex-row justify-between items-center pb-[10px] w-full'>
+        <div className='flex flex-col w-full h-[104px] justify-between'>
+          <div className='flex flex-col gap-[4px]'>
+            <div className="rounded-[2px] bg-gray1 px-[4px] py-[2px] text-[12px] leading-[160%] w-fit">{typeString[props.data.type as string]}</div>
+            <div className="flex flex-row text-[14px] text-gray3">
+              <p>{FormatDateRange(props.data.startTime, props.data.endTime)}</p>
+              <p>, {props.data.abstractLocation}</p>
             </div>
             <p className='truncate text-[16px] font-semibold'>{props.data.title}</p>
           </div>
           <span className='text-[12px] text-gray3 description'>{props.data.content}</span>
         </div>
+        <img className='rounded-[4px] w-[84px] h-[104px] object-cover' src={props.data.headImageUrl ?? '/default_list_thumb3x.png'} />
       </div>
-    </div>
+    </a>
   )
 }

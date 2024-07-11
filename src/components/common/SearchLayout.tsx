@@ -65,14 +65,12 @@ export const SearchLayout = (props: { opt: string; sp: ReadonlyURLSearchParams; 
   const mounted = useRef(false);
   useEffect(() => {
     if (!mounted.current) { mounted.current = true; }
-    else {
-      routeToFilter()
-    }
+    else { routeToFilter() }
   }, [tab, selectedCate, rt])
 
   const [open, setOpen] = useState(false);
   return (
-    <div className='flex flex-col w-full pb-[10px] h-screen bg-gray1'>
+    <div className='flex flex-col w-full pb-[10px] h-screen'>
       {props.opt === 'TTL'
         ? <SearchBar title={title ?? ''} setOpen={setOpen} filterCnt={filterCnt} setTitle={setTitle} handleRt={handleRt} />
         : <SearchBar tag={tag ?? ''} setOpen={setOpen} filterCnt={filterCnt} handleRt={handleRt} />

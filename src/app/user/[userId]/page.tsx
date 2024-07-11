@@ -7,7 +7,7 @@ import React, { useState } from "react";
 export default function Page({ params }: { params: { userId: string | number } }) {
   const [isAlarm, setIsAlarm] = useState<boolean>(true);
   return (
-    <div className="h-screen bg-gray1">
+    <div>
       <HeaderMyPage opt={params.userId === 'mypage' ? 'MY' : 'USR'} isAlarm={isAlarm} />
       <UserPage user={params.userId} />
     </div>

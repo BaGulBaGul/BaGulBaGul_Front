@@ -34,7 +34,7 @@ const index = () => {
 
   const [startDate, endDate] = dayRange ?? [null, null];
   return (
-    <div className='flex flex-col w-full h-screen bg-gray1'>
+    <div className='flex flex-col w-full h-screen'>
       <div className='bg-[#FFF]'>
         <SearchBar setOpen={setOpen} filterCnt={filterCnt}
           params={{

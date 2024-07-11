@@ -10,7 +10,7 @@ import PostTab from './PostTab'
 import { RecCarousel } from './RecCarousel'
 import ScrollToTop from './ScrollToTop'
 import ShareDialog from './ShareDialog'
-import TabPanel from './TabPanel'
+import { TabPanel, TabPanels } from './TabPanel'
 import { ViewButton, ViewSelect } from './ViewFilter'
 import { ViewFilterApplied } from './ViewFilterApplied'
 import { LoadingSkeleton, LoadingCircle } from './Loading'
@@ -26,7 +26,7 @@ export {
   HashtagAccordion, HashtagButton,
   MoreButton,
   NoEvent, NoUser,
-  PostTab, TabPanel,
+  PostTab, TabPanel,TabPanels,
   RecCarousel,
   ViewButton, ViewSelect, ViewFilterApplied,
   ShareDialog,

@@ -2,7 +2,7 @@ import { FormatDateRange, setPageInfo, useEffectCallAPI } from "@/service/Functi
 import { TabBlockProps } from "./EventBlock"
 import { LoadingSkeleton } from "./Loading"
 import { DividerDot, TagIcn } from "./Icon"
-import { HashtagAccordion, HashtagButton, ListProps, MoreButton, NoEvent, ParamProps, TabPanel, ViewButton } from "."
+import { HashtagAccordion, HashtagButton, ListProps, MoreButton, NoEvent, NoUser, ParamProps, TabPanels, ViewButton } from "."
 import { Chip, Divider, IconButton, TextField, ThemeProvider } from "@mui/material"
 import { doneChipTheme, searchInputTheme } from "./Themes"
 import { useEffect, useRef, useState } from "react"
@@ -22,7 +22,7 @@ export const TabBlock = (props: TabBlockProps) => {
             {props.events.map((post, idx) => (
               <div key={`searched-${idx}`}>
                 {idx === 0 ? <></> : <Divider />}
-                <ResultBlock data={post} />
+                <ResultBlock data={post} opt={props.opt} />
               </div>
             ))}
             {props.page.total > 1 && props.page.current + 1 < props.page.total
@@ -30,12 +30,12 @@ export const TabBlock = (props: TabBlockProps) => {
             }
           </div>
           : props.events.length > 0
-            ? <div className='flex flex-col gap-[1px] bg-[#FFF]'>
-              <div>
+            ? <div className='flex flex-col gap-[8px]'>
+              <div className="bg-[#FFF]">
                 {props.events.map((post, idx) => (
                   <div key={`searched-${idx}`}>
                     {idx === 0 ? <></> : <Divider />}
-                    <ResultBlock data={post} />
+                    <ResultBlock data={post} opt={props.opt} />
                   </div>
                 ))}
               </div>
@@ -51,55 +51,70 @@ export const TabBlock = (props: TabBlockProps) => {
   }
 }
 
-export function ResultBlock(props: { data: ListProps }) {
+export function ResultBlock(props: { data: ListProps; opt: number; }) {
   let urlLink = `/event/${props.data.event.eventId}`
-  return (
-    // <div className="flex flex-col py-[18px] px-[16px] justify-between">
-    //   <a href={urlLink} className='flex flex-col gap-[4px]'>
-    //     <p className='truncate text-[16px] font-semibold leading-[140%]'>{props.data.post.title}</p>
-    //     <p className="text-[14px] text-gray3 leading-[160%]">{FormatDateRange(props.data.event.startDate, props.data.event.endDate)}</p>
-    //     <div className='flex flex-row items-center gap-[4px] text-[14px]'>
-    //       <img className='rounded-full w-[24px] h-[24px]' src='/profile_main.svg' />
-    //       <p className='text-black'>{props.data.post.writer.userName}</p>
-    //       {props.data.event.type === 'PARTY'
-    //         ? <>
-    //           <DividerDot />
-    //           <p className='text-gray3'>{`${props.data.event.currentHeadCount}/${props.data.event.maxHeadCount}(명)`}</p>
-    //           {props.data.event.currentHeadCount === props.data.event.maxHeadCount
-    //             ? <ThemeProvider theme={doneChipTheme}><Chip label="모집완료" /></ThemeProvider>
-    //             : <></>
-    //           }
-    //         </>
-    //         : <></>
-    //       }
-    //     </div>
-    //   </a>
-    //   {props.data.post.tags ? <HashtagAccordion tag={props.data.post.tags} /> : <></>}
-    // </div>
-    <a href={urlLink} className='flex py-[18px] px-[16px] justify-between'>
-      <div className='flex flex-row items-center pb-[10px] gap-[20px] w-full'>
-        <img className='rounded-[4px] w-[84px] h-[104px] object-cover' src={props.data.post.headImageUrl ?? '/default_list_thumb3x.png'} />
-        <div className='flex flex-col h-[104px] gap-[20px] justify-between'>
-          <div className='flex flex-col'>
-            <div className="flex flex-row justify-between items-center">
-              <div className="flex flex-row text-[14px] text-gray3">
+  if (props.data.event.type !== 'PARTY') {
+    return (
+      <div className="flex flex-col py-[18px] px-[16px] justify-between">
+        <a href={urlLink} className='flex flex-row items-center justify-between'>
+          <div className='flex flex-col w-[230px] h-[116px] justify-between'>
+            <div className='flex flex-col gap-[4px]'>
+              <p className='truncate text-[16px] font-semibold leading-[140%]'>{props.data.post.title}</p>
+              <div className="flex flex-col text-[14px] text-gray3 leading-[160%] gap-[4px]">
+                <p>{props.data.event.abstractLocation}</p>
                 <p>{FormatDateRange(props.data.event.startDate, props.data.event.endDate)}</p>
-                <p>, {props.data.event.abstractLocation}</p>
               </div>
             </div>
-            <p className='truncate text-[16px] font-semibold'>{props.data.post.title}</p>
+            <div className='flex flex-row items-center gap-[4px] text-[14px]'>
+              {props.data.post.writer.userId === null ? <NoUser />
+                : <a href={`/user/${props.data.post.writer.userId}`} className='flex flex-row items-center gap-[4px]'>
+                  {/* <img className='rounded-full w-[24px] h-[24px]' src={props.data.post.writer.userProfileImageUrl ?? '/profile_main.svg'} /> */}
+                  <img className='rounded-full w-[24px] h-[24px]' src="/profile_main.svg" />
+                  <p className="text-black">{props.data.post.writer.userName}</p>
+                </a>
+              }
+              {props.data.event.type !== 'PARTY' ? <></>
+                : <>
+                  <DividerDot />
+                  <p className='text-gray3'>{`${props.data.event.currentHeadCount}/${props.data.event.maxHeadCount}(명)`}</p>
+                  {props.data.event.currentHeadCount !== props.data.event.maxHeadCount ? <></>
+                    : <ThemeProvider theme={doneChipTheme}><Chip label="모집완료" /></ThemeProvider>
+                  }
+                </>
+              }
+            </div>
           </div>
-          <span className='text-[12px] text-gray3 description'>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consectetur turpis congue massa laoreet rutrum. 
-            Donec facilisis posuere dui. Sed augue nisl, tempor vitae malesuada vitae, pellentesque in diam. 
-            Nam elementum ac ipsum non ullamcorper. Vivamus eu nibh eget sem dignissim rutrum ut ac nunc. 
-            Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Donec dignissim suscipit faucibus. 
-            Aenean dignissim blandit egestas.
-          </span>
-        </div>
+          <img className='rounded-[4px] w-[92px] h-[116px] object-cover' src={props.data.post.headImageUrl ?? '/default_list_thumb3x.png'} />
+        </a>
+        {props.opt === 1 ? <HashtagAccordion tag={props.data.post.tags} /> : <></>}
       </div>
-    </a>
-  )
+    )
+  } else {
+    return (
+      <div className="flex flex-col py-[18px] px-[16px] justify-between">
+        <a href={urlLink} className='flex flex-col items-start gap-[4px]'>
+          <p className='truncate text-[16px] font-semibold leading-[140%]'>{props.data.post.title}</p>
+          <p className='text-[14px] text-gray3 leading-[160%]'>{FormatDateRange(props.data.event.startDate, props.data.event.endDate)}</p>
+          <div className='flex flex-row items-center gap-[4px] text-[14px]'>
+            {props.data.post.writer.userId === null ? <NoUser />
+              : <a href={`/user/${props.data.post.writer.userId}`} className='flex flex-row items-center gap-[4px]'>
+                {/* <img className='rounded-full w-[24px] h-[24px]' src={props.data.post.writer.userProfileImageUrl ?? '/profile_main.svg'} /> */}
+                <img className='rounded-full w-[24px] h-[24px]' src="/profile_main.svg" />
+                <p className="text-black">{props.data.post.writer.userName}</p>
+              </a>
+            }
+            <DividerDot />
+            <p className='text-gray3'>{`${props.data.event.currentHeadCount}/${props.data.event.maxHeadCount}(명)`}</p>
+            {props.data.event.currentHeadCount !== props.data.event.maxHeadCount ? <></>
+              : <ThemeProvider theme={doneChipTheme}><Chip label="모집완료" /></ThemeProvider>
+            }
+          </div>
+        </a>
+        {props.opt === 1 ? <HashtagAccordion tag={props.data.post.tags} /> : <></>}
+      </div>
+    )
+  }
+
 }
 
 export function SuggestBlock(props: { type: number }) {
@@ -123,9 +138,7 @@ export function SuggestBlock(props: { type: number }) {
         <span className="text-[14px] leading-[160%]">혹시 이건 어떠세요?</span>
         <div className="flex flex-row gap-[6px] flex-wrap w-[382px]">
           { // 자주 찾는 검색어, 1~2줄
-            suggestions.map((s, idx) =>
-              <HashtagButton tag={s.post.title} key={`st-${idx}`} />
-            )
+            suggestions.map((s, idx) => <HashtagButton tag={s.post.title} key={`st-${idx}`} />)
           }
         </div>
       </div>
@@ -201,17 +214,9 @@ export function SearchTabs(props: { opt: string; sp: ReadonlyURLSearchParams }) 
   useEffectCallAPI(params, initialSet, setPage, events, setEvents, setLoading)
 
   return (
-    <>
-      <TabPanel value={tab} index={0}>
-        <TabBlock opt={0} events={events} page={page} setPage={setPage} isLoading={isLoading} params={params} setParams={setParams} />
-      </TabPanel>
-      <TabPanel value={tab} index={1}>
-        <TabBlock opt={0} events={events} page={page} setPage={setPage} isLoading={isLoading} params={params} setParams={setParams} />
-      </TabPanel>
-      <TabPanel value={tab} index={2}>
-        <TabBlock opt={1} events={events} page={page} setPage={setPage} isLoading={isLoading} params={params} setParams={setParams} />
-      </TabPanel>
-    </>
+    <TabPanels value={tab}
+      child1={<TabBlock opt={props.opt === 'TTL' ? 0 : 1} events={events} page={page} setPage={setPage} isLoading={isLoading} params={params} setParams={setParams} />}
+      child2={<TabBlock opt={props.opt === 'TTL' ? 0 : 1} events={events} page={page} setPage={setPage} isLoading={isLoading} params={params} setParams={setParams} />} />
   )
 }
 

@@ -1,7 +1,7 @@
 "use client";
 import { useState, useRef, useEffect } from 'react';
 import { Divider, ThemeProvider, Fab } from '@mui/material';
-import { TabPanel, MoreButton, EventBlock, NoEvent, LoadingSkeleton, LoadingCircle, ParamProps } from '@/components/common';
+import { MoreButton, EventBlock, NoEvent, LoadingSkeleton, LoadingCircle, ParamProps, TabPanels } from '@/components/common';
 import { writeFabTheme } from '@/components/common/Themes'
 import { tabList } from '@/components/common/Data';
 import { setPageInfo, useEffectCallAPI } from '@/service/Functions';
@@ -57,17 +57,9 @@ function PostTabs() {
   useEffectCallAPI(params, initialSet, setPage, events, setEvents, setLoading)
 
   return (
-    <>
-      <TabPanel value={tab} index={0}>
-        <TabBlock opt={0} events={events} page={page} setPage={setPage} isLoading={isLoading} params={params} setParams={setParams} />
-      </TabPanel>
-      <TabPanel value={tab} index={1}>
-        <TabBlock opt={0} events={events} page={page} setPage={setPage} isLoading={isLoading} params={params} setParams={setParams} />
-      </TabPanel>
-      <TabPanel value={tab} index={2}>
-        <TabBlock opt={1} events={events} page={page} setPage={setPage} isLoading={isLoading} params={params} setParams={setParams} />
-      </TabPanel>
-    </>
+    <TabPanels value={tab}
+      child1={<TabBlock opt={0} events={events} page={page} setPage={setPage} isLoading={isLoading} params={params} setParams={setParams} />}
+      child2={<TabBlock opt={1} events={events} page={page} setPage={setPage} isLoading={isLoading} params={params} setParams={setParams} />} />
   )
 }
 
@@ -92,17 +84,15 @@ const TabBlock = (props: TabBlockProps) => {
           </>
           : <NoEvent text1="찾는 행사가 없어요." text2="지금 인기 있는 페스티벌을 만나보세요." buttonText={"페스티벌 인기순 보러가기"} />
         }
-        {
-          props.opt === 1
-            ? <ThemeProvider theme={writeFabTheme}>
-              <Fab variant="extended" size="small" color="primary" className='fixed bottom-[55px] right-[16px]'>
-                <div className='flex flex-row items-center'>
-                  <img src='/main_add.svg' />
-                  <span className='ps-[4px]'>글작성</span>
-                </div>
-              </Fab>
-            </ThemeProvider>
-            : <></>
+        {props.opt !== 1 ? <></>
+          : <ThemeProvider theme={writeFabTheme}>
+            <Fab variant="extended" size="small" color="primary" className='fixed bottom-[55px] right-[16px]'>
+              <div className='flex flex-row items-center'>
+                <img src='/main_add.svg' />
+                <span className='ps-[4px]'>글작성</span>
+              </div>
+            </Fab>
+          </ThemeProvider>
         }
       </div>
     )

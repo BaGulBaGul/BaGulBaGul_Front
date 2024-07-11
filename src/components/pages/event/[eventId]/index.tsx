@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useParams } from 'next/navigation'
 import SubHeader from '@/components/layout/subHeader';
-import { useEffectDetail, applyLike } from '@/service/Functions';
+import { useEffectDetail, applyLike, typeString } from '@/service/Functions';
 import { LoadingSkeleton, Detail, DetailProps } from '@/components/common';
 import { call } from '@/service/ApiService';
 
@@ -15,9 +15,6 @@ const index = () => {
   const [saved, setSaved] = useState(false)
   // * 임시 로그인여부 파악용
   const [loginfo, setLoginfo] = useState(false)
-
-  type typeType = { [key: string]: string; }
-  const typeString: typeType = { 'FESTIVAL': '페스티벌', 'LOCAL_EVENT': '지역행사', 'PARTY': '파티' }
 
   // * 캘린더 추가됐는지 여부 체크 추가 필요
   useEffectDetail(`/api/event/${params.eventId}`, `/api/event/${params.eventId}/ismylike`, setData, setLoading, setLiked, setLikeCount, setLoginfo, setSaved, params.eventId)

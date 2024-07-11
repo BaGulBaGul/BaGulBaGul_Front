@@ -84,7 +84,7 @@ export function MypageHeader() {
 export function HeaderMyPage(props: { opt: string; isAlarm?: boolean }) {
   if (props.opt === "MY") {
     return (
-      <div className="fixed top-0 left-0 right-0 flex-row flex w-full h-[60px] justify-between px-[24px] py-[10px] place-items-center bg-[#FFFFFF]">
+      <div className="fixed z-30 top-0 left-0 right-0 flex-row flex w-full h-[60px] justify-between px-[24px] py-[10px] place-items-center bg-[#FFFFFF]">
         <a href='/'><img src='/arrow_prev.svg' /></a>
         <div className='text-[18px]'>마이페이지</div>
         <a href='/alarm' className='relative w-[24px] h-[24px]'>
@@ -97,7 +97,7 @@ export function HeaderMyPage(props: { opt: string; isAlarm?: boolean }) {
     )
   } else if (props.opt === "USR") {
     return (
-      <div className="fixed top-0 left-0 right-0 flex-row flex w-full h-[60px] justify-between px-[24px] py-[10px] place-items-center bg-[#FFFFFF]">
+      <div className="fixed z-30 top-0 left-0 right-0 flex-row flex w-full h-[60px] justify-between px-[24px] py-[10px] place-items-center bg-[#FFFFFF]">
         <a href='/'><img src='/arrow_prev.svg' /></a>
         <div className='text-[18px]'>프로필</div>
         <div className='w-[24px] h-[24px]' />

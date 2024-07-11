@@ -20,6 +20,9 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.tz.setDefault('Asia/Seoul');
 
+type typeType = { [key: string]: string; }
+export const typeString: typeType = { 'FESTIVAL': '페스티벌', 'LOCAL_EVENT': '지역행사', 'PARTY': '파티' }
+
 export const FormatDateRange = (startDate: any, endDate: any) => {
   if (dayjs(startDate).year() === dayjs(endDate).year()) {
     return `${dayjs(startDate).format('YY.MM.DD')} - ${dayjs(endDate).format('MM.DD')}`;

@@ -1,9 +1,8 @@
 "use client";
 import { useEffect, useState } from 'react';
-import { Tab, Tabs, Box, Button, ThemeProvider, Divider, IconButton } from '@mui/material';
+import { Box, Divider, IconButton } from '@mui/material';
 import { CalendarBlock } from '@/components/common/EventBlock';
-import { tabTheme, deleteButtonTheme } from '@/components/common/Themes';
-import { CalProps, NoEvent, TabPanel } from '@/components/common';
+import { CalProps, NoEvent } from '@/components/common';
 import { call } from '@/service/ApiService';
 import { getDaysArray, setUniqueList } from '@/service/Functions';
 import dayjs from 'dayjs';
@@ -20,7 +19,7 @@ const index = () => {
   const [eventDates, setEventDates] = useState([]);
 
   return (
-    <div className='flex flex-col w-full h-full pb-[10px] mt-[60px] bg-gray1'>
+    <div className='flex flex-col w-full h-full pb-[10px] mt-[60px] gap-[8px]'>
       <MyCalendar focusDay={focusDay} setFocusDay={setFocusDay} eventDays={eventDates} displayM={displayM} setDisplayM={setDisplayM} setEventDates={setEventDates} />
       <CalTab focusDay={focusDay} setEventDates={setEventDates} />
     </div>
@@ -99,21 +98,7 @@ function CalTab(props: { focusDay: any; setEventDates: any; }) {
 
   return (
     <Box className='w-full px-0'>
-      <Box className='sticky top-[60px] bg-[#FFF] relative z-10 px-[16px] pt-[20px] pb-[10px]'>
-        <div className='flex justify-between items-center'>
-          <ThemeProvider theme={tabTheme}>
-            <Tabs value={value} onChange={handleChange} className='items-center min-h-0'>
-              <Tab label="페스티벌" />
-              <Tab label="지역행사" />
-              <Tab label="파티" />
-            </Tabs>
-          </ThemeProvider>
-          <ThemeProvider theme={deleteButtonTheme}><Button>전체삭제</Button></ThemeProvider>
-        </div>
-      </Box>
-      <TabPanel value={value} index={0}><CalTabBlock events={events} /></TabPanel>
-      <TabPanel value={value} index={1}><CalTabBlock events={events} /></TabPanel>
-      <TabPanel value={value} index={2}><CalTabBlock events={events} /></TabPanel>
+      <CalTabBlock events={events} />
     </Box>
   )
 }
@@ -133,7 +118,7 @@ const CalTabBlock = (props: { events?: CalProps[]; }) => {
               ? <MoreButton onClick={handleMore} /> : <></>
             } */}
         </>
-        : <NoEvent text1="찾는 행사가 없어요." text2="지금 인기 있는 페스티벌을 만나보세요." buttonText={"페스티벌 인기순 보러가기"} />
+        : <NoEvent text1="저장된 이벤트가 없어요." text2="지금 인기 있는 페스티벌을 저장해보세요!" buttonText={"페스티벌 인기순 보러가기"} />
       }
     </div>
   )

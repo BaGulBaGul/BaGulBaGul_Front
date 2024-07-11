@@ -1,12 +1,12 @@
 "use client";
 import { useEffect, useRef, useState } from 'react';
-import { Tab, Tabs, Box, ThemeProvider, ToggleButton, ToggleButtonGroup, Button } from '@mui/material';
+import { Box, ThemeProvider, ToggleButton, ToggleButtonGroup, Button } from '@mui/material';
 import { tabList } from '@/components/common/Data';
-import { viewSwitchTheme, tabTheme } from '@/components/common/Themes';
+import { viewSwitchTheme } from '@/components/common/Themes';
 import { FormatDateRange, applyLike, setPageInfo, setUniqueList } from '@/service/Functions';
 import dayjs from 'dayjs';
 import { call } from '@/service/ApiService';
-import { TabPanel, MoreButton, NoEvent } from '@/components/common';
+import { MoreButton, NoEvent, TabPanels, PostTab } from '@/components/common';
 import { LikeIcn } from '@/components/common/Icon';
 
 const index = () => { return (<LikedTab />) }
@@ -56,27 +56,14 @@ function LikedTab() {
   return (
     <div className='flex flex-col w-full pb-[10px]'>
       <Box className='sticky flex flex-row justify-between items-center top-[60px] px-[16px] bg-[#FFF] relative z-10'>
-        <ThemeProvider theme={tabTheme}>
-          <Tabs value={value} onChange={handleChange} className='items-center min-h-0 py-[10px]'>
-            <Tab label="페스티벌" />
-            <Tab label="지역행사" />
-            <Tab label="파티" />
-          </Tabs>
-        </ThemeProvider>
+        <PostTab value={value} handleChange={handleChange} cN='items-center min-h-0 py-[10px]' />
         {value === 2 ? <></> : <ViewsCheck />}
       </Box>
       <div className='mt-[60px]'>
-        <TabPanel value={value} index={0}>
-          <TabBlock events={events} page={page} setPage={setPage} isLoading={isLoading} view={view} />
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          <TabBlock events={events} page={page} setPage={setPage} isLoading={isLoading} view={view} />
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-          <TabBlock events={events} page={page} setPage={setPage} isLoading={isLoading} view={'EVT'} />
-        </TabPanel>
+        <TabPanels value={value}
+          child1={<TabBlock events={events} page={page} setPage={setPage} isLoading={isLoading} view={view} />}
+          child2={<TabBlock events={events} page={page} setPage={setPage} isLoading={isLoading} view={'EVT'} />} />
       </div>
-
     </div >
   )
 
@@ -99,30 +86,30 @@ const TabBlock = (props: { events: any; page: any; setPage: any; isLoading: bool
   if (props.events.length > 0) {
     if (props.view === 'EVT') {
       return (
-        <>
+        <div className='bg-[#FFF]'>
           {props.events.map((post: LikeProps, idx: any) => (
             <LikedPostBlock data={post} key={`like-${idx}`} />
           ))}
           {props.page.total > 1 && props.page.current + 1 < props.page.total
             ? <MoreButton onClick={handleMore} /> : <></>
           }
-        </>
+        </div>
       )
     } else if (props.view === 'RCT') {
       return (
-        <>
+        <div className='bg-[#FFF]'>
           {props.events.map((post: LikeRProps, idx: any) => (
             <LikedAccompanyBlock data={post} key={`like-${idx}`} />
           ))}
           {props.page.total > 1 && props.page.current + 1 < props.page.total
             ? <MoreButton onClick={handleMore} /> : <></>
           }
-        </>
+        </div>
       )
     }
   } else {
     return (
-      <NoEvent text1="찾는 행사가 없어요." text2="지금 인기 있는 페스티벌을 만나보세요." buttonText={"페스티벌 인기순 보러가기"} />
+      <NoEvent text1="좋아요 누른 게시물이 없어요." text2="인기 게시물에 좋아요를 눌러보세요!" buttonText={"페스티벌 인기순 보러가기"} />
     )
   }
 }
