@@ -11,7 +11,7 @@ export function ClientRootLayout({ children }: { children: React.ReactNode }) {
   const searchParams = useSearchParams()
 
   // 정렬기준(default 최신순), 날짜, 참여인원, 규모
-  const [proceeding, setProceeding] = useState(false);
+  const [recruiting, setRecruiting] = useState(searchParams.get('state') === 'r' ? true : false);
   const [sort, setSort] = useState(searchParams.get('sort') ?? 'createdAt,desc');
   const [dateRange, setDateRange] = useState<[any, any]>([searchParams.get('sD') ?? null, searchParams.get('eD') ?? null]);
   const [participants, setParticipants] = useState(Number(searchParams.get('ptcp')) ?? 0);
@@ -30,7 +30,7 @@ export function ClientRootLayout({ children }: { children: React.ReactNode }) {
   const [startDate, endDate] = dateRange ?? [null, null];
   const routeToFilter = () => {
     let params = {
-      sort: sort ?? '', state: proceeding ? 'p' : '',
+      sort: sort ?? '', state: recruiting ? 'r' : '',
       sD: startDate !== null ? dayjs(startDate).format('YYYYMMDD') : '',
       eD: endDate !== null ? dayjs(endDate).format('YYYYMMDD') : '',
       ptcp: participants > 0 ? participants : '',
@@ -60,7 +60,7 @@ export function ClientRootLayout({ children }: { children: React.ReactNode }) {
       </div>
       <Backdrop open={open} className='z-paper'>
         <ViewSelect sort={sort} setSort={setSort} setOpen={setOpen} routeToFilter={routeToFilter} dateRange={dateRange} setDateRange={setDateRange}
-          participants={participants} setParticipants={setParticipants} proceeding={proceeding} setProceeding={setProceeding} />
+          participants={participants} setParticipants={setParticipants} recruiting={recruiting} setRecruiting={setRecruiting} />
       </Backdrop>
       {children}
     </>

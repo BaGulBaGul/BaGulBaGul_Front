@@ -33,7 +33,7 @@ function RecruitTab() {
     setLoading(true);
     setParams({
       page: 0, sort: searchParams.get('sort') ?? 'createdAt,desc',
-      state: searchParams.get('sort') && searchParams.get('state') === 'p' ? 'PROCEEDING' : '',
+      state: searchParams.get('state') && searchParams.get('state') === 'r' ? 'PROCEEDING' : '',
       startDate: searchParams.get('sD') ? `${dayjs(searchParams.get('sD')).format('YYYY-MM-DD')}T00:00:00` : '',
       endDate: searchParams.get('eD') ? `${dayjs(searchParams.get('eD')).format('YYYY-MM-DD')}T23:59:59` : '',
       leftHeadCount: searchParams.get('ptcp') ?? ''
@@ -72,8 +72,7 @@ function RecruitTab() {
             {idx === 0 ? <></> : <Divider />}
             <RecruitBlock data={post} />
           </div>
-        )
-        )}
+        ))}
         {page.total > 1 && page.current + 1 < page.total ? <MoreButton onClick={handleMore} /> : <></>}
       </>
     )

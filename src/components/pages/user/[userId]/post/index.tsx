@@ -1,7 +1,7 @@
 "use client";
 import { useState } from 'react';
 import { Tab, Tabs, Box, ThemeProvider, IconButton, } from '@mui/material';
-import TabPanel from '@/components/common/TabPanel';
+import { TabPanel } from '@/components/common';
 import { partyData } from '@/components/common/Data';
 import { tabTheme } from '@/components/common/Themes';
 import { FormatDateRange } from '@/service/Functions';

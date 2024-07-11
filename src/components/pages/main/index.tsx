@@ -28,11 +28,26 @@ function PostTabs() {
     if (initialSet.current) { initialSet.current = false }
     setEvents([])
     setLoading(true);
+
+    // '종료된 행사 제외하기' 적용 ; startDate값과 비교
+    const sD = (() => {
+      let startDate = searchParams.get('sD')
+      let state = searchParams.get('state')
+      // 1) sD값 없고 'state'값 없거나 p아님
+      if (!startDate && (!state || state !== 'p')) { return '' }
+      // 2) sD값 있고 'state'값 없거나 / p인데 sD가 오늘이거나 오늘 이후
+      else if (startDate !== null && (!state || (state === 'p' && (dayjs().isSame(dayjs(startDate)) || dayjs().isBefore(dayjs(startDate)))))) {
+        return `${dayjs(startDate).format('YYYY-MM-DD')}T00:00:00`
+      } // 3) 'state'값 p이고 sD값 없거나 / sD가 오늘 이전
+      else if (state === 'p' && (!startDate || dayjs().isAfter(dayjs(startDate)))) {
+        return `${dayjs().format('YYYY-MM-DD')}T00:00:00`
+      } else { return '' }
+    })()
+
     setParams({
       page: 0, categories: searchParams.getAll('ct'),
       type: tabList[Number(searchParams.get('tab_id')) ?? 0], sort: searchParams.get('sort') ?? 'createdAt,desc',
-      startDate: searchParams.get('sD') ? `${dayjs(searchParams.get('sD')).format('YYYY-MM-DD')}T00:00:00` : '',
-      endDate: searchParams.get('eD') ? `${dayjs(searchParams.get('eD')).format('YYYY-MM-DD')}T23:59:59` : '',
+      startDate: sD, endDate: searchParams.get('eD') ? `${dayjs(searchParams.get('eD')).format('YYYY-MM-DD')}T23:59:59` : '',
       leftHeadCount: searchParams.get('ptcp') ?? '', totalHeadCountMax: searchParams.get('hcMax') ?? '',
       totalHeadCountMin: searchParams.get('hcMin') ?? ''
     })

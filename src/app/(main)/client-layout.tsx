@@ -21,6 +21,7 @@ export function ClientRootLayout({ children }: { children: React.ReactNode }) {
   const [headCount, setHeadCount] = useState<RangeProps>({
     from: Number(searchParams.get('hcMin')) ?? undefined, to: Number(searchParams.get('hcMax')) ?? undefined
   });
+  const [proceeding, setProceeding] = useState(searchParams.get('state') === 'p' ? true : false);
 
   // 적용된 필터들, 적용된 필터 개수
   const [filters, setFilters] = useState(['sort'])
@@ -47,7 +48,7 @@ export function ClientRootLayout({ children }: { children: React.ReactNode }) {
   const [startDate, endDate] = dateRange ?? [null, null];
   const routeToFilter = () => {
     let params = {
-      sort: sort ?? '', ct: selectedCate ?? '',
+      sort: sort ?? '', ct: selectedCate ?? '', state: proceeding ? 'p' : '',
       sD: startDate !== null ? dayjs(startDate).format('YYYYMMDD') : '',
       eD: endDate !== null ? dayjs(endDate).format('YYYYMMDD') : '',
       ptcp: participants > 0 ? participants : '',
@@ -77,13 +78,14 @@ export function ClientRootLayout({ children }: { children: React.ReactNode }) {
           </div>
         </Box>
         <div className='sticky top-[102px] bg-[#FFF] relative z-10'>
-          <ViewFilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters} sort={sort} dateRange={dateRange} setDateRange={setDateRange} 
+          <ViewFilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters} sort={sort} dateRange={dateRange} setDateRange={setDateRange}
             participants={participants} setParticipants={setParticipants} headCount={headCount} setHeadCount={setHeadCount} handleRt={handleRt} />
           <CategoryButtons selectedCate={selectedCate} setSelectedCate={setSelectedCate} />
         </div>
         <Backdrop open={open} className='z-paper'>
           <ViewSelect sort={sort} setSort={setSort} setOpen={setOpen} routeToFilter={routeToFilter} dateRange={dateRange} setDateRange={setDateRange}
-            participants={participants} setParticipants={setParticipants} headCount={headCount} setHeadCount={setHeadCount} />
+            participants={participants} setParticipants={setParticipants} headCount={headCount} setHeadCount={setHeadCount}
+            proceeding={proceeding} setProceeding={setProceeding} />
         </Backdrop>
         {children}
       </Box>

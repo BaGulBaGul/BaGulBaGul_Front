@@ -1,10 +1,9 @@
 "use client";
 import { useEffect, useState } from 'react';
 import { Tab, Tabs, Box, Button, ThemeProvider, Divider, IconButton } from '@mui/material';
-import TabPanel from '@/components/common/TabPanel';
 import { CalendarBlock } from '@/components/common/EventBlock';
 import { tabTheme, deleteButtonTheme } from '@/components/common/Themes';
-import { CalProps, NoEvent } from '@/components/common';
+import { CalProps, NoEvent, TabPanel } from '@/components/common';
 import { call } from '@/service/ApiService';
 import { getDaysArray, setUniqueList } from '@/service/Functions';
 import dayjs from 'dayjs';
