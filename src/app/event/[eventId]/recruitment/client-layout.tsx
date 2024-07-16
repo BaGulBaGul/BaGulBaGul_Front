@@ -54,7 +54,7 @@ export function ClientRootLayout({ children }: { children: React.ReactNode }) {
           <ViewButton handleOpen={handleOpen} cnt={filterCnt} fs={18} />
         </div>
       </div>
-      <div className='sticky top-[104px] bg-[#FFF] relative z-10'>
+      <div className='fixed top-[104px] w-full bg-[#FFF] z-10 h-[36px]'>
         <ViewFilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters} sort={sort} dateRange={dateRange} setDateRange={setDateRange}
           participants={participants} setParticipants={setParticipants} handleRt={handleRt} />
       </div>

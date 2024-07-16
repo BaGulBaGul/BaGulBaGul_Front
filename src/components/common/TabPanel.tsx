@@ -17,10 +17,10 @@ export function TabPanel(props: TabPanelProps) {
 
 export function TabPanels(props: { value: number; child1: ReactNode; child2: ReactNode; }) {
   return (
-    <>
+    <div className='mt-[94px]'>
       <TabPanel value={props.value} index={0}>{props.child1}</TabPanel>
       <TabPanel value={props.value} index={1}>{props.child1}</TabPanel>
       <TabPanel value={props.value} index={2}>{props.child2}</TabPanel>
-    </>
+    </div>
   )
 }

@@ -87,7 +87,7 @@ export function HeaderMyPage(props: { opt: string; isAlarm?: boolean }) {
       <div className="fixed z-30 top-0 left-0 right-0 flex-row flex w-full h-[60px] justify-between px-[24px] py-[10px] place-items-center bg-[#FFFFFF]">
         <a href='/'><img src='/arrow_prev.svg' /></a>
         <div className='text-[18px]'>마이페이지</div>
-        <a href='/alarm' className='relative w-[24px] h-[24px]'>
+        <a href='/user/mypage/alarm' className='relative w-[24px] h-[24px]'>
           <AlarmIcn />
           {!props.isAlarm ? <></>
             : <div id='alarm-check' className="absolute w-[8px] h-[8px] bg-primary-blue rounded-full z-10 top-0 right-[3px]"></div>

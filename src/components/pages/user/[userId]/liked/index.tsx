@@ -55,11 +55,11 @@ function LikedTab() {
 
   return (
     <div className='flex flex-col w-full pb-[10px]'>
-      <Box className='sticky flex flex-row justify-between items-center top-[60px] px-[16px] bg-[#FFF] relative z-10'>
+      <div className='fixed flex flex-row w-full justify-between items-center top-[60px] px-[16px] bg-[#FFF] z-10'>
         <PostTab value={value} handleChange={handleChange} cN='items-center min-h-0 py-[10px]' />
         {value === 2 ? <></> : <ViewsCheck />}
-      </Box>
-      <div className='mt-[60px]'>
+      </div>
+      <div className='mt-[108px]'>
         <TabPanels value={value}
           child1={<TabBlock events={events} page={page} setPage={setPage} isLoading={isLoading} view={view} />}
           child2={<TabBlock events={events} page={page} setPage={setPage} isLoading={isLoading} view={'EVT'} />} />

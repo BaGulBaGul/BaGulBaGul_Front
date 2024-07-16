@@ -14,14 +14,17 @@ export default function SubHeader({ name }: any) {
     )
 }
 
-export function SubTopHeader({ name, url }: any) {
+export function SubTopHeader({ name }: any) {
+    const router = useRouter();
     return (
-        <div className="fixed top-0 left-0 right-0 flex-row flex w-full h-[60px] justify-between px-[24px] py-[10px] place-items-center bg-[#FFFFFF]">
-            <a href={url}><img src='/arrow_prev.svg' /></a>
-            <div className='text-[18px]'>
-                {name}
+        <div className="relative z-50">
+            <div className="fixed top-0 left-0 right-0 flex-row flex w-full h-[60px] justify-between px-[24px] py-[10px] place-items-center bg-[#FFFFFF]">
+                <IconButton disableRipple className='p-0' onClick={() => router.back()}><img src='/arrow_prev.svg' /></IconButton>
+                <div className='text-[18px]'>
+                    {name}
+                </div>
+                <div className='w-[24px]'></div>
             </div>
-            <div className='w-[24px]'></div>
         </div>
     )
 }

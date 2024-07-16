@@ -10,7 +10,7 @@ import dayjs from "dayjs";
 
 const index = () => {
   return (
-    <div className='flex flex-col w-full pt-[104px] pb-[77px]'>
+    <div className='flex flex-col w-full pt-[140px] pb-[77px]'>
       <RecruitTab />
     </div>
   )

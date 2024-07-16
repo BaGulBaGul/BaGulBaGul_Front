@@ -76,12 +76,12 @@ export const SearchLayout = (props: { opt: string; sp: ReadonlyURLSearchParams; 
         : <SearchBar tag={tag ?? ''} setOpen={setOpen} filterCnt={filterCnt} handleRt={handleRt} />
       }
       <Box className='w-full p-0 pt-[66px]'>
-        <Box className='sticky top-[66px] bg-[#FFF] relative z-10 px-[16px] pt-[10px] pb-[10px]'>
+        <Box className='fixed top-[66px] w-full bg-[#FFF] z-10 px-[16px] pt-[10px] pb-[10px]'>
           <div className='flex justify-between items-center'>
             <PostTab value={tab} handleChange={handleChange} />
           </div>
         </Box>
-        <div className='sticky top-[114px] bg-[#FFF] relative z-10'>
+        <div className='fixed top-[114px] bg-[#FFF] z-10'>
           <ViewFilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters}
             sort={sort} dateRange={dateRange} setDateRange={setDateRange} participants={participants}
             setParticipants={setParticipants} headCount={headCount} setHeadCount={setHeadCount} handleRt={handleRt} />

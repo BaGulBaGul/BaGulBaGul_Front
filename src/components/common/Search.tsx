@@ -250,7 +250,7 @@ export function SearchBar(props: SearchBarProps) {
   }
   else if (props.tag) {
     return (
-      <div className='fixed w-full top-0 bg-[#FFF] z-paper'>
+      <div className='fixed w-full top-0 bg-[#FFF] z-paper border-b-[1px] border-gray1'>
         <div className='flex flex-row mx-[16px] my-[18px] gap-[16px] items-center'>
           <IconButton disableRipple className='p-0'><img src='/search_back.svg' /></IconButton>
           <div className='flex flex-row w-full justify-between'>

@@ -7,12 +7,12 @@ export const filterChipTheme = createTheme({
     MuiChip: {
       styleOverrides: {
         root: {
-          padding: '2px 8px !important', border: '0.5px solid #C1C1C1 !important', borderRadius: '20px !important',
+          padding: '1.5px 7.5px !important', border: '0.5px solid #C1C1C1 !important', borderRadius: '20px !important',
           fontSize: '14px !important', fontWeight: '400', lineHeight: '160%', color: '#6C6C6C !important',
-          height: '26px',
+          height: '25px',
           '&:not(:last-child)': { marginRight: '4px' }
         },
-        label: { padding: '0 !important' },
+        label: { padding: '0 !important', height: '22px' },
         deleteIcon: { margin: '0 !important', height: '22px' }
       }
     }
