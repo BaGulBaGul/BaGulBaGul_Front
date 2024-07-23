@@ -16,6 +16,10 @@ em {
   font-style: unset;
 }
 
+.MuiButtonBase-root.MuiButton-root {
+  min-width: unset;
+}
+
 .slick-track {
   min-width: 4710px;
 }

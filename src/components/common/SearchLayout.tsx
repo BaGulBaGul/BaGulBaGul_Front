@@ -81,7 +81,7 @@ export const SearchLayout = (props: { opt: string; sp: ReadonlyURLSearchParams; 
             <PostTab value={tab} handleChange={handleChange} />
           </div>
         </Box>
-        <div className='fixed top-[114px] bg-[#FFF] z-10'>
+        <div className='fixed top-[114px] w-full bg-[#FFF] z-10'>
           <ViewFilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters}
             sort={sort} dateRange={dateRange} setDateRange={setDateRange} participants={participants}
             setParticipants={setParticipants} headCount={headCount} setHeadCount={setHeadCount} handleRt={handleRt} />

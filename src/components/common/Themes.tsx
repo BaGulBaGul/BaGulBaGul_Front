@@ -96,8 +96,7 @@ export const commentTheme = createTheme({
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
-          borderRadius: 0, position: 'relative', padding: '13px 24px', fontSize: 14,
-          lineHeight: '160%',
+          borderRadius: 0, position: 'relative', padding: '13px 24px', fontSize: 14, lineHeight: '160%',
           '&::placeholder': { color: '#C1C1C1' }
         },
         notchedOutline: { border: '0' }
@@ -134,35 +133,6 @@ export const replyButtonTheme = createTheme({
     }
   },
 });
-
-export const mentionDialogTheme = createTheme({
-  components: {
-    MuiButtonBase: { defaultProps: { disableRipple: true, }, },
-    MuiPaper: {
-      styleOverrides: { root: { borderRadius: '8px', width: '250px', } }
-    },
-    MuiDialogContent: {
-      styleOverrides: { root: { paddingTop: '20px', paddingBottom: '8px' } }
-    },
-    MuiDialogContentText: {
-      styleOverrides: { root: { fontSize: '14px', lineHeight: '160%', textAlign: 'center', } }
-    },
-    MuiDialogActions: {
-      styleOverrides: { root: { justifyContent: 'center', padding: '12px' } }
-    },
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          width: '108px', fontSize: '14px', lineHeight: '160%', fontWeight: '400',
-          borderRadius: '4px', padding: '4px',
-          '&:hover, &:active': { backgroundColor: '#4A6AFE', color: '#FCFCFC' },
-          '&.btn-mention-keep': { backgroundColor: '#ECECEC', color: '#1E1E1E' },
-          '&.btn-mention-delete': { backgroundColor: '#4A6AFE', color: '#FCFCFC' },
-        }
-      }
-    }
-  }
-})
 
 export const commentMenuTheme = createTheme({
   components: {
@@ -333,7 +303,6 @@ export const viewRadioTheme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          // border: '1px solid #4A6AFE !important',
           border: '1px solid #C1C1C1 !important', borderRadius: '8px!important',
           padding: '4px 8px', color: 'unset !important', fontWeight: '400 !important'
         }

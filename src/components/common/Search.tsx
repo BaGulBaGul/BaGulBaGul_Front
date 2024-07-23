@@ -73,15 +73,6 @@ export function ResultBlock(props: { data: ListProps; opt: number; }) {
                   <p className="text-black">{props.data.post.writer.userName}</p>
                 </a>
               }
-              {props.data.event.type !== 'PARTY' ? <></>
-                : <>
-                  <DividerDot />
-                  <p className='text-gray3'>{`${props.data.event.currentHeadCount}/${props.data.event.maxHeadCount}(명)`}</p>
-                  {props.data.event.currentHeadCount !== props.data.event.maxHeadCount ? <></>
-                    : <ThemeProvider theme={doneChipTheme}><Chip label="모집완료" /></ThemeProvider>
-                  }
-                </>
-              }
             </div>
           </div>
           <img className='rounded-[4px] w-[92px] h-[116px] object-cover' src={props.data.post.headImageUrl ?? '/default_list_thumb3x.png'} />
@@ -214,9 +205,11 @@ export function SearchTabs(props: { opt: string; sp: ReadonlyURLSearchParams }) 
   useEffectCallAPI(params, initialSet, setPage, events, setEvents, setLoading)
 
   return (
-    <TabPanels value={tab}
-      child1={<TabBlock opt={props.opt === 'TTL' ? 0 : 1} events={events} page={page} setPage={setPage} isLoading={isLoading} params={params} setParams={setParams} />}
-      child2={<TabBlock opt={props.opt === 'TTL' ? 0 : 1} events={events} page={page} setPage={setPage} isLoading={isLoading} params={params} setParams={setParams} />} />
+    <div className='mt-[94px]'>
+      <TabPanels value={tab}
+        child1={<TabBlock opt={props.opt === 'TTL' ? 0 : 1} events={events} page={page} setPage={setPage} isLoading={isLoading} params={params} setParams={setParams} />}
+        child2={<TabBlock opt={props.opt === 'TTL' ? 0 : 1} events={events} page={page} setPage={setPage} isLoading={isLoading} params={params} setParams={setParams} />} />
+    </div>
   )
 }
 

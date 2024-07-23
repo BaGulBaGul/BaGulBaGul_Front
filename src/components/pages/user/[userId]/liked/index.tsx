@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from 'react';
-import { Box, ThemeProvider, ToggleButton, ToggleButtonGroup, Button } from '@mui/material';
+import { ThemeProvider, ToggleButton, ToggleButtonGroup, Button } from '@mui/material';
 import { tabList } from '@/components/common/Data';
 import { viewSwitchTheme } from '@/components/common/Themes';
 import { FormatDateRange, applyLike, setPageInfo, setUniqueList } from '@/service/Functions';
@@ -131,7 +131,7 @@ function LikedPostBlock(props: { data: LikeProps }) {
         <div className='flex flex-col justify-between w-full'>
           <div className='flex flex-row justify-between w-full'>
             <span className='text-[14px] text-[#6C6C6C]'>{FormatDateRange(props.data.startDate, props.data.endDate)}, {props.data.abstractLocation}</span>
-            <Button className="p-0 h-[22px] w-[24px]" disableRipple onClick={handleLike}>
+            <Button className="p-0 h-[22px] w-[24px] " disableRipple onClick={handleLike}>
               <LikeIcn val={liked} />
             </Button>
           </div>
@@ -146,7 +146,7 @@ function LikedPostBlock(props: { data: LikeProps }) {
 }
 
 export interface LikeRProps {
-  recruitmentId: number; startDate: string; endDate: string; title: string; eventName: string;
+  recruitmentId: number; startDate: string; endDate: string; title: string; eventTitle: string;
 }
 function LikedAccompanyBlock(props: { data: LikeRProps }) {
   const [liked, setLiked] = useState(true);
@@ -160,7 +160,7 @@ function LikedAccompanyBlock(props: { data: LikeRProps }) {
         <div className='flex flex-col gap-[4px]'>
           <span className='text-[14px] text-gray3'>{dayjs(props.data.startDate).format('YY.MM.DD')}</span>
           <span className='text-[16px]'>{props.data.title}</span>
-          <span className='text-[14px] text-gray3'>{props.data.title}</span>
+          <span className='text-[14px] text-gray3'>{props.data.eventTitle ?? '-'}</span>
         </div>
         <Button className="p-0 h-[22px] w-[24px]" disableRipple onClick={handleLike}>
           <LikeIcn val={liked} />

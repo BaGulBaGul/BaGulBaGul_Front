@@ -15,11 +15,11 @@ import dayjs from "dayjs";
 
 interface ViewButtonProps { handleOpen: any; cnt: number; fs: number; }
 export function ViewButton(props: ViewButtonProps) {
+  let buttonStyle = `justify-between max-w-[67px] break-keep ${props.fs === 14 ? 'text-[14px] leading-[160%] min-w-[49px]'
+    : 'text-[18px] leading-[140%] pb-[3px] min-w-[55px]'}`
   return (
     <ThemeProvider theme={viewTheme}>
-      <Button onClick={props.handleOpen}
-        className={props.fs === 14 ? `justify-between text-[14px] leading-[160%] max-w-[67px] min-w-[49px] break-keep`
-          : `justify-between text-[18px] leading-[140%] pb-[3px] max-w-[67px] min-w-[55px] break-keep`}>
+      <Button onClick={props.handleOpen} className={buttonStyle} >
         <div>필터</div>
         {props.cnt > 0 ? <span>{props.cnt}</span> : <></>}
         <img src='/main_filter.svg' />

@@ -1,8 +1,8 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ArrowNext, ArrowPrev } from "./Arrow";
-import { Button, Chip, Divider, IconButton, ThemeProvider } from "@mui/material";
-import { accompanyChipTheme, categoryButtonTheme, slideChipTheme } from "./Themes";
+import { Box, Button, Chip, Divider, Drawer, IconButton, List, ListItem, ListItemButton, ListItemText, ThemeProvider } from "@mui/material";
+import { accompanyChipTheme, categoryButtonTheme, commentMenuTheme, slideChipTheme } from "./Themes";
 import Slider from "react-slick";
 import { postData } from "./Data";
 import { FormatDateRange } from "@/service/Functions";
@@ -17,6 +17,9 @@ export const Detail = (props: { opt: string; data?: DetailProps; dataR?: RDetail
   const handleOpen = () => { setPopopen(true) }
   const handleClose = () => { setPopopen(false) }
 
+  const [openD, setOpenD] = useState(false);
+  const toggleDrawer = (newOpen: boolean) => () => { setOpenD(newOpen); };
+
   const pathname = usePathname();
   let commentURL = props.data ? `/comment/${props.data.post.postId}` : props.dataR ? `/comment/${props.dataR.post.postId}` : '';
 
@@ -29,7 +32,8 @@ export const Detail = (props: { opt: string; data?: DetailProps; dataR?: RDetail
             : <img className='h-[280px] object-cover' src='/default_detail_thumb3x.png' />
           }
           <PostTitle title={props.data.post.title} startDate={props.data.event.startDate} endDate={props.data.event.endDate} type={props.data.event.type}
-            views={props.data.post.views} userId={props.data.post.writer.userId} userName={props.data.post.writer.userName} categories={props.data.event.categories} />
+            views={props.data.post.views} userId={props.data.post.writer.userId} userName={props.data.post.writer.userName} 
+            categories={props.data.event.categories} toggleDrawer={toggleDrawer} />
           <Divider />
           <PostInfo opt='EVT' type={props.data.event.type} startDate={props.data.event.startDate} endDate={props.data.event.endDate}
             headCountMax={props.data.event.maxHeadCount} headCount={props.data.event.currentHeadCount} />
@@ -43,6 +47,7 @@ export const Detail = (props: { opt: string; data?: DetailProps; dataR?: RDetail
           <PostTools opt='EVT' handleOpen={handleOpen} likeCount={props.likeCount} liked={props.liked} handleLike={props.handleLike}
             commentCount={props.data.post.commentCount} commentURL={commentURL} saved={props.saved} handleCalendar={props.handleCalendar} />
         </div>
+        <PostDrawer open={openD} toggleDrawer={toggleDrawer} />
         { // 페스티벌, 지역행사는 '모집글 보러가기' 버튼 배치
           props.data.event.type !== 'PARTY' ? <PostFooter title='모집글 보러가기' path={`/event/${props.data.event.eventId}/recruitment`} /> : <></>
         }
@@ -50,26 +55,30 @@ export const Detail = (props: { opt: string; data?: DetailProps; dataR?: RDetail
     )
   } else if (props.opt === 'RCT' && props.dataR) {
     return (
-      <div className='flex flex-col w-full min-h-screen pt-[104px] justify-between'>
-        <div className='flex flex-col w-full'>
-          {props.dataR.post.imageUrls.length > 0
-            ? <PostSlide /> : <img className='h-[280px] object-cover' src='/default_detail_thumb3x.png' />
-          }
-          <PostTitle title={props.dataR.post.title} startDate={props.dataR.recruitment.startDate} views={props.dataR.post.views} userId={props.dataR.post.writer.userId} userName={props.dataR.post.writer.userName} />
-          <Divider />
-          <PostInfo opt='RCT' headCount={props.dataR.recruitment.maxHeadCount} currentHeadCount={props.dataR.recruitment.currentHeadCount} />
-          <div className='pb-[30px]'>
-            <PostContent content={props.dataR.post.content} />
-            {props.dataR.post.tags !== undefined && props.dataR.post.tags.length > 0 ? <PostContentTag tags={props.dataR.post.tags} /> : <></>}
+      <>
+        <div className='flex flex-col w-full min-h-screen pt-[104px] justify-between'>
+          <div className='flex flex-col w-full'>
+            {props.dataR.post.imageUrls.length > 0
+              ? <PostSlide /> : <img className='h-[280px] object-cover' src='/default_detail_thumb3x.png' />
+            }
+            <PostTitle title={props.dataR.post.title} startDate={props.dataR.recruitment.startDate} views={props.dataR.post.views}
+              userId={props.dataR.post.writer.userId} userName={props.dataR.post.writer.userName} toggleDrawer={toggleDrawer} />
+            <Divider />
+            <PostInfo opt='RCT' headCount={props.dataR.recruitment.maxHeadCount} currentHeadCount={props.dataR.recruitment.currentHeadCount} />
+            <div className='pb-[30px]'>
+              <PostContent content={props.dataR.post.content} />
+              {props.dataR.post.tags !== undefined && props.dataR.post.tags.length > 0 ? <PostContentTag tags={props.dataR.post.tags} /> : <></>}
+            </div>
+          </div>
+          <ShareDialog handleClose={handleClose} popopen={popopen} sharingURL={pathname} />
+          <div>
+            <Divider />
+            <PostTools opt='RCT' handleOpen={handleOpen} likeCount={props.likeCount} liked={props.liked} handleLike={props.handleLike}
+              commentCount={props.dataR.post.commentCount} commentURL={commentURL} />
           </div>
         </div>
-        <ShareDialog handleClose={handleClose} popopen={popopen} sharingURL={pathname} />
-        <div>
-          <Divider />
-          <PostTools opt='RCT' handleOpen={handleOpen} likeCount={props.likeCount} liked={props.liked} handleLike={props.handleLike}
-            commentCount={props.dataR.post.commentCount} commentURL={commentURL} />
-        </div>
-      </div>
+        <PostDrawer open={openD} toggleDrawer={toggleDrawer} />
+      </>
     )
   }
 
@@ -97,8 +106,8 @@ function PostSlide() {
 }
 
 interface PostTitleProps {
-  title: string; startDate: any; endDate?: any; type?: string;
-  views: number; userId: number; userName: string; categories?: string[];
+  title: string; startDate: any; endDate?: any; type?: string; views: number;
+  userId: number; userName: string; categories?: string[]; toggleDrawer: any;
 }
 function PostTitle(props: PostTitleProps) {
   const dateString = props.type !== undefined && props.type !== 'PARTY' ? FormatDateRange(props.startDate, props.endDate) : dayjs(props.startDate).format('YY.MM.DD')
@@ -106,7 +115,7 @@ function PostTitle(props: PostTitleProps) {
     <div className='flex flex-col px-[16px] py-[20px]'>
       <div className='flex flex-row justify-between pt-[10px]'>
         <p className='text-[18px]'>{props.title}</p>
-        <IconButton disableRipple className='p-0'><img src='/detail_more.svg' /></IconButton>
+        <IconButton disableRipple className='p-0' onClick={props.toggleDrawer(true)}><img src='/detail_more.svg' /></IconButton>
       </div>
       <div className='flex flex-row justify-between pt-[4px]'>
         <p className='text-[14px] text-gray3'>{`${dateString}`}</p>
@@ -244,5 +253,24 @@ function PostTools(props: PostToolsProps) {
         <IconButton disableRipple onClick={props.handleOpen} className='p-0'><img src='/detail_share.svg' /></IconButton>
       </div>
     </div>
+  )
+}
+
+function PostDrawer(props: { open: boolean; toggleDrawer: any; }) {
+  const handleReport = () => {
+    console.log('신고하기');
+  }
+  return (
+    <ThemeProvider theme={commentMenuTheme}>
+      <Drawer open={props.open} onClose={props.toggleDrawer(false)} anchor='bottom'>
+        <Box onClick={props.toggleDrawer(false)}>
+          <List>
+            <ListItem disablePadding>
+              <ListItemButton onClick={handleReport} disableRipple><ListItemText primary="신고하기" /></ListItemButton>
+            </ListItem>
+          </List>
+        </Box>
+      </Drawer>
+    </ThemeProvider>
   )
 }

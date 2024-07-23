@@ -12,9 +12,7 @@ export default async function Page(req: Request) {
 
   return (
     <div>
-      <div className='relative z-10'>
-        <Header />
-      </div>
+      <Header />
       <Main />
     </div>
   )

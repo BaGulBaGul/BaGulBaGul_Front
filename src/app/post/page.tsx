@@ -1,6 +1,6 @@
 import Post from '@/components/pages/post'
 import SubHeader from '@/components/layout/subHeader'
-import { HeaderNonMain } from '@/components/layout/header'; '@/components/layout/header';
+import Header from '@/components/layout/header'
 
 export default function Page() {
     const name = "파티글 작성하기"
@@ -8,7 +8,7 @@ export default function Page() {
     return (
       <>
         <header className='relative z-10'>
-          <HeaderNonMain />
+          <Header />
           <SubHeader name={name} />
         </header>
         <Post />

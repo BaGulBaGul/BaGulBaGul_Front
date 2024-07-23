@@ -1,6 +1,4 @@
-'use client';
-import { HeaderNonMain } from "@/components/layout/header";
-import Event from '@/components/pages/test';
+'use client';import Event from '@/components/pages/test';
 
 export default function Page() {
   return (
