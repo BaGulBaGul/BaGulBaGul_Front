@@ -1,14 +1,14 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ArrowNext, ArrowPrev } from "./Arrow";
-import { Box, Button, Chip, Divider, Drawer, IconButton, List, ListItem, ListItemButton, ListItemText, ThemeProvider } from "@mui/material";
-import { accompanyChipTheme, categoryButtonTheme, commentMenuTheme, slideChipTheme } from "./Themes";
+import { Drawer, List, ListItem, ListItemButton, ListItemText, ThemeProvider } from "@mui/material";
+import { commentMenuTheme } from "./Themes";
 import Slider from "react-slick";
 import { postData } from "./Data";
 import { FormatDateRange } from "@/service/Functions";
 import { HashtagButton } from "./HashtagAccordion";
 import { LikeIcn, CalIcn } from "./Icon";
-import { DetailProps, NoUser, RDetailProps, ShareDialog } from ".";
+import { DetailProps, NoUser, RDetailProps, ShareDialog, Divider } from ".";
 import { PostFooter } from "../layout/footer";
 import dayjs from "dayjs";
 
@@ -32,7 +32,7 @@ export const Detail = (props: { opt: string; data?: DetailProps; dataR?: RDetail
             : <img className='h-[280px] object-cover' src='/default_detail_thumb3x.png' />
           }
           <PostTitle title={props.data.post.title} startDate={props.data.event.startDate} endDate={props.data.event.endDate} type={props.data.event.type}
-            views={props.data.post.views} userId={props.data.post.writer.userId} userName={props.data.post.writer.userName} 
+            views={props.data.post.views} userId={props.data.post.writer.userId} userName={props.data.post.writer.userName}
             categories={props.data.event.categories} toggleDrawer={toggleDrawer} />
           <Divider />
           <PostInfo opt='EVT' type={props.data.event.type} startDate={props.data.event.startDate} endDate={props.data.event.endDate}
@@ -93,9 +93,7 @@ function PostSlide() {
   }
   return (
     <div className='relative'>
-      <ThemeProvider theme={slideChipTheme}>
-        <Chip label={`${index + 1}/${postData.length}`} />
-      </ThemeProvider>
+      <span className="slide-chip">{`${index + 1}/${postData.length}`}</span>
       <Slider {...settings} className='h-[280px] bg-gray1 slider-detail'>
         {postData.map((post, idx) => (
           <img key={`img-{idx}`} src={post.headImageUrl} height="280" className='h-[280px] object-cover' />
@@ -115,7 +113,7 @@ function PostTitle(props: PostTitleProps) {
     <div className='flex flex-col px-[16px] py-[20px]'>
       <div className='flex flex-row justify-between pt-[10px]'>
         <p className='text-[18px]'>{props.title}</p>
-        <IconButton disableRipple className='p-0' onClick={props.toggleDrawer(true)}><img src='/detail_more.svg' /></IconButton>
+        <button onClick={props.toggleDrawer(true)}><img src='/detail_more.svg' /></button>
       </div>
       <div className='flex flex-row justify-between pt-[4px]'>
         <p className='text-[14px] text-gray3'>{`${dateString}`}</p>
@@ -133,9 +131,7 @@ function PostTitle(props: PostTitleProps) {
         }
         {props.categories !== undefined
           ? <div className='flex flex-row gap-[8px]'>
-            <ThemeProvider theme={categoryButtonTheme}>
-              {props.categories.map((cate, idx) => (<Button key={`cate-${idx}`}>{cate}</Button>))}
-            </ThemeProvider>
+            {props.categories.map((cate, idx) => (<button className="cate-btn" key={`cate-${idx}`}>{cate}</button>))}
           </div>
           : <></>
         }
@@ -169,9 +165,7 @@ function PostInfo(props: PostInfoProps) {
           <p className='font-semibold pe-[20px]'>참여인원</p>
           <p>{props.headCountMax ?? '-'}명</p>
           {props.type === 'PARTY'
-            ? <p className='ps-[4px]'>
-              <ThemeProvider theme={accompanyChipTheme}><Chip label={`${props.headCount ?? 0}명 참여 중`} /></ThemeProvider>
-            </p>
+            ? <p className="recruit-chip">{`${props.headCount ?? 0}명 참여 중`}</p>
             : <></>
           }
         </div>
@@ -238,19 +232,18 @@ function PostTools(props: PostToolsProps) {
   return (
     <div className='flex flex-row justify-between py-[30px] px-[16px]'>
       <div className='flex flex-row gap-[10px]'>
-        <Button className="flex flex-row items-center gap-[4px] p-0 min-w-fit" disableRipple onClick={props.handleLike}>
+        <button className="flex flex-row items-center gap-[4px]" onClick={props.handleLike}>
           <LikeIcn val={props.liked} />
           <p className='text-gray3 text-[14px] font-normal'>{props.likeCount}</p>
-        </Button>
-        <Button className="flex flex-row items-center gap-[4px] p-0 min-w-fit" disableRipple href={props.commentURL}>
+        </button>
+        <a className="flex flex-row items-center gap-[4px]" href={props.commentURL}>
           <img src='/detail_comment.svg' />
           <p className='text-gray3 text-[14px] font-normal'>{props.commentCount}</p>
-        </Button>
+        </a>
       </div>
-
       <div className='flex flex-row gap-[10px]'>
-        {props.opt === 'EVT' && props.saved !== undefined ? <IconButton disableRipple onClick={props.handleCalendar} className='p-0'><CalIcn val={props.saved} /></IconButton> : <></>}
-        <IconButton disableRipple onClick={props.handleOpen} className='p-0'><img src='/detail_share.svg' /></IconButton>
+        {props.opt === 'EVT' && props.saved !== undefined ? <button onClick={props.handleCalendar}><CalIcn val={props.saved} /></button> : <></>}
+        <button onClick={props.handleOpen}><img src='/detail_share.svg' /></button>
       </div>
     </div>
   )
@@ -263,13 +256,13 @@ function PostDrawer(props: { open: boolean; toggleDrawer: any; }) {
   return (
     <ThemeProvider theme={commentMenuTheme}>
       <Drawer open={props.open} onClose={props.toggleDrawer(false)} anchor='bottom'>
-        <Box onClick={props.toggleDrawer(false)}>
+        <div onClick={props.toggleDrawer(false)}>
           <List>
             <ListItem disablePadding>
               <ListItemButton onClick={handleReport} disableRipple><ListItemText primary="신고하기" /></ListItemButton>
             </ListItem>
           </List>
-        </Box>
+        </div>
       </Drawer>
     </ThemeProvider>
   )

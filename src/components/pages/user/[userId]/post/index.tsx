@@ -1,6 +1,6 @@
 "use client";
 import { useState } from 'react';
-import { Tab, Tabs, ThemeProvider, IconButton, } from '@mui/material';
+import { Tab, Tabs, ThemeProvider } from '@mui/material';
 import { TabPanel } from '@/components/common';
 import { partyData } from '@/components/common/Data';
 import { tabTheme } from '@/components/common/Themes';
@@ -64,8 +64,8 @@ function LikedTab() {
           <div className='flex flex-row justify-between'>
             <span className='text-[14px] text-gray3'>{FormatDateRange(props.data.startDate, props.data.endDate)}</span>
             <div className='flex flex-row gap-[2px]'>
-              <IconButton disableRipple className='p-0'><PostEditIcn /></IconButton>
-              <IconButton disableRipple className='p-0'><DeleteIcn /></IconButton>
+              <button><PostEditIcn /></button>
+              <button><DeleteIcn /></button>
             </div>
           </div>
           <span className={props.opt === 'EVT' ? 'text-[16px] font-semibold' : 'text-[16px]'}>{props.data.title}</span>

@@ -1,5 +1,4 @@
 import { AlarmCmtIcn, AlarmLikeIcn, DeleteIcn } from "@/components/common/Icon";
-import { Button, IconButton } from "@mui/material";
 import dayjs from "dayjs";
 import React from "react";
 
@@ -48,7 +47,7 @@ const index = () => {
               <p>{dayjs(time).format('YY.MM.DD')}</p><p>{dayjs(time).format('HH:mm')}</p>
               </div>
           </div>
-          <IconButton disableRipple className="p-0"><DeleteIcn /></IconButton>
+          <button><DeleteIcn /></button>
         </div>
       </div>
     );
@@ -57,7 +56,7 @@ const index = () => {
   return (
     <div className="mt-[60px]">
       <div className="fixed w-full h-[48px] flex px-[16px] justify-end items-center bg-[#FFF]">
-        <Button className="text-[12px] text-gray3 p-0 min-w-0">전체삭제</Button>
+        <button className="text-[12px] text-gray3">전체삭제</button>
       </div>
       <div className="pt-[48px] bg-[#FFF]">
         {alarm.map((item, index) => (

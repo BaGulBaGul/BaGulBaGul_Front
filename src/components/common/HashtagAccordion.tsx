@@ -1,6 +1,6 @@
 import { useState, useLayoutEffect, createRef } from 'react';
-import { styled, IconButton, IconButtonProps, Button, ThemeProvider } from '@mui/material';
-import { hashtagButtonTheme } from '@/components/common/Themes'
+import { styled, IconButton, IconButtonProps } from '@mui/material';
+import Link from 'next/link';
 
 interface ExpandMoreProps extends IconButtonProps { expand: boolean; }
 const ExpandMore = styled((props: ExpandMoreProps) => {
@@ -30,19 +30,18 @@ export default function HashtagAccordion(props: { tag: string[]; }) {
     return (
       <div className='pt-[10px]'>
         <div ref={ref} className='flex flex-row justify-between'>
-          {
-            showMore
-              ? <>
-                <div className={expanded ? "container-expand" : "container-shrink"}>
-                  {(props.tag).map((tag, idx) => <HashtagButton tag={tag} key={`tag-${idx}`} />)}
-                </div>
-                <ExpandMore expand={expanded} onClick={handleExpandClick} aria-expanded={expanded} >
-                  <img src='/arrow_down.svg' />
-                </ExpandMore>
-              </>
-              : <div className='container'>
+          {showMore
+            ? <>
+              <div className={expanded ? "container-expand" : "container-shrink"}>
                 {(props.tag).map((tag, idx) => <HashtagButton tag={tag} key={`tag-${idx}`} />)}
               </div>
+              <ExpandMore expand={expanded} onClick={handleExpandClick} aria-expanded={expanded} >
+                <img src='/arrow_down.svg' />
+              </ExpandMore>
+            </>
+            : <div className='container'>
+              {(props.tag).map((tag, idx) => <HashtagButton tag={tag} key={`tag-${idx}`} />)}
+            </div>
           }
         </div>
       </div>
@@ -52,13 +51,10 @@ export default function HashtagAccordion(props: { tag: string[]; }) {
 
 export function HashtagButton(props: { tag: string; }) {
   return (
-    <ThemeProvider theme={hashtagButtonTheme}>
-      <Button href={`/tag?tag=${props.tag}&tab_id=0`}>
-        <div className='flex flex-row'>
-          <span className='pe-[2px]'>#</span>
-          <span>{props.tag}</span>
-        </div>
-      </Button>
-    </ThemeProvider>
+    <Link className='hashtag-btn' href={`/tag?tag=${props.tag}&tab_id=0`}>
+      <div className='flex flex-row'>
+        <span className='pe-[2px]'>#</span><span>{props.tag}</span>
+      </div>
+    </Link>
   )
 }

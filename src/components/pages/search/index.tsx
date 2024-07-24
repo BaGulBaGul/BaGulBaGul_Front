@@ -1,9 +1,9 @@
 "use client";
-import { useEffect, useRef, useState } from 'react';
-import { IconButton, TextField, ThemeProvider, Divider, Button, Backdrop, ToggleButtonGroup, ToggleButton } from '@mui/material';
-import { CategoryButtons, RangeProps, ViewButton, ViewFilterApplied, ViewSelect } from '@/components/common';
-import { searchInputTheme, searchFreqTheme, deleteButtonTheme, tabTheme } from '@/components/common/Themes';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { ThemeProvider, Backdrop, ToggleButtonGroup, ToggleButton } from '@mui/material';
+import { CategoryButtons, RangeProps, ViewFilterApplied, ViewSelect, Divider, SearchBar } from '@/components/common';
+import { tabTheme } from '@/components/common/Themes';
 import { getParams, useEffectFilter, useEffectFilterApplied } from '@/service/Functions';
 import dayjs from 'dayjs';
 
@@ -33,93 +33,63 @@ const index = () => {
   useEffectFilterApplied([filters, sort], filters, setFilters, changed, sort, setFilterCnt)
 
   const [startDate, endDate] = dayRange ?? [null, null];
+
+  // Searchbar
+  const router = useRouter()
+  const [title, setTitle] = useState('')
+  const params = {
+    ct: selectedCate.length > 0 ? selectedCate : '', sort: sort,
+    sD: startDate !== null ? dayjs(startDate).format('YYYYMMDD') : '',
+    eD: endDate !== null ? dayjs(endDate).format('YYYYMMDD') : '', ptcp: ptcp > 0 ? ptcp : '',
+    hcMin: headCount.from === null || headCount.from === undefined || headCount.from <= 0 ? '' : headCount.from,
+    hcMax: headCount.to === null || headCount.to === undefined || headCount.to <= 0 ? '' : headCount.to,
+  }
+  useEffect(() => {
+    if (title.length > 0) { router.push(`/searched?query=${title}&${getParams(params)}&tab_id=${tab}`) }
+  }, [title])
+
   return (
     <div className='flex flex-col w-full h-screen'>
-      <div className='bg-[#FFF]'>
-        <SearchBar setOpen={setOpen} filterCnt={filterCnt}
-          params={{
-            ct: selectedCate.length > 0 ? selectedCate : '',
-            sort: sort,
-            sD: startDate !== null ? dayjs(startDate).format('YYYYMMDD') : '',
-            eD: endDate !== null ? dayjs(endDate).format('YYYYMMDD') : '',
-            ptcp: ptcp > 0 ? ptcp : '',
-            hcMin: headCount.from === null || headCount.from === undefined || headCount.from <= 0 ? '' : headCount.from,
-            hcMax: headCount.to === null || headCount.to === undefined || headCount.to <= 0 ? '' : headCount.to,
-          }} tab={tab} />
-        <div className='bg-[#FFF] relative z-10'>
+      <SearchBar opt={0} title={title} setOpen={setOpen} filterCnt={filterCnt} setTitle={setTitle} router={router} />
+      <div className='w-full p-0 pt-[66px]'>
+        <div className='fixed top-[66px] w-full bg-[#FFF] z-10'>
           <ViewFilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters}
             sort={sort} dateRange={dayRange} setDateRange={setDayRange} participants={ptcp}
             setParticipants={setParticipants} headCount={headCount} setHeadCount={setHeadCount} />
+          <ThemeProvider theme={tabTheme}>
+            <ToggleButtonGroup value={tab} exclusive onChange={handleTab} >
+              <ToggleButton value={0}>페스티벌</ToggleButton>
+              <ToggleButton value={1}>지역행사</ToggleButton>
+              <ToggleButton value={2}>파티</ToggleButton>
+            </ToggleButtonGroup>
+          </ThemeProvider>
+          <CategoryButtons selectedCate={selectedCate} setSelectedCate={setSelectedCate} />
+          <Divider />
         </div>
-        <ThemeProvider theme={tabTheme}>
-          <ToggleButtonGroup value={tab} exclusive onChange={handleTab} >
-            <ToggleButton value={0}>페스티벌</ToggleButton>
-            <ToggleButton value={1}>지역행사</ToggleButton>
-            <ToggleButton value={2}>파티</ToggleButton>
-          </ToggleButtonGroup>
-        </ThemeProvider>
-        <CategoryButtons selectedCate={selectedCate} setSelectedCate={setSelectedCate} />
-        <Divider />
-        <div>
+        <div className={filterCnt > 0 ? 'bg-[#FFF] mt-[120px]' : 'bg-[#FFF] mt-[94px]'}>
           <FrequentSearches />
           <RecentSearches />
-          <Backdrop open={open} className='z-paper'>
-            <ViewSelect sort={sort} setSort={setSort} setOpen={setOpen} dateRange={dayRange} setDateRange={setDayRange}
-              participants={ptcp} setParticipants={setParticipants} headCount={headCount} setHeadCount={setHeadCount} />
-          </Backdrop>
         </div>
       </div>
+
+      <Backdrop open={open} className='z-paper'>
+        <ViewSelect sort={sort} setSort={setSort} setOpen={setOpen} dateRange={dayRange} setDateRange={setDayRange}
+          participants={ptcp} setParticipants={setParticipants} headCount={headCount} setHeadCount={setHeadCount} />
+      </Backdrop>
     </div>
   )
 }
 export default index;
 
-function SearchBar(props: { setOpen: any; filterCnt: number; params: any; tab: number; }) {
-  const handleOpen = () => { props.setOpen(true) }
-
-  const inputRef = useRef<HTMLInputElement>(null);
-  const router = useRouter()
-
-  const [title, setTitle] = useState('')
-  const handleSearch = (event: any) => {
-    if ((event.type === 'keydown' && event.key === 'Enter') || event.type === 'click') {
-      if (inputRef.current && inputRef.current.value !== '') {
-        event.preventDefault();
-        console.log('^^ SearchBar /search', inputRef.current.value);
-        setTitle(encodeURIComponent(encodeURIComponent(inputRef.current.value)))
-      }
-    }
-  }
-
-  useEffect(() => {
-    if (title.length > 0) { router.push(`/searched?query=${title}&${getParams(props.params)}&tab_id=${props.tab}`) }
-  }, [title])
-
-  return (
-    <div className='flex flex-row mx-[16px] my-[18px] gap-[16px] items-center'>
-      <IconButton disableRipple className='p-0'><img src='/search_back.svg' /></IconButton>
-      <div className='flex flex-row w-full justify-between'>
-        <div className='flex flex-row bg-gray1 px-[8px] py-[4px] gap-[8px] w-full max-w-[268px]'>
-          <ThemeProvider theme={searchInputTheme}><TextField placeholder="피크페스티벌" inputRef={inputRef} onKeyDown={handleSearch} required /></ThemeProvider>
-          <IconButton onClick={handleSearch} disableRipple className='p-0' ><img src='/search_magnifying.svg' /></IconButton>
-        </div>
-        <ViewButton handleOpen={handleOpen} cnt={props.filterCnt} fs={14} />
-      </div>
-    </div>
-  )
-}
-
 function FrequentSearches() {
   const freqsearchlist = ['피크페스티벌', '서재페', '종강파티', '방학', '연희동', '와인파티', '볼빨간사춘기', '피크페스티벌', '서재페', '종강파티', '방학']
   return (
-    <div className='flex flex-col my-[20px]'>
-      <span className='mx-[16px] text-[14px] leading-[160%]'>자주 찾는 검색어입니다</span>
+    <div className='flex flex-col py-[20px]'>
+      <span className='px-[16px] text-[14px] leading-[160%]'>자주 찾는 검색어입니다</span>
       <div className='overflow-hidden	h-[30px]'>
         <div className='flex h-[60px] py-[8px] px-[16px] overflow-x-scroll overflow-y-hide whitespace-nowrap'>
           {freqsearchlist.map((item, idx) =>
-            <ThemeProvider theme={searchFreqTheme}>
-              <Button disableRipple value={item} key={`freq-${idx}`}>{item}</Button>
-            </ThemeProvider>
+            <button className='searchfreq-btn' key={`freq-${idx}`}>{item}</button>
           )}
         </div>
       </div>
@@ -140,14 +110,14 @@ function RecentSearches() {
                 <img className='h-[20px] w-[20px]' src='/search_magnifying.svg' />
                 <span className='text-[14px] text-gray3 leading-[160%] font-normal'>{props.searchword}</span>
               </div>
-              <IconButton className='p-0'><img src='/search_delete.svg' /></IconButton>
+              <button><img src='/search_delete.svg' /></button>
             </>
             : <>
               <div className='flex flex-row gap-[6px] items-center'>
                 <img className='h-[20px] w-[20px]' src='/search_magnifying_1.svg' />
                 <span className='text-[14px] text-gray2 leading-[160%] font-normal'>{props.searchword}</span>
               </div>
-              <IconButton className='p-0'><img src='/search_delete_1.svg' /></IconButton>
+              <button><img src='/search_delete_1.svg' /></button>
             </>
         }
       </div>
@@ -155,10 +125,10 @@ function RecentSearches() {
   }
 
   return (
-    <div className='flex flex-col mx-[16px] my-[20px] gap-[16px]'>
+    <div className='flex flex-col px-[16px] py-[20px] gap-[16px]'>
       <div className='flex flex-row justify-between text-[12px] text-[#757575]'>
         <span>최근 검색어</span>
-        <ThemeProvider theme={deleteButtonTheme}><Button>전체삭제</Button></ThemeProvider>
+        <button className='text-[12px] leading-[160%] text-gray3'>전체삭제</button>
       </div>
       <div className='flex flex-col gap-[8px]'>
         {

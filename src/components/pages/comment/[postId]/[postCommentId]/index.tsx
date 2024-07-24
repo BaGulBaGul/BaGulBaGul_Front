@@ -272,7 +272,7 @@ function ReplyFooter(props: {
           <div className='flex justify-end pb-[16px] pe-[15px]'><ScrollToTop /></div>}
         <div className="flex flex-row comment-input">
           <MentionInput />
-          <Button className='text-[16px] w-[70px] h-[48px]' onClick={handleComment}>등록</Button>
+          <Button onClick={handleComment}>등록</Button>
         </div>
       </ThemeProvider>
     </div>

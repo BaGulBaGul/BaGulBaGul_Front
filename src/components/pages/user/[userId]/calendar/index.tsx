@@ -1,16 +1,15 @@
 "use client";
 import { useEffect, useState } from 'react';
-import { Box, Divider, IconButton } from '@mui/material';
 import { CalendarBlock } from '@/components/common/EventBlock';
-import { CalProps, NoEvent } from '@/components/common';
+import { CalProps, NoEvent, Divider } from '@/components/common';
 import { call } from '@/service/ApiService';
 import { getDaysArray, setUniqueList } from '@/service/Functions';
+import { ChevronIcn } from '@/components/common/Icon';
 import dayjs from 'dayjs';
 
 import DatePicker, { registerLocale } from "react-datepicker";
 import { ko } from "date-fns/locale/ko";
 import { getMonth, getYear } from "date-fns";
-import { ChevronIcn } from '@/components/common/Icon';
 
 const index = () => {
   registerLocale("ko", ko);
@@ -68,12 +67,12 @@ const CalendarHeader = (props: CalendarHeaderProps) => {
     <div className='react-datepicker__current-month flex flex-row justify-between'>
       <h2>{getMonth(props.date) + 1}월, {getYear(props.date)}</h2>
       <div className='flex flex-row gap-[12px]'>
-        <IconButton disableRipple className='p-0' onClick={handlePrev} disabled={props.prevMonthButtonDisabled}>
+        <button onClick={handlePrev} disabled={props.prevMonthButtonDisabled}>
           <ChevronIcn direction='left' />
-        </IconButton>
-        <IconButton disableRipple className='p-0' onClick={handleNext} disabled={props.nextMonthButtonDisabled}>
+        </button>
+        <button onClick={handleNext} disabled={props.nextMonthButtonDisabled}>
           <ChevronIcn direction='right' />
-        </IconButton>
+        </button>
       </div>
     </div>
   )
@@ -96,16 +95,12 @@ function CalTab(props: { focusDay: any; setEventDates: any; }) {
       })
   }, [props.focusDay])
 
-  return (
-    <Box className='w-full px-0'>
-      <CalTabBlock events={events} />
-    </Box>
-  )
+  return ( <CalTabBlock events={events} /> )
 }
 
 const CalTabBlock = (props: { events?: CalProps[]; }) => {
   return (
-    <div>
+    <div className='w-full' >
       {props.events && props.events.length > 0
         ? <>
           {props.events.map((post, idx) => (

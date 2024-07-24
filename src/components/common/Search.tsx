@@ -2,9 +2,7 @@ import { FormatDateRange, setPageInfo, useEffectCallAPI } from "@/service/Functi
 import { TabBlockProps } from "./EventBlock"
 import { LoadingSkeleton } from "./Loading"
 import { DividerDot, TagIcn } from "./Icon"
-import { HashtagAccordion, HashtagButton, ListProps, MoreButton, NoEvent, NoUser, ParamProps, TabPanels, ViewButton } from "."
-import { Chip, Divider, IconButton, TextField, ThemeProvider } from "@mui/material"
-import { doneChipTheme, searchInputTheme } from "./Themes"
+import { HashtagAccordion, HashtagButton, ListProps, MoreButton, NoEvent, NoUser, ParamProps, TabPanels, ViewButton, Divider } from "."
 import { useEffect, useRef, useState } from "react"
 import { call } from "@/service/ApiService"
 import { ReadonlyURLSearchParams } from "next/navigation"
@@ -97,7 +95,7 @@ export function ResultBlock(props: { data: ListProps; opt: number; }) {
             <DividerDot />
             <p className='text-gray3'>{`${props.data.event.currentHeadCount}/${props.data.event.maxHeadCount}(명)`}</p>
             {props.data.event.currentHeadCount !== props.data.event.maxHeadCount ? <></>
-              : <ThemeProvider theme={doneChipTheme}><Chip label="모집완료" /></ThemeProvider>
+              : <p className="done-chip">모집완료</p>
             }
           </div>
         </a>
@@ -205,47 +203,90 @@ export function SearchTabs(props: { opt: string; sp: ReadonlyURLSearchParams }) 
   useEffectCallAPI(params, initialSet, setPage, events, setEvents, setLoading)
 
   return (
-    <div className='mt-[94px]'>
-      <TabPanels value={tab}
-        child1={<TabBlock opt={props.opt === 'TTL' ? 0 : 1} events={events} page={page} setPage={setPage} isLoading={isLoading} params={params} setParams={setParams} />}
-        child2={<TabBlock opt={props.opt === 'TTL' ? 0 : 1} events={events} page={page} setPage={setPage} isLoading={isLoading} params={params} setParams={setParams} />} />
-    </div>
+    <TabPanels value={tab}
+      child1={<TabBlock opt={props.opt === 'TTL' ? 0 : 1} events={events} page={page} setPage={setPage} isLoading={isLoading} params={params} setParams={setParams} />}
+      child2={<TabBlock opt={props.opt === 'TTL' ? 0 : 1} events={events} page={page} setPage={setPage} isLoading={isLoading} params={params} setParams={setParams} />} />
   )
 }
 
-interface SearchBarProps { title?: string; tag?: string; setOpen: any; filterCnt: number; setTitle?: any; handleRt?: any; }
+interface SearchBarProps { opt?: number; title?: string; tag?: string; setOpen: any; filterCnt: number; setTitle?: any; handleRt?: any; router?: any; }
 export function SearchBar(props: SearchBarProps) {
+  // opt 0: search / opt 1: searched
+  // const handleOpen = () => { props.setOpen(true) }
+  // if (props.title) {
+  //   const inputRef = useRef<HTMLInputElement>(null);
+  //   const handleSearch = (event: any) => {
+  //     if ((event.type === 'keydown' && event.key === 'Enter') || event.type === 'click') {
+  //       if (inputRef.current && inputRef.current.value !== '') {
+  //         event.preventDefault();
+  //         props.setTitle(encodeURIComponent(encodeURIComponent(inputRef.current.value)))
+  //         props.handleRt()
+  //       }
+  //     }
+  //   }
+  //   return (
+  //     <div className='fixed w-full top-0 bg-[#FFF] z-paper'>
+  //       <div className='flex flex-row mx-[16px] my-[18px] gap-[16px] items-center'>
+  //         <button><img src='/search_back.svg' /></button>
+  //         <div className='flex flex-row w-full justify-between'>
+  //           <div className='search-wrap'>
+  //             <input className='search-input' defaultValue={props.title} ref={inputRef} onKeyDown={handleSearch} required />
+  //             <button onClick={handleSearch}><img src='/search_magnifying.svg' /></button>
+  //           </div>
+  //           <ViewButton handleOpen={handleOpen} cnt={props.filterCnt} fs={14} />
+  //         </div>
+  //       </div></div>
+  //   )
+  // }
+  // else if (props.tag) {
+  //   return (
+  //     <div className='fixed w-full top-0 bg-[#FFF] z-paper border-b-[1px] border-gray1'>
+  //       <div className='flex flex-row mx-[16px] my-[18px] gap-[16px] items-center'>
+  //         <button><img src='/search_back.svg' /></button>
+  //         <div className='flex flex-row w-full justify-between'>
+  //           <div className='flex flex-row px-[4px] py-[2px] gap-[2px] items-center'>
+  //             <TagIcn />
+  //             <div className="inline-block align-middle text-[14px] leading-[160%]">{props.tag}</div>
+  //           </div>
+  //           <ViewButton handleOpen={handleOpen} cnt={props.filterCnt} fs={14} />
+  //         </div>
+  //       </div>
+  //     </div>
+  //   )
+  // }
   const handleOpen = () => { props.setOpen(true) }
-  if (props.title) {
+  if (props.title !== undefined) {
     const inputRef = useRef<HTMLInputElement>(null);
     const handleSearch = (event: any) => {
       if ((event.type === 'keydown' && event.key === 'Enter') || event.type === 'click') {
         if (inputRef.current && inputRef.current.value !== '') {
           event.preventDefault();
           props.setTitle(encodeURIComponent(encodeURIComponent(inputRef.current.value)))
-          props.handleRt()
+          if (props.opt === 1) { props.handleRt() }
         }
       }
     }
     return (
       <div className='fixed w-full top-0 bg-[#FFF] z-paper'>
         <div className='flex flex-row mx-[16px] my-[18px] gap-[16px] items-center'>
-          <IconButton disableRipple className='p-0'><img src='/search_back.svg' /></IconButton>
+          <button><img src='/search_back.svg' /></button>
           <div className='flex flex-row w-full justify-between'>
-            <div className='flex flex-row bg-gray1 px-[8px] py-[4px] gap-[8px] w-full max-w-[268px]'>
-              <ThemeProvider theme={searchInputTheme}><TextField defaultValue={props.title} inputRef={inputRef} onKeyDown={handleSearch} required /></ThemeProvider>
-              <IconButton onClick={handleSearch} disableRipple className='p-0' ><img src='/search_magnifying.svg' /></IconButton>
+            <div className='search-wrap'>
+              <input className='search-input' defaultValue={props.opt === 0 ? undefined : props.title}
+                placeholder={props.opt === 0 ? '피크페스티벌' : undefined} ref={inputRef} onKeyDown={handleSearch} required />
+              <button onClick={handleSearch}><img src='/search_magnifying.svg' /></button>
             </div>
             <ViewButton handleOpen={handleOpen} cnt={props.filterCnt} fs={14} />
           </div>
-        </div></div>
+        </div>
+      </div>
     )
   }
   else if (props.tag) {
     return (
       <div className='fixed w-full top-0 bg-[#FFF] z-paper border-b-[1px] border-gray1'>
         <div className='flex flex-row mx-[16px] my-[18px] gap-[16px] items-center'>
-          <IconButton disableRipple className='p-0'><img src='/search_back.svg' /></IconButton>
+          <button><img src='/search_back.svg' /></button>
           <div className='flex flex-row w-full justify-between'>
             <div className='flex flex-row px-[4px] py-[2px] gap-[2px] items-center'>
               <TagIcn />

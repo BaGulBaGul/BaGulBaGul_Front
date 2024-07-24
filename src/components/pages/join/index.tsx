@@ -1,6 +1,4 @@
 "use client";
-import { Button, IconButton, TextField, ThemeProvider } from '@mui/material';
-import { FooterBtnTheme, joinTheme, JoinBtnTheme } from '@/components/common/Themes';
 import { MutableRefObject, useRef, useState } from 'react';
 import { call } from '@/service/ApiService';
 import { useSearchParams, useRouter } from 'next/navigation';
@@ -66,7 +64,7 @@ const index = () => {
   return (
     <>
       <div className="fixed top-0 left-0 right-0 flex-row flex w-full h-[60px] justify-between px-[17.84px] py-[15.6px] bg-[#FFF]">
-        <IconButton onClick={handlePrev} className='p-0' disableRipple><img src='/arrow_prev.svg' /></IconButton>
+        <button onClick={handlePrev}><img src='/arrow_prev.svg' /></button>
       </div>
       <div className='flex flex-col w-full mt-[60px]'>
         <div className='flex flex-col items-center pt-[41.42px] gap-[4px] pointer-events-none' id='join-head'>
@@ -135,12 +133,10 @@ function JoinBlock(props: JoinBlockProps) {
       <p className='text-[12px] text-gray3'>
         {props.opt === 'nnm' ? '바글바글에서 사용할 닉네임을 지어주세요!' : '이메일로 필요한 정보 및 알림을 전달드려요!'}
       </p>
-      <ThemeProvider theme={joinTheme}>
-        {props.opt === 'nnm'
-          ? <TextField variant="outlined" placeholder='bageul01' inputRef={props.nameRef} onChange={handleNameCheck} />
-          : <TextField variant="outlined" inputRef={props.emailRef} type="email" placeholder='bageul01@naver.com' onChange={handleEmailCheck} />
-        }
-      </ThemeProvider>
+      {props.opt === 'nnm'
+        ? <input className='join-input' ref={props.nameRef} placeholder='bageul01' onChange={handleNameCheck} />
+        : <input className='join-input' ref={props.emailRef} type="email" placeholder='bageul01@naver.com' onChange={handleEmailCheck} />
+      }
       <CheckText opt={props.opt} usableName={usableName} nameChecked={props.nameChecked} emailChecked={props.emailChecked} />
     </div>
   )
@@ -183,14 +179,10 @@ function CheckText(props: { opt: string; usableName: { regex: boolean, unique: b
 function JoinFooter(props: { opt: string; handleNext: any; handleJoin: any; btnActive: boolean }) {
   return (
     props.opt === 'nnm'
-      ? <ThemeProvider theme={FooterBtnTheme}>
-        <Button onClick={props.handleNext} disabled={props.btnActive}>다음</Button>
-      </ThemeProvider>
+      ? <button className='footer-btn' onClick={props.handleNext} disabled={props.btnActive}>다음</button>
       : <div className='flex flex-row justify-center gap-[16px] px-[16px] py-[24px] fixed bottom-0 right-0 left-0'>
-        <ThemeProvider theme={JoinBtnTheme}>
-          <Button className='join-skip' onClick={(e) => { props.handleJoin(0, e) }}>건너뛰기</Button>
-          <Button className='join-email' onClick={(e) => { props.handleJoin(1, e) }} disabled={props.btnActive}>회원가입 완료</Button>
-        </ThemeProvider>
+        <button className='join-btn join-skip' onClick={(e) => { props.handleJoin(0, e) }}>건너뛰기</button>
+        <button className='join-btn join-email' onClick={(e) => { props.handleJoin(1, e) }} disabled={props.btnActive}>회원가입 완료</button>
       </div>
 
   )

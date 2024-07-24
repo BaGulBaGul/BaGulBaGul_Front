@@ -26,13 +26,17 @@ export {
   HashtagAccordion, HashtagButton,
   MoreButton,
   NoEvent, NoUser,
-  PostTab, TabPanel,TabPanels,
+  PostTab, TabPanel, TabPanels,
   RecCarousel,
   ViewButton, ViewSelect, ViewFilterApplied,
   ShareDialog,
   ScrollToTop,
   LoadingSkeleton, LoadingCircle,
   Detail,
+}
+
+export const Divider = () => {
+  return (<hr className='border-1px border-gray1' />)
 }
 
 export interface RangeProps { from: undefined | number, to: undefined | number }

@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from 'react';
-import { ThemeProvider, ToggleButton, ToggleButtonGroup, Button } from '@mui/material';
+import { ThemeProvider, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { tabList } from '@/components/common/Data';
 import { viewSwitchTheme } from '@/components/common/Themes';
 import { FormatDateRange, applyLike, setPageInfo, setUniqueList } from '@/service/Functions';
@@ -131,9 +131,9 @@ function LikedPostBlock(props: { data: LikeProps }) {
         <div className='flex flex-col justify-between w-full'>
           <div className='flex flex-row justify-between w-full'>
             <span className='text-[14px] text-[#6C6C6C]'>{FormatDateRange(props.data.startDate, props.data.endDate)}, {props.data.abstractLocation}</span>
-            <Button className="p-0 h-[22px] w-[24px] " disableRipple onClick={handleLike}>
+            <button className="h-[22px] w-[24px]" onClick={handleLike}>
               <LikeIcn val={liked} />
-            </Button>
+            </button>
           </div>
           <span className='text-[16px] text-[#333333] font-semibold'>{props.data.title}</span>
         </div>
@@ -162,9 +162,9 @@ function LikedAccompanyBlock(props: { data: LikeRProps }) {
           <span className='text-[16px]'>{props.data.title}</span>
           <span className='text-[14px] text-gray3'>{props.data.eventTitle ?? '-'}</span>
         </div>
-        <Button className="p-0 h-[22px] w-[24px]" disableRipple onClick={handleLike}>
+        <button className="h-[22px] w-[24px]" onClick={handleLike}>
           <LikeIcn val={liked} />
-        </Button>
+        </button>
       </div>
     </a>
   )

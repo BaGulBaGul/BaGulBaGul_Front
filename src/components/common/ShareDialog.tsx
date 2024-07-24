@@ -1,5 +1,5 @@
 'use client';
-import { ThemeProvider, IconButton, Dialog, DialogTitle, DialogContent } from '@mui/material';
+import { ThemeProvider, Dialog, DialogTitle, DialogContent } from '@mui/material';
 import { shareDialogTheme } from '@/components/common/Themes'
 
 interface ShareDialogProps { handleClose: any, popopen: boolean, sharingURL: string; }
@@ -75,7 +75,7 @@ export default function ShareDialog(props: ShareDialogProps) {
         <DialogTitle className='flex flex-row justify-between'>
           <div className='w-[24px] h-[24px]' />
           <span>공유하기</span>
-          <IconButton disableRipple onClick={props.handleClose}><img src='/popup_close.svg' /></IconButton>
+          <button onClick={props.handleClose}><img src='/popup_close.svg' /></button>
         </DialogTitle>
         <DialogContent className='flex flex-row gap-[48px] justify-center'>
           <div className='flex flex-col items-center cursor-pointer' onClick={handleKakao}>

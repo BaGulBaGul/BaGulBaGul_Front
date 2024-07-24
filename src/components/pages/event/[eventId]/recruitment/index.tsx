@@ -1,8 +1,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { useParams, useSearchParams } from 'next/navigation';
-import { Divider } from '@mui/material';
-import { LoadingCircle, LoadingSkeleton, MoreButton, ParamProps, RListProps } from '@/components/common';
+import { useParams, useSearchParams, useRouter } from 'next/navigation';
+import { LoadingCircle, LoadingSkeleton, MoreButton, ParamProps, RListProps, Divider } from '@/components/common';
 import { call } from '@/service/ApiService';
 import { getParams, setPageInfo, setUniqueList } from "@/service/Functions";
 import { RecruitBlock } from "@/components/common/EventBlock";
@@ -10,9 +9,7 @@ import dayjs from "dayjs";
 
 const index = () => {
   return (
-    <div className='flex flex-col w-full pt-[140px] pb-[77px]'>
-      <RecruitTab />
-    </div>
+    <RecruitTab />
   )
 };
 export default index;
@@ -20,6 +17,7 @@ export default index;
 function RecruitTab() {
   const prms = useParams()
   const searchParams = useSearchParams()
+  const router = useRouter()
   const [isLoading, setLoading] = useState(true)
   const [recruits, setRecruits] = useState<RListProps[]>([]);
 
@@ -70,7 +68,7 @@ function RecruitTab() {
         {recruits.map((post, idx) => (
           <div key={`recruit-${idx}`}>
             {idx === 0 ? <></> : <Divider />}
-            <RecruitBlock data={post} />
+            <RecruitBlock data={post} router={router} />
           </div>
         ))}
         {page.total > 1 && page.current + 1 < page.total ? <MoreButton onClick={handleMore} /> : <></>}

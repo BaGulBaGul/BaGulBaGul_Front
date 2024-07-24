@@ -1,11 +1,11 @@
-import { ThemeProvider, Drawer, Box, List, ListItem, ListItemButton, ListItemText, Divider, Dialog, AppBar, Toolbar, IconButton, TextField, Button, Checkbox } from "@mui/material";
+import { ThemeProvider, Drawer, List, ListItem, ListItemButton, ListItemText, Dialog, AppBar, Toolbar, TextField, Checkbox } from "@mui/material";
 import { Fragment, useRef, useState, MouseEvent, FocusEvent } from "react";
-import { commentMenuTheme, modifyCommentTheme, replyButtonTheme } from "./Themes";
+import { commentMenuTheme, modifyCommentTheme } from "./Themes";
 import { applyLike } from "@/service/Functions";
 import { CmtLikeIcn } from "./Icon";
+import { Divider, NoUser } from ".";
 import { call } from "@/service/ApiService";
 import dayjs from "dayjs";
-import { NoUser } from "./NoEvent";
 
 export interface CommentProps {
   commentChildCount?: number; commentId?: number; commentChildId?: number; content: string; createdAt: string;
@@ -39,7 +39,7 @@ export function CommentBlock(props: { opt: string; data: CommentProps; currentUR
                   <p className="text-[14px]">{props.data.username}</p>
                 </a>
               }
-              <IconButton disableRipple className='p-0' onClick={(e) => handleToggle(e)}><img src='/comment_etc.svg' width={24} height={24} /></IconButton>
+              <button onClick={(e) => handleToggle(e)}><img src='/comment_etc.svg' width={24} height={24} /></button>
             </div>
             <div className='text-[14px] text-gray3 pb-[6px]' id='comment-body'>{props.data.content}</div>
             <div className='flex flex-row text-[12px] text-gray3' id='comment-datetime'>
@@ -55,7 +55,7 @@ export function CommentBlock(props: { opt: string; data: CommentProps; currentUR
                   <p className="text-[14px]">{props.data.userName}</p>
                 </a>
               }
-              <IconButton disableRipple className='p-0' onClick={(e) => handleToggle(e)}><img src='/comment_etc.svg' width={24} height={24} /></IconButton>
+              <button onClick={(e) => handleToggle(e)}><img src='/comment_etc.svg' width={24} height={24} /></button>
             </div>
             <div className='text-[14px] text-gray3 pb-[6px]' id='comment-body'>
               {
@@ -76,14 +76,12 @@ export function CommentBlock(props: { opt: string; data: CommentProps; currentUR
       <div className='flex flex-row justify-between items-center pt-[8px]' id='comment-foot'>
         {props.opt === 'CMT'
           ? <a href={props.currentURL !== undefined ? `${props.currentURL}/${props.data.commentId}` : ''}>
-            <ThemeProvider theme={replyButtonTheme}>
-              {props.data.commentChildCount && props.data.commentChildCount > 0
-                ? <Button className={'flex flex-row text-[12px] border-primary-blue text-primary-blue'}>
-                  <p>답글</p><p className='ps-[4px]'>{props.data.commentChildCount}</p>
-                </Button>
-                : <Button className={'flex flex-row text-[12px]'}>답글</Button>
-              }
-            </ThemeProvider>
+            {props.data.commentChildCount && props.data.commentChildCount > 0
+              ? <button className='reply-btn border-primary-blue text-primary-blue'>
+                <p>답글</p><p>{props.data.commentChildCount}</p>
+              </button>
+              : <button className='reply-btn'>답글</button>
+            }
           </a>
           : <div className='flex flex-row text-[12px] text-gray3' id='comment-datetime'>
             <p className='pe-[6px]'>{dayjs(props.data.createdAt).format('YY.MM.DD')}</p><p>{dayjs(props.data.createdAt).format('HH:mm')}</p>
@@ -104,7 +102,7 @@ export function CommentDrawer(props: { open: number; toggleDrawer: any; setOpenM
   return (
     <ThemeProvider theme={commentMenuTheme}>
       <Drawer open={props.open > 0 ? true : false} onClose={props.toggleDrawer(0)} anchor='bottom'>
-        <Box onClick={props.toggleDrawer(0)}>
+        <div onClick={props.toggleDrawer(0)}>
           <List>
             <ListItem disablePadding>
               <ListItemButton onClick={handleClickOpen} disableRipple><ListItemText primary="수정하기" /></ListItemButton>
@@ -116,7 +114,7 @@ export function CommentDrawer(props: { open: number; toggleDrawer: any; setOpenM
               <ListItemButton onClick={props.handleDelete} disableRipple><ListItemText primary="삭제하기" className='text-[#FF0000]' /></ListItemButton>
             </ListItem>
           </List>
-        </Box>
+        </div>
       </Drawer>
     </ThemeProvider>
   )
@@ -155,14 +153,14 @@ export function ModifyInput(props: ModifyProps) {
         <Dialog fullScreen open={props.open} onClose={handleClose} >
           <AppBar>
             <Toolbar>
-              <IconButton edge="start" color="inherit" onClick={handleClose} ><img src='/arrow_prev.svg' /></IconButton>
+              <button onClick={handleClose} ><img src='/arrow_prev.svg' /></button>
               <p>댓글 수정</p>
               <p className='w-[24px] h-[24px]'></p>
             </Toolbar>
           </AppBar>
           <Divider />
           <TextField multiline defaultValue={props.target?.content} inputRef={mdfRef} />
-          <Button onClick={handleModify}>수정 완료</Button>
+          <button className='footer-btn' onClick={handleModify}>수정 완료</button>
         </Dialog>
       </Fragment>
     </ThemeProvider>
@@ -242,28 +240,30 @@ export function ModifyInputR(props: ModifyProps) {
         <Dialog fullScreen open={props.open} onClose={handleClose} >
           <AppBar>
             <Toolbar>
-              <IconButton edge="start" color="inherit" onClick={handleClose} ><img src='/arrow_prev.svg' /></IconButton>
+              <button onClick={handleClose} ><img src='/arrow_prev.svg' /></button>
               <p>댓글 수정</p>
               <p className='w-[24px] h-[24px]'></p>
             </Toolbar>
           </AppBar>
           <Divider />
-          <div className='mention-reply-section' ref={mdfRef} contentEditable onFocus={handleFocus}
-            onKeyUp={handleCaret} onKeyDown={handleCaret} onMouseUp={handleCaret} suppressContentEditableWarning={true} >
-            {
-              props.target && props.target.replyTargetUserName
-                ? <>
-                  <span contentEditable={false} id='mention-highlight' className='text-primary-blue'>{`@${props.target.replyTargetUserName} `}</span>
-                  {
-                    props.target.content.startsWith('@') && props.target.content.slice(1, props.target.replyTargetUserName.length + 1) === props.target.replyTargetUserName
-                      ? props.target.content.slice(props.target.replyTargetUserName.length + 2)
-                      : props.target.content ?? ''
-                  }
-                </>
-                : <span className='w-full' contentEditable suppressContentEditableWarning={true}>{props.target?.content ?? ''}</span>
-            }
+          <div className="py-[12px] px-[16px]">
+            <div className='mention-reply-section' ref={mdfRef} contentEditable onFocus={handleFocus}
+              onKeyUp={handleCaret} onKeyDown={handleCaret} onMouseUp={handleCaret} suppressContentEditableWarning={true} >
+              {
+                props.target && props.target.replyTargetUserName
+                  ? <>
+                    <span contentEditable={false} id='mention-highlight' className='text-primary-blue'>{`@${props.target.replyTargetUserName} `}</span>
+                    {
+                      props.target.content.startsWith('@') && props.target.content.slice(1, props.target.replyTargetUserName.length + 1) === props.target.replyTargetUserName
+                        ? props.target.content.slice(props.target.replyTargetUserName.length + 2)
+                        : props.target.content ?? ''
+                    }
+                  </>
+                  : <span className='w-full' contentEditable suppressContentEditableWarning={true}>{props.target?.content ?? ''}</span>
+              }
+            </div>
           </div>
-          <Button onClick={handleModify}>수정 완료</Button>
+          <button className='footer-btn' onClick={handleModify}>수정 완료</button>
         </Dialog>
       </Fragment>
     </ThemeProvider>

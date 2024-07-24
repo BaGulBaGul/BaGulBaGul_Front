@@ -2,7 +2,6 @@
 import { UserInfoProps } from "@/components/common";
 import { CalendarIcn, LikeIcn, MailIcn, PostEditIcn, SmileIcn } from "@/components/common/Icon";
 import { call } from "@/service/ApiService";
-import { Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
 
 const index = (props: { user: string | number }) => {
@@ -14,7 +13,7 @@ export default index;
 
 const SetBlock = (props: { icon?: any; title: string; count: number; url: string; }) => {
   return (
-    <Button disableRipple href={props.url}
+    <a href={props.url}
       className="flex flex-row justify-between p-[16px] text-[14px] leading-[160%] text-black font-normal">
       <div className="flex flex-row items-center gap-[8px]">
         {props.icon ? <div className="w-[24px] h-[24px]">{props.icon}</div> : <></>}
@@ -24,7 +23,7 @@ const SetBlock = (props: { icon?: any; title: string; count: number; url: string
         <span>{props.count}개</span>
         <img src='/arrow_next.svg' className="p-[4px] w-[24px] h-[24px]" />
       </div>
-    </Button>
+    </a>
   )
 }
 
@@ -81,7 +80,7 @@ const MyPage = () => {
           </div>
         </div>
         <div className="p-[24px]">
-          <Button disableRipple className="w-full bg-[#FFF] text-gray3 text-[16px] p-[16px] leading-[140%]">로그아웃</Button>
+          <button className="w-full bg-[#FFF] text-gray3 text-[16px] p-[16px] leading-[140%]">로그아웃</button>
         </div>
       </div>
     </div>

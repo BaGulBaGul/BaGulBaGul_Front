@@ -1,20 +1,19 @@
-import { ThemeProvider, Chip } from "@mui/material";
-import { doneChipTheme } from "./Themes";
 import { FormatDateRange, typeString } from "@/service/Functions";
 import { DividerDot } from "./Icon";
 import { CalProps, ListProps, NoUser, ParamProps, RListProps, HashtagAccordion } from ".";
 import dayjs from "dayjs";
+import Link from "next/link";
 
 export interface TabBlockProps {
   opt: number; events: never[]; page: { current: number; total: number; }; setPage: any; isLoading: boolean;
-  params?: ParamProps, setParams?: any
+  params?: ParamProps, setParams?: any, router?: any;
 }
 
-export function EventBlock(props: { data: ListProps }) {
+export function EventBlock(props: { data: ListProps, router: any }) {
   let urlLink = `/event/${props.data.event.eventId}`
   return (
     <div className="flex flex-col py-[18px] px-[16px] justify-between">
-      <a href={urlLink} className='flex flex-row items-center justify-between'>
+      <div onClick={()=>{props.router.push(urlLink)}} className='flex flex-row items-center justify-between cursor-pointer'>
         <div className='flex flex-col w-[230px] h-[116px] justify-between'>
           <div className='flex flex-col gap-[4px]'>
             <p className='truncate text-[16px] font-semibold leading-[140%]'>{props.data.post.title}</p>
@@ -36,24 +35,24 @@ export function EventBlock(props: { data: ListProps }) {
                 <DividerDot />
                 <p className='text-gray3'>{`${props.data.event.currentHeadCount}/${props.data.event.maxHeadCount}(명)`}</p>
                 {props.data.event.currentHeadCount !== props.data.event.maxHeadCount ? <></>
-                  : <ThemeProvider theme={doneChipTheme}><Chip label="모집완료" /></ThemeProvider>
+                  : <p className="done-chip">모집완료</p>
                 }
               </>
             }
           </div>
         </div>
         <img className='rounded-[4px] w-[92px] h-[116px] object-cover' src={props.data.post.headImageUrl ?? '/default_list_thumb3x.png'} />
-      </a>
+      </div>
       {props.data.post.tags.length > 0 ? <div className="pt-[10px]"><HashtagAccordion tag={props.data.post.tags} /></div> : <></>}
     </div>
   )
 }
 
-export function RecruitBlock(props: { data: RListProps }) {
+export function RecruitBlock(props: { data: RListProps, router: any }) {
   let urlLink = `/recruitment/${props.data.recruitment.recruitmentId}`
   return (
     <div className='flex flex-col py-[18px] px-[16px]'>
-      <a className='flex flex-col gap-[4px]' href={urlLink}>
+      <div className='flex flex-col gap-[4px] cursor-pointer' onClick={()=>{props.router.push(urlLink)}}>
         <p className='truncate text-[16px]'>{props.data.post.title}</p>
         <p className='text-[14px] text-gray3'>{dayjs(props.data.recruitment.startDate).format('YY.MM.DD')}</p>
         <div className='flex flex-row items-center gap-[8px]'>
@@ -68,11 +67,9 @@ export function RecruitBlock(props: { data: RListProps }) {
             <DividerDot />
             <p className='text-gray3'>{`${props.data.recruitment.currentHeadCount}/${props.data.recruitment.maxHeadCount}(명)`}</p>
           </div>
-          {
-            props.data.recruitment.state === "PROCEEDING" ? <></> : <ThemeProvider theme={doneChipTheme}><Chip label="모집완료" /></ThemeProvider>
-          }
+          { props.data.recruitment.state === "PROCEEDING" ? <></> : <p className="done-chip">모집완료</p> }
         </div>
-      </a>
+      </div>
       {props.data.post.tags ? <HashtagAccordion tag={props.data.post.tags} /> : <></>}
     </div>
   )
@@ -81,7 +78,7 @@ export function RecruitBlock(props: { data: RListProps }) {
 export function CalendarBlock(props: { data: CalProps }) {
   let urlLink = `/event/${props.data.eventId}`
   return (
-    <a className='flex py-[18px] px-[16px] justify-between' href={urlLink}>
+    <Link className='flex py-[18px] px-[16px] justify-between' href={urlLink}>
       <div className='flex flex-row justify-between items-center pb-[10px] w-full'>
         <div className='flex flex-col w-full h-[104px] justify-between'>
           <div className='flex flex-col gap-[4px]'>
@@ -96,6 +93,6 @@ export function CalendarBlock(props: { data: CalProps }) {
         </div>
         <img className='rounded-[4px] w-[84px] h-[104px] object-cover' src={props.data.headImageUrl ?? '/default_list_thumb3x.png'} />
       </div>
-    </a>
+    </Link>
   )
 }

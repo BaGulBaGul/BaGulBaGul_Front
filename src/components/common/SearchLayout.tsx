@@ -3,7 +3,7 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 import { ReadonlyURLSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { CategoryButtons, PostTab, RangeProps, SearchBar, ViewFilterApplied, ViewSelect } from ".";
-import { Box, Backdrop } from "@mui/material";
+import { Backdrop } from "@mui/material";
 import dayjs from 'dayjs';
 
 export const SearchLayout = (props: { opt: string; sp: ReadonlyURLSearchParams; router: AppRouterInstance; children: React.ReactNode; }) => {
@@ -72,16 +72,14 @@ export const SearchLayout = (props: { opt: string; sp: ReadonlyURLSearchParams; 
   return (
     <div className='flex flex-col w-full pb-[10px] h-screen'>
       {props.opt === 'TTL'
-        ? <SearchBar title={title ?? ''} setOpen={setOpen} filterCnt={filterCnt} setTitle={setTitle} handleRt={handleRt} />
+        ? <SearchBar opt={1} title={title ?? ''} setOpen={setOpen} filterCnt={filterCnt} setTitle={setTitle} handleRt={handleRt} />
         : <SearchBar tag={tag ?? ''} setOpen={setOpen} filterCnt={filterCnt} handleRt={handleRt} />
       }
-      <Box className='w-full p-0 pt-[66px]'>
-        <Box className='fixed top-[66px] w-full bg-[#FFF] z-10 px-[16px] pt-[10px] pb-[10px]'>
-          <div className='flex justify-between items-center'>
+      <div className='w-full p-0 pt-[66px]'>
+        <div className='fixed top-[66px] w-full bg-[#FFF] z-10'>
+          <div className='flex justify-between items-center px-[16px] py-[10px]'>
             <PostTab value={tab} handleChange={handleChange} />
           </div>
-        </Box>
-        <div className='fixed top-[114px] w-full bg-[#FFF] z-10'>
           <ViewFilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters}
             sort={sort} dateRange={dateRange} setDateRange={setDateRange} participants={participants}
             setParticipants={setParticipants} headCount={headCount} setHeadCount={setHeadCount} handleRt={handleRt} />
@@ -91,8 +89,11 @@ export const SearchLayout = (props: { opt: string; sp: ReadonlyURLSearchParams; 
           <ViewSelect sort={sort} setSort={setSort} setOpen={setOpen} routeToFilter={routeToFilter} dateRange={dateRange} setDateRange={setDateRange}
             participants={participants} setParticipants={setParticipants} headCount={headCount} setHeadCount={setHeadCount} />
         </Backdrop>
-        {props.children}
-      </Box>
+        {<div className={filterCnt > 0 ? 'mt-[120px]' : 'mt-[94px]'}>
+          {props.children}
+        </div>
+        }
+      </div>
     </div>
   );
 }

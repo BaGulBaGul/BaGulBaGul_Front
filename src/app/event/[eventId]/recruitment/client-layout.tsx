@@ -54,15 +54,19 @@ export function ClientRootLayout({ children }: { children: React.ReactNode }) {
           <ViewButton handleOpen={handleOpen} cnt={filterCnt} fs={18} />
         </div>
       </div>
-      <div className='fixed top-[104px] w-full bg-[#FFF] z-10 h-[36px]'>
-        <ViewFilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters} sort={sort} dateRange={dateRange} setDateRange={setDateRange}
-          participants={participants} setParticipants={setParticipants} handleRt={handleRt} />
-      </div>
+      {filterCnt <= 0 ? <></>
+          : <div className='fixed top-[104px] w-full bg-[#FFF] z-10 h-[36px]'>
+            <ViewFilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters} sort={sort} dateRange={dateRange} setDateRange={setDateRange}
+              participants={participants} setParticipants={setParticipants} handleRt={handleRt} />
+          </div>
+      }
       <Backdrop open={open} className='z-paper'>
         <ViewSelect sort={sort} setSort={setSort} setOpen={setOpen} routeToFilter={routeToFilter} dateRange={dateRange} setDateRange={setDateRange}
           participants={participants} setParticipants={setParticipants} recruiting={recruiting} setRecruiting={setRecruiting} />
       </Backdrop>
-      {children}
+      <div className={filterCnt > 0 ? 'flex flex-col w-full pb-[77px] pt-[140px]' : 'flex flex-col w-full pb-[77px] pt-[104px]'}>
+        {children}
+      </div>
     </>
   )
 }

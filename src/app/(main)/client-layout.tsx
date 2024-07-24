@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect, useRef } from 'react';
-import { Box, Backdrop } from '@mui/material';
+import { Backdrop } from '@mui/material';
 import { CategoryButtons, ViewButton, ViewSelect, RecCarousel, PostTab, ViewFilterApplied, RangeProps } from '@/components/common';
 import { getParams, useEffectCntFilter } from '@/service/Functions';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -70,13 +70,13 @@ export function ClientRootLayout({ children }: { children: React.ReactNode }) {
     <div className='flex flex-col w-full pt-[44px]'>
       <RecCarousel />
       {/* <Box className='w-full px-0' id='post-root' ref={sRef}> */}
-      <Box className='w-full px-0'>
-        <Box className='sticky top-[44px] bg-[#FFF] relative z-10 px-[16px] pt-[20px] pb-[10px]'>
+      <div className='w-full px-0'>
+        <div className='sticky top-[44px] bg-[#FFF] relative z-10 px-[16px] pt-[20px] pb-[10px]'>
           <div className='flex justify-between items-center'>
             <PostTab value={tab} handleChange={handleChange} />
             <ViewButton handleOpen={handleOpen} cnt={filterCnt} fs={18} />
           </div>
-        </Box>
+        </div>
         <div className='sticky top-[102px] bg-[#FFF] relative z-10'>
           <ViewFilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters} sort={sort} dateRange={dateRange} setDateRange={setDateRange}
             participants={participants} setParticipants={setParticipants} headCount={headCount} setHeadCount={setHeadCount} handleRt={handleRt} />
@@ -88,7 +88,7 @@ export function ClientRootLayout({ children }: { children: React.ReactNode }) {
             proceeding={proceeding} setProceeding={setProceeding} />
         </Backdrop>
         {children}
-      </Box>
+      </div>
     </div>
   )
 }

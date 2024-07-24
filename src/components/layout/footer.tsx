@@ -1,14 +1,8 @@
-import { Button, ThemeProvider } from "@mui/material";
-import { FooterBtnTheme } from "../common/Themes";
+import Link from "next/link";
 
 interface PostFooterProps {
   title: string, path: string,
 }
 export function PostFooter(props: PostFooterProps) {
-  return (
-    <ThemeProvider theme={FooterBtnTheme}>
-      <Button href={props.path}>{props.title}</Button>
-    </ThemeProvider>
-
-  )
+  return (<Link className="footer-btn" href={props.path}>{props.title}</Link>)
 }

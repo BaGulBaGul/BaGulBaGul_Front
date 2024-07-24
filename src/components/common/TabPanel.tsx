@@ -1,4 +1,3 @@
-import { Box, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 
 interface TabPanelProps { children?: React.ReactNode; index: number; value: number; classn?: string }
@@ -7,9 +6,9 @@ export function TabPanel(props: TabPanelProps) {
   return (
     <div role="tabpanel" hidden={value !== index} id={`simple-tabpanel-${index}`} className={props.classn} {...other} >
       {value === index && (
-        <Box>
-          <Typography component={"div"}>{children}</Typography>
-        </Box>
+        <div>
+          <div>{children}</div>
+        </div>
       )}
     </div>
   );

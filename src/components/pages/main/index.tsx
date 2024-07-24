@@ -1,7 +1,8 @@
 "use client";
 import { useState, useRef, useEffect } from 'react';
-import { Divider, ThemeProvider, Fab } from '@mui/material';
-import { MoreButton, EventBlock, NoEvent, LoadingSkeleton, LoadingCircle, ParamProps, TabPanels } from '@/components/common';
+import { useRouter } from "next/navigation";
+import { ThemeProvider, Fab } from '@mui/material';
+import { MoreButton, EventBlock, NoEvent, LoadingSkeleton, LoadingCircle, ParamProps, TabPanels, Divider } from '@/components/common';
 import { writeFabTheme } from '@/components/common/Themes'
 import { tabList } from '@/components/common/Data';
 import { setPageInfo, useEffectCallAPI } from '@/service/Functions';
@@ -14,6 +15,7 @@ export default index;
 
 function PostTabs() {
   const searchParams = useSearchParams()
+  const router = useRouter()
   const [isLoading, setLoading] = useState(true)
   const [events, setEvents] = useState([]);
 
@@ -58,8 +60,8 @@ function PostTabs() {
 
   return (
     <TabPanels value={tab}
-      child1={<TabBlock opt={0} events={events} page={page} setPage={setPage} isLoading={isLoading} params={params} setParams={setParams} />}
-      child2={<TabBlock opt={1} events={events} page={page} setPage={setPage} isLoading={isLoading} params={params} setParams={setParams} />} />
+      child1={<TabBlock opt={0} events={events} page={page} setPage={setPage} isLoading={isLoading} params={params} setParams={setParams} router={router} />}
+      child2={<TabBlock opt={1} events={events} page={page} setPage={setPage} isLoading={isLoading} params={params} setParams={setParams} router={router} />} />
   )
 }
 
@@ -75,7 +77,7 @@ const TabBlock = (props: TabBlockProps) => {
             {props.events.map((post, idx) => (
               <div key={`event-${idx}`}>
                 {idx === 0 ? <></> : <Divider />}
-                <EventBlock data={post} />
+                <EventBlock data={post} router={props.router} />
               </div>
             ))}
             {props.page.total > 1 && props.page.current + 1 < props.page.total
@@ -86,7 +88,7 @@ const TabBlock = (props: TabBlockProps) => {
         }
         {props.opt !== 1 ? <></>
           : <ThemeProvider theme={writeFabTheme}>
-            <Fab variant="extended" size="small" color="primary" className='fixed bottom-[55px] right-[16px]'>
+            <Fab variant="extended" size="small" color="primary" className='fixed bottom-[19px] right-[16px]'>
               <div className='flex flex-row items-center'>
                 <img src='/main_add.svg' />
                 <span className='ps-[4px]'>글작성</span>

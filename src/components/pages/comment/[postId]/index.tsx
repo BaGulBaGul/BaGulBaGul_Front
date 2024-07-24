@@ -123,7 +123,7 @@ function CommentFooter(props: { postId: any; setLoading: any; setTmp: any; setTm
           <div className='flex justify-end pb-[16px] pe-[15px]'><ScrollToTop /></div>}
         <div className="flex flex-row comment-input">
           <TextField placeholder='댓글을 입력해주세요.' fullWidth multiline inputRef={cmtRef} maxRows={5} />
-          <Button className='text-[14px] w-[70px] h-[48px]' onClick={handleComment}>등록</Button>
+          <Button onClick={handleComment}>등록</Button>
         </div>
       </ThemeProvider>
     </div>

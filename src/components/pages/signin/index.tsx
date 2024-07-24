@@ -1,16 +1,13 @@
 "use client";
-import { Button, IconButton, ThemeProvider } from '@mui/material';
-import { KakaoButtonTheme } from "@/components/common/Themes";
 import { API_BASE_URL } from "@/api-config";
 import { useRouter } from 'next/navigation';
 
 export default function SignIn() {
   const router = useRouter();
   return (
-    <ThemeProvider theme={KakaoButtonTheme}>
       <div className="flex flex-col h-screen justify-between">
         <div className="flex flex-row justify-end px-[16px] py-[10px]">
-          <IconButton disableRipple onClick={() => router.back()}><img className="w-[40px] h-[40px]" src='/popup_close.svg' /></IconButton>
+          <button onClick={() => router.back()}><img className="w-[40px] h-[40px]" src='/popup_close.svg' /></button>
         </div>
         <div className="flex flex-col items-center h-full py-[91.42px] gap-[20px] pointer-events-none">
           <img src="/logo_s.svg" width='135.07' />
@@ -20,13 +17,12 @@ export default function SignIn() {
           </div>
         </div>
         <div className="flex justify-center px-[32px] pb-[77px]">
-          <Button href={`${API_BASE_URL}/oauth2/authorization/kakao`}>
+          <a href={`${API_BASE_URL}/oauth2/authorization/kakao`} className='kakao-btn'>
             <KakaoCI />
-            <p className="flex w-full justify-center">카카오 로그인</p>
-          </Button>
+            <p className="flex w-full justify-center items-center">카카오 로그인</p>
+          </a>
         </div>
-      </div >
-    </ThemeProvider>
+      </div>
   );
 }
 
