@@ -71,13 +71,13 @@ export function ClientRootLayout({ children }: { children: React.ReactNode }) {
       <RecCarousel />
       {/* <Box className='w-full px-0' id='post-root' ref={sRef}> */}
       <div className='w-full px-0'>
-        <div className='sticky top-[44px] bg-[#FFF] relative z-10 px-[16px] pt-[20px] pb-[10px]'>
+        <div className='sticky top-[44px] relative px-[16px] pt-[20px] pb-[10px] bg-p-white z-10'>
           <div className='flex justify-between items-center'>
             <PostTab value={tab} handleChange={handleChange} />
             <ViewButton handleOpen={handleOpen} cnt={filterCnt} fs={18} />
           </div>
         </div>
-        <div className='sticky top-[102px] bg-[#FFF] relative z-10'>
+        <div className='sticky top-[102px] relative bg-p-white z-10'>
           <ViewFilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters} sort={sort} dateRange={dateRange} setDateRange={setDateRange}
             participants={participants} setParticipants={setParticipants} headCount={headCount} setHeadCount={setHeadCount} handleRt={handleRt} />
           <CategoryButtons selectedCate={selectedCate} setSelectedCate={setSelectedCate} />

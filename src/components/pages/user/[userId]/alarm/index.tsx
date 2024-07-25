@@ -29,16 +29,16 @@ const index = () => {
 
   interface AlarmProps { opt: string; title: string; body: string | undefined; time: string; read: boolean; }
   const AlarmBlock: React.FC<AlarmProps> = ({ opt, title, body, time, read }) => {
-    const titleStyle = `text-[14px] text-ellipsis overflow-hidden break-all whitespace-nowrap ${read ? "text-gray1" : "text-black"}`
-    const bodyStyle = read ? "text-[14px] text-gray1" : "text-[14px] text-gray3";
-    const timeStyle = `flex flex-row gap-[6px] text-[12px] ${read ? "text-gray1" : "text-gray3"}`
+    const titleStyle = `text-14 text-ellipsis overflow-hidden break-all whitespace-nowrap ${read ? "text-gray1" : "text-black"}`
+    const bodyStyle = read ? "text-14 text-gray1" : "text-14 text-gray3";
+    const timeStyle = `flex flex-row gap-[6px] text-12 ${read ? "text-gray1" : "text-gray3"}`
     let alarmText = opt === 'CMT' ? '글에 댓글이 달렸어요.' : '댓글에 좋아요 10개가 놀렸어요.'
     return (
       <div className="flex flex-row w-full px-[16px] py-[10px] gap-[20px]">
         <div className="w-[30px] h-[30px]">
           {opt === 'CMT' ? <AlarmCmtIcn val={read} /> : <AlarmLikeIcn val={read} />}
         </div>
-        <div className="flex flex-row gap-[8px] items-start">
+        <div className="flex flex-row items-start gap-[8px]">
           <div className="flex flex-col gap-[2px] w-[calc(100vw-114px)]">
             {/* <div className="flex flex-col gap-[2px] w-[calc(100%)]"> */}
             <p className={titleStyle}>"{title}" {alarmText}</p>
@@ -55,10 +55,10 @@ const index = () => {
 
   return (
     <div className="mt-[60px]">
-      <div className="fixed w-full h-[48px] flex px-[16px] justify-end items-center bg-[#FFF]">
-        <button className="text-[12px] text-gray3">전체삭제</button>
+      <div className="fixed flex justify-end items-center w-full h-[48px] px-[16px] bg-p-white">
+        <button className="text-12 text-gray3">전체삭제</button>
       </div>
-      <div className="pt-[48px] bg-[#FFF]">
+      <div className="pt-[48px] bg-p-white">
         {alarm.map((item, index) => (
           <div key={index}>
             {item.case === "comment" && (<AlarmBlock opt='CMT' title={item.title} body={item.body} time={item.time} read={item.read} />)}

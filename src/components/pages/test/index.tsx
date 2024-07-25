@@ -1,5 +1,5 @@
 "use client";
-import { AddIcn, AlarmIcn, CalIcn, CalendarIcn, Category19, CmtLikeIcn, DividerDot, FilterArrowMore, LikeIcn, MailIcn, PageTop, DeleteIcn, PostEditIcn, RemoveIcn, SmileIcn, TagIcn } from "@/components/common/Icon";
+import { AddIcn, AlarmIcn, CalIcn, Category19, CmtLikeIcn, DividerDot, FilterArrowMore, LikeIcn, MailIcn, PageTop, DeleteIcn, PostEditIcn, RemoveIcn, SmileIcn, TagIcn } from "@/components/common/Icon";
 
 // svg, icon 확인용
 const index = () => {
@@ -12,9 +12,7 @@ const index = () => {
         <div className="flex flex-col items-center h-min gap-[4px] bg-white p-[4px]">
           <Category19 /><span className="text-[12px]">Category19</span>
         </div>
-        <div className="flex flex-col items-center h-min gap-[4px] bg-white p-[4px]">
-          <CalendarIcn /><span className="text-[12px]">CalendarIcn</span>
-        </div>
+        
         <div className="flex flex-col items-center h-min gap-[4px] bg-white p-[4px]">
           <AddIcn /><span className="text-[12px]">AddIcn</span>
         </div>

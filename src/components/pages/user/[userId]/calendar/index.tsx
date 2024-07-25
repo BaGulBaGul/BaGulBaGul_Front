@@ -28,7 +28,7 @@ export default index;
 
 export function MyCalendar(props: { focusDay: any; setFocusDay: any; eventDays?: any; displayM: number; setDisplayM: any; setEventDates: any; }) {
   return (
-    <div className='flex flex-col w-full items-center bg-[#FFF]'>
+    <div className='flex flex-col items-center w-full bg-p-white'>
       <div className='w-[414px]'>
         <DatePicker selected={props.focusDay} onChange={(date) => props.setFocusDay(date)} highlightDates={props.eventDays}
           locale={ko} disabledKeyboardNavigation inline

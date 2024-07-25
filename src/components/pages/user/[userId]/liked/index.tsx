@@ -55,7 +55,7 @@ function LikedTab() {
 
   return (
     <div className='flex flex-col w-full pb-[10px]'>
-      <div className='fixed flex flex-row w-full justify-between items-center top-[60px] px-[16px] bg-[#FFF] z-10'>
+      <div className='fixed top-[60px] flex flex-row justify-between items-center w-full px-[16px] bg-p-white z-10'>
         <PostTab value={value} handleChange={handleChange} cN='items-center min-h-0 py-[10px]' />
         {value === 2 ? <></> : <ViewsCheck />}
       </div>
@@ -69,7 +69,7 @@ function LikedTab() {
 
   function ViewsCheck() {
     return (
-      <div className='bg-[#FFF] z-10'>
+      <div className='bg-p-white z-10'>
         <ThemeProvider theme={viewSwitchTheme}>
           <ToggleButtonGroup value={view} exclusive onChange={handleView} >
             <ToggleButton value="EVT">게시글</ToggleButton>
@@ -86,7 +86,7 @@ const TabBlock = (props: { events: any; page: any; setPage: any; isLoading: bool
   if (props.events.length > 0) {
     if (props.view === 'EVT') {
       return (
-        <div className='bg-[#FFF]'>
+        <div className='bg-p-white'>
           {props.events.map((post: LikeProps, idx: any) => (
             <LikedPostBlock data={post} key={`like-${idx}`} />
           ))}
@@ -97,7 +97,7 @@ const TabBlock = (props: { events: any; page: any; setPage: any; isLoading: bool
       )
     } else if (props.view === 'RCT') {
       return (
-        <div className='bg-[#FFF]'>
+        <div className='bg-p-white'>
           {props.events.map((post: LikeRProps, idx: any) => (
             <LikedAccompanyBlock data={post} key={`like-${idx}`} />
           ))}
@@ -130,14 +130,14 @@ function LikedPostBlock(props: { data: LikeProps }) {
       <div className='flex flex-col justify-between w-full'>
         <div className='flex flex-col justify-between w-full'>
           <div className='flex flex-row justify-between w-full'>
-            <span className='text-[14px] text-[#6C6C6C]'>{FormatDateRange(props.data.startDate, props.data.endDate)}, {props.data.abstractLocation}</span>
+            <span className='text-14 text-gray3'>{FormatDateRange(props.data.startDate, props.data.endDate)}, {props.data.abstractLocation}</span>
             <button className="h-[22px] w-[24px]" onClick={handleLike}>
               <LikeIcn val={liked} />
             </button>
           </div>
-          <span className='text-[16px] text-[#333333] font-semibold'>{props.data.title}</span>
+          <span className='text-16 text-[#333333] font-semibold'>{props.data.title}</span>
         </div>
-        <span className='text-[12px] text-gray3 description max-w-[278px]'>
+        <span className='text-12 text-gray3 description max-w-[278px]'>
           {props.data.content ?? "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consectetur turpis congue massa laoreet rutrum."}
         </span>
       </div>
@@ -158,9 +158,9 @@ function LikedAccompanyBlock(props: { data: LikeRProps }) {
     <a href={`/recruitment/${props.data.recruitmentId}`} className='flex flex-col px-[16px] py-[18px] gap-[4px]'>
       <div className='flex flex-row justify-between items-start'>
         <div className='flex flex-col gap-[4px]'>
-          <span className='text-[14px] text-gray3'>{dayjs(props.data.startDate).format('YY.MM.DD')}</span>
-          <span className='text-[16px]'>{props.data.title}</span>
-          <span className='text-[14px] text-gray3'>{props.data.eventTitle ?? '-'}</span>
+          <span className='text-14 text-gray3'>{dayjs(props.data.startDate).format('YY.MM.DD')}</span>
+          <span className='text-16'>{props.data.title}</span>
+          <span className='text-14 text-gray3'>{props.data.eventTitle ?? '-'}</span>
         </div>
         <button className="h-[22px] w-[24px]" onClick={handleLike}>
           <LikeIcn val={liked} />

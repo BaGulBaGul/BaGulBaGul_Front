@@ -77,7 +77,7 @@ export default function ShareDialog(props: ShareDialogProps) {
           <span>공유하기</span>
           <button onClick={props.handleClose}><img src='/popup_close.svg' /></button>
         </DialogTitle>
-        <DialogContent className='flex flex-row gap-[48px] justify-center'>
+        <DialogContent className='flex flex-row justify-center gap-[48px]'>
           <div className='flex flex-col items-center cursor-pointer' onClick={handleKakao}>
             <img className='w-[50px] h-[50.74px]' src='/kakaotalk_sharing_btn.png' />
             <span className='select-none px-[4px] pt-[4px]'>카카오톡</span>

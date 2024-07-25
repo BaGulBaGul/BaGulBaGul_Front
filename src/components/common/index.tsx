@@ -96,7 +96,8 @@ export interface RDetailProps {
 
 export interface CalProps {
   eventId: number; type: string; title: string; content: string; headImageUrl: string;
-  abstractLocation: string; startTime: string; endTime: string;
+  abstractLocation: string; startTime: string; endTime: string; 
+  userId?: number; userProfileImageUrl?: string; userName?: string;
 }
 
 export interface UserInfoProps {

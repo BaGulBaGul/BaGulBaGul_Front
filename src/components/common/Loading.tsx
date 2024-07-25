@@ -64,7 +64,7 @@ export function LoadingSkeleton(props: { type?: string; }) {
     )
   }
   return (  // Event Block
-    <div className="flex flex-col py-[18px] px-[16px] bg-[#FFF]">
+    <div className="flex flex-col py-[18px] px-[16px] bg-p-white">
       <div className='flex flex-row items-center justify-between pb-[10px]'>
         <div className='flex flex-col w-[230px] h-[116px] justify-between'>
           <div className='flex flex-col gap-[4px]'>

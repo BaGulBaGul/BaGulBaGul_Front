@@ -48,23 +48,23 @@ export function ClientRootLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <div className="relative z-20">
-        <div className="fixed top-[44px] left-0 right-0 flex-row flex w-full h-[60px] justify-between px-[17px] place-items-center bg-[#FFF]">
+        <div className="fixed top-[44px] left-0 right-0 flex-row flex justify-between place-items-center w-full h-[60px] px-[17px] bg-p-white">
           <a href={'/'} className="me-[46px]"><img src='/arrow_prev.svg' /></a>
-          <div className='text-[18px]'>모집글</div>
+          <div className='text-18'>모집글</div>
           <ViewButton handleOpen={handleOpen} cnt={filterCnt} fs={18} />
         </div>
       </div>
       {filterCnt <= 0 ? <></>
-          : <div className='fixed top-[104px] w-full bg-[#FFF] z-10 h-[36px]'>
-            <ViewFilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters} sort={sort} dateRange={dateRange} setDateRange={setDateRange}
-              participants={participants} setParticipants={setParticipants} handleRt={handleRt} />
-          </div>
+        : <div className='fixed top-[104px] w-full h-[36px] bg-p-white z-10'>
+          <ViewFilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters} sort={sort} dateRange={dateRange} setDateRange={setDateRange}
+            participants={participants} setParticipants={setParticipants} handleRt={handleRt} />
+        </div>
       }
       <Backdrop open={open} className='z-paper'>
         <ViewSelect sort={sort} setSort={setSort} setOpen={setOpen} routeToFilter={routeToFilter} dateRange={dateRange} setDateRange={setDateRange}
           participants={participants} setParticipants={setParticipants} recruiting={recruiting} setRecruiting={setRecruiting} />
       </Backdrop>
-      <div className={filterCnt > 0 ? 'flex flex-col w-full pb-[77px] pt-[140px]' : 'flex flex-col w-full pb-[77px] pt-[104px]'}>
+      <div className={`flex flex-col w-full pb-[77px] ${filterCnt > 0 ? 'pt-[140px]' : 'pt-[104px]'}`}>
         {children}
       </div>
     </>

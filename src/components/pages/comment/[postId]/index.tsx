@@ -76,7 +76,7 @@ function Comments(props: CommentsProps) {
     <>
       <div className='flex flex-col w-full min-h-[calc(100vh-104px)] pb-[88px] bg-gray1'>
         {comments.map((comment: CommentProps, idx: number) => (
-          <div key={`cmt-${idx}`} className={idx % 2 == 0 ? 'bg-[#FFF] px-[16px] py-[12px]' : 'bg-gray1 px-[16px] py-[12px]'}>
+          <div key={`cmt-${idx}`} className={idx % 2 == 0 ? 'bg-p-white px-[16px] py-[12px]' : 'bg-gray1 px-[16px] py-[12px]'}>
             <CommentBlock opt='CMT' data={comment} currentURL={`${props.postId}`} setOpenD={props.setOpenD} setTargetM={props.setTargetM} />
           </div>
         ))
@@ -121,7 +121,7 @@ function CommentFooter(props: { postId: any; setLoading: any; setTmp: any; setTm
       <ThemeProvider theme={commentTheme}>
         {!scrolled ? <></> :
           <div className='flex justify-end pb-[16px] pe-[15px]'><ScrollToTop /></div>}
-        <div className="flex flex-row comment-input">
+        <div className="comment-input flex flex-row">
           <TextField placeholder='댓글을 입력해주세요.' fullWidth multiline inputRef={cmtRef} maxRows={5} />
           <Button onClick={handleComment}>등록</Button>
         </div>

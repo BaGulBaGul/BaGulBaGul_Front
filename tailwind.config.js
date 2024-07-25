@@ -18,11 +18,18 @@ module.exports = {
       'danger-lighten': '#FC5B55',
       'danger-darken': '#E4231C',
       'danger-disabled': '#FAA8A5',
+      'p-white': '#FFFFFF',
       'white': '#FCFCFC',
       'gray1': '#ECECEC',
       'gray2': '#C1C1C1',
       'gray3': '#6C6C6C',
       'black': '#1E1E1E'
+    },
+    fontSize: {
+      '12': ['12px', '160%'],
+      '14': ['14px', '160%'],
+      '16': ['16px', '140%'],
+      '18': ['18px', '140%'],
     },
     extend: {
       backgroundImage: {

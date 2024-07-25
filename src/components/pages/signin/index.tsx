@@ -5,21 +5,21 @@ import { useRouter } from 'next/navigation';
 export default function SignIn() {
   const router = useRouter();
   return (
-      <div className="flex flex-col h-screen justify-between">
+      <div className="flex flex-col justify-between h-screen">
         <div className="flex flex-row justify-end px-[16px] py-[10px]">
           <button onClick={() => router.back()}><img className="w-[40px] h-[40px]" src='/popup_close.svg' /></button>
         </div>
         <div className="flex flex-col items-center h-full py-[91.42px] gap-[20px] pointer-events-none">
           <img src="/logo_s.svg" width='135.07' />
           <div className="flex flex-col items-center gap-[2px]">
-            <p className="text-[18px] font-semibold">내가 찾던 페스티벌</p>
-            <p className="text-[14px]">간편하게 로그인하고 찾으러 떠나볼까요?</p>
+            <p className="text-18 font-semibold">내가 찾던 페스티벌</p>
+            <p className="text-14">간편하게 로그인하고 찾으러 떠나볼까요?</p>
           </div>
         </div>
         <div className="flex justify-center px-[32px] pb-[77px]">
           <a href={`${API_BASE_URL}/oauth2/authorization/kakao`} className='kakao-btn'>
             <KakaoCI />
-            <p className="flex w-full justify-center items-center">카카오 로그인</p>
+            <p className="flex justify-center items-center w-full">카카오 로그인</p>
           </a>
         </div>
       </div>

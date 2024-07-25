@@ -101,7 +101,7 @@ const index = () => {
       {
         !isLoadingC && comment !== undefined
           ? <div className='flex flex-col w-full min-h-[calc(100vh-104px)] pb-[88px] bg-gray1'>
-            <div className='bg-[#FFF] px-[16px] py-[12px] mb-[2px]'>
+            <div className='px-[16px] py-[12px] mb-[2px] bg-p-white'>
               <CommentBlock opt='CMT' data={comment} currentURL='' setOpenD={setOpenD} setTargetM={setTargetM} />
             </div>
             <Replies setCount={setCount} setOpenD={setOpenD} setTargetM={setTargetM} handleMention={handleMention} postCommentId={params.postCommentId}
@@ -143,7 +143,7 @@ function Replies(props: {
   return (
     <div className='flex flex-col w-full'>
       {children.map((comment: CommentProps, idx: number) => (
-        <div className={idx % 2 == 0 ? 'bg-[#FFF] ps-[48px] pe-[16px] py-[12px]' : 'bg-gray1 ps-[48px] pe-[16px] py-[12px]'} key={`reply-${idx}`} >
+        <div className={idx % 2 == 0 ? 'bg-p-white ps-[48px] pe-[16px] py-[12px]' : 'bg-gray1 ps-[48px] pe-[16px] py-[12px]'} key={`reply-${idx}`} >
           <CommentBlock opt="RPL" data={comment} key={`cmt-${idx}`} setOpenD={props.setOpenD} setTargetM={props.setTargetM} handleMention={props.handleMention} />
         </div>
       ))
@@ -250,7 +250,7 @@ function ReplyFooter(props: {
 
   function MentionInput() {
     return (
-      <div className='editor-body wrapper'>
+      <div className='editor-body'>
         {props.mentioning
           ? <div className='mx-[24px] my-[13px] overflow-y-auto'>
             <div className='mention-reply-section' ref={props.mentionRef} contentEditable onInput={handleInput} onFocus={handleFocus}
@@ -270,7 +270,7 @@ function ReplyFooter(props: {
       <ThemeProvider theme={commentTheme}>
         {!scrolled ? <></> :
           <div className='flex justify-end pb-[16px] pe-[15px]'><ScrollToTop /></div>}
-        <div className="flex flex-row comment-input">
+        <div className="comment-input flex flex-row">
           <MentionInput />
           <Button onClick={handleComment}>등록</Button>
         </div>

@@ -27,16 +27,16 @@ export default function index() {
                 </button>
             </div>
             <input className='w-full border-b-[1px] border-[#D9D9D9] focus:outline-none text-[18px]
-                focus:border-b-[1px] focus:border-[#D9D9D9] px-4 py-2 bg-[#FFFFFF]'
+                focus:border-b-[1px] focus:border-[#D9D9D9] px-4 py-2 bg-p-white'
                 type='text' placeholder='제목' />
-            <div className='w-full border-b-[1px] border-[#D9D9D9] bg-[#FFFFFF] pt-2'>
+            <div className='w-full border-b-[1px] border-[#D9D9D9] bg-p-white pt-2'>
                 <div className='flex-row flex items-center'>
                     <text className='pl-4 pr-2 text-[18px]'>파티</text>
                     <text className='text-xs text-[#6C6C6C]'>카테고리는 최대 2개까지 선택가능합니다.</text>
                 </div>
                 <CategoryButtons selectedCate={selectedCate} setSelectedCate={setSelectedCate} />
             </div>
-            <div className='w-full border-b-[1px] border-[#D9D9D9] bg-[#FFFFFF] px-4 py-2.5'>
+            <div className='w-full border-b-[1px] border-[#D9D9D9] bg-p-white px-4 py-2.5'>
                 <div className='flex flex-row justify-between items-center py-2.5'>
                     <text className='text-[18px]'>시작일</text>
                     <div className='flex gap-2 items-center'>

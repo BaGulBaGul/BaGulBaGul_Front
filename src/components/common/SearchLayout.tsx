@@ -70,13 +70,13 @@ export const SearchLayout = (props: { opt: string; sp: ReadonlyURLSearchParams; 
 
   const [open, setOpen] = useState(false);
   return (
-    <div className='flex flex-col w-full pb-[10px] h-screen'>
+    <div className='flex flex-col w-full h-screen pb-[10px]'>
       {props.opt === 'TTL'
         ? <SearchBar opt={1} title={title ?? ''} setOpen={setOpen} filterCnt={filterCnt} setTitle={setTitle} handleRt={handleRt} />
         : <SearchBar tag={tag ?? ''} setOpen={setOpen} filterCnt={filterCnt} handleRt={handleRt} />
       }
       <div className='w-full p-0 pt-[66px]'>
-        <div className='fixed top-[66px] w-full bg-[#FFF] z-10'>
+        <div className='fixed top-[66px] w-full bg-p-white z-10'>
           <div className='flex justify-between items-center px-[16px] py-[10px]'>
             <PostTab value={tab} handleChange={handleChange} />
           </div>

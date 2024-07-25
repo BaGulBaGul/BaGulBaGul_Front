@@ -7,10 +7,10 @@ interface NoEventProps { text1: string; text2: string; buttonText: string; }
 export function NoEvent(props: NoEventProps) {
   return (
     <div className='flex flex-col justify-center items-center gap-[32px] mt-[50px] mb-[317px]'>
-      <div className='flex flex-col gap-[16px] justify-center items-center'>
-        <div className='flex flex-col gap-[4px] justify-center items-center'>
-          <span className='text-[16px] font-semibold leading-[140%] text-gray3'>{props.text1}</span>
-          <span className='text-[16px] leading-[140%] text-gray2'>{props.text2}</span>
+      <div className='flex flex-col justify-center items-center gap-[16px]'>
+        <div className='flex flex-col justify-center items-center gap-[4px] text-16'>
+          <span className='font-semibold text-gray3'>{props.text1}</span>
+          <span className='text-gray2'>{props.text2}</span>
         </div>
         <a className='noevent-btn' href='/?sort=likeCount%2Cdesc'>{props.buttonText}</a>
       </div>
@@ -27,7 +27,7 @@ export function NoUser() {
     <>
       <div className='flex flex-row items-center'>
         <img className='w-[24px] h-[24px]' src="/profile_ghost.svg" onClick={handleOpen} />
-        <p className="text-[14px] ps-[8px] text-gray3">Ghost</p>
+        <p className="text-14 ps-[4px] text-gray3">Ghost</p>
       </div>
       <ThemeProvider theme={noUserDialogTheme}>
         <Dialog onClose={handleClose} open={popopen} >

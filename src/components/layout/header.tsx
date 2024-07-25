@@ -5,9 +5,8 @@ import { AlarmIcn } from '../common/Icon';
 async function Header() {
   return (
     <div className='relative z-30'>
-      <header className="fixed top-0 left-0 right-0
-      flex-row flex w-full justify-between px-[24px] pt-[10px] lg:pt-[58px] pb-[10px] bg-[#FFF]
-      lg:px-[360px]">
+      <header className="fixed top-0 left-0 right-0 flex flex-row justify-between w-full px-[24px] pt-[10px] pb-[10px] bg-p-white
+      lg:px-[360px] lg:pt-[58px]">
         <p className="flex w-[120.77px] relative">
           <a href="/"><img src="/logo_s.svg" width='120.77' /></a>
         </p>
@@ -28,7 +27,7 @@ async function Header() {
 
 export function HeaderNotFixed() {
   return (
-    <header className="flex-row flex w-full justify-between px-[24px] py-[10px] bg-[#FFFFFF] z-10">
+    <header className="flex flex-row justify-between w-full px-[24px] py-[10px] bg-p-white z-10">
       <p className="flex w-[120.77px] relative">
         <a href="/"><img src="/logo_s.svg" width='120.77' /></a>
       </p>
@@ -47,7 +46,7 @@ export function HeaderNotFixed() {
 export function MypageHeader() {
   return (
     <header className="fixed top-0 left-0 right-0
-      flex-row flex w-full h-[60px] justify-between px-[24px] py-[10px] bg-[#FFFFFF]">
+      flex-row flex justify-between w-full h-[60px] px-[24px] py-[10px] bg-p-white">
       <p className="flex relative place-items-center text-[18px]">
         마이페이지
       </p>
@@ -63,22 +62,22 @@ export function MypageHeader() {
 export function HeaderMyPage(props: { opt: string; isAlarm?: boolean }) {
   if (props.opt === "MY") {
     return (
-      <div className="fixed z-30 top-0 left-0 right-0 flex-row flex w-full h-[60px] justify-between px-[24px] py-[10px] place-items-center bg-[#FFFFFF]">
+      <div className="fixed top-0 left-0 right-0 flex flex-row justify-between place-items-center w-full h-[60px] px-[24px] py-[10px] bg-p-white z-30">
         <a href='/'><img src='/arrow_prev.svg' /></a>
-        <div className='text-[18px]'>마이페이지</div>
+        <div className='text-18'>마이페이지</div>
         <a href='/user/mypage/alarm' className='relative w-[24px] h-[24px]'>
           <AlarmIcn />
           {!props.isAlarm ? <></>
-            : <div id='alarm-check' className="absolute w-[8px] h-[8px] bg-primary-blue rounded-full z-10 top-0 right-[3px]"></div>
+            : <div id='alarm-check' className="absolute top-0 right-[3px] w-[8px] h-[8px] bg-primary-blue rounded-full z-10"></div>
           }
         </a>
       </div>
     )
   } else if (props.opt === "USR") {
     return (
-      <div className="fixed z-30 top-0 left-0 right-0 flex-row flex w-full h-[60px] justify-between px-[24px] py-[10px] place-items-center bg-[#FFFFFF]">
+      <div className="fixed top-0 left-0 right-0 flex flex-row justify-between place-items-center w-full h-[60px] px-[24px] py-[10px] bg-p-white z-30">
         <a href='/'><img src='/arrow_prev.svg' /></a>
-        <div className='text-[18px]'>프로필</div>
+        <div className='text-18'>프로필</div>
         <div className='w-[24px] h-[24px]' />
       </div>
     )

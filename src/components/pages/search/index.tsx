@@ -52,7 +52,7 @@ const index = () => {
     <div className='flex flex-col w-full h-screen'>
       <SearchBar opt={0} title={title} setOpen={setOpen} filterCnt={filterCnt} setTitle={setTitle} router={router} />
       <div className='w-full p-0 pt-[66px]'>
-        <div className='fixed top-[66px] w-full bg-[#FFF] z-10'>
+        <div className='fixed top-[66px] w-full bg-p-white z-10'>
           <ViewFilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters}
             sort={sort} dateRange={dayRange} setDateRange={setDayRange} participants={ptcp}
             setParticipants={setParticipants} headCount={headCount} setHeadCount={setHeadCount} />
@@ -66,7 +66,7 @@ const index = () => {
           <CategoryButtons selectedCate={selectedCate} setSelectedCate={setSelectedCate} />
           <Divider />
         </div>
-        <div className={filterCnt > 0 ? 'bg-[#FFF] mt-[120px]' : 'bg-[#FFF] mt-[94px]'}>
+        <div className={filterCnt > 0 ? 'bg-p-white mt-[120px]' : 'bg-p-white mt-[94px]'}>
           <FrequentSearches />
           <RecentSearches />
         </div>
@@ -85,7 +85,7 @@ function FrequentSearches() {
   const freqsearchlist = ['피크페스티벌', '서재페', '종강파티', '방학', '연희동', '와인파티', '볼빨간사춘기', '피크페스티벌', '서재페', '종강파티', '방학']
   return (
     <div className='flex flex-col py-[20px]'>
-      <span className='px-[16px] text-[14px] leading-[160%]'>자주 찾는 검색어입니다</span>
+      <span className='px-[16px] text-14'>자주 찾는 검색어입니다</span>
       <div className='overflow-hidden	h-[30px]'>
         <div className='flex h-[60px] py-[8px] px-[16px] overflow-x-scroll overflow-y-hide whitespace-nowrap'>
           {freqsearchlist.map((item, idx) =>
@@ -108,14 +108,14 @@ function RecentSearches() {
             ? <>
               <div className='flex flex-row gap-[6px] items-center'>
                 <img className='h-[20px] w-[20px]' src='/search_magnifying.svg' />
-                <span className='text-[14px] text-gray3 leading-[160%] font-normal'>{props.searchword}</span>
+                <span className='text-14 text-gray3'>{props.searchword}</span>
               </div>
               <button><img src='/search_delete.svg' /></button>
             </>
             : <>
               <div className='flex flex-row gap-[6px] items-center'>
                 <img className='h-[20px] w-[20px]' src='/search_magnifying_1.svg' />
-                <span className='text-[14px] text-gray2 leading-[160%] font-normal'>{props.searchword}</span>
+                <span className='text-14 text-gray2'>{props.searchword}</span>
               </div>
               <button><img src='/search_delete_1.svg' /></button>
             </>
@@ -126,9 +126,9 @@ function RecentSearches() {
 
   return (
     <div className='flex flex-col px-[16px] py-[20px] gap-[16px]'>
-      <div className='flex flex-row justify-between text-[12px] text-[#757575]'>
+      <div className='flex flex-row justify-between text-12 text-[#757575]'>
         <span>최근 검색어</span>
-        <button className='text-[12px] leading-[160%] text-gray3'>전체삭제</button>
+        <button className='text-gray3'>전체삭제</button>
       </div>
       <div className='flex flex-col gap-[8px]'>
         {
@@ -137,7 +137,7 @@ function RecentSearches() {
           ))
         }
       </div>
-      <div className='flex justify-center text-[12px] text-gray3 leading-[160%] font-normal'>검색어 더보기</div>
+      <div className='flex justify-center text-12 text-gray3'>검색어 더보기</div>
     </div>
   )
 }

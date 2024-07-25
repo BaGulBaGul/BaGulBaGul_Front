@@ -31,7 +31,7 @@ function LikedTab() {
 
   return (
     <div className='w-full px-0'>
-      <div className='fixed top-[60px] bg-[#FFF] w-full z-10'>
+      <div className='fixed top-[60px] w-full bg-p-white z-10'>
         <ThemeProvider theme={tabTheme}>
           <Tabs value={value} onChange={handleChange} className='items-center min-h-0 px-[16px] py-[10px]'>
             <Tab label="파티" />
@@ -62,32 +62,32 @@ function LikedTab() {
       return (
         <div className='flex flex-col'>
           <div className='flex flex-row justify-between'>
-            <span className='text-[14px] text-gray3'>{FormatDateRange(props.data.startDate, props.data.endDate)}</span>
+            <span className='text-14 text-gray3'>{FormatDateRange(props.data.startDate, props.data.endDate)}</span>
             <div className='flex flex-row gap-[2px]'>
               <button><PostEditIcn /></button>
               <button><DeleteIcn /></button>
             </div>
           </div>
-          <span className={props.opt === 'EVT' ? 'text-[16px] font-semibold' : 'text-[16px]'}>{props.data.title}</span>
+          <span className={`text-16 ${props.opt === 'EVT' ? 'font-semibold' : ''}`}>{props.data.title}</span>
         </div>
       )
     }
 
     if (props.opt === 'EVT') {
       return (
-        <div className='flex flex-row px-[16px] py-[18px] gap-[20px] bg-[#FFF]'>
+        <div className='flex flex-row px-[16px] py-[18px] gap-[20px] bg-p-white'>
           <img className='rounded-[4px] h-[104px] w-[84px] min-w-[84px] object-cover' src={props.data.headImageUrl} />
           <div className='flex flex-col justify-between w-full'>
             <BlockHead />
-            <span className='text-[12px] text-gray3 description max-w-[278px]'>{props.data.content}</span>
+            <span className='text-12 text-gray3 description max-w-[278px]'>{props.data.content}</span>
           </div>
         </div>
       )
     } else {
       return (
-        <div className='flex flex-col px-[16px] py-[18px] justify-between w-full bg-[#FFF] gap-[4px]'>
+        <div className='flex flex-col justify-between w-full px-[16px] py-[18px] gap-[4px] bg-p-white'>
           <BlockHead />
-          <span className='text-[14px] text-gray3'>PEAK FESTIVAL 2023</span>
+          <span className='text-14 text-gray3'>PEAK FESTIVAL 2023</span>
         </div>
       )
     }

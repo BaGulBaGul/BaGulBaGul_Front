@@ -63,19 +63,19 @@ const index = () => {
 
   return (
     <>
-      <div className="fixed top-0 left-0 right-0 flex-row flex w-full h-[60px] justify-between px-[17.84px] py-[15.6px] bg-[#FFF]">
+      <div className="fixed top-0 left-0 right-0 flex flex-row w-full justify-between h-[60px] px-[17.84px] py-[15.6px] bg-p-white">
         <button onClick={handlePrev}><img src='/arrow_prev.svg' /></button>
       </div>
       <div className='flex flex-col w-full mt-[60px]'>
         <div className='flex flex-col items-center pt-[41.42px] gap-[4px] pointer-events-none' id='join-head'>
-          <div className='flex flex-row items-center gap-[4px]'>
+          <div className='flex flex-row items-center gap-[4px] text-18'>
             {/* <PartyEmoji /> */}
-            <span role="img" aria-label="party-popper" className='text-[18px]'>🎉</span>
-            <p className='text-[18px] font-semibold leading-[140%]'>바글이가 되신 것을 환영합니다!</p>
+            <span role="img" aria-label="party-popper">🎉</span>
+            <p className='font-semibold'>바글이가 되신 것을 환영합니다!</p>
           </div>
-          <p className='text-[14px] leading-[160%]'>곧 회원가입이 완료됩니다.</p>
+          <p className='text-14'>곧 회원가입이 완료됩니다.</p>
         </div>
-        <div className='w-full px-[28px] py-[39px] max-w-full overflow-hidden'>
+        <div className='w-full max-w-full px-[28px] py-[39px] overflow-hidden'>
           <div className={toP1 ? 'flex flex-col items-center slideInLeft animated' : toP2 ? 'slideOutLeft animated hidden' : 'flex flex-col items-center'}>
             <JoinBlock opt='nnm' nameChecked={nameChecked} setNameChecked={setNameChecked} nameRef={nameRef} />
           </div>
@@ -126,8 +126,8 @@ function JoinBlock(props: JoinBlockProps) {
   }
 
   return (
-    <div className='flex flex-col gap-[8px] max-w-[500px] w-full'>
-      <p className='text-[18px] leading-[140%] font-semibold'>
+    <div className='flex flex-col gap-[8px] w-full max-w-[500px]'>
+      <p className='text-18 font-semibold'>
         {props.opt === 'nnm' ? '닉네임을 기입해주세요.' : '이메일을 기입해주세요.'}
       </p>
       <p className='text-[12px] text-gray3'>
@@ -180,7 +180,7 @@ function JoinFooter(props: { opt: string; handleNext: any; handleJoin: any; btnA
   return (
     props.opt === 'nnm'
       ? <button className='footer-btn' onClick={props.handleNext} disabled={props.btnActive}>다음</button>
-      : <div className='flex flex-row justify-center gap-[16px] px-[16px] py-[24px] fixed bottom-0 right-0 left-0'>
+      : <div className='fixed bottom-0 right-0 left-0 flex flex-row justify-center gap-[16px] px-[16px] py-[24px]'>
         <button className='join-btn join-skip' onClick={(e) => { props.handleJoin(0, e) }}>건너뛰기</button>
         <button className='join-btn join-email' onClick={(e) => { props.handleJoin(1, e) }} disabled={props.btnActive}>회원가입 완료</button>
       </div>

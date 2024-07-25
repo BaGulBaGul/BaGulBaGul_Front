@@ -35,14 +35,14 @@ export function CommentBlock(props: { opt: string; data: CommentProps; currentUR
               {props.data.userId === null ? <NoUser />
                 : <a href={`/user/${props.data.userId}`} className='flex flex-row items-center gap-[8px]'>
                   {/* <img className='rounded-full w-[24px] h-[24px]' src={props.data.userProfileImageUrl ?? '/profile_main.svg'} /> */}
-                  <img className='rounded-full w-[24px] h-[24px]' src="/profile_main.svg" />
-                  <p className="text-[14px]">{props.data.username}</p>
+                  <img className='w-[24px] h-[24px] rounded-full' src="/profile_main.svg" />
+                  <p className="text-14">{props.data.username}</p>
                 </a>
               }
               <button onClick={(e) => handleToggle(e)}><img src='/comment_etc.svg' width={24} height={24} /></button>
             </div>
-            <div className='text-[14px] text-gray3 pb-[6px]' id='comment-body'>{props.data.content}</div>
-            <div className='flex flex-row text-[12px] text-gray3' id='comment-datetime'>
+            <div className='text-14 text-gray3 pb-[6px]' id='comment-body'>{props.data.content}</div>
+            <div className='flex flex-row text-12 text-gray3' id='comment-datetime'>
               <p className='pe-[6px]'>{dayjs(props.data.createdAt).format('YY.MM.DD')}</p><p>{dayjs(props.data.createdAt).format('HH:mm')}</p>
             </div>
           </>
@@ -51,13 +51,13 @@ export function CommentBlock(props: { opt: string; data: CommentProps; currentUR
               {props.data.userId === null ? <NoUser />
                 : <a onClick={(e) => { e.stopPropagation(); }} href={`/user/${props.data.userId}`} className='flex flex-row items-center gap-[8px]'>
                   {/* <img className='rounded-full w-[24px] h-[24px]' src={props.data.userProfileImageUrl ?? '/profile_main.svg'} /> */}
-                  <img className='rounded-full w-[24px] h-[24px]' src="/profile_main.svg" />
-                  <p className="text-[14px]">{props.data.userName}</p>
+                  <img className='w-[24px] h-[24px] rounded-full' src="/profile_main.svg" />
+                  <p className="text-14">{props.data.userName}</p>
                 </a>
               }
               <button onClick={(e) => handleToggle(e)}><img src='/comment_etc.svg' width={24} height={24} /></button>
             </div>
-            <div className='text-[14px] text-gray3 pb-[6px]' id='comment-body'>
+            <div className='text-14 text-gray3 pb-[6px]' id='comment-body'>
               {
                 props.data.replyTargetUserName
                   ? <>
@@ -83,14 +83,14 @@ export function CommentBlock(props: { opt: string; data: CommentProps; currentUR
               : <button className='reply-btn'>답글</button>
             }
           </a>
-          : <div className='flex flex-row text-[12px] text-gray3' id='comment-datetime'>
+          : <div className='flex flex-row text-12 text-gray3' id='comment-datetime'>
             <p className='pe-[6px]'>{dayjs(props.data.createdAt).format('YY.MM.DD')}</p><p>{dayjs(props.data.createdAt).format('HH:mm')}</p>
           </div>
         }
-        <div className='flex flex-row items-center' id='comment-likes'>
+        <div className='flex flex-row items-center gap-[2px]' id='comment-likes'>
           <Checkbox icon={<CmtLikeIcn val={false} />} checkedIcon={<CmtLikeIcn val={true} />} checked={liked} onChange={handleLike}
             disableRipple className='p-0' />
-          {likeCount > 0 ? <p className='text-[12px] text-gray3 ps-[2px]'>{likeCount}</p> : <></>}
+          {likeCount > 0 ? <p className='text-12 text-gray3'>{likeCount}</p> : <></>}
         </div>
       </div>
     </div>

@@ -71,7 +71,7 @@ const TabBlock = (props: TabBlockProps) => {
   else if (props.isLoading && props.page.current > 0) { return <LoadingCircle /> }
   else {
     return (
-      <div className='bg-[#FFF]'>
+      <div className='bg-p-white'>
         {props.events.length > 0
           ? <>
             {props.events.map((post, idx) => (

@@ -30,7 +30,7 @@ export const ViewFilterApplied = (props: FilterAppliedProps) => {
     <>
       {props.filterCnt > 0
         ? <div className='overflow-hidden	h-[26px]'>
-          <div className='h-[56px] px-[16px] cateBtns'>
+          <div className='x-scroll-wrap h-[56px] px-[16px]'>
             <ThemeProvider theme={filterChipTheme}>
               <Chip label={sortLabel(props.sort)} variant="outlined" />
               {(props.filters).includes('dayRange')

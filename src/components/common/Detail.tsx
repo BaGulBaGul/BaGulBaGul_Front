@@ -26,7 +26,7 @@ export const Detail = (props: { opt: string; data?: DetailProps; dataR?: RDetail
   if (props.opt === 'EVT' && props.data) {
     return (
       <div>
-        <div className={props.data.event.type !== 'PARTY' ? 'flex flex-col w-full pt-[104px] pb-[77px]' : 'flex flex-col w-full pt-[104px]'}>
+        <div className={`flex flex-col w-full pt-[104px] ${props.data.event.type !== 'PARTY' ? 'pb-[77px]' : ''}`}>
           {props.data.post.imageUrls.length > 0
             ? <PostSlide />
             : <img className='h-[280px] object-cover' src='/default_detail_thumb3x.png' />
@@ -36,7 +36,7 @@ export const Detail = (props: { opt: string; data?: DetailProps; dataR?: RDetail
             categories={props.data.event.categories} toggleDrawer={toggleDrawer} />
           <Divider />
           <PostInfo opt='EVT' type={props.data.event.type} startDate={props.data.event.startDate} endDate={props.data.event.endDate}
-            headCountMax={props.data.event.maxHeadCount} headCount={props.data.event.currentHeadCount} />
+            maxHeadCount={props.data.event.maxHeadCount} currentHeadCount={props.data.event.currentHeadCount} />
           <PostContent content={props.data.post.content} />
           <PostContentMap address={props.data.event.fullLocation} lat={props.data.event.latitudeLocation} lng={props.data.event.longitudeLocation} />
           {props.data.post.tags !== undefined && props.data.post.tags.length > 0
@@ -64,7 +64,7 @@ export const Detail = (props: { opt: string; data?: DetailProps; dataR?: RDetail
             <PostTitle title={props.dataR.post.title} startDate={props.dataR.recruitment.startDate} views={props.dataR.post.views}
               userId={props.dataR.post.writer.userId} userName={props.dataR.post.writer.userName} toggleDrawer={toggleDrawer} />
             <Divider />
-            <PostInfo opt='RCT' headCount={props.dataR.recruitment.maxHeadCount} currentHeadCount={props.dataR.recruitment.currentHeadCount} />
+            <PostInfo opt='RCT' maxHeadCount={props.dataR.recruitment.maxHeadCount} currentHeadCount={props.dataR.recruitment.currentHeadCount} />
             <div className='pb-[30px]'>
               <PostContent content={props.dataR.post.content} />
               {props.dataR.post.tags !== undefined && props.dataR.post.tags.length > 0 ? <PostContentTag tags={props.dataR.post.tags} /> : <></>}
@@ -112,21 +112,21 @@ function PostTitle(props: PostTitleProps) {
   return (
     <div className='flex flex-col px-[16px] py-[20px]'>
       <div className='flex flex-row justify-between pt-[10px]'>
-        <p className='text-[18px]'>{props.title}</p>
+        <p className='text-18'>{props.title}</p>
         <button onClick={props.toggleDrawer(true)}><img src='/detail_more.svg' /></button>
       </div>
-      <div className='flex flex-row justify-between pt-[4px]'>
-        <p className='text-[14px] text-gray3'>{`${dateString}`}</p>
+      <div className='flex flex-row justify-between pt-[4px] text-14 text-gray3'>
+        <p>{`${dateString}`}</p>
         <div className='flex flex-row items-center'>
           <a href="/"><img src='/detail_views.svg' /></a>
-          <p className='text-[14px] text-gray3 ps-[4px]'>{props.views.toLocaleString("en-US")}</p>
+          <p className='ps-[4px]'>{props.views.toLocaleString("en-US")}</p>
         </div>
       </div>
       <div className='flex flex-row justify-between items-center pt-[4px]'>
         {props.userId === null ? <NoUser />
           : <a href={`/user/${props.userId}`} className='flex flex-row items-center gap-[4px]'>
             <img className='w-[24px] h-[24px] rounded-full' src={"/images/profile_pic.png"} />
-            <p className='text-[14px] text-gray3'>{props.userName}</p>
+            <p className='text-14 text-gray3'>{props.userName}</p>
           </a>
         }
         {props.categories !== undefined
@@ -141,12 +141,12 @@ function PostTitle(props: PostTitleProps) {
 }
 
 interface PostInfoProps {
-  opt: string; type?: string; startDate?: any; endDate?: any; headCount: number; headCountMax?: number; currentHeadCount?: number;
+  opt: string; type?: string; startDate?: any; endDate?: any; maxHeadCount?: number; currentHeadCount?: number;
 }
 function PostInfo(props: PostInfoProps) {
   return (<>
     {props.opt === 'EVT'
-      ? <div className='flex flex-col px-[16px] pt-[30px] text-[14px] leading-[160%]' id='p-info'>
+      ? <div className='flex flex-col px-[16px] pt-[30px] text-14' id='p-info'>
         <div className='flex flex-row pb-[6px]'>
           <p className='font-semibold pe-[20px]'>시작일시</p>
           {props.startDate !== undefined
@@ -163,16 +163,17 @@ function PostInfo(props: PostInfoProps) {
         </div>
         <div className='flex flex-row items-center'>
           <p className='font-semibold pe-[20px]'>참여인원</p>
-          <p>{props.headCountMax ?? '-'}명</p>
+          <p>{props.maxHeadCount ?? '-'}명</p>
           {props.type === 'PARTY'
-            ? <p className="recruit-chip">{`${props.headCount ?? 0}명 참여 중`}</p>
+            ? <p className="recruit-chip">{`${props.currentHeadCount ?? 0}명 참여 중`}</p>
             : <></>
           }
         </div>
       </div>
-      : <div className='flex flex-row px-[16px] pt-[30px] text-[14px] leading-[160%]' id='p-info'>
-        <p className='font-semibold pe-[10px]'>모집인원</p>
-        <p className='pe-[6px]'>{props.headCount}명</p>
+      : <div className='flex flex-row px-[16px] pt-[30px] text-14' id='p-info'>
+        <p className='font-semibold pe-[8px]'>모집인원</p>
+        <p className='pe-[6px]'>{props.maxHeadCount}명</p>
+        <p className="recruit-chip">{`${props.currentHeadCount ?? 0}명 참여 중`}</p>
       </div>
     }
   </>
@@ -216,9 +217,9 @@ function PostContentMap(props: { address: string; lat: number; lng: number; }) {
       <div className='w-full h-[246px]' id='map'>
         <div className=''></div>
       </div>
-      <div className='flex flex-row px-[16px] pt-[6px] text-[14px] leading-[160%]' id='p-info'>
+      <div className='flex flex-row px-[16px] pt-[6px] text-14' id='p-info'>
         <p className='font-semibold pe-[10px]'>위치</p>
-        <p className='pe-[6px]'>{props.address}</p>
+        <p>{props.address}</p>
       </div>
     </div>
   )
@@ -231,14 +232,14 @@ interface PostToolsProps {
 function PostTools(props: PostToolsProps) {
   return (
     <div className='flex flex-row justify-between py-[30px] px-[16px]'>
-      <div className='flex flex-row gap-[10px]'>
+      <div className='flex flex-row gap-[10px] text-gray3 text-14'>
         <button className="flex flex-row items-center gap-[4px]" onClick={props.handleLike}>
           <LikeIcn val={props.liked} />
-          <p className='text-gray3 text-[14px] font-normal'>{props.likeCount}</p>
+          <p>{props.likeCount}</p>
         </button>
         <a className="flex flex-row items-center gap-[4px]" href={props.commentURL}>
           <img src='/detail_comment.svg' />
-          <p className='text-gray3 text-[14px] font-normal'>{props.commentCount}</p>
+          <p>{props.commentCount}</p>
         </a>
       </div>
       <div className='flex flex-row gap-[10px]'>
