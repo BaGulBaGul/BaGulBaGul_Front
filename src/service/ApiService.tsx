@@ -1,23 +1,4 @@
-import axios from "axios";
 import { API_BASE_URL } from "../api-config";
-
-// export async function call(api:string, method:string, request?:any) {
-//   interface Options { url: string; method: string; body?: string; }
-//   let options: Options = {
-//     url: API_BASE_URL + api,
-//     method: method
-//   };
-
-//   if (request) { options.body = request; }
-
-//   return axios(options.url, options).then(async (response) => {
-//     console.log(`&&& ${response.status}`)
-//     if (response.status === 200) {
-//       return response.data;
-//     }
-//     return response.status;
-//   })
-// }
 
 export async function call(api: string, method: string, request?: any, cookie?: string) {
   interface Options { headers: Headers; url: string; method: string; body?: string; credentials: RequestCredentials }
@@ -40,24 +21,26 @@ export async function call(api: string, method: string, request?: any, cookie?: 
   })
 }
 
-// export async function isSigned() {
-//   const response = await call('/api/user/info', "GET", null)
+// export async function isSigned(setProfileURL?: any) {
+//   // const response = await call('/api/user/info', "GET", null)
 
-//   response.try(
+//   // response.try(
 
-//   )
-//   catch(() => { console.log('** isSigned: ', response.errorCode) })
+//   // )
+//   // catch(() => { console.log('** isSigned: ', response.errorCode) })
 
-//   if (response.errorCode === 'C00000') {
-//     console.log('isSigned: C00000 : ', response.data)
-//   } else {
-//     console.log('isSigned: ', response.errorCode)
-//   }
-//   // await call('/api/user/info', "GET", null)
-//   //   .then((response) => {
-//   //     if (response.errorCode === 'C00000') {
-//   //       console.log(response.data)
-//   //       return response.data;
-//   //     }
-//   //   }).catch((error) => { return null });
+//   // if (response.errorCode === 'C00000') {
+//   //   console.log('isSigned: C00000 : ', response.data)
+//   // } else {
+//   //   console.log('isSigned: ', response.errorCode)
+//   // }
+//   call('/api/user/info', "GET", null)
+//     .then((response) => {
+//       if (response.errorCode === 'C00000') {
+//         console.log('** isSigned: ', response.data)
+//         if (setProfileURL) {
+//           setProfileURL(response.data.imageURI)
+//         }
+//       }
+//     }).catch((error) => { return null });
 // }

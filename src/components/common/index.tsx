@@ -1,38 +1,21 @@
 import CategoryButtons from './CategoryButtons'
-import { EventBlock, RecruitBlock, CalendarBlock } from './EventBlock'
-import { TabBlock, ResultBlock, SuggestBlock, SearchTabs, SearchBar } from './Search'
-import { SearchLayout } from './SearchLayout'
-import { CommentBlock, CommentDrawer, ModifyInput, ModifyInputR } from './Comment'
 import HashtagAccordion, { HashtagButton } from './HashtagAccordion'
 import MoreButton from './MoreButton'
 import { NoEvent, NoUser } from './NoEvent'
 import PostTab from './PostTab'
-import { RecCarousel } from './RecCarousel'
-import ScrollToTop from './ScrollToTop'
-import ShareDialog from './ShareDialog'
 import { TabPanel, TabPanels } from './TabPanel'
 import { ViewButton, ViewSelect } from './ViewFilter'
 import { ViewFilterApplied } from './ViewFilterApplied'
 import { LoadingSkeleton, LoadingCircle } from './Loading'
-import { Detail } from './Detail'
-
 
 export {
   CategoryButtons,
-  EventBlock, RecruitBlock, CalendarBlock,
-  TabBlock, ResultBlock, SuggestBlock, SearchTabs, SearchBar,
-  SearchLayout,
-  CommentBlock, CommentDrawer, ModifyInput, ModifyInputR,
   HashtagAccordion, HashtagButton,
   MoreButton,
   NoEvent, NoUser,
   PostTab, TabPanel, TabPanels,
-  RecCarousel,
   ViewButton, ViewSelect, ViewFilterApplied,
-  ShareDialog,
-  ScrollToTop,
   LoadingSkeleton, LoadingCircle,
-  Detail,
 }
 
 export const Divider = () => {
@@ -70,6 +53,11 @@ export interface RListProps {
   }
 }
 
+export interface TabBlockProps {
+  opt: number; events: never[]; page: { current: number; total: number; }; setPage: any; isLoading: boolean;
+  params?: ParamProps, setParams?: any, router?: any;
+}
+
 export interface DetailProps {
   event: {
     eventId: number; type: string; currentHeadCount: number; maxHeadCount: number; fullLocation: string; abstractLocation: string;
@@ -94,6 +82,15 @@ export interface RDetailProps {
   }
 }
 
+export interface CommentProps {
+  commentChildCount?: number; commentId?: number; commentChildId?: number; content: string; createdAt: string;
+  likeCount: number; myLike: boolean; userId: number; username?: string; userName?: string; userProfileImageUrl?: string;
+  replyTargetUserName?: string;
+}
+
+export interface CommentMProps { postCommentId: number; content: string; userId?: number; replyTargetUserName?: string; } // 댓글수정용
+
+
 export interface CalProps {
   eventId: number; type: string; title: string; content: string; headImageUrl: string;
   abstractLocation: string; startTime: string; endTime: string; 
@@ -102,4 +99,13 @@ export interface CalProps {
 
 export interface UserInfoProps {
   id: number; nickname: string; email: string; profileMessage: string; imageURI: string;
+}
+
+export interface LikeProps {
+  eventId: number; startDate: string; endDate: string; title: string; abstractLocation: string;
+  content: string; headImageUrl: string;
+}
+
+export interface LikeRProps {
+  recruitmentId: number; startDate: string; endDate: string; title: string; eventTitle: string;
 }

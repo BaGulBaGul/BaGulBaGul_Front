@@ -3,6 +3,8 @@ import './animation.css'
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Inter } from 'next/font/google'
+import type { Viewport } from 'next'
+
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -11,11 +13,13 @@ export const metadata = {
   description: '모여봐요 바글바글',
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export const viewport: Viewport = {
+  width: 'device-width', height: 'device-height',
+  initialScale: 1, minimumScale: 1, maximumScale: 1,
+  userScalable: false,
+}
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>

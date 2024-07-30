@@ -1,5 +1,3 @@
-export const tabList = ['FESTIVAL', 'LOCAL_EVENT', 'PARTY']
-
 export const postData = [
   {
     headImageUrl: '/images/rec1.jpg',

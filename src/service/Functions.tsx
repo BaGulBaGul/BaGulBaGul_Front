@@ -1,6 +1,5 @@
 import { MutableRefObject, useEffect, useRef } from "react";
 import { createSearchParams } from 'react-router-dom'
-import { tabList } from "@/components/common/Data";
 import { call } from "./ApiService";
 
 import dayjs from 'dayjs';
@@ -9,9 +8,7 @@ import 'dayjs/locale/ko';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 
-import { CommentProps } from "@/components/common/Comment";
-import { CalProps, ListProps, ParamProps, RListProps } from "@/components/common";
-import { LikeProps, LikeRProps } from "@/components/pages/user/[userId]/liked";
+import { CalProps, CommentProps, ListProps, ParamProps, RListProps, LikeProps, LikeRProps } from "@/components/common";
 
 // dayjs 설정
 dayjs.extend(isSameOrBefore);
@@ -19,6 +16,8 @@ dayjs.locale('ko');
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.tz.setDefault('Asia/Seoul');
+
+export const tabList = ['FESTIVAL', 'LOCAL_EVENT', 'PARTY']
 
 type typeType = { [key: string]: string; }
 export const typeString: typeType = { 'FESTIVAL': '페스티벌', 'LOCAL_EVENT': '지역행사', 'PARTY': '파티' }

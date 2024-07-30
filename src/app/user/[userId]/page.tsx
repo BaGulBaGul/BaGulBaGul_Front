@@ -1,15 +1,16 @@
 "use client";
 import { HeaderMyPage } from "@/components/layout/header";
 
-import UserPage from '@/components/pages/user/[userId]'
+import { MyPage, UserPage } from '@/components/pages/user'
 import React, { useState } from "react";
 
 export default function Page({ params }: { params: { userId: string | number } }) {
   const [isAlarm, setIsAlarm] = useState<boolean>(true);
   return (
-    <div>
+    <>
       <HeaderMyPage opt={params.userId === 'mypage' ? 'MY' : 'USR'} isAlarm={isAlarm} />
-      <UserPage user={params.userId} />
-    </div>
+      {/* <UserPage user={params.userId} /> */}
+      {params.userId === 'mypage' ? <MyPage /> : <UserPage userId={params.userId} />}
+    </>
   );
 }

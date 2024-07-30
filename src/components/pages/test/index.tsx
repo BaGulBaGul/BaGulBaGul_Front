@@ -1,5 +1,5 @@
 "use client";
-import { AddIcn, AlarmIcn, CalIcn, Category19, CmtLikeIcn, DividerDot, FilterArrowMore, LikeIcn, MailIcn, PageTop, DeleteIcn, PostEditIcn, RemoveIcn, SmileIcn, TagIcn } from "@/components/common/Icon";
+import { AddIcn, AlarmIcn, CalIcn, Category19, CmtLikeIcn, DividerDot, FilterArrowMore, LikeIcn, MailIcn, PageTop, DeleteIcn, PostEditIcn, RemoveIcn, SmileIcn, TagIcn } from "@/components/styles/Icon";
 
 // svg, icon 확인용
 const index = () => {

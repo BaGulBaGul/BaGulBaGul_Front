@@ -1,6 +1,6 @@
 'use client';
 import { ThemeProvider, Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
-import { noUserDialogTheme } from '@/components/common/Themes'
+import { noUserDialogTheme } from '@/components/styles/Themes'
 import { useState } from 'react';
 
 interface NoEventProps { text1: string; text2: string; buttonText: string; }
