@@ -63,8 +63,8 @@ export default function Page() {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 flex flex-row w-full justify-between h-[60px] px-[17.84px] py-[15.6px] bg-p-white">
-        <button onClick={handlePrev}><img src='/arrow_prev.svg' /></button>
+      <header className="fixed top-0 left-0 right-0 flex flex-row w-full justify-between h-[60px] px-[17px] py-[15.5px] bg-p-white">
+        <button onClick={handlePrev}><img src='/search_back.svg' /></button>
       </header>
       <div className='flex flex-col w-full mt-[60px]'>
         <div className='flex flex-col items-center pt-[41.42px] gap-[4px] pointer-events-none' id='join-head'>

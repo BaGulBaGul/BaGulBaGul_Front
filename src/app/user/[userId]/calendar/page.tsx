@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { SubTopHeader } from '@/components/layout/subHeader';
 import { redirect } from 'next/navigation';
 import dayjs from 'dayjs';
-import { Calendar, CalendarTab } from '@/components/pages/user';
+import { Calendar, CalendarTab, EditButton } from '@/components/pages/user';
 
 export default function Page({ params }: { params: { userId: string | number } }) {
   if (params.userId === 'mypage') {
@@ -13,7 +13,7 @@ export default function Page({ params }: { params: { userId: string | number } }
 
     return (
       <>
-        <SubTopHeader name='캘린더' />
+        <SubTopHeader name='캘린더' child={<EditButton/>} />
         <div className='flex flex-col w-full pb-[10px] mt-[60px] gap-[8px]'>
           <Calendar focusDay={focusDay} setFocusDay={setFocusDay} eventDays={eventDates} displayM={displayM} setDisplayM={setDisplayM} setEventDates={setEventDates} />
           <CalendarTab focusDay={focusDay} setEventDates={setEventDates} />

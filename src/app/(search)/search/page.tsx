@@ -13,9 +13,9 @@ export default function Page() {
   const handleTab = (event: React.MouseEvent<HTMLElement>, newTab: number | null) => {
     if (newTab !== null) { setTab(newTab); }
   };
-  const [selectedCate, setSelectedCate] = useState<string[]>([]);
 
   // 정렬기준(default 최신순), 날짜, 참여인원, 규모
+  const [selectedCate, setSelectedCate] = useState<string[]>([]);
   const [sort, setSort] = useState('createdAt,desc');
   const [dayRange, setDayRange] = useState<[any, any]>([null, null]);
   // * temporary name

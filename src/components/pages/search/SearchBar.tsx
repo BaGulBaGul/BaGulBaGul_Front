@@ -1,8 +1,8 @@
-import { ViewButton } from "@/components/common";
+import { Divider, ViewButton } from "@/components/common";
 import { TagIcn } from "@/components/styles/Icon";
 import { useRef } from "react";
 
-interface SearchBarProps { opt?: number; title?: string; tag?: string; setOpen: any; filterCnt: number; setTitle?: any; handleRt?: any; router?: any; }
+interface SearchBarProps { opt?: number; title?: string; tag?: string; setOpen: any; filterCnt: number; setTitle?: any; handleRt?: any; router: any; }
 export function SearchBar(props: SearchBarProps) {
   // opt 0: search / opt 1: searched
   const handleOpen = () => { props.setOpen(true) }
@@ -20,7 +20,7 @@ export function SearchBar(props: SearchBarProps) {
     return (
       <div className='fixed w-full top-0 bg-p-white z-paper'>
         <div className='flex flex-row items-center mx-[16px] my-[18px] gap-[16px]'>
-          <button><img src='/search_back.svg' /></button>
+          <button onClick={() => props.router.back()}><img src='/search_back.svg' /></button>
           <div className='flex flex-row justify-between w-full'>
             <div className='search-wrap'>
               <input className='search-input' defaultValue={props.opt === 0 ? undefined : props.title}
@@ -35,9 +35,9 @@ export function SearchBar(props: SearchBarProps) {
   }
   else if (props.tag) {
     return (
-      <div className='fixed w-full top-0 bg-p-white z-paper border-b-[1px] border-gray1'>
+      <div className='fixed w-full top-0 bg-p-white z-paper h-[66px]'>
         <div className='flex flex-row items-center mx-[16px] my-[18px] gap-[16px]'>
-          <button><img src='/search_back.svg' /></button>
+          <button onClick={() => props.router.back()}><img src='/search_back.svg' /></button>
           <div className='flex flex-row justify-between w-full'>
             <div className='flex flex-row items-center px-[4px] py-[2px] gap-[2px]'>
               <TagIcn />
@@ -46,6 +46,7 @@ export function SearchBar(props: SearchBarProps) {
             <ViewButton handleOpen={handleOpen} cnt={props.filterCnt} fs={14} />
           </div>
         </div>
+        <Divider />
       </div>
     )
   }

@@ -536,6 +536,7 @@ h2.react-datepicker__current-month {
 
 .react-datepicker__month {
   margin-top: 4px;
+  margin-bottom: 8px;
   text-align: center;
 }
 

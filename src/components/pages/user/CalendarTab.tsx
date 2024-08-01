@@ -1,34 +1,45 @@
 "use client";
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { CalProps, NoEvent, Divider, NoUser } from '@/components/common';
 import { call } from '@/service/ApiService';
 import { FormatDateRange, setUniqueList, typeString } from '@/service/Functions';
+import { ViewToggle } from '.';
 import dayjs from 'dayjs';
-import Link from 'next/link';
 
 export function CalendarTab(props: { focusDay: any; setEventDates: any; }) {
-  const [value, setValue] = useState(0);
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => { setValue(newValue); };
-
+  const [view, setView] = useState<string>('EVT');
+  const [isLoading, setLoading] = useState(true)
   const [events, setEvents] = useState<CalProps[]>([]);
+
+  useEffect(() => {
+    setEvents([])
+    setLoading(true);
+  }, [props.focusDay, view])
 
   useEffect(() => {
     let dateS = dayjs(props.focusDay).format('YYYY-MM-DD')
     let apiURL = `/api/user/calendar/event?searchStartTime=${dateS}T00:00:00&searchEndTime=${dateS}T23:59:59`
+    // let apiURL = view === 'EVT' ? `/api/user/calendar/event?searchStartTime=${dateS}T00:00:00&searchEndTime=${dateS}T23:59:59`
+    //   : ``
     call(apiURL, "GET", null)
       .then((response) => {
         console.log(response);
         if (response.data.length > 0) { setUniqueList('CAL', response.data, setEvents, events) }
         else { setEvents([]) }
+        setLoading(false)
       })
-  }, [props.focusDay])
+  }, [isLoading])
 
   return (
     <div className='w-full'>
       {events.length > 0
-        ? <>
+        ? <div className='flex flex-col bg-white'>
+          <div className='flex flex-row justify-end pt-[10px] px-[16px]'>
+            <ViewToggle view={view} setView={setView} />
+          </div>
           {events.map((post, idx) => (
-            <div key={`event-${idx}`} className='bg-white'>
+            <div key={`event-${idx}`}>
               {idx === 0 ? <></> : <Divider />}
               <CalendarBlock data={post} key={`cal-${idx}`} />
             </div>
@@ -36,7 +47,7 @@ export function CalendarTab(props: { focusDay: any; setEventDates: any; }) {
           {/* {props.page.total > 1 && props.page.current + 1 < props.page.total
             ? <MoreButton onClick={handleMore} /> : <></>
           } */}
-        </>
+        </div>
         : <NoEvent text1="저장된 이벤트가 없어요." text2="지금 인기 있는 페스티벌을 저장해보세요!" buttonText={"페스티벌 인기순 보러가기"} />
       }
     </div>

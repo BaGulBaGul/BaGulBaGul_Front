@@ -1,12 +1,11 @@
 "use client";
 import { useEffect, useRef, useState } from 'react';
-import { ThemeProvider, ToggleButton, ToggleButtonGroup } from '@mui/material';
-import { viewSwitchTheme } from '@/components/styles/Themes';
 import { FormatDateRange, applyLike, setPageInfo, setUniqueList, tabList } from '@/service/Functions';
-import dayjs from 'dayjs';
 import { call } from '@/service/ApiService';
 import { MoreButton, NoEvent, TabPanels, PostTab, LikeProps, LikeRProps } from '@/components/common';
 import { LikeIcn } from '@/components/styles/Icon';
+import { ViewToggle } from './UserButtons';
+import dayjs from 'dayjs';
 
 export function LikedTab() {
   const [value, setValue] = useState(0);
@@ -16,10 +15,6 @@ export function LikedTab() {
     setValue(newValue);
     setView('EVT');
   };
-
-  const handleView = (event: React.MouseEvent<HTMLElement>, newVal: string | null) => {
-    if (newVal !== null) { setView(newVal); }
-  }
 
   const [isLoading, setLoading] = useState(true)
   const [events, setEvents] = useState<LikeProps[] | LikeRProps[]>([]);
@@ -53,7 +48,7 @@ export function LikedTab() {
     <div className='flex flex-col w-full pb-[10px]'>
       <div className='fixed top-[60px] flex flex-row justify-between items-center w-full px-[16px] bg-p-white z-10'>
         <PostTab value={value} handleChange={handleChange} cN='items-center min-h-0 py-[10px]' />
-        {value === 2 ? <></> : <ViewsCheck />}
+        {value === 2 ? <></> : <ViewToggle view={view} setView={setView} />}
       </div>
       <div className='mt-[108px]'>
         <TabPanels value={value}
@@ -62,19 +57,6 @@ export function LikedTab() {
       </div>
     </div >
   )
-
-  function ViewsCheck() {
-    return (
-      <div className='bg-p-white z-10'>
-        <ThemeProvider theme={viewSwitchTheme}>
-          <ToggleButtonGroup value={view} exclusive onChange={handleView} >
-            <ToggleButton value="EVT">게시글</ToggleButton>
-            <ToggleButton value="RCT">모집글</ToggleButton>
-          </ToggleButtonGroup>
-        </ThemeProvider>
-      </div>
-    )
-  }
 }
 
 const TabBlock = (props: { events: any; page: any; setPage: any; isLoading: boolean; view: string; }) => {

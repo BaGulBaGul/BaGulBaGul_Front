@@ -36,7 +36,7 @@ export function ModifyInput(props: ModifyProps) {
         <Dialog fullScreen open={props.open} onClose={handleClose} >
           <AppBar>
             <Toolbar>
-              <button onClick={handleClose} ><img src='/arrow_prev.svg' /></button>
+              <button onClick={handleClose} ><img src='/search_back.svg' /></button>
               <p>댓글 수정</p>
               <p className='w-[24px] h-[24px]'></p>
             </Toolbar>
@@ -123,7 +123,7 @@ export function ModifyInputR(props: ModifyProps) {
         <Dialog fullScreen open={props.open} onClose={handleClose} >
           <AppBar>
             <Toolbar>
-              <button onClick={handleClose} ><img src='/arrow_prev.svg' /></button>
+              <button onClick={handleClose} ><img src='/search_back.svg' /></button>
               <p>댓글 수정</p>
               <p className='w-[24px] h-[24px]'></p>
             </Toolbar>

@@ -48,12 +48,10 @@ export default function Template({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <div className="relative z-20">
-        <div className="fixed top-[44px] left-0 right-0 flex-row flex justify-between place-items-center w-full h-[60px] px-[17px] bg-p-white">
-          <a href={'/'} className="me-[46px]"><img src='/arrow_prev.svg' /></a>
-          <div className='text-18'>모집글</div>
-          <ViewButton handleOpen={handleOpen} cnt={filterCnt} fs={18} />
-        </div>
+      <div className="fixed top-[44px] left-0 right-0 flex flex-row justify-between place-items-center w-full h-[60px] px-[17px] py-[10px] bg-p-white z-30">
+        <button onClick={() => router.back()}><img src='/search_back.svg' /></button>
+        <div className='text-18'>모집글</div>
+        <ViewButton handleOpen={handleOpen} cnt={filterCnt} fs={18} />
       </div>
       {filterCnt <= 0 ? <></>
         : <div className='fixed top-[104px] w-full h-[36px] bg-p-white z-10'>
