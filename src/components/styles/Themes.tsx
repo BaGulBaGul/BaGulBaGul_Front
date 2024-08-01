@@ -107,7 +107,8 @@ export const modifyCommentTheme = createTheme({
     MuiToolbar: {
       styleOverrides: {
         root: {
-          display: 'flex', justifyContent: 'space-between', flexDirection: 'row', padding: '18px 24px'
+          display: 'flex', justifyContent: 'space-between', flexDirection: 'row', padding: '15.5px 17px !important',
+          minHeight: 'unset !important'
         }
       }
     },

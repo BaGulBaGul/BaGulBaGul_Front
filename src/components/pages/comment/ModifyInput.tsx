@@ -1,5 +1,5 @@
 import { ThemeProvider, Dialog, AppBar, Toolbar, TextField } from "@mui/material";
-import { Fragment, useRef, FocusEvent } from "react";
+import React, { Fragment, useRef, FocusEvent } from "react";
 import { modifyCommentTheme } from "@/components/styles/Themes";
 import { CommentMProps, Divider } from "@/components/common";
 import { call } from "@/service/ApiService";
@@ -7,12 +7,9 @@ import { call } from "@/service/ApiService";
 interface ModifyProps {
   open: boolean; setOpenM: any; target?: CommentMProps; setTarget: any; setLoading?: any; setTmp: any; setTmpP: any;
 }
+
 export function ModifyInput(props: ModifyProps) {
   const mdfRef = useRef<HTMLInputElement>(null);
-  const handleClose = () => {
-    props.setTarget(undefined);
-    props.setOpenM(false);
-  };
   const handleModify = () => {
     console.log(props.target?.postCommentId)
     console.log(mdfRef.current?.value)
@@ -31,31 +28,13 @@ export function ModifyInput(props: ModifyProps) {
   }
 
   return (
-    <ThemeProvider theme={modifyCommentTheme}>
-      <Fragment>
-        <Dialog fullScreen open={props.open} onClose={handleClose} >
-          <AppBar>
-            <Toolbar>
-              <button onClick={handleClose} ><img src='/search_back.svg' /></button>
-              <p>댓글 수정</p>
-              <p className='w-[24px] h-[24px]'></p>
-            </Toolbar>
-          </AppBar>
-          <Divider />
-          <TextField multiline defaultValue={props.target?.content} inputRef={mdfRef} />
-          <button className='footer-btn' onClick={handleModify}>수정 완료</button>
-        </Dialog>
-      </Fragment>
-    </ThemeProvider>
+    <ModifyFragment child={<TextField multiline defaultValue={props.target?.content} inputRef={mdfRef} />}
+      setTarget={props.setTarget} open={props.open} setOpenM={props.setOpenM} handleModify={handleModify} />
   )
 }
 
 export function ModifyInputR(props: ModifyProps) {
   const mdfRef = useRef<HTMLDivElement>(null);
-  const handleClose = () => {
-    props.setTarget(undefined);
-    props.setOpenM(false);
-  };
   const handleModify = () => {
     if (mdfRef.current?.innerText.replace(/\n$/, '').replace(/ /g, '').length === 0) { alert('댓글 내용을 입력해주세요.') }
     else if (mdfRef.current && mdfRef.current.innerText.length > 0 && props.target) {
@@ -115,8 +94,39 @@ export function ModifyInputR(props: ModifyProps) {
       }
     }
   }
-  // 
 
+  const ReplyField = () => {
+    return (
+      <div className="py-[12px] px-[16px]">
+        <div className='mention-reply-section' ref={mdfRef} contentEditable onFocus={handleFocus}
+          onKeyUp={handleCaret} onKeyDown={handleCaret} onMouseUp={handleCaret} suppressContentEditableWarning={true} >
+          {
+            props.target && props.target.replyTargetUserName
+              ? <>
+                <span contentEditable={false} id='mention-highlight' className='text-primary-blue'>{`@${props.target.replyTargetUserName} `}</span>
+                {
+                  props.target.content.startsWith('@') && props.target.content.slice(1, props.target.replyTargetUserName.length + 1) === props.target.replyTargetUserName
+                    ? props.target.content.slice(props.target.replyTargetUserName.length + 2)
+                    : props.target.content ?? ''
+                }
+              </>
+              : <span className='w-full' contentEditable suppressContentEditableWarning={true}>{props.target?.content ?? ''}</span>
+          }
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <ModifyFragment child={<ReplyField />} setTarget={props.setTarget} open={props.open} setOpenM={props.setOpenM} handleModify={handleModify} />
+  )
+}
+
+const ModifyFragment = (props: { child: React.JSX.Element, setTarget: any, open: boolean, setOpenM: any, handleModify: any }) => {
+  const handleClose = () => {
+    props.setTarget(undefined);
+    props.setOpenM(false);
+  };
   return (
     <ThemeProvider theme={modifyCommentTheme}>
       <Fragment>
@@ -129,24 +139,8 @@ export function ModifyInputR(props: ModifyProps) {
             </Toolbar>
           </AppBar>
           <Divider />
-          <div className="py-[12px] px-[16px]">
-            <div className='mention-reply-section' ref={mdfRef} contentEditable onFocus={handleFocus}
-              onKeyUp={handleCaret} onKeyDown={handleCaret} onMouseUp={handleCaret} suppressContentEditableWarning={true} >
-              {
-                props.target && props.target.replyTargetUserName
-                  ? <>
-                    <span contentEditable={false} id='mention-highlight' className='text-primary-blue'>{`@${props.target.replyTargetUserName} `}</span>
-                    {
-                      props.target.content.startsWith('@') && props.target.content.slice(1, props.target.replyTargetUserName.length + 1) === props.target.replyTargetUserName
-                        ? props.target.content.slice(props.target.replyTargetUserName.length + 2)
-                        : props.target.content ?? ''
-                    }
-                  </>
-                  : <span className='w-full' contentEditable suppressContentEditableWarning={true}>{props.target?.content ?? ''}</span>
-              }
-            </div>
-          </div>
-          <button className='footer-btn' onClick={handleModify}>수정 완료</button>
+          {props.child}
+          <button className='footer-btn' onClick={props.handleModify}>수정 완료</button>
         </Dialog>
       </Fragment>
     </ThemeProvider>
