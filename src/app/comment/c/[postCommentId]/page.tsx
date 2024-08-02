@@ -97,7 +97,7 @@ export default function Page() {
       {!isLoadingC && comment !== undefined
         ? <div className='flex flex-col w-full min-h-[calc(100vh-104px)] pb-[88px] bg-gray1'>
           <div className='px-[16px] py-[12px] mb-[2px] bg-p-white'>
-            <CommentBlock opt='CMT' data={comment} currentURL='' setOpenD={setOpenD} setTargetM={setTargetM} />
+            <CommentBlock opt='CMT' data={comment} setOpenD={setOpenD} setTargetM={setTargetM} disabled={true} />
           </div>
           <Replies setCount={setCount} setOpenD={setOpenD} setTargetM={setTargetM} handleMention={handleMention} postCommentId={params.postCommentId}
             isLoadingR={isLoadingR} setLoadingR={setLoadingR} tmp={tmp} setTmp={setTmp} setTmpP={setTmpP} tmpP={tmpP} />

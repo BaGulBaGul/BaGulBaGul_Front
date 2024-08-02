@@ -8,7 +8,7 @@ import 'dayjs/locale/ko';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 
-import { CalProps, CommentProps, ListProps, ParamProps, RListProps, LikeProps, LikeRProps } from "@/components/common";
+import { CalProps, CommentProps, ListProps, ParamProps, RListProps, LikeProps, LikeRProps, AlarmProps } from "@/components/common";
 
 // dayjs 설정
 dayjs.extend(isSameOrBefore);
@@ -106,7 +106,7 @@ export function setPageInfo(page: any, setPage: any, currentPage: number, params
 //   }
 // }
 
-export function setUniqueList(opt: string, currentList: any[], setItems: any, items?: ListProps[] | RListProps[] | CommentProps[] | CalProps[] | LikeProps[] | LikeRProps[]) {
+export function setUniqueList(opt: string, currentList: any[], setItems: any, items?: ListProps[] | RListProps[] | CommentProps[] | CalProps[] | LikeProps[] | LikeRProps[] | AlarmProps[]) {
 
   function setFilter(itms: any[], id: string, id2?: string,) {
     const newItems = currentList.length > 0 ? itms.concat(currentList) : itms
@@ -134,6 +134,8 @@ export function setUniqueList(opt: string, currentList: any[], setItems: any, it
         setFilter(items as LikeProps[], 'eventId'); break;
       case 'L-RCT':
         setFilter(items as LikeRProps[], 'recruitmentId'); break;
+      case 'ALRM':
+        setFilter(items as AlarmProps[], 'alarmId'); break;
     }
   }
 }

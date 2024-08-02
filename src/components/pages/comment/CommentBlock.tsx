@@ -4,8 +4,9 @@ import { applyLike } from "@/service/Functions";
 import { CmtLikeIcn } from "@/components/styles/Icon";
 import { CommentProps, NoUser } from "@/components/common";
 import dayjs from "dayjs";
+import { useRouter } from "next/navigation";
 
-export function CommentBlock(props: { opt: string; data: CommentProps; currentURL?: string; setOpenD: any; setTargetM: any; handleMention?: any; }) {
+export function CommentBlock(props: { opt: string; data: CommentProps; setOpenD: any; setTargetM: any; handleMention?: any; disabled?: boolean; }) {
   const [liked, setLiked] = useState(props.data.myLike ?? false)
   const [likeCount, setLikeCount] = useState<number>(props.data.likeCount ?? undefined)
   const handleLike = () => {
@@ -16,6 +17,12 @@ export function CommentBlock(props: { opt: string; data: CommentProps; currentUR
     e.stopPropagation();
     props.setOpenD(props.opt === 'CMT' ? 1 : 2)
     props.setTargetM({ postCommentId: props.data.commentId ?? props.data.commentChildId, content: props.data.content, userId: props.data.userId, replyTargetUserName: props.data.replyTargetUserName })
+  }
+  const router = useRouter()
+  const handleLink = () => {
+    if (!props.disabled) {
+      router.push(`c/${props.data.commentId}`)
+    }
   }
   return (
     <div>
@@ -66,14 +73,14 @@ export function CommentBlock(props: { opt: string; data: CommentProps; currentUR
       }
       <div className='flex flex-row justify-between items-center pt-[8px]' id='comment-foot'>
         {props.opt === 'CMT'
-          ? <a href={props.currentURL !== undefined ? `${props.currentURL}/${props.data.commentId}` : ''}>
+          ? <>
             {props.data.commentChildCount && props.data.commentChildCount > 0
-              ? <button className='reply-btn border-primary-blue text-primary-blue'>
+              ? <button onClick={handleLink} className='reply-btn border-primary-blue text-primary-blue'>
                 <p>답글</p><p>{props.data.commentChildCount}</p>
               </button>
-              : <button className='reply-btn'>답글</button>
+              : <button onClick={handleLink} className='reply-btn'>답글</button>
             }
-          </a>
+          </>
           : <div className='flex flex-row text-12 text-gray3' id='comment-datetime'>
             <p className='pe-[6px]'>{dayjs(props.data.createdAt).format('YY.MM.DD')}</p><p>{dayjs(props.data.createdAt).format('HH:mm')}</p>
           </div>

@@ -28,7 +28,7 @@ export function Comments(props: CommentsProps) {
       <div className='flex flex-col w-full min-h-[calc(100vh-104px)] pb-[88px] bg-gray1'>
         {comments.map((comment: CommentProps, idx: number) => (
           <div key={`cmt-${idx}`} className={idx % 2 == 0 ? 'bg-p-white px-[16px] py-[12px]' : 'bg-gray1 px-[16px] py-[12px]'}>
-            <CommentBlock opt='CMT' data={comment} currentURL={`${props.postId}`} setOpenD={props.setOpenD} setTargetM={props.setTargetM} />
+            <CommentBlock opt='CMT' data={comment} setOpenD={props.setOpenD} setTargetM={props.setTargetM} />
           </div>
         ))
         }

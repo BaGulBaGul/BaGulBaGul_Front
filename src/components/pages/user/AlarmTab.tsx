@@ -1,68 +1,109 @@
-import { AlarmCmtIcn, AlarmLikeIcn, DeleteIcn } from "@/components/styles/Icon";
-import dayjs from "dayjs";
-import React from "react";
+"use client";
+import React, { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import { AlarmProps } from "@/components/common";
+import { call } from "@/service/ApiService";
+import { setUniqueList } from "@/service/Functions";
+import { alarmSSE } from "./AlarmSSE";
+import { AlarmBlock } from "./AlarmBlock";
 
 export function AlarmTab() {
-  const alarm = [
-    {
-      case: "comment",
-      title: "피크페스티벌 2일차 동행 구해요.",
-      body: "오픈채팅으로 연락주세요 :)",
-      time: "2024-06-17T02:30:10",
-      read: false,
-    },
-    {
-      case: "like",
-      title: "PEAK FESTIVAL 2023",
-      body: "피크 페스티벌 진짜 오래기다렸어요.",
-      time: "2024-06-17T02:30:10",
-      read: true,
-    },
-    {
-      case: "comment",
-      title: "피크페스티벌 2일차 동행 구해요.",
-      body: "2명 같이 가도 괜찮나요?",
-      time: "2024-06-17T02:30:10",
-      read: true,
-    },
-  ];
+  const [isLoading, setLoading] = useState(true)
+  const [alarms, setAlarms] = useState<AlarmProps[]>([]);
+  const [page, setPage] = useState({ current: 0, total: 0, });
+  const initialSet = useRef(false);
+  const router = useRouter()
 
-  interface AlarmProps { opt: string; title: string; body: string | undefined; time: string; read: boolean; }
-  const AlarmBlock: React.FC<AlarmProps> = ({ opt, title, body, time, read }) => {
-    const titleStyle = `text-14 text-ellipsis overflow-hidden break-all whitespace-nowrap ${read ? "text-gray1" : "text-black"}`
-    const bodyStyle = read ? "text-14 text-gray1" : "text-14 text-gray3";
-    const timeStyle = `flex flex-row gap-[6px] text-12 ${read ? "text-gray1" : "text-gray3"}`
-    let alarmText = opt === 'CMT' ? '글에 댓글이 달렸어요.' : '댓글에 좋아요 10개가 놀렸어요.'
-    return (
-      <div className="flex flex-row w-full px-[16px] py-[10px] gap-[20px]">
-        <div className="w-[30px] h-[30px]">
-          {opt === 'CMT' ? <AlarmCmtIcn val={read} /> : <AlarmLikeIcn val={read} />}
-        </div>
-        <div className="flex flex-row items-start gap-[8px]">
-          <div className="flex flex-col gap-[2px] w-[calc(100vw-114px)]">
-            {/* <div className="flex flex-col gap-[2px] w-[calc(100%)]"> */}
-            <p className={titleStyle}>"{title}" {alarmText}</p>
-            <p className={bodyStyle}>{body}</p>
-            <div className={timeStyle}>
-              <p>{dayjs(time).format('YY.MM.DD')}</p><p>{dayjs(time).format('HH:mm')}</p>
-            </div>
-          </div>
-          <button><DeleteIcn /></button>
-        </div>
-      </div>
-    );
-  };
+  // const [eventSource, setEventSource] = useState<EventSource>()
+
+  useEffect(() => {
+    let apiURL = `/api/user/alarm/`
+    call(apiURL, "GET", null)
+      .then((response) => {
+        console.log(response.data);
+        if (!response.data.empty) {
+          if (!initialSet.current) {  // 페이지값 초기설정
+            setPage({ current: 0, total: response.data.totalPages })
+            initialSet.current = true;
+            // setEventSource(new EventSource(`${process.env.NEXT_PUBLIC_BACK_BASE_URL}/alarm/subscribe`))
+            // alarmSSE();
+          }
+          setUniqueList('ALRM', response.data.content, setAlarms, alarms)
+        }
+        setLoading(false)
+      })
+  }, [isLoading, page])
+
+  // useEffect(() => {
+  //   if (eventSource) {
+  //     console.info("Listenting on SEE", eventSource);
+  //     eventSource.onmessage = (e) => {
+  //       console.log(e.data);
+  //     }
+  //   }
+  // }, [eventSource])
+
+  const handleClick = (e: any, alarmId: number, checked: boolean, subjectId: any, type: string) => {
+    const urlLink = (() => {
+      switch (type) {
+        case "NEW_COMMENT": return `/comment/${subjectId}`;
+        case "NEW_COMMENT_LIKE":
+        case "NEW_COMMENT_CHILD":
+        case "NEW_COMMENT_CHILD_LIKE": return `/comment/c/${subjectId}`;
+        case "NEW_POST_LIKE": return `/event/${subjectId}`;
+        default: return '';
+      }
+    })()
+    console.log('alarm: ', urlLink)
+    if (!checked) {
+      call(`/api/user/alarm/${alarmId}/check`, "POST", null)
+        .then((response) => {
+          console.log(response);
+          if (response.errorCode === 'C00000') {
+            router.push(urlLink);
+          }
+        })
+    } else {
+      router.push(urlLink);
+    }
+  }
+
+  const handleDelete = (e: any, alarmId: number) => {
+    call(`/api/user/alarm/${alarmId}`, "DELETE", null)
+      .then((response) => {
+        console.log(response);
+        if (response.errorCode === 'C00000') {
+          setLoading(true)
+        } else {
+          alert('알림 삭제를 실패했습니다. 다시 시도해주세요.');
+        }
+      })
+  }
+
+  const handleDeleteAll = () => {
+    let confirmDelete = confirm("모든 알림을 삭제하시겠습니까?");
+    if (confirmDelete) {
+      call(`/api/user/alarm/`, "DELETE", null)
+        .then((response) => {
+          if (response.errorCode === 'C00000') {
+            setAlarms([])
+            setLoading(true)
+          } else {
+            alert('알림 삭제를 실패했습니다. 다시 시도해주세요.');
+          }
+        })
+    }
+  }
 
   return (
     <div className="mt-[60px]">
       <div className="fixed flex justify-end items-center w-full h-[48px] px-[16px] bg-p-white">
-        <button className="text-12 text-gray3">전체삭제</button>
+        <button onClick={handleDeleteAll} className="text-12 text-gray3">전체삭제</button>
       </div>
       <div className="pt-[48px] bg-p-white">
-        {alarm.map((item, index) => (
+        {alarms.map((item, index) => (
           <div key={index}>
-            {item.case === "comment" && (<AlarmBlock opt='CMT' title={item.title} body={item.body} time={item.time} read={item.read} />)}
-            {item.case === "like" && (<AlarmBlock opt="LK" title={item.title} body={item.body} time={item.time} read={item.read} />)}
+            <AlarmBlock data={item} handleClick={handleClick} handleDelete={handleDelete} />
           </div>
         ))}
       </div>

@@ -93,7 +93,7 @@ export interface CommentMProps { postCommentId: number; content: string; userId?
 
 export interface CalProps {
   eventId: number; type: string; title: string; content: string; headImageUrl: string;
-  abstractLocation: string; startTime: string; endTime: string; 
+  abstractLocation: string; startTime: string; endTime: string;
   userId?: number; userProfileImageUrl?: string; userName?: string;
 }
 
@@ -108,4 +108,8 @@ export interface LikeProps {
 
 export interface LikeRProps {
   recruitmentId: number; startDate: string; endDate: string; title: string; eventTitle: string;
+}
+
+export interface AlarmProps {
+  alarmId: number; checked: boolean; message: string; subjectId: any; time: string; title: string; type: string;
 }
