@@ -3,10 +3,9 @@ import { NoUser, RListProps, HashtagAccordion } from "@/components/common";
 import dayjs from "dayjs";
 
 export function RecruitBlock(props: { data: RListProps, router: any }) {
-  let urlLink = `/recruitment/${props.data.recruitment.recruitmentId}`
   return (
     <div className='flex flex-col py-[18px] px-[16px]'>
-      <div className='flex flex-col gap-[4px] cursor-pointer' onClick={() => { props.router.push(urlLink) }}>
+      <div className='flex flex-col gap-[4px] cursor-pointer' onClick={() => { props.router.push(`/recruitment/${props.data.recruitment.recruitmentId}`) }}>
         <p className='truncate text-16'>{props.data.post.title}</p>
         <p className='text-14 text-gray3'>{dayjs(props.data.recruitment.startDate).format('YY.MM.DD')}</p>
         <div className='flex flex-row items-center gap-[8px]'>

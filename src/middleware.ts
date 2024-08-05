@@ -10,7 +10,6 @@ export default async function middleware(request: NextRequest) {
 
   const requestHeaders = new Headers(request.headers);
   console.log('path: ', pathname)
-  console.log('origin: ', origin)
   // 로그인 필요한 페이지
   if (AUTH_PAGES.some((page) => pathname.startsWith(page))) {
     if (cookies.get('Access_Token') !== undefined) {

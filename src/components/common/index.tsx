@@ -111,5 +111,5 @@ export interface LikeRProps {
 }
 
 export interface AlarmProps {
-  alarmId: number; checked: boolean; message: string; subjectId: any; time: string; title: string; type: string;
+  alarmId: number; checked: boolean; message: string; subject: any; time: string; title: string; type: string;
 }

@@ -1,23 +1,20 @@
-"use client";
-import { useState } from 'react';
 import { SubTopHeader } from '@/components/layout/subHeader';
 import { redirect } from 'next/navigation';
-import dayjs from 'dayjs';
-import { Calendar, CalendarTab, EditButton } from '@/components/pages/user';
+import { Calendar, EditButton } from '@/components/pages/user';
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: '캘린더 • 바글바글',
+  description: '모여봐요 바글바글',
+}
 
 export default function Page({ params }: { params: { userId: string | number } }) {
   if (params.userId === 'mypage') {
-    const [focusDay, setFocusDay] = useState<Date | null>(new Date());
-    const [displayM, setDisplayM] = useState(dayjs().month() + 1)
-    const [eventDates, setEventDates] = useState([]);
 
     return (
       <>
-        <SubTopHeader name='캘린더' child={<EditButton/>} />
-        <div className='flex flex-col w-full pb-[10px] mt-[60px] gap-[8px]'>
-          <Calendar focusDay={focusDay} setFocusDay={setFocusDay} eventDays={eventDates} displayM={displayM} setDisplayM={setDisplayM} setEventDates={setEventDates} />
-          <CalendarTab focusDay={focusDay} setEventDates={setEventDates} />
-        </div>
+        <SubTopHeader name='캘린더' child={<EditButton />} />
+        <Calendar />
       </>
     );
   } else { redirect(`/user/${params.userId}`) }

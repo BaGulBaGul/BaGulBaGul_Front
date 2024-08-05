@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { call } from '@/service/ApiService';
 import { getDaysArray } from '@/service/Functions';
 import { ChevronIcn } from '@/components/styles/Icon';
@@ -8,20 +8,28 @@ import dayjs from 'dayjs';
 import DatePicker, { registerLocale } from "react-datepicker";
 import { ko } from "date-fns/locale/ko";
 import { getMonth, getYear } from "date-fns";
+import { CalendarTab } from './CalendarTab';
 
-export function Calendar(props: { focusDay: any; setFocusDay: any; eventDays?: any; displayM: number; setDisplayM: any; setEventDates: any; }) {
+export function Calendar() {
   registerLocale("ko", ko);
+  const [focusDay, setFocusDay] = useState<Date | null>(new Date());
+  const [displayM, setDisplayM] = useState(dayjs().month() + 1)
+  const [eventDates, setEventDates] = useState([]);
+
   return (
-    <div className='flex flex-col items-center w-full bg-p-white'>
-      <div className='w-[414px]'>
-        <DatePicker selected={props.focusDay} onChange={(date) => props.setFocusDay(date)} highlightDates={props.eventDays}
-          locale={ko} disabledKeyboardNavigation inline
-          renderCustomHeader={({ date, decreaseMonth, increaseMonth, prevMonthButtonDisabled, nextMonthButtonDisabled }) => (
-            <CalendarHeader date={date} decreaseMonth={decreaseMonth} increaseMonth={increaseMonth} displayM={props.displayM} setDisplayM={props.setDisplayM}
-              prevMonthButtonDisabled={prevMonthButtonDisabled} nextMonthButtonDisabled={nextMonthButtonDisabled} setEventDates={props.setEventDates} />
-          )}
-        />
+    <div className='flex flex-col w-full pb-[10px] mt-[60px] gap-[8px]'>
+      <div className='flex flex-col items-center w-full bg-p-white' id='calendar'>
+        <div className='w-[414px]'>
+          <DatePicker selected={focusDay} onChange={(date) => setFocusDay(date)} highlightDates={eventDates}
+            locale={ko} disabledKeyboardNavigation inline
+            renderCustomHeader={({ date, decreaseMonth, increaseMonth, prevMonthButtonDisabled, nextMonthButtonDisabled }) => (
+              <CalendarHeader date={date} decreaseMonth={decreaseMonth} increaseMonth={increaseMonth} displayM={displayM} setDisplayM={setDisplayM}
+                prevMonthButtonDisabled={prevMonthButtonDisabled} nextMonthButtonDisabled={nextMonthButtonDisabled} setEventDates={setEventDates} />
+            )}
+          />
+        </div>
       </div>
+      <CalendarTab focusDay={focusDay} setEventDates={setEventDates} />
     </div>
   )
 }

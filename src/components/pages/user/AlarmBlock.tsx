@@ -10,7 +10,7 @@ export const AlarmBlock = (props: { data: AlarmProps, handleClick: any, handleDe
           ? <AlarmCmtIcn val={props.data.checked} /> : <AlarmLikeIcn val={props.data.checked} />}
       </div>
       <div className="flex flex-row items-start gap-[8px]">
-        <div onClick={(e) => { props.handleClick(e, props.data.alarmId, props.data.checked, props.data.subjectId, props.data.type) }}
+        <div onClick={(e) => { props.handleClick(e, props.data.alarmId, props.data.checked, props.data.subject, props.data.type) }}
           className="flex flex-col gap-[2px] w-[calc(100vw-114px)] cursor-pointer">
           {props.data.checked
             ? <>

@@ -14,8 +14,6 @@ export function AlarmTab() {
   const initialSet = useRef(false);
   const router = useRouter()
 
-  // const [eventSource, setEventSource] = useState<EventSource>()
-
   useEffect(() => {
     let apiURL = `/api/user/alarm/`
     call(apiURL, "GET", null)
@@ -25,8 +23,7 @@ export function AlarmTab() {
           if (!initialSet.current) {  // 페이지값 초기설정
             setPage({ current: 0, total: response.data.totalPages })
             initialSet.current = true;
-            // setEventSource(new EventSource(`${process.env.NEXT_PUBLIC_BACK_BASE_URL}/alarm/subscribe`))
-            // alarmSSE();
+            alarmSSE();
           }
           setUniqueList('ALRM', response.data.content, setAlarms, alarms)
         }
@@ -34,23 +31,16 @@ export function AlarmTab() {
       })
   }, [isLoading, page])
 
-  // useEffect(() => {
-  //   if (eventSource) {
-  //     console.info("Listenting on SEE", eventSource);
-  //     eventSource.onmessage = (e) => {
-  //       console.log(e.data);
-  //     }
-  //   }
-  // }, [eventSource])
-
-  const handleClick = (e: any, alarmId: number, checked: boolean, subjectId: any, type: string) => {
+  const handleClick = (e: any, alarmId: number, checked: boolean, subject: any, type: string) => {
     const urlLink = (() => {
+      let subjectJson = JSON.parse(subject);
       switch (type) {
-        case "NEW_COMMENT": return `/comment/${subjectId}`;
+        case "NEW_COMMENT": return `/comment/${subjectJson.postId}`;
         case "NEW_COMMENT_LIKE":
         case "NEW_COMMENT_CHILD":
-        case "NEW_COMMENT_CHILD_LIKE": return `/comment/c/${subjectId}`;
-        case "NEW_POST_LIKE": return `/event/${subjectId}`;
+        case "NEW_COMMENT_CHILD_LIKE": return `/comment/c/${subjectJson.commentId}`;
+        case "NEW_EVENT_LIKE": return `/event/${subjectJson.eventId}`;
+        case "NEW_RECRUITMENT_LIKE": return `/event/${subjectJson.recruitmentId}`;
         default: return '';
       }
     })()

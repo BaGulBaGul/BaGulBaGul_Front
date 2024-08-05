@@ -3,10 +3,9 @@ import { DividerDot } from "@/components/styles/Icon"
 import { FormatDateRange } from "@/service/Functions"
 
 export function EventBlock(props: { data: ListProps, router: any }) {
-  let urlLink = `/event/${props.data.event.eventId}`
   return (
     <div className="flex flex-col justify-between py-[18px] px-[16px]">
-      <div onClick={() => { props.router.push(urlLink) }} className='flex flex-row justify-between items-center cursor-pointer'>
+      <div onClick={() => { props.router.push(`/event/${props.data.event.eventId}`) }} className='flex flex-row justify-between items-center cursor-pointer'>
         <div className='flex flex-col justify-between w-[230px] h-[116px]'>
           <div className='flex flex-col gap-[4px]'>
             <p className='truncate text-16 font-semibold'>{props.data.post.title}</p>

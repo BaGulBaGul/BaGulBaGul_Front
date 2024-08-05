@@ -1,9 +1,15 @@
-export const alarmSSE = () => {
-  const eventSource = new EventSource(`${process.env.NEXT_PUBLIC_ALARM_BASE_URL}/alarm/subscribe`);
-  console.info("Listenting on SEE", eventSource);
-  eventSource.onmessage = (e: MessageEvent) => {
-    console.log(e.data);
-  }
+export const alarmSSE = async () => {
+  let eventSource: EventSource;
+
+  try {
+    eventSource = new EventSource(`${process.env.NEXT_PUBLIC_ALARM_BASE_URL}/alarm/subscribe`, { withCredentials: true });
+    console.info("Listenting on SEE", eventSource);
+
+    eventSource.onmessage = async (e: MessageEvent) => {
+      const res = await e.data;
+      console.log(res !== 'HB');
+    }
+  } catch (error) { }
 
   return {
     close: () => {
