@@ -54,7 +54,7 @@ export interface RListProps {
 }
 
 export interface TabBlockProps {
-  opt: number; events: never[]; page: { current: number; total: number; }; setPage: any; isLoading: boolean;
+  opt: 0 | 1; events: never[]; page: { current: number; total: number; }; setPage: any; isLoading: boolean;
   params?: ParamProps, setParams?: any, router?: any;
 }
 

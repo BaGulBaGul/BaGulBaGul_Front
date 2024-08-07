@@ -3,6 +3,7 @@ import { useRef, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { call } from '@/service/ApiService';
 import { JoinBlock, JoinFooter } from '@/components/pages/join'
+import { HeaderBackIcn } from '@/components/common/styles/Icon';
 
 export default function Page() {
   const [nameChecked, setNameChecked] = useState<boolean>()
@@ -30,7 +31,7 @@ export default function Page() {
   }
 
   const router = useRouter();
-  const handleJoin = (opt: number, e: any) => {
+  const handleJoin = (opt: 0 | 1, e: any) => {
     if (toP2 && nameChecked && searchParams.get('join_token') !== null) {
       if (opt === 0) {
         call('/api/user/join/social', "POST", { "joinToken": searchParams.get('join_token'), "nickname": nameRef.current.value })
@@ -64,7 +65,7 @@ export default function Page() {
   return (
     <>
       <header className="fixed top-0 left-0 right-0 flex flex-row w-full justify-between h-[60px] px-[17px] py-[15.5px] bg-p-white">
-        <button onClick={handlePrev}><img src='/search_back.svg' /></button>
+        <button onClick={handlePrev}><HeaderBackIcn /></button>
       </header>
       <div className='flex flex-col w-full mt-[60px]'>
         <div className='flex flex-col items-center pt-[41.42px] gap-[4px] pointer-events-none' id='join-head'>

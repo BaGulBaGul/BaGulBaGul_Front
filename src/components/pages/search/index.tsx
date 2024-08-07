@@ -1,9 +1,9 @@
-import { FrequentSearches, RecentSearches } from "./FrequentSearches";
+import { FrequentSearches } from "./FrequentSearches";
 import { SearchBar } from "./SearchBar";
 import { SearchLayout } from "./SearchLayout";
 import { SearchTabs } from "./SearchTabs";
 
 export {
-  FrequentSearches, RecentSearches,
+  FrequentSearches,
   SearchBar, SearchLayout, SearchTabs,
 }

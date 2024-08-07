@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { call } from "@/service/ApiService";
 import { Button, ThemeProvider, TextField } from '@mui/material';
-import { commentTheme } from '@/components/styles/Themes';
+import { commentTheme } from '@/components/common/styles/Themes';
 import ScrollToTop from './ScrollToTop';
 
 export function CommentFooter(props: { postId: any; setLoading: any; setTmp: any; setTmpP: any; }) {

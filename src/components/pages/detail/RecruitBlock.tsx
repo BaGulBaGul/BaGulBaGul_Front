@@ -1,4 +1,4 @@
-import { DividerDot } from "@/components/styles/Icon";
+import { DividerDot } from "@/components/common/styles/Icon";
 import { NoUser, RListProps, HashtagAccordion } from "@/components/common";
 import dayjs from "dayjs";
 

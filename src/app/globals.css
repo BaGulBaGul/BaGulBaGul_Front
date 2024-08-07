@@ -351,6 +351,17 @@ div.editor-body {
   border-radius: 2px;
 }
 
+.dialog-btn {
+  width: 100%;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 160%;
+  padding: 4px 0px;
+  background-color: #4A6AFE;
+  color: #ECECEC;
+  border-radius: 4px;
+}
+
 .noevent-btn:active {
   border: 1px solid #4A6AFE;
   background-color: #4A6AFE;

@@ -1,5 +1,5 @@
 import { HashtagAccordion, ListProps, NoUser } from "@/components/common"
-import { DividerDot } from "@/components/styles/Icon"
+import { DividerDot } from "@/components/common/styles/Icon"
 import { FormatDateRange } from "@/service/Functions"
 
 export function EventBlock(props: { data: ListProps, router: any }) {

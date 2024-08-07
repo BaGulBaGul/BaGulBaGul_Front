@@ -1,7 +1,7 @@
 'use client';
-import { ThemeProvider, Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
-import { noUserDialogTheme } from '@/components/styles/Themes'
+import { ThemeProvider, Dialog, DialogTitle, DialogContent, DialogActions, createTheme } from '@mui/material';
 import { useState } from 'react';
+import { DeleteIcn } from './styles/Icon';
 
 interface NoEventProps { text1: string; text2: string; buttonText: string; }
 export function NoEvent(props: NoEventProps) {
@@ -34,12 +34,41 @@ export function NoUser() {
           <DialogTitle>
             <div className='w-[24px] h-[24px]' />
             <span>삭제된 유저입니다</span>
-            <button onClick={handleClose}><img src='/popup_close.svg' /></button>
+            <button onClick={handleClose}><DeleteIcn /></button>
           </DialogTitle>
           <DialogContent>죄송합니다. 사용자를 찾을 수 없습니다.<br />삭제된 유저의 게시글은 확인할 수 있지만<br />사용자의 정보를 불러올 수 없습니다.</DialogContent>
-          <DialogActions><Button onClick={handleClose} autoFocus>확인</Button></DialogActions>
+          <DialogActions><button className='dialog-btn' onClick={handleClose} autoFocus>확인</button></DialogActions>
         </Dialog>
       </ThemeProvider>
     </>
   )
-} 
+}
+
+const noUserDialogTheme = createTheme({
+  components: {
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          margin: 0, borderRadius: '8px', maxHeight: 'unset', maxWidth: 'unset', height: '180px', width: '250px'
+        }
+      }
+    },
+    MuiDialogTitle: {
+      styleOverrides: {
+        root: {
+          padding: '20px 18px 12px', fontWeight: '600', fontSize: '18px', lineHeight: '140%',
+          display: 'flex', flexDirection: 'row', justifyContent: 'space-between'
+        }
+      }
+    },
+    MuiDialogContent: {
+      styleOverrides: {
+        root: {
+          fontSize: '12px', paddingTop: '4px !important', paddingBottom: '8px', textAlign: 'center',
+          display: 'flex', flexDirection: 'row', justifyContent: 'center',
+        }
+      }
+    },
+    MuiDialogActions: { styleOverrides: { root: { padding: '12px 15px' } } },
+  }
+})

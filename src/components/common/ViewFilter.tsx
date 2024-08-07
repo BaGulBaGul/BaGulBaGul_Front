@@ -4,24 +4,36 @@ import { Unstable_NumberInput as NumberInput, NumberInputProps } from '@mui/base
 import {
   viewTheme, viewRadioTheme, viewCheckTheme, HeadInputRoot, HeadInputElement, HeadButton,
   PartiInputRoot, PartiInputElement, PartiButton
-} from "../styles/Themes";
-import { CalIcn, AddIcn, RemoveIcn, CmtLikeIcn, ChevronIcn } from "../styles/Icon";
+} from "./ViewFilterTheme";
+import { CalIcn, CmtLikeIcn, ChevronIcn, DeleteIcn } from "./styles/Icon";
 import DatePicker, { registerLocale } from "react-datepicker";
 import { ko } from "date-fns/locale/ko";
 import { getMonth, getYear } from "date-fns";
 import dayjs from "dayjs";
 
 
-interface ViewButtonProps { handleOpen: any; cnt: number; fs: number; }
+interface ViewButtonProps { handleOpen: any; cnt: number; fs: 14 | 18; }
 export function ViewButton(props: ViewButtonProps) {
   return (
     <button onClick={props.handleOpen} className={`view-btn ${props.fs === 14 ? 'text-14 min-w-[49px]' : 'text-18 pb-[3px] min-w-[55px]'}`} >
       <div>필터</div>
       {props.cnt > 0 ? <span>{props.cnt}</span> : <></>}
-      <img src='/main_filter.svg' />
+      <FilterIcn />
     </button>
   )
 }
+
+const FilterIcn = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M18 7.14307H6C5.45 7.14307 5 6.80557 5 6.39307C5 5.98057 5.45 5.64307 6 5.64307H18C18.55 5.64307 19 5.98057 19 6.39307C19 6.80557 18.55 7.14307 18 7.14307Z" fill="#6C6C6C" />
+    <path d="M18 12.75H6C5.45 12.75 5 12.4125 5 12C5 11.5875 5.45 11.25 6 11.25H18C18.55 11.25 19 11.5875 19 12C19 12.4125 18.55 12.75 18 12.75Z" fill="#6C6C6C" />
+    <path d="M18 18.3569H6C5.45 18.3569 5 18.0194 5 17.6069C5 17.1944 5.45 16.8569 6 16.8569H18C18.55 16.8569 19 17.1944 19 17.6069C19 18.0194 18.55 18.3569 18 18.3569Z" fill="#6C6C6C" />
+    <circle cx="9.43555" cy="6.39307" r="1.5" fill="white" stroke="#6C6C6C" strokeWidth="1.5" />
+    <circle cx="9.43555" cy="17.6069" r="1.5" fill="white" stroke="#6C6C6C" strokeWidth="1.5" />
+    <circle cx="14.5645" cy="12" r="1.5" fill="white" stroke="#6C6C6C" strokeWidth="1.5" />
+  </svg>
+
+)
 
 interface ViewSelectProps {
   sort: string; setSort: any; setOpen: any; routeToFilter?: any; dateRange: [any, any]; setDateRange: any;
@@ -74,7 +86,7 @@ export function ViewSelect(props: ViewSelectProps) {
       <div className="w-screen absolute bottom-0 rounded-t-[8px] bg-p-white">
         <div className="flex justify-between items-center w-full px-[16px] py-[20px] border-b-[0.5px] border-gray2">
           <span className="text-16 font-semibold">바글바글 필터</span>
-          <button onClick={handleClose}><img src='/popup_close.svg' /></button>
+          <button onClick={handleClose}><DeleteIcn /></button>
         </div>
         <div className="flex flex-col px-[16px] pb-[20px] gap-[16px]">
           <ThemeProvider theme={viewRadioTheme}>
@@ -215,6 +227,16 @@ const PartiNumberInput = forwardRef(
       />
     );
   });
+const AddIcn = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M18 13H13V18C13 18.55 12.55 19 12 19C11.45 19 11 18.55 11 18V13H6C5.45 13 5 12.55 5 12C5 11.45 5.45 11 6 11H11V6C11 5.45 11.45 5 12 5C12.55 5 13 5.45 13 6V11H18C18.55 11 19 11.45 19 12C19 12.55 18.55 13 18 13Z" fill="black" />
+  </svg>
+)
+const RemoveIcn = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M18 13H6C5.45 13 5 12.55 5 12C5 11.45 5.45 11 6 11H18C18.55 11 19 11.45 19 12C19 12.55 18.55 13 18 13Z" fill="black" />
+  </svg>
+)
 
 const HeadNumberInput = forwardRef(
   function CustomNumberInput(props: NumberInputProps, ref: React.ForwardedRef<HTMLDivElement>) {

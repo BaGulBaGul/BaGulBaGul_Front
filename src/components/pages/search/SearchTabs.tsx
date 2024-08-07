@@ -1,13 +1,13 @@
 import { FormatDateRange, setPageInfo, tabList, useEffectCallAPI } from "@/service/Functions"
 import { LoadingSkeleton } from "../../common/Loading"
-import { DividerDot } from "../../styles/Icon"
+import { DividerDot } from "../../common/styles/Icon"
 import { HashtagAccordion, HashtagButton, ListProps, MoreButton, NoEvent, NoUser, ParamProps, TabPanels, Divider, TabBlockProps } from "../../common"
 import { useEffect, useRef, useState } from "react"
 import { call } from "@/service/ApiService"
 import { ReadonlyURLSearchParams } from "next/navigation"
 import dayjs from "dayjs"
 
-export function SearchTabs(props: { opt: string; sp: ReadonlyURLSearchParams }) {
+export function SearchTabs(props: { opt: 'TTL' | 'TAG'; sp: ReadonlyURLSearchParams }) {
   // const searchParams = useSearchParams()
   const [isLoading, setLoading] = useState(true)
   const [events, setEvents] = useState([]);
@@ -97,7 +97,7 @@ const TabBlock = (props: TabBlockProps) => {
   }
 }
 
-function ResultBlock(props: { data: ListProps; opt: number; }) {
+function ResultBlock(props: { data: ListProps; opt: 0 | 1; }) {
   let urlLink = `/event/${props.data.event.eventId}`
   if (props.data.event.type !== 'PARTY') {
     return (
@@ -154,7 +154,7 @@ function ResultBlock(props: { data: ListProps; opt: number; }) {
 
 }
 
-function SuggestBlock(props: { type: number }) {
+function SuggestBlock(props: { type: 0 | 1 }) {
   const [suggestions, setSuggestions] = useState<ListProps[]>([])
   useEffect(() => {
     console.log(' :: suggestblock: ', props.type)

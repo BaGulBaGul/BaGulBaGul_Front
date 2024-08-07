@@ -309,7 +309,7 @@ export const applyLike = (loginfo: boolean, liked: boolean, url: string, setLike
 }
 
 // 댓글 대댓글
-export const useEffectRefreshComment = (opt: string, url: string, initialSet: MutableRefObject<boolean>, page: any, setPage: any,
+export const useEffectRefreshComment = (opt: 'CMT' | 'RPL', url: string, initialSet: MutableRefObject<boolean>, page: any, setPage: any,
   setCount: any, isLoading: boolean, setLoading: any, setComments: any, tmp: any[], setTmp: any, setTmpP: any, tmpP?: number) => {
   useEffect(() => {
     var tmpA: any[] = [];

@@ -1,18 +1,21 @@
 import { Checkbox } from "@mui/material";
 import { useState, MouseEvent } from "react";
 import { applyLike } from "@/service/Functions";
-import { CmtLikeIcn } from "@/components/styles/Icon";
+import { CmtLikeIcn, VerticalMoreIcn } from "@/components/common/styles/Icon";
 import { CommentProps, NoUser } from "@/components/common";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 
-const handleToggle = (e: MouseEvent, opt: string, setOpenD: any, setTargetM: any, value: any) => {
+const handleToggle = (e: MouseEvent, opt: 'CMT' | 'RPL', setOpenD: any, setTargetM: any, value: any) => {
   e.stopPropagation();
   setOpenD(opt === 'CMT' ? 1 : 2)
   setTargetM(value)
 }
 
-export function CommentBlock(props: { opt: string; data: CommentProps; setOpenD: any; setTargetM: any; handleMention?: any; disabled?: boolean; }) {
+interface CommentBlockProps {
+  opt: 'CMT' | 'RPL'; data: CommentProps; setOpenD: any; setTargetM: any; handleMention?: any; disabled?: boolean;
+}
+export function CommentBlock(props: CommentBlockProps) {
   const router = useRouter()
   const [liked, setLiked] = useState(props.data.myLike ?? false)
   let apiURL = props.opt === 'CMT' ? `/api/post/comment/${props.data.commentId}/like` : `/api/post/comment/children/${props.data.commentChildId}/like`
@@ -34,7 +37,7 @@ export function CommentBlock(props: { opt: string; data: CommentProps; setOpenD:
                 <p className="text-14">{props.data.username}</p>
               </a>
             }
-            <button onClick={(e) => handleToggle(e, props.opt, props.setOpenD, props.setTargetM, toggleValue)}><img src='/comment_etc.svg' width={24} height={24} /></button>
+            <button onClick={(e) => handleToggle(e, props.opt, props.setOpenD, props.setTargetM, toggleValue)}><VerticalMoreIcn opt='CMT' /></button>
           </div>
           <div className='text-14 text-gray3 pb-[6px]' id='comment-body'>{props.data.content}</div>
           <div className='flex flex-row text-12 text-gray3' id='comment-datetime'>
@@ -50,7 +53,7 @@ export function CommentBlock(props: { opt: string; data: CommentProps; setOpenD:
                 <p className="text-14">{props.data.userName}</p>
               </a>
             }
-            <button onClick={(e) => handleToggle(e, props.opt, props.setOpenD, props.setTargetM, toggleValue)}><img src='/comment_etc.svg' width={24} height={24} /></button>
+            <button onClick={(e) => handleToggle(e, props.opt, props.setOpenD, props.setTargetM, toggleValue)}><VerticalMoreIcn opt='CMT' /></button>
           </div>
           <div className='text-14 text-gray3 pb-[6px]' id='comment-body'>
             {props.data.replyTargetUserName

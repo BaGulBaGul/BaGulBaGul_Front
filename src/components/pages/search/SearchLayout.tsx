@@ -7,7 +7,7 @@ import { Backdrop } from "@mui/material";
 import dayjs from 'dayjs';
 import { SearchBar } from "./SearchBar";
 
-export const SearchLayout = (props: { opt: string; sp: ReadonlyURLSearchParams; router: AppRouterInstance; children: React.ReactNode; }) => {
+export const SearchLayout = (props: { opt: 'TTL' | 'TAG'; sp: ReadonlyURLSearchParams; router: AppRouterInstance; children: React.ReactNode; }) => {
   // type
   const [tab, setTab] = useState(Number(props.sp.get('tab_id')) ?? 0);
   const handleChange = (e: React.SyntheticEvent, newValue: number) => { setTab(newValue); };

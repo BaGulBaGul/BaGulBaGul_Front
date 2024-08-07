@@ -3,10 +3,10 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ThemeProvider, Backdrop, ToggleButtonGroup, ToggleButton } from '@mui/material';
 import { CategoryButtons, RangeProps, ViewFilterApplied, ViewSelect, Divider } from '@/components/common';
-import { tabTheme } from '@/components/styles/Themes';
+import { tabTheme } from '@/components/common/styles/Themes';
 import { getParams, useEffectFilter, useEffectFilterApplied } from '@/service/Functions';
 import dayjs from 'dayjs';
-import { SearchBar, FrequentSearches, RecentSearches } from '@/components/pages/search';
+import { SearchBar, FrequentSearches } from '@/components/pages/search';
 
 export default function Page() {
   const [tab, setTab] = useState(0);
@@ -69,7 +69,6 @@ export default function Page() {
         </div>
         <div className={filterCnt > 0 ? 'bg-p-white mt-[120px]' : 'bg-p-white mt-[94px]'}>
           <FrequentSearches />
-          <RecentSearches />
         </div>
       </div>
 

@@ -6,6 +6,7 @@ import { getParams, useEffectCntFilter } from '@/service/Functions';
 import { ViewButton, ViewSelect, ViewFilterApplied } from '@/components/common';
 import { PostFooter } from '@/components/layout/footer';
 import dayjs from 'dayjs';
+import { HeaderBackIcn } from '@/components/common/styles/Icon';
 
 export default function Template({ children }: { children: React.ReactNode }) {
   const prms = useParams()
@@ -49,7 +50,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
   return (
     <>
       <div className="fixed top-[44px] left-0 right-0 flex flex-row justify-between place-items-center w-full h-[60px] px-[17px] py-[10px] bg-p-white z-30">
-        <button onClick={() => router.back()}><img src='/search_back.svg' /></button>
+        <button onClick={() => router.back()}><HeaderBackIcn /></button>
         <div className='text-18'>모집글</div>
         <ViewButton handleOpen={handleOpen} cnt={filterCnt} fs={18} />
       </div>

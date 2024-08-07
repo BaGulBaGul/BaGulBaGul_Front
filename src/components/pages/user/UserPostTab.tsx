@@ -3,9 +3,9 @@ import { useState } from 'react';
 import { Tab, Tabs, ThemeProvider } from '@mui/material';
 import { TabPanel } from '@/components/common';
 import { partyData } from '@/components/common/Data';
-import { tabTheme } from '@/components/styles/Themes';
+import { tabTheme } from '@/components/common/styles/Themes';
 import { FormatDateRange } from '@/service/Functions';
-import { PostEditIcn, DeleteIcn } from '@/components/styles/Icon';
+import { PostEditIcn, DeleteIcn } from '@/components/common/styles/Icon';
 
 export function UserPostTab() {
   const [value, setValue] = useState(0);

@@ -1,11 +1,11 @@
 import { ThemeProvider, Drawer, List, ListItem, ListItemButton, ListItemText } from "@mui/material";
-import { commentMenuTheme } from "@/components/styles/Themes";
+import { menuTheme } from "@/components/common/styles/Themes";
 import { Divider } from "@/components/common";
 
 export function CommentDrawer(props: { open: number; toggleDrawer: any; setOpenM: any; handleDelete: any; }) {
   const handleClickOpen = () => { props.setOpenM(true); };
   return (
-    <ThemeProvider theme={commentMenuTheme}>
+    <ThemeProvider theme={menuTheme}>
       <Drawer open={props.open > 0 ? true : false} onClose={props.toggleDrawer(0)} anchor='bottom'>
         <div onClick={props.toggleDrawer(0)}>
           <List>

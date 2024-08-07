@@ -1,15 +1,12 @@
 "use client";
 import { Dispatch, SetStateAction } from "react"
-import { viewSwitchTheme } from "@/components/styles/Themes"
-import { ToggleButtonGroup, ToggleButton, ThemeProvider } from "@mui/material"
+import { ToggleButtonGroup, ToggleButton, ThemeProvider, createTheme } from "@mui/material"
 
 export const EditButton = () => {
-  return (
-    <button className='text-16 text-gray3'>편집</button>
-  )
+  return (<button className='text-16 text-gray3'>편집</button>)
 }
 
-export const ViewToggle = (props: {view: string; setView: Dispatch<SetStateAction<string>>}) => {
+export const ViewToggle = (props: { view: string; setView: Dispatch<SetStateAction<string>> }) => {
   const handleView = (event: React.MouseEvent<HTMLElement>, newVal: string | null) => {
     if (newVal !== null) { props.setView(newVal); }
   }
@@ -24,3 +21,22 @@ export const ViewToggle = (props: {view: string; setView: Dispatch<SetStateActio
     </div>
   )
 }
+
+const viewSwitchTheme = createTheme({
+  components: {
+    MuiButtonBase: { defaultProps: { disableRipple: true, }, },
+    MuiToggleButtonGroup: { styleOverrides: { root: { backgroundColor: '#ECECEC', borderRadius: '20px', } } },
+    MuiToggleButton: {
+      styleOverrides: {
+        root: {
+          fontSize: '14px !important', fontWeight: '400', lineHeight: '160%', color: '#6C6C6C!important',
+          padding: '2px 8px', minWidth: 'unset', border: 'transparent !important', borderRadius: '20px!important',
+          '&:hover, &:focus': { backgroundColor: 'transparent' },
+          '&.Mui-selected, &.Mui-selected:hover': {
+            backgroundColor: '#4A6AFE', color: '#FCFCFC !important', fontWeight: '600', boxShadow: '1px 0px 2px #00000033',
+          }
+        }
+      }
+    }
+  },
+});

@@ -1,8 +1,8 @@
-import { ThemeProvider, Dialog, AppBar, Toolbar, TextField } from "@mui/material";
+import { ThemeProvider, Dialog, AppBar, Toolbar, TextField, createTheme } from "@mui/material";
 import React, { Fragment, useRef, FocusEvent } from "react";
-import { modifyCommentTheme } from "@/components/styles/Themes";
 import { CommentMProps, Divider } from "@/components/common";
 import { call } from "@/service/ApiService";
+import { HeaderBackIcn } from "@/components/common/styles/Icon";
 
 interface ModifyProps {
   open: boolean; setOpenM: any; target?: CommentMProps; setTarget: any; setLoading?: any; setTmp: any; setTmpP: any;
@@ -133,7 +133,7 @@ const ModifyFragment = (props: { child: React.JSX.Element, setTarget: any, open:
         <Dialog fullScreen open={props.open} onClose={handleClose} >
           <AppBar>
             <Toolbar>
-              <button onClick={handleClose} ><img src='/search_back.svg' /></button>
+              <button onClick={handleClose} ><HeaderBackIcn /></button>
               <p>댓글 수정</p>
               <p className='w-[24px] h-[24px]'></p>
             </Toolbar>
@@ -146,3 +146,35 @@ const ModifyFragment = (props: { child: React.JSX.Element, setTarget: any, open:
     </ThemeProvider>
   )
 }
+
+const modifyCommentTheme = createTheme({
+  components: {
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#FFF', boxShadow: 'unset',
+          color: '#1E1E1E', fontSize: '18px', lineHeight: '160%',
+          position: 'relative', padding: '0px !important'
+        }
+      }
+    },
+    MuiToolbar: {
+      styleOverrides: {
+        root: {
+          display: 'flex', justifyContent: 'space-between', flexDirection: 'row', padding: '15.5px 17px !important',
+          minHeight: 'unset !important'
+        }
+      }
+    },
+    MuiTextField: { styleOverrides: { root: { height: '100%' } } },
+    MuiInputBase: {
+      styleOverrides: {
+        root: { padding: '12px 16px !important', },
+        input: {
+          height: 'calc(100vh - 161px) !important', fontSize: '14px', lineHeight: '160%', color: '#6C6C6C',
+        }
+      }
+    },
+    MuiOutlinedInput: { styleOverrides: { root: { border: 'none', "& fieldset": { border: 'none' }, } } }
+  }
+})

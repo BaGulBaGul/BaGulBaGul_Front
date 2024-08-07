@@ -28,7 +28,7 @@ export default function Page() {
         {isLoading
           ? <LoadingSkeleton type='DTLR' />
           : data && Object.keys(data).length > 0
-            ? <Detail opt='RCT' dataR={data} liked={liked} likeCount={likeCount} handleLike={handleLike} /> : <></>
+            ? <Detail opt='RCT' data={data} liked={liked} likeCount={likeCount} handleLike={handleLike} /> : <></>
         }
       </div>
     </>

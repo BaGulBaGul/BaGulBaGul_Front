@@ -1,18 +1,23 @@
 "use client";
-import { AddIcn, AlarmIcn, CalIcn, Category19, CmtLikeIcn, DividerDot, FilterArrowMore, LikeIcn, MailIcn, PageTop, DeleteIcn, PostEditIcn, RemoveIcn, SmileIcn, TagIcn } from "@/components/styles/Icon";
+// import { AddIcn, AlarmIcn, CalIcn, Category19, CmtLikeIcn, DividerDot, FilterArrowMore, LikeIcn, MailIcn, PageTop, DeleteIcn, PostEditIcn, RemoveIcn, SmileIcn, TagIcn, ChevronIcn, AlarmLikeIcn, AlarmCmtIcn, HeaderBackIcn, VerticalMoreIcn } from "@/components/styles/Icon";
 
 // svg, icon 확인용
 const index = () => {
   return (
     <div className="p-[10px] bg-secondary-yellow h-screen">
-      <div className="flex flex-row flex-wrap gap-[8px]">
+      {/* <div className="flex flex-row flex-wrap gap-[8px]">
         <div className="flex flex-col items-center h-min gap-[4px] bg-white p-[4px]">
-          <FilterArrowMore /><span className="text-[12px]">FilterArrowMore</span>
+          <FilterArrowMore />
+          <span className="text-[12px]">FilterArrowMore</span>
+        </div>
+        <div className="flex flex-col items-center h-min gap-[4px] bg-white p-[4px]">
+          <div className="flex flex-row gap-[4px]"><ChevronIcn direction='left' /><ChevronIcn direction='right' /></div>
+          <span className="text-[12px]">ChevronIcn</span>
         </div>
         <div className="flex flex-col items-center h-min gap-[4px] bg-white p-[4px]">
           <Category19 /><span className="text-[12px]">Category19</span>
         </div>
-        
+
         <div className="flex flex-col items-center h-min gap-[4px] bg-white p-[4px]">
           <AddIcn /><span className="text-[12px]">AddIcn</span>
         </div>
@@ -29,7 +34,8 @@ const index = () => {
           <PostEditIcn /><span className="text-[12px]">PostEditIcn</span>
         </div>
         <div className="flex flex-col items-center h-min gap-[4px] bg-white p-[4px]">
-          <DeleteIcn /><span className="text-[12px]">DeleteIcn</span>
+          <DeleteIcn />
+          <span className="text-[12px]">DeleteIcn</span>
         </div>
         <div className="flex flex-col items-center h-min gap-[4px] bg-white p-[4px]">
           <div className="flex flex-row gap-[4px]"><LikeIcn val={true} /><LikeIcn val={false} /></div>
@@ -55,8 +61,22 @@ const index = () => {
         <div className="flex flex-col items-center h-min gap-[4px] bg-white p-[4px]">
           <MailIcn /><span className="text-[12px]">MailIcn</span>
         </div>
-      </div>
-
+        <div className="flex flex-col items-center h-min gap-[4px] bg-white p-[4px]">
+          <div className="flex flex-row gap-[4px]"><AlarmLikeIcn val={true} /><AlarmLikeIcn val={false} /></div>
+          <span className="text-[12px]">AlarmLikeIcn</span>
+        </div>
+        <div className="flex flex-col items-center h-min gap-[4px] bg-white p-[4px]">
+          <div className="flex flex-row gap-[4px]"><AlarmCmtIcn val={true} /><AlarmCmtIcn val={false} /></div>
+          <span className="text-[12px]">AlarmCmtIcn</span>
+        </div>
+        <div className="flex flex-col items-center h-min gap-[4px] bg-white p-[4px]">
+          <HeaderBackIcn /><span className="text-[12px]">HeaderBackIcn</span>
+        </div>
+        <div className="flex flex-col items-center h-min gap-[4px] bg-white p-[4px]">
+          <div className="flex flex-row gap-[4px]"><VerticalMoreIcn opt='CMT' /><VerticalMoreIcn opt='DTL' /></div>
+          <span className="text-[12px]">VerticalMoreIcn</span>
+        </div>
+      </div> */}
     </div>
   )
 }

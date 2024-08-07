@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { FormatDateRange, applyLike, setPageInfo, setUniqueList, tabList } from '@/service/Functions';
 import { call } from '@/service/ApiService';
 import { MoreButton, NoEvent, TabPanels, PostTab, LikeProps, LikeRProps } from '@/components/common';
-import { LikeIcn } from '@/components/styles/Icon';
+import { LikeIcn } from '@/components/common/styles/Icon';
 import { ViewToggle } from './UserButtons';
 import dayjs from 'dayjs';
 

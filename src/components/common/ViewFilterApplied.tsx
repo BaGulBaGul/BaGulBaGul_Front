@@ -1,5 +1,5 @@
 import { Chip, ThemeProvider } from "@mui/material";
-import { filterChipTheme } from "../styles/Themes";
+import { filterChipTheme } from "./ViewFilterTheme";
 import { sortLabel } from "@/service/Functions";
 import { Dispatch, SetStateAction } from "react";
 import dayjs from "dayjs";
@@ -36,17 +36,17 @@ export const ViewFilterApplied = (props: FilterAppliedProps) => {
               {(props.filters).includes('dayRange')
                 ? <Chip id='dayRange' label={startDate !== null && endDate === null ?
                   dayjs(startDate).format('YY.MM.DD') : `${dayjs(startDate).format('YY.MM.DD')} - ${dayjs(endDate).format('YY.MM.DD')}`}
-                  onDelete={handleDelete} deleteIcon={<img src='/main_delete_filter.svg' />} variant="outlined" />
+                  onDelete={handleDelete} deleteIcon={<FilterDeleteIcn />} variant="outlined" />
                 : <></>
               }
               {(props.filters).includes('ptcp')
                 ? <Chip id='ptcp' label={`참여 ${props.participants}명`} onDelete={handleDelete}
-                  deleteIcon={<img src='/main_delete_filter.svg' />} variant="outlined" />
+                  deleteIcon={<FilterDeleteIcn />} variant="outlined" />
                 : <></>
               }
               {(props.filters).includes('headCount') && props.headCount !== undefined
                 ? <Chip id='headCount' label={`규모 ${props.headCount.from ?? ''} - ${props.headCount.to ?? ''}명`}
-                  onDelete={handleDelete} deleteIcon={<img src='/main_delete_filter.svg' />} variant="outlined" />
+                  onDelete={handleDelete} deleteIcon={<FilterDeleteIcn />} variant="outlined" />
                 : <></>
               }
             </ThemeProvider>
@@ -55,5 +55,14 @@ export const ViewFilterApplied = (props: FilterAppliedProps) => {
         : <></>
       }
     </>
+  )
+}
+
+const FilterDeleteIcn = () => {
+  return (
+    <svg width="16" height="23" viewBox="0 0 16 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="4.14062" y="8.3584" width="1" height="10" rx="0.5" transform="rotate(-44.4738 4.14062 8.3584)" fill="#6C6C6C" />
+      <rect width="1" height="10" rx="0.5" transform="matrix(-0.713571 -0.700582 -0.700582 0.713571 11.8594 8.3584)" fill="#6C6C6C" />
+    </svg>
   )
 }

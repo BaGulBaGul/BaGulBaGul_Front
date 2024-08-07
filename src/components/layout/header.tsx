@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { call } from '@/service/ApiService';
+import { MagnifyingIcn } from '../common/styles/Icon';
 // import { isSigned } from '@/service/ApiService';
 
-function Header(props: { opt?: string }) {
+function Header(props: { opt?: 'NF' }) {
   // opt 'NF' -> non fixed
   const [profileURL, setProfileURL] = useState('')
   useEffect(() => {
@@ -22,7 +23,7 @@ function Header(props: { opt?: string }) {
       </p>
       <div className='flex flex-row gap-[10px]'>
         <p className="flex w-6 h-6 relative">
-          <a href="/search"><img src="/main_icon_search.svg" /></a>
+          <a href="/search"><MagnifyingIcn size={24} /></a>
         </p>
         <a className="flex place-items-center" href="/user/mypage">
           {/* <img className='w-[24px] h-[24px] rounded-full' src={profileURL && profileURL.length > 0 ? profileURL : "/profile_main.svg"} alt="마이페이지 아이콘" /> */}

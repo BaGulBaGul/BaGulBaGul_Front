@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { call } from '@/service/ApiService';
 import { getDaysArray } from '@/service/Functions';
-import { ChevronIcn } from '@/components/styles/Icon';
+import { ChevronIcn } from '@/components/common/styles/Icon';
 import dayjs from 'dayjs';
 
 import DatePicker, { registerLocale } from "react-datepicker";

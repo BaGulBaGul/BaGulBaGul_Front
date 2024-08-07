@@ -1,6 +1,6 @@
 'use client';
-import { ThemeProvider, Dialog, DialogTitle, DialogContent } from '@mui/material';
-import { shareDialogTheme } from '@/components/styles/Themes'
+import { ThemeProvider, Dialog, DialogTitle, DialogContent, createTheme } from '@mui/material';
+import { DeleteIcn } from '@/components/common/styles/Icon';
 
 interface ShareDialogProps { handleClose: any, popopen: boolean, sharingURL: string; }
 export default function ShareDialog(props: ShareDialogProps) {
@@ -75,7 +75,7 @@ export default function ShareDialog(props: ShareDialogProps) {
         <DialogTitle className='flex flex-row justify-between'>
           <div className='w-[24px] h-[24px]' />
           <span>공유하기</span>
-          <button onClick={props.handleClose}><img src='/popup_close.svg' /></button>
+          <button onClick={props.handleClose}><DeleteIcn /></button>
         </DialogTitle>
         <DialogContent className='flex flex-row justify-center gap-[48px]'>
           <div className='flex flex-col items-center cursor-pointer' onClick={handleKakao}>
@@ -91,3 +91,25 @@ export default function ShareDialog(props: ShareDialogProps) {
     </ThemeProvider>
   )
 } 
+
+const shareDialogTheme = createTheme({
+  components: {
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          margin: 0, borderRadius: '8px',
+          maxHeight: 'unset', maxWidth: 'unset', height: '180px', width: '250px'
+        }
+      }
+    },
+    MuiDialogTitle: {
+      styleOverrides: {
+        root: {
+          padding: '22px 18px 31.5px', fontWeight: '600', fontSize: '18px', lineHeight: '140%',
+        }
+      }
+    },
+    MuiDialogContent: { styleOverrides: { root: { fontSize: '12px' } } },
+    MuiIconButton: { styleOverrides: { root: { padding: 0, } } }
+  }
+})

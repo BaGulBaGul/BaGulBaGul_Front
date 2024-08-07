@@ -1,13 +1,10 @@
 "use client";
 import { useState, useRef, useEffect } from 'react';
-import { useRouter } from "next/navigation";
-import { ThemeProvider, Fab } from '@mui/material';
-import { MoreButton, NoEvent, LoadingSkeleton, LoadingCircle, ParamProps, TabPanels, Divider, TabBlockProps } from '@/components/common';
-import { writeFabTheme } from '@/components/styles/Themes'
-import { setPageInfo, tabList, useEffectCallAPI } from '@/service/Functions';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from "next/navigation";
+import { ParamProps, TabPanels} from '@/components/common';
+import { tabList, useEffectCallAPI } from '@/service/Functions';
+import { MainTabBlock } from '@/components/pages/main';
 import dayjs from 'dayjs';
-import { EventBlock } from '@/components/pages/main';
 
 export default function Page() {
   const searchParams = useSearchParams()
@@ -56,43 +53,7 @@ export default function Page() {
 
   return (
     <TabPanels value={tab}
-      child1={<TabBlock opt={0} events={events} page={page} setPage={setPage} isLoading={isLoading} params={params} setParams={setParams} router={router} />}
-      child2={<TabBlock opt={1} events={events} page={page} setPage={setPage} isLoading={isLoading} params={params} setParams={setParams} router={router} />} />
+      child1={<MainTabBlock opt={0} events={events} page={page} setPage={setPage} isLoading={isLoading} params={params} setParams={setParams} router={router} />}
+      child2={<MainTabBlock opt={1} events={events} page={page} setPage={setPage} isLoading={isLoading} params={params} setParams={setParams} router={router} />} />
   )
-}
-
-const TabBlock = (props: TabBlockProps) => {
-  const handleMore = () => { setPageInfo(props.page, props.setPage, props.page.current + 1, props.params, props.setParams) }
-  if (props.isLoading && props.page.current === 0) { return <LoadingSkeleton /> }
-  else if (props.isLoading && props.page.current > 0) { return <LoadingCircle /> }
-  else {
-    return (
-      <div className='bg-p-white'>
-        {props.events.length > 0
-          ? <>
-            {props.events.map((post, idx) => (
-              <div key={`event-${idx}`}>
-                {idx === 0 ? <></> : <Divider />}
-                <EventBlock data={post} router={props.router} />
-              </div>
-            ))}
-            {props.page.total > 1 && props.page.current + 1 < props.page.total
-              ? <MoreButton onClick={handleMore} /> : <></>
-            }
-          </>
-          : <NoEvent text1="찾는 행사가 없어요." text2="지금 인기 있는 페스티벌을 만나보세요." buttonText={"페스티벌 인기순 보러가기"} />
-        }
-        {props.opt !== 1 ? <></>
-          : <ThemeProvider theme={writeFabTheme}>
-            <Fab variant="extended" size="small" color="primary" className='fixed bottom-[19px] right-[16px]'>
-              <div className='flex flex-row items-center'>
-                <img src='/main_add.svg' />
-                <span className='ps-[4px]'>글작성</span>
-              </div>
-            </Fab>
-          </ThemeProvider>
-        }
-      </div>
-    )
-  }
 }

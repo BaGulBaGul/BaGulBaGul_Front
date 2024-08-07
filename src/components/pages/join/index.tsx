@@ -3,7 +3,7 @@ import { MutableRefObject, useState } from 'react';
 import { call } from '@/service/ApiService';
 
 interface JoinBlockProps {
-  opt: string; nameChecked?: boolean; setNameChecked?: any; nameRef?: MutableRefObject<any>;
+  opt: 'nnm' | 'eml'; nameChecked?: boolean; setNameChecked?: any; nameRef?: MutableRefObject<any>;
   emailChecked?: boolean; setEmailChecked?: any; emailRef?: MutableRefObject<any>
 }
 export function JoinBlock(props: JoinBlockProps) {
@@ -54,7 +54,7 @@ export function JoinBlock(props: JoinBlockProps) {
   )
 }
 
-function CheckText(props: { opt: string; usableName: { regex: boolean, unique: boolean }; nameChecked?: boolean; emailChecked?: boolean; }) {
+function CheckText(props: { opt: 'nnm' | 'eml'; usableName: { regex: boolean, unique: boolean }; nameChecked?: boolean; emailChecked?: boolean; }) {
   if (props.opt === 'nnm') {
     return (
       <>
@@ -88,7 +88,7 @@ function CheckText(props: { opt: string; usableName: { regex: boolean, unique: b
   }
 }
 
-export function JoinFooter(props: { opt: string; handleNext: any; handleJoin: any; btnActive: boolean }) {
+export function JoinFooter(props: { opt: 'nnm' | 'eml'; handleNext: any; handleJoin: any; btnActive: boolean }) {
   return (
     props.opt === 'nnm'
       ? <button className='footer-btn' onClick={props.handleNext} disabled={props.btnActive}>다음</button>

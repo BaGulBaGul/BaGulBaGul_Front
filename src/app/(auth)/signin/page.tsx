@@ -1,14 +1,10 @@
-"use client";
 import { API_BASE_URL } from "@/api-config";
-import { useRouter } from 'next/navigation';
+import { SubXHeader } from "@/components/layout/subHeader";
 
 export default function Page() {
-  const router = useRouter();
   return (
     <div className="flex flex-col justify-between h-screen">
-      <div className="flex flex-row justify-end px-[16px] py-[10px]">
-        <button onClick={() => router.back()}><img className="w-[40px] h-[40px]" src='/popup_close.svg' /></button>
-      </div>
+      <SubXHeader />
       <div className="flex flex-col items-center h-full py-[91.42px] gap-[20px] pointer-events-none">
         <img src="/logo_s.svg" width='135.07' />
         <div className="flex flex-col items-center gap-[2px]">

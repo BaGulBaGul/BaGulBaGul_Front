@@ -1,7 +1,7 @@
 "use client";
 import { Dispatch, SetStateAction, useEffect, useState, FocusEvent, memo } from 'react';
 import { ThemeProvider, TextField, Button } from '@mui/material';
-import { commentTheme } from '@/components/styles/Themes';
+import { commentTheme } from '@/components/common/styles/Themes';
 import { call } from '@/service/ApiService';
 import ScrollToTop from './ScrollToTop';
 
