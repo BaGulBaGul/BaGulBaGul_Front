@@ -6,7 +6,6 @@ import React, { useEffect, useState } from "react";
 
 export const MyPage = () => {
   const [userinfo, setUserinfo] = useState<UserInfoProps>();
-
   useEffect(() => {
     call('/api/user/info/my', 'GET', null)
       .then((response) => {
@@ -69,25 +68,35 @@ export const MyPage = () => {
   )
 }
 
-export const UserPage = (props: { userId: 'mypage' | number }) => {
+export const UserPage = (props: { userId: number }) => {
+  const [userinfo, setUserinfo] = useState<UserInfoProps>();
+  useEffect(() => {
+    call(`/api/user/info/${props.userId}`, 'GET', null)
+      .then((response) => {
+        console.log(response)
+        if (response.errorCode === "C00000") {
+          setUserinfo(response.data)
+        }
+      })
+  }, [])
   return (
     <div className="pt-[60px]">
       <div className="flex flex-col mb-[11px]">
         <div className="flex flex-col gap-[8px]">
           <div className="flex flex-row px-[16px] py-[18px] gap-[16px] bg-p-white" id='userpage-profile'>
             <div className="relative w-[77px] h-[70px] rounded-full">
-              <img src="/default_icon.svg" className="w-[70px] h-[70px] rounded-full" />
+              <img src={userinfo?.imageURI ?? "/default_icon.svg"} className="w-[70px] h-[70px] rounded-full" />
             </div>
             <div className="flex flex-col">
-              <span className="font-semibold text-18 text-black">USER</span>
-              <span className="text-14 text-gray3">bageul@naver.com</span>
-              <span className="text-14 text-gray3">바글이의 한마디</span>
+              <span className="font-semibold text-18 text-black">{userinfo?.nickname}</span>
+              <span className="text-14 text-gray3">{userinfo?.email}</span>
+              <span className="text-14 text-gray3">{userinfo?.profileMessage ?? '-'}</span>
             </div>
           </div>
           <div className="flex flex-col bg-p-white" id='userpage-set1'>
             <div className="p-[16px] text-14 font-semibold text-black">바글이의 정보</div>
-            <SetBlock opt={1} icon={<LikeIcn color='#6C6C6C' />} title='좋아요' count={12} url={`/user/${props.userId}/liked`} />
-            <SetBlock opt={1} icon={<PostEditIcn />} title='작성글' count={12} url={`/user/${props.userId}/post`} />
+            {/* <SetBlock opt={1} icon={<LikeIcn color='#6C6C6C' />} title='좋아요' count={12} url={`/user/${props.userId}/liked`} /> */}
+            <SetBlock opt={0} icon={<PostEditIcn />} title='작성글' count={userinfo?.writingCount} url={`/user/${props.userId}/post`} />
           </div>
         </div>
       </div>

@@ -99,7 +99,7 @@ export interface CalProps {
 
 export interface UserInfoProps {
   id: number; nickname: string; email: string; profileMessage: string; imageURI: string;
-  writingCount: number; postLikeCount: number; calendarCount: number;
+  writingCount: number; postLikeCount?: number; calendarCount?: number;
 }
 
 export interface LikeProps {
