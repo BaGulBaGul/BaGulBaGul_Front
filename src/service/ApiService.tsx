@@ -1,7 +1,7 @@
 import { API_BASE_URL } from "../api-config";
 
+interface Options { headers: Headers; url: string; method: string; body?: string; credentials: RequestCredentials }
 export async function call(api: string, method: string, request?: any, cookie?: string) {
-  interface Options { headers: Headers; url: string; method: string; body?: string; credentials: RequestCredentials }
   let options: Options = {
     headers: cookie === undefined ? new Headers({ "Content-Type": "application/json", })
       : new Headers({ "Content-Type": "application/json", "Cookie": `Access_Token=${cookie}` }),
@@ -21,26 +21,18 @@ export async function call(api: string, method: string, request?: any, cookie?: 
   })
 }
 
-// export async function isSigned(setProfileURL?: any) {
-//   // const response = await call('/api/user/info', "GET", null)
-
-//   // response.try(
-
-//   // )
-//   // catch(() => { console.log('** isSigned: ', response.errorCode) })
-
-//   // if (response.errorCode === 'C00000') {
-//   //   console.log('isSigned: C00000 : ', response.data)
-//   // } else {
-//   //   console.log('isSigned: ', response.errorCode)
-//   // }
-//   call('/api/user/info', "GET", null)
-//     .then((response) => {
-//       if (response.errorCode === 'C00000') {
-//         console.log('** isSigned: ', response.data)
-//         if (setProfileURL) {
-//           setProfileURL(response.data.imageURI)
-//         }
-//       }
-//     }).catch((error) => { return null });
-// }
+export async function isSigned(cookies?: any) {
+  try {
+    const res = await fetch(
+      API_BASE_URL + "/api/user/info/my", {
+      headers: new Headers({ "Content-Type": "application/json", "Cookie": `Access_Token=${cookies}` }),
+      method: "GET", credentials: 'include',
+    });
+    const json = await res.json();
+    console.log('json ', json.errorCode);
+    return json.errorCode;
+  } catch (error) {
+    console.log("catch error", error);
+    return error;
+  }
+}

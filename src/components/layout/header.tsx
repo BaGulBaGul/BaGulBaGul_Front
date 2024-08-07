@@ -1,3 +1,4 @@
+"use client";
 import React, { useState, useEffect } from 'react'
 import { call } from '@/service/ApiService';
 import { MagnifyingIcn } from '../common/styles/Icon';
@@ -7,7 +8,7 @@ function Header(props: { opt?: 'NF' }) {
   // opt 'NF' -> non fixed
   const [profileURL, setProfileURL] = useState('')
   useEffect(() => {
-    call('/api/user/info', "GET", null)
+    call('/api/user/info/my', "GET", null)
       .then((response) => {
         if (response.errorCode === 'C00000') {
           if (setProfileURL) { setProfileURL(response.data.imageURI) }

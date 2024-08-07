@@ -1,12 +1,9 @@
 "use client";
 import { SubTopHeader } from "@/components/layout/subHeader";
-
 import { MyPage, UserPage } from '@/components/pages/user'
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 export default function Page({ params }: { params: { userId: 'mypage' | number } }) {
-  const router = useRouter()
   return (
     <>
       {params.userId === 'mypage'

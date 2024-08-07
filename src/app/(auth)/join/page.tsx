@@ -6,13 +6,15 @@ import { JoinBlock, JoinFooter } from '@/components/pages/join'
 import { HeaderBackIcn } from '@/components/common/styles/Icon';
 
 export default function Page() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
   const [nameChecked, setNameChecked] = useState<boolean>()
   const [emailChecked, setEmailChecked] = useState<boolean>()
   const [toP1, setToP1] = useState(false)
   const [toP2, setToP2] = useState(false)
   const btnActive = !toP2 ? !nameChecked : !(nameChecked && emailChecked)
 
-  const searchParams = useSearchParams()
   const nameRef = useRef<any>(null)
   const emailRef = useRef<any>(null)
 
@@ -30,7 +32,6 @@ export default function Page() {
     }
   }
 
-  const router = useRouter();
   const handleJoin = (opt: 0 | 1, e: any) => {
     if (toP2 && nameChecked && searchParams.get('join_token') !== null) {
       if (opt === 0) {
