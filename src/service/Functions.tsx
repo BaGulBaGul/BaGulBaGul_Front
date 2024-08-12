@@ -348,16 +348,22 @@ export const useEffectRefreshComment = (opt: 'CMT' | 'RPL', url: string, initial
   }, [tmp])
 }
 
-export const getDaysArray = function (events: CalProps[], setEventDates: any) {
-  const arr: Date[] = [];
-  events.forEach(function (event) {
-    let sD = dayjs(event.startTime).set('hour', 0).set('minute', 0).set('second', 0)
-    let eD = dayjs(event.endTime).set('hour', 23).set('minute', 59).set('second', 59)
-    for (var dt = sD; dt.isSameOrBefore(eD); dt = dt.add(1, 'day')) {
-      // let dtS = dt.format('YYYY-MM-DD')
-      let dtd = dt.toDate()
-      if (!arr.includes(dtd)) { arr.push(dtd); }
+// 캘린더 : 디스플레이 되는 달의 이벤트 처리
+export const getEvents = function (data: CalProps[], setEventDates: any, setEvents: any) {
+  let arrE: { [key: string]: any[] } | undefined = undefined;
+  data.forEach(function (event) {
+    for (var dt = dayjs(event.startTime); dt.isSameOrBefore(dayjs(event.endTime)); dt = dt.add(1, 'day')) {
+      let dtS = dt.format('YYYY-MM-DD')
+      if (arrE === undefined) { arrE = { [dtS]: [event] } }
+      else if (arrE[dtS] === undefined) { arrE[dtS] = [event] }
+      else if (arrE[dtS].length > 0) { arrE[dtS].push(event) }
     }
   });
-  setEventDates(arr)
+  if (arrE !== undefined) {
+    setEventDates(Object.keys(arrE).map(date => new Date(date)))
+    setEvents(arrE)
+  } else {
+    setEventDates([])
+    setEvents([])
+  }
 };
