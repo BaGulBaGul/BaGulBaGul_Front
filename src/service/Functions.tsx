@@ -353,7 +353,7 @@ export const getEvents = function (data: CalProps[], setEventDates: any, setEven
   // 1. 데이터 저장
   let arrE: { [key: string]: any[] } | undefined = undefined;
   data.forEach(function (event) {
-    for (var dt = dayjs(event.startTime); dt.isSameOrBefore(dayjs(event.endTime)); dt = dt.add(1, 'day')) {
+    for (var dt = dayjs(event.startTime); dt.isBefore(dayjs(event.endTime).add(1, 'day')); dt = dt.add(1, 'day')) {
       let dtS = dt.format('YYYY-MM-DD')
       if (arrE === undefined) { arrE = { [dtS]: [event] } }
       else if (arrE[dtS] === undefined) { arrE[dtS] = [event] }

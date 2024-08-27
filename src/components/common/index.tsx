@@ -91,10 +91,17 @@ export interface CommentProps {
 export interface CommentMProps { postCommentId: number; content: string; userId?: number; replyTargetUserName?: string; } // 댓글수정용
 
 
+// export interface CalProps {
+//   eventId?: number; recruitmentId?: number; type?: string; title: string; content: string; headImageUrl: string;
+//   abstractLocation: string; startTime: string; endTime: string;
+//   userId?: number; userProfileImageUrl?: string; userName?: string; deleted: boolean;
+// }
 export interface CalProps {
-  eventId: number; type: string; title: string; content: string; headImageUrl: string;
-  abstractLocation: string; startTime: string; endTime: string;
+  eventId?: number; recruitmentId?: number; title: string; type?: string; state?: string;
+  abstractLocation?: string; content: string; deleted: boolean;
+  startTime: string; endTime: string; headImageUrl: string;
   userId?: number; userProfileImageUrl?: string; userName?: string;
+  currentHeadCount?: number; maxHeadCount?: number;
 }
 
 export interface UserInfoProps {

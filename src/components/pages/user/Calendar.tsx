@@ -10,6 +10,7 @@ import { ko } from "date-fns/locale/ko";
 import { getMonth, getYear } from "date-fns";
 import { CalendarTab } from './CalendarTab';
 import { useRouter } from 'next/navigation';
+import { CalProps } from '@/components/common';
 
 export function Calendar() {
   registerLocale("ko", ko);
@@ -54,13 +55,22 @@ const CalendarHeader = (props: CalendarHeaderProps) => {
     let sD = `${getYear(props.date)}-${String(getMonth(props.date) + 1).padStart(2, "0")}-01`
     let eD = `${getYear(props.date)}-${String(getMonth(props.date) + 1).padStart(2, "0")}-${dayjs(props.date).daysInMonth()}`
     let apiURL1 = `/api/user/calendar/event?searchStartTime=${sD}T00:00:00&searchEndTime=${eD}T23:59:59`
-    call(apiURL1, "GET", null)
-      .then((response) => {
-        if (response.data.length > 0) {
-          getEvents(response.data, props.setEventDates, props.setEvents)
+    let apiURL2 = `/api/user/calendar/recruitment?searchStartTime=${sD}T00:00:00&searchEndTime=${eD}T23:59:59`
+    let calData: CalProps[] = [];
+    async function getCalData() {
+      try {
+        const dataE = await call(apiURL1, "GET", null);
+        const dataR = await call(apiURL2, "GET", null);
+        calData = dataE.data.concat(dataR.data)
+        if (calData.length > 0) {
+          getEvents(calData, props.setEventDates, props.setEvents)
           props.setLoading(false)
         }
-      })
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    getCalData()
   }, [props.displayM])
 
   return (
