@@ -377,3 +377,11 @@ export const getEvents = function (data: CalProps[], setEventDates: any, setEven
     setEvents([])
   }
 };
+
+export const headCountString = (from?: number | null, to?: number | null) => {
+  if ((from !== undefined && from !== null && from > 0) || (to !== undefined && to !== null && to > 0)) {
+    if (from === undefined) { return ` - ${to}` }
+    else if (to === undefined) { return `${from} - ` }
+    return `${from} - ${to}`
+  } else { return '0' }
+}

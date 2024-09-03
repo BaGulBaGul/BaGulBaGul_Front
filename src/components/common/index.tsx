@@ -18,8 +18,9 @@ export {
   LoadingSkeleton, LoadingCircle,
 }
 
-export const Divider = () => {
-  return (<hr className='border-1px border-gray1' />)
+export const Divider = (props: {color?: string; border?: string;}) => {
+  let cN = `${props.color ? `border-${props.color}`: 'border-gray1'} border-b-[${props.border ?? '1'}px]`
+  return (<hr className={cN} />)
 }
 
 export interface RangeProps { from: undefined | number, to: undefined | number }

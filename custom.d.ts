@@ -8,4 +8,5 @@ declare module '*.svg' {
 interface Window {
   Kakao?: any,
   kakao?: any,
+  daum?: any,
 }

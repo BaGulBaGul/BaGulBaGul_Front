@@ -1,16 +1,12 @@
-import { ChangeEvent, forwardRef, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { ThemeProvider, FormControl, FormControlLabel, RadioGroup, Radio, Collapse, Checkbox } from "@mui/material";
-import { Unstable_NumberInput as NumberInput, NumberInputProps } from '@mui/base'
-import {
-  viewTheme, viewRadioTheme, viewCheckTheme, HeadInputRoot, HeadInputElement, HeadButton,
-  PartiInputRoot, PartiInputElement, PartiButton
-} from "./ViewFilterTheme";
-import { CalIcn, CmtLikeIcn, ChevronIcn, DeleteIcn } from "./styles/Icon";
+import { viewTheme, viewRadioTheme, viewCheckTheme } from "./ViewFilterTheme";
+import { CalIcn, ChevronIcn, DeleteIcn } from "./styles/Icon";
 import DatePicker, { registerLocale } from "react-datepicker";
 import { ko } from "date-fns/locale/ko";
 import { getMonth, getYear } from "date-fns";
 import dayjs from "dayjs";
-
+import { HeadSelect, PartiSelect } from "./Select";
 
 interface ViewButtonProps { handleOpen: any; cnt: number; fs: 14 | 18; }
 export function ViewButton(props: ViewButtonProps) {
@@ -61,14 +57,6 @@ export function ViewSelect(props: ViewSelectProps) {
   const handleOpenParti = () => { setOpenParti(!openParti) }
   const [openHead, setOpenHead] = useState(false);
   const handleOpenHead = () => { setOpenHead(!openHead) }
-
-  const headCountString = (from?: number | null, to?: number | null) => {
-    if ((from !== undefined && from !== null && from > 0) || (to !== undefined && to !== null && to > 0)) {
-      if (from === undefined) { return ` - ${to}` }
-      else if (to === undefined) { return `${from} - ` }
-      return `${from} - ${to}`
-    } else { return '0' }
-  }
 
   const handleClose = () => {
     props.setOpen(false)
@@ -151,61 +139,9 @@ export function ViewSelect(props: ViewSelectProps) {
                 />
               </Collapse>
             </div>
-            <div className="flex flex-col" id="filter-participant">
-              <div className="flex flex-row gap-[16px]">
-                <span className="text-14 font-semibold">참여인원</span>
-                <button onClick={handleOpenParti} className={props.participants > 0 ? 'filter-btn border-primary-blue' : 'filter-btn'}>
-                  <CmtLikeIcn val={props.participants > 0} />
-                  <span>{props.participants >= 0 ? props.participants : 0}명</span>
-                </button>
-              </div>
-              <Collapse in={openParti} timeout="auto" className="filter-collapse">
-                <div className="flex flex-row justify-between mt-[8px]">
-                  <span className="text-14">인원 수</span>
-                  <PartiNumberInput value={props.participants ?? 0} min={0}
-                    onInputChange={(event) => {
-                      props.setParticipants(Number.isNaN(Number(event.target.value)) ? undefined : Number(event.target.value))
-                    }}
-                    onChange={(event, newValue) => props.setParticipants(Number.isNaN(Number(newValue)) ? undefined : Number(newValue))} />
-                </div>
-              </Collapse>
-            </div>
+            <PartiSelect openParti={openParti} handleOpenParti={handleOpenParti} participants={props.participants} setParticipants={props.setParticipants} />
             {props.headCount === undefined ? <></>
-              : <div className="flex flex-col" id="filter-head">
-                <div className="flex flex-row gap-[16px]">
-                  <span className="text-14 font-semibold">규모설정</span>
-                  <button onClick={handleOpenHead}
-                    className={(props.headCount.from !== undefined && props.headCount.from > 0)
-                      || (props.headCount.to !== undefined && props.headCount.to > 0) ? 'filter-btn border-primary-blue' : 'filter-btn'}>
-                    <CmtLikeIcn val={(props.headCount.from !== undefined && props.headCount.from > 0) || (props.headCount.to !== undefined && props.headCount.to > 0)} />
-                    <span>{headCountString(props.headCount.from, props.headCount.to)}명</span>
-                  </button>
-                </div>
-                <Collapse in={openHead} timeout="auto" className="filter-collapse">
-                  <div className="flex flex-col mt-[8px] gap-[8px]">
-                    <span className="text-14">최소/최대 설정하기</span>
-                    <div className="flex flex-row justify-between">
-                      <div className="flex flex-row justify-between border border-gray2 rounded-[8px] w-[180px] px-[16px] py-[5px]">
-                        <span className="text-14 w-[49px]">최소인원</span>
-                        <HeadNumberInput placeholder="1명" value={props.headCount.from ?? 0} min={0}
-                          onInputChange={(event) => {
-                            props.setHeadCount({ from: Number.isNaN(Number(event.target.value)) ? undefined : Number(event.target.value), to: props.headCount!.to })
-                          }}
-                          onChange={(event, newValue) => props.setHeadCount({ from: Number.isNaN(Number(newValue)) ? undefined : Number(newValue), to: props.headCount!.to })} />
-                      </div>
-                      <div className="flex flex-row justify-between border border-gray2 rounded-[8px] w-[180px] px-[16px] py-[5px]">
-                        <span className="text-14">최대인원</span>
-                        <HeadNumberInput placeholder="10명" value={props.headCount.to ?? 0} min={props.headCount.from}
-                          onInputChange={(event) => {
-                            props.setHeadCount({ from: props.headCount!.from, to: Number.isNaN(Number(event.target.value)) ? undefined : Number(event.target.value) })
-                          }}
-                          onChange={(event, newValue) => props.setHeadCount({ from: props.headCount!.from, to: Number.isNaN(Number(newValue)) ? undefined : Number(newValue) })}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </Collapse>
-              </div>
+              : <HeadSelect openHead={openHead} handleOpenHead={handleOpenHead} headCount={props.headCount} setHeadCount={props.setHeadCount} />
             }
           </ThemeProvider>
         </div >
@@ -213,35 +149,3 @@ export function ViewSelect(props: ViewSelectProps) {
     </ThemeProvider >
   )
 }
-
-const PartiNumberInput = forwardRef(
-  function CustomNumberInput(props: NumberInputProps, ref: React.ForwardedRef<HTMLDivElement>,) {
-    return (
-      <NumberInput
-        slots={{ root: PartiInputRoot, input: PartiInputElement, incrementButton: PartiButton, decrementButton: PartiButton, }}
-        slotProps={{
-          incrementButton: { children: <AddIcn />, className: 'increment', },
-          decrementButton: { children: <RemoveIcn />, },
-        }}
-        {...props} ref={ref}
-      />
-    );
-  });
-const AddIcn = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M18 13H13V18C13 18.55 12.55 19 12 19C11.45 19 11 18.55 11 18V13H6C5.45 13 5 12.55 5 12C5 11.45 5.45 11 6 11H11V6C11 5.45 11.45 5 12 5C12.55 5 13 5.45 13 6V11H18C18.55 11 19 11.45 19 12C19 12.55 18.55 13 18 13Z" fill="black" />
-  </svg>
-)
-const RemoveIcn = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M18 13H6C5.45 13 5 12.55 5 12C5 11.45 5.45 11 6 11H18C18.55 11 19 11.45 19 12C19 12.55 18.55 13 18 13Z" fill="black" />
-  </svg>
-)
-
-const HeadNumberInput = forwardRef(
-  function CustomNumberInput(props: NumberInputProps, ref: React.ForwardedRef<HTMLDivElement>) {
-    return (
-      <NumberInput slots={{ root: HeadInputRoot, input: HeadInputElement, incrementButton: HeadButton, decrementButton: HeadButton, }}
-        {...props} ref={ref} />
-    );
-  });

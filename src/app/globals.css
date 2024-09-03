@@ -656,3 +656,16 @@ h2.react-datepicker__current-month {
   width: 1px;
   white-space: nowrap;
 }
+
+/* ----------------------- */
+/* --react-mobile-picker-- */
+/* ----------------------- */
+.picker-item {
+  color: #C1C1C1 !important;
+  font-size: 16px !important;
+  line-height: 140% !important;
+  cursor: pointer !important;
+}
+.picker-item.picker-item-selected {
+  color: #1E1E1E !important;
+}
