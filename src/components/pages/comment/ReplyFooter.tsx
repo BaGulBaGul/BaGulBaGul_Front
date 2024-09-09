@@ -6,8 +6,8 @@ import { call } from '@/service/ApiService';
 import ScrollToTop from './ScrollToTop';
 
 function ReplyFooter(props: {
-  mentioning: boolean; setMentioning: Dispatch<SetStateAction<boolean>>; postCommentId: any; target: any; mentionRef: any; replyRef: any;
-  setLoadingC: any; setLoadingR: any; setTmp: any; setTmpP: any;
+  mentioning: boolean; setMentioning: Dispatch<SetStateAction<boolean>>; commentId: any; target: any; mentionRef: any; replyRef: any;
+  setLoadingC: any; setLoadingR: any; setTmp: any; setTmpP: any; origin: 'event' | 'event/recruitment';
 }) {
   const [value, setValue] = useState('')
   const handleInput = (e: any) => {
@@ -60,7 +60,7 @@ function ReplyFooter(props: {
   const handleComment = () => {
     if (props.mentionRef.current && props.mentionRef.current.innerText.length > 0 && props.target) {
       console.log('mention: ', props.mentionRef.current.innerText, props.target.id)
-      call(`/api/post/comment/${props.postCommentId}/children`, "POST",
+      call(`/api/${props.origin}/comment/${props.commentId}/children`, "POST",
         { "content": props.mentionRef.current.innerText, "replyTargetPostCommentChildId": props.target.id })
         .then((response) => {
           console.log(response)
@@ -72,7 +72,7 @@ function ReplyFooter(props: {
           props.setMentioning(false);
         }).catch((error) => console.error(error));
     } else if (props.replyRef.current && props.replyRef.current.value.length > 0) {
-      call(`/api/post/comment/${props.postCommentId}/children`, "POST",
+      call(`/api/${props.origin}/comment/${props.commentId}/children`, "POST",
         { "content": props.replyRef.current.value })
         .then((response) => {
           console.log(response)

@@ -1,12 +1,13 @@
 "use client";
 import { useEffect, useRef, useState } from 'react';
-import { useParams, useRouter, } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { SubHeaderCnt } from '@/components/layout/subHeader';
 import { call } from '@/service/ApiService';
 import { CommentMProps, CommentProps, LoadingSkeleton, Divider } from '@/components/common';
 import { Replies, MemoizedReplyFooter, CommentBlock, CommentDrawer, ModifyInputR } from '@/components/pages/comment';
 
-export default function Page() {
+
+export function RepliesPage(props: { origin: 'event' | 'event/recruitment'; commentId: any; postId: any; }) {
   const [count, setCount] = useState(0);
   const [isLoadingC, setLoadingC] = useState(true)
   const [isLoadingR, setLoadingR] = useState(true)
@@ -18,23 +19,35 @@ export default function Page() {
   const [openM, setOpenM] = useState(false);
   const [targetM, setTargetM] = useState<CommentMProps | undefined>();
 
-  const params = useParams()
   const router = useRouter()
 
   // 코멘트
   const [comment, setComment] = useState<CommentProps>()
   useEffect(() => {
     if (isLoadingC) {
-      let apiURL = `/api/post/comment/${params.postCommentId}`;
+      let apiURL = `/api/${props.origin}/comment/${props.commentId}`;
+      let cmt: CommentProps | undefined = undefined;
       console.log("###", apiURL)
       call(apiURL, "GET", null)
         .then((response) => {
-          if (response.data !== null) {
+          if (response.errorCode === 'C00000' && response.data !== null) {
             console.log(response);
-            setComment(response.data);
-            setLoadingC(false)
+            cmt = response.data;
           } else {
-            router.replace(`/comment/${params.postId}`)
+            let urlRoot = props.origin === 'event' ? 'event' : 'recruitment'
+            router.replace(`/${urlRoot}/${props.postId}/comments`)
+          }
+        }).then(() => {
+          if (cmt !== undefined) {
+            let apiURL2 = `/api/${props.origin}/comment/${props.commentId}/ismylike`;
+            call(apiURL2, "GET", null).then((response) => {
+              if (response.errorCode === 'C00000' && response.data !== null) {
+                console.log('** ', response.data.myLike)
+                cmt!.myLike = response.data.myLike;
+                setComment(cmt);
+                setLoadingC(false)
+              }
+            })
           }
         })
     }
@@ -75,10 +88,10 @@ export default function Page() {
   const [tmp, setTmp] = useState<any[]>([])
   const [tmpP, setTmpP] = useState<number>();
 
-  const handleDelete = () => { // * 삭제되는게 코멘트인 경우 어떻게 처리할지??
+  const handleDelete = () => {
     let confirmDelete = confirm("댓글을 삭제하시겠습니까?");
     if (targetM && confirmDelete) {
-      let apiURL = openD > 1 ? `/api/post/comment/children/${targetM.postCommentId}` : `/api/post/comment/${targetM.postCommentId}`
+      let apiURL = openD > 1 ? `/api/${props.origin}/comment/children/${targetM.commentId}` : `/api/${props.origin}/comment/${targetM.commentId}`
       console.log(apiURL)
       call(apiURL, "DELETE", null)
         .then((response) => {
@@ -91,16 +104,17 @@ export default function Page() {
     }
   }
 
+  let postUrl = `/${props.origin === 'event' ? 'event' : 'recruitment'}/${props.postId}`
   return (
     <>
-      <SubHeaderCnt name='답글' cnt={count} />
+      <SubHeaderCnt name='답글' cnt={count} url={postUrl} />
       {!isLoadingC && comment !== undefined
         ? <div className='flex flex-col w-full min-h-[calc(100vh-104px)] pb-[88px] bg-gray1'>
           <div className='px-[16px] py-[12px] mb-[2px] bg-p-white'>
-            <CommentBlock opt='CMT' data={comment} setOpenD={setOpenD} setTargetM={setTargetM} disabled={true} />
+            <CommentBlock opt='CMT' data={comment} setOpenD={setOpenD} setTargetM={setTargetM} disabled={true} origin={props.origin} />
           </div>
-          <Replies setCount={setCount} setOpenD={setOpenD} setTargetM={setTargetM} handleMention={handleMention} postCommentId={params.postCommentId}
-            isLoadingR={isLoadingR} setLoadingR={setLoadingR} tmp={tmp} setTmp={setTmp} setTmpP={setTmpP} tmpP={tmpP} />
+          <Replies setCount={setCount} setOpenD={setOpenD} setTargetM={setTargetM} handleMention={handleMention} commentId={props.commentId}
+            isLoadingR={isLoadingR} setLoadingR={setLoadingR} tmp={tmp} setTmp={setTmp} setTmpP={setTmpP} tmpP={tmpP} origin={props.origin} />
         </div>
         : <div className='flex flex-col gap-[2px]'>
           <LoadingSkeleton type='CMT' />
@@ -108,10 +122,10 @@ export default function Page() {
           <LoadingSkeleton type='RPL' />
         </div>
       }
-      <MemoizedReplyFooter mentioning={mentioning} setMentioning={setMentioning} postCommentId={params.postCommentId} target={mentionTarget}
-        mentionRef={mentionRef} replyRef={replyRef} setLoadingC={setLoadingC} setLoadingR={setLoadingR} setTmp={setTmp} setTmpP={setTmpP} />
+      <MemoizedReplyFooter mentioning={mentioning} setMentioning={setMentioning} commentId={props.commentId} target={mentionTarget}
+        mentionRef={mentionRef} replyRef={replyRef} setLoadingC={setLoadingC} setLoadingR={setLoadingR} setTmp={setTmp} setTmpP={setTmpP} origin={props.origin} />
       <CommentDrawer open={openD} toggleDrawer={toggleDrawer} setOpenM={setOpenM} handleDelete={handleDelete} />
-      <ModifyInputR open={openM} setOpenM={setOpenM} target={targetM} setTarget={setTargetM} setLoading={setLoadingR} setTmp={setTmp} setTmpP={setTmpP} />
+      <ModifyInputR open={openM} setOpenM={setOpenM} target={targetM} setTarget={setTargetM} setLoading={setLoadingR} setTmp={setTmp} setTmpP={setTmpP} origin={props.origin} />
     </>
   );
 }

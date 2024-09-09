@@ -4,9 +4,9 @@ import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { Backdrop } from '@mui/material';
 import { getParams, useEffectCntFilter } from '@/service/Functions';
 import { ViewButton, ViewSelect, ViewFilterApplied } from '@/components/common';
-import { PostFooter } from '@/components/layout/footer';
 import dayjs from 'dayjs';
 import { HeaderBackIcn } from '@/components/common/styles/Icon';
+import { WriteFab } from '@/components/common/WriteFab';
 
 export default function Template({ children }: { children: React.ReactNode }) {
   const prms = useParams()
@@ -64,10 +64,10 @@ export default function Template({ children }: { children: React.ReactNode }) {
         <ViewSelect sort={sort} setSort={setSort} setOpen={setOpen} routeToFilter={routeToFilter} dateRange={dateRange} setDateRange={setDateRange}
           participants={participants} setParticipants={setParticipants} recruiting={recruiting} setRecruiting={setRecruiting} />
       </Backdrop>
-      <div className={`flex flex-col w-full pb-[77px] ${filterCnt > 0 ? 'pt-[140px]' : 'pt-[104px]'}`}>
+      <div className={`flex flex-col w-full ${filterCnt > 0 ? 'pt-[140px]' : 'pt-[104px]'}`}>
         {children}
       </div>
-      <PostFooter title='모집글 작성하기' path='/' />
+      <WriteFab opt='r' />
     </>
   )
 }

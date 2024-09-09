@@ -5,12 +5,12 @@ import { Button, ThemeProvider, TextField } from '@mui/material';
 import { commentTheme } from '@/components/common/styles/Themes';
 import ScrollToTop from './ScrollToTop';
 
-export function CommentFooter(props: { postId: any; setLoading: any; setTmp: any; setTmpP: any; }) {
+export function CommentFooter(props: { url: string; setLoading: any; setTmp: any; setTmpP: any; }) {
   const cmtRef = useRef<HTMLInputElement>(null);
   const handleComment = () => {
     if (cmtRef.current && cmtRef.current.value.length > 0) {
       console.log(cmtRef.current.value)
-      call(`/api/post/${props.postId}/comment`, "POST", { "content": cmtRef.current.value })
+      call(`/api/${props.url}/comment`, "POST", { "content": cmtRef.current.value })
         .then((response) => {
           console.log(response)
           props.setTmp([])

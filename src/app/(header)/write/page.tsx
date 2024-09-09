@@ -43,7 +43,7 @@ export default function Page({ searchParams }: { searchParams: { ['w']: 'p' | 'r
             </button>
           </div>
           <input className='w-full focus:outline-none text-18 px-[16px] py-[10px]' type='text' placeholder='제목' />
-          <Divider color='gray2' border='0.5' />
+          <Divider color='gray2' />
           {
             searchParams.w === 'p'
               ? <>
@@ -54,14 +54,14 @@ export default function Page({ searchParams }: { searchParams: { ['w']: 'p' | 'r
                   </div>
                   <CategoryButtons selectedCate={selectedCate} setSelectedCate={setSelectedCate} />
                 </div>
-                <Divider color='gray2' border='0.5' />
+                <Divider color='gray2' />
                 <PostInfoInput type={searchParams.w} startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate}
                   headCount={headCount} setHeadCount={setHeadCount} forAdult={forAdult} setForAdult={setForAdult} />
               </>
               : <PostInfoInput type={searchParams.w} participants={participants} setParticipants={setParticipants}
                 forAdult={forAdult} setForAdult={setForAdult} />
           }
-          <Divider color='gray2' border='0.5' />
+          <Divider color='gray2' />
           <div className='flex flex-row justify-between gap-[16px] px-[16px] py-[10px]'>
             <span className='min-w-[49px] text-14 font-semibold'>위치</span>
             <div onClick={handleOpenAddr} className='flex flex-row items-center gap-[8px] cursor-pointer'>
@@ -69,7 +69,7 @@ export default function Page({ searchParams }: { searchParams: { ['w']: 'p' | 'r
               <MagnifyingIcn size={24} />
             </div>
           </div>
-          <Divider color='gray2' border='0.5' />
+          <Divider color='gray2' />
           <div className='px-[16px] py-[20px]'>
             <textarea className="w-full min-h-[250px] focus:outline-none text-14"
               placeholder={`파티에 대해서 설명해주세요!\n본문에 #을 이용해 파티 태그를 입력해보세요(최대 7개)`}

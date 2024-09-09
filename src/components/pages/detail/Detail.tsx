@@ -17,7 +17,7 @@ export const Detail = (props: DetailsProps) => {
   const toggleDrawer = (newOpen: boolean) => () => { setOpenD(newOpen); };
 
   const pathname = usePathname();
-  let commentURL = `/comment/${props.data.post.postId}`;
+  let commentURL = `${pathname}/comments`;
 
   if (props.opt === 'EVT') {
     let data = props.data as DetailProps

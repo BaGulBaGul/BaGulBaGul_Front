@@ -5,17 +5,17 @@ import { call } from "@/service/ApiService";
 import { HeaderBackIcn } from "@/components/common/styles/Icon";
 
 interface ModifyProps {
-  open: boolean; setOpenM: any; target?: CommentMProps; setTarget: any; setLoading?: any; setTmp: any; setTmpP: any;
+  open: boolean; setOpenM: any; target?: CommentMProps; setTarget: any; setLoading?: any; setTmp: any; setTmpP: any; origin: 'event' | 'event/recruitment';
 }
 
 export function ModifyInput(props: ModifyProps) {
   const mdfRef = useRef<HTMLInputElement>(null);
   const handleModify = () => {
-    console.log(props.target?.postCommentId)
+    console.log(props.target?.commentId)
     console.log(mdfRef.current?.value)
     if (mdfRef.current?.value.replace(/\n$/, '').replace(/ /g, '').length === 0) { alert('댓글 내용을 입력해주세요.') }
     else if (mdfRef.current && mdfRef.current.value.length > 0 && props.target) {
-      call(`/api/post/comment/${props.target.postCommentId}`, "PATCH", { "content": mdfRef.current.value })
+      call(`/api/${props.origin}/comment/${props.target.commentId}`, "PATCH", { "content": mdfRef.current.value })
         .then((response) => {
           console.log(response)
           props.setTmp([])
@@ -39,9 +39,9 @@ export function ModifyInputR(props: ModifyProps) {
     if (mdfRef.current?.innerText.replace(/\n$/, '').replace(/ /g, '').length === 0) { alert('댓글 내용을 입력해주세요.') }
     else if (mdfRef.current && mdfRef.current.innerText.length > 0 && props.target) {
       let mentionTag = mdfRef.current.children.namedItem('mention-highlight')
-      console.log(`/api/post/comment/children/${props.target.postCommentId}`)
+      console.log(`/api/${props.origin}/comment/children/${props.target.commentId}`)
       console.log(`{ "content": ${mdfRef.current.innerText}, "replyTargetUserId": ${(props.target.replyTargetUserName !== undefined && mentionTag === null) ? null : 0}}`)
-      call(`/api/post/comment/children/${props.target.postCommentId}`, "PATCH",
+      call(`/api/${props.origin}/comment/children/${props.target.commentId}`, "PATCH",
         { "content": mdfRef.current.innerText, "replyTargetUserId": (props.target.replyTargetUserName !== undefined && mentionTag === null) ? null : 0 })
         .then((response) => {
           console.log(response);

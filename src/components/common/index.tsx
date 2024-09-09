@@ -18,9 +18,8 @@ export {
   LoadingSkeleton, LoadingCircle,
 }
 
-export const Divider = (props: {color?: string; border?: string;}) => {
-  let cN = `${props.color ? `border-${props.color}`: 'border-gray1'} border-b-[${props.border ?? '1'}px]`
-  return (<hr className={cN} />)
+export const Divider = (props: {color?: string;}) => {
+  return (<hr className={`${props.color ? `border-${props.color}`: 'border-gray1'}`} />)
 }
 
 export interface RangeProps { from: undefined | number, to: undefined | number }
@@ -89,14 +88,8 @@ export interface CommentProps {
   replyTargetUserName?: string;
 }
 
-export interface CommentMProps { postCommentId: number; content: string; userId?: number; replyTargetUserName?: string; } // 댓글수정용
+export interface CommentMProps { commentId: number; content: string; userId?: number; replyTargetUserName?: string; } // 댓글수정용
 
-
-// export interface CalProps {
-//   eventId?: number; recruitmentId?: number; type?: string; title: string; content: string; headImageUrl: string;
-//   abstractLocation: string; startTime: string; endTime: string;
-//   userId?: number; userProfileImageUrl?: string; userName?: string; deleted: boolean;
-// }
 export interface CalProps {
   eventId?: number; recruitmentId?: number; title: string; type?: string; state?: string;
   abstractLocation?: string; content: string; deleted: boolean;

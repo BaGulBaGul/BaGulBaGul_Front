@@ -14,14 +14,16 @@ const handleToggle = (e: MouseEvent, opt: 'CMT' | 'RPL', setOpenD: any, setTarge
 
 interface CommentBlockProps {
   opt: 'CMT' | 'RPL'; data: CommentProps; setOpenD: any; setTargetM: any; handleMention?: any; disabled?: boolean;
+  origin: 'event' | 'event/recruitment';
 }
 export function CommentBlock(props: CommentBlockProps) {
   const router = useRouter()
   const [liked, setLiked] = useState(props.data.myLike ?? false)
-  let apiURL = props.opt === 'CMT' ? `/api/post/comment/${props.data.commentId}/like` : `/api/post/comment/children/${props.data.commentChildId}/like`
+  let apiURL = props.opt === 'CMT' ? `/api/${props.origin}/comment/${props.data.commentId}/like`
+    : `/api/${props.origin}/comment/children/${props.data.commentChildId}/like`
   const [likeCount, setLikeCount] = useState<number>(props.data.likeCount ?? undefined)
   const toggleValue = {
-    postCommentId: props.data.commentId ?? props.data.commentChildId, content: props.data.content, userId: props.data.userId,
+    commentId: props.data.commentId ?? props.data.commentChildId, content: props.data.content, userId: props.data.userId,
     replyTargetUserName: props.data.replyTargetUserName
   }
 
@@ -40,7 +42,7 @@ export function CommentBlock(props: CommentBlockProps) {
             <button onClick={(e) => handleToggle(e, props.opt, props.setOpenD, props.setTargetM, toggleValue)}><VerticalMoreIcn opt='CMT' /></button>
           </div>
           <div className='text-14 text-gray3 pb-[6px]' id='comment-body'>{props.data.content}</div>
-          <div className='flex flex-row text-12 text-gray3' id='comment-datetime'>
+          <div className='flex flex-row text-12 text-gray3 pb-[8px]' id='comment-datetime'>
             <p className='pe-[6px]'>{dayjs(props.data.createdAt).format('YY.MM.DD')}</p><p>{dayjs(props.data.createdAt).format('HH:mm')}</p>
           </div>
         </>
@@ -70,14 +72,14 @@ export function CommentBlock(props: CommentBlockProps) {
           </div>
         </div>
       }
-      <div className='flex flex-row justify-between items-center pt-[8px]' id='comment-foot'>
+      <div className='flex flex-row justify-between items-center' id='comment-foot'>
         {props.opt === 'CMT'
           ? <>
             {props.data.commentChildCount && props.data.commentChildCount > 0
-              ? <button onClick={() => { if (!props.disabled) { router.push(`c/${props.data.commentId}`) } }} className='reply-btn border-primary-blue text-primary-blue'>
+              ? <button onClick={() => { if (!props.disabled) { router.push(`comments/${props.data.commentId}`) } }} className='reply-btn border-primary-blue text-primary-blue'>
                 <p>답글</p><p>{props.data.commentChildCount}</p>
               </button>
-              : <button onClick={() => { if (!props.disabled) { router.push(`c/${props.data.commentId}`) } }} className='reply-btn'>답글</button>
+              : <button onClick={() => { if (!props.disabled) { router.push(`comments/${props.data.commentId}`) } }} className='reply-btn'>답글</button>
             }
           </>
           : <div className='flex flex-row text-12 text-gray3' id='comment-datetime'>

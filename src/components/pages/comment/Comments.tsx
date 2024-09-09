@@ -5,8 +5,8 @@ import { CommentProps, LoadingSkeleton, MoreButton } from '@/components/common';
 import { CommentBlock } from './CommentBlock';
 
 interface CommentsProps {
-  postId: any; setCount: any; setOpenD: any; setTargetM: any; isLoading: boolean; setLoading: any;
-  tmp: any[]; setTmp: any; setTmpP: any; tmpP?: number;
+  origin: 'event' | 'event/recruitment'; originId: any; setCount: any; setOpenD: any; setTargetM: any; 
+  isLoading: boolean; setLoading: any; tmp: any[]; setTmp: any; setTmpP: any; tmpP?: number;
 }
 export function Comments(props: CommentsProps) {
   const [comments, setComments] = useState<CommentProps[]>([]);
@@ -18,7 +18,7 @@ export function Comments(props: CommentsProps) {
   }
 
   const initialSet = useRef(false);
-  useEffectRefreshComment('CMT', `/api/post/${props.postId}/comment?sort=createdAt,desc&size=10`, initialSet, page, setPage,
+  useEffectRefreshComment('CMT', `/api/${props.origin}/${props.originId}/comment?sort=createdAt,desc&size=10`, initialSet, page, setPage,
     props.setCount, props.isLoading, props.setLoading, setComments, props.tmp, props.setTmp, props.setTmpP, props.tmpP)
   // console.log('&& ', comments)
   // if (props.isLoading && page.current === 0) { return <LoadingSkeleton type='CMT' /> }
@@ -28,7 +28,7 @@ export function Comments(props: CommentsProps) {
       <div className='flex flex-col w-full min-h-[calc(100vh-104px)] pb-[88px] bg-gray1'>
         {comments.map((comment: CommentProps, idx: number) => (
           <div key={`cmt-${idx}`} className={idx % 2 == 0 ? 'bg-p-white px-[16px] py-[12px]' : 'bg-gray1 px-[16px] py-[12px]'}>
-            <CommentBlock opt='CMT' data={comment} setOpenD={props.setOpenD} setTargetM={props.setTargetM} />
+            <CommentBlock opt='CMT' data={comment} setOpenD={props.setOpenD} setTargetM={props.setTargetM} origin={props.origin} />
           </div>
         ))
         }
