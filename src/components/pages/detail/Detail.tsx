@@ -6,7 +6,7 @@ import ShareDialog from "./ShareDialog";
 import { PostSlide, PostTitle, PostInfo, PostContentMap, PostContentTag, PostTools, PostDrawer } from "./DetailElements";
 
 interface DetailsProps {
-  opt: 'EVT' | 'RCT'; data: DetailProps | RDetailProps; liked: boolean; likeCount?: number; handleLike: any; saved?: boolean; handleCalendar?: any;
+  opt: 'EVT' | 'RCT'; data: DetailProps | RDetailProps; liked: boolean; likeCount?: number; handleLike: any; saved: boolean; handleCalendar: any;
 }
 export const Detail = (props: DetailsProps) => {
   const [popopen, setPopopen] = useState(false);
@@ -68,7 +68,7 @@ export const Detail = (props: DetailsProps) => {
           <div>
             <Divider />
             <PostTools opt='RCT' handleOpen={handleOpen} likeCount={props.likeCount} liked={props.liked} handleLike={props.handleLike}
-              commentCount={data.post.commentCount} commentURL={commentURL} />
+              commentCount={data.post.commentCount} commentURL={commentURL} saved={props.saved} handleCalendar={props.handleCalendar} />
           </div>
         </div>
         <PostDrawer open={openD} toggleDrawer={toggleDrawer} />

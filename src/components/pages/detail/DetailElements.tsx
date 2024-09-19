@@ -149,7 +149,7 @@ export function PostContentMap(props: { address: string; lat: number; lng: numbe
 
 interface PostToolsProps {
   opt: 'EVT' | 'RCT'; handleOpen: any; likeCount?: number; liked: boolean; handleLike: any;
-  commentCount: number; commentURL: string; saved?: boolean; handleCalendar?: any;
+  commentCount: number; commentURL: string; saved: boolean; handleCalendar: any;
 }
 export function PostTools(props: PostToolsProps) {
   return (
@@ -165,7 +165,8 @@ export function PostTools(props: PostToolsProps) {
         </a>
       </div>
       <div className='flex flex-row gap-[10px]'>
-        {props.opt === 'EVT' && props.saved !== undefined ? <button onClick={props.handleCalendar}><CalIcn val={props.saved} /></button> : <></>}
+        {/* {props.opt === 'EVT' && props.saved !== undefined ? <button onClick={props.handleCalendar}><CalIcn val={props.saved} /></button> : <></>} */}
+        <button onClick={props.handleCalendar}><CalIcn val={props.saved} /></button>
         <button onClick={props.handleOpen}><ShareIcn /></button>
       </div>
     </div>
