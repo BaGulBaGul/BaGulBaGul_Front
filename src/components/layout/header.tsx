@@ -1,21 +1,10 @@
 "use client";
-import React, { useState, useEffect } from 'react'
-import { call } from '@/service/ApiService';
+import React from 'react'
 import { MagnifyingIcn } from '../common/styles/Icon';
-// import { isSigned } from '@/service/ApiService';
+import useLoginInfo from '@/hooks/useLoginInfo';
 
 function Header(props: { opt?: 'NF' }) {
-  // opt 'NF' -> non fixed
-  const [profileURL, setProfileURL] = useState('')
-  useEffect(() => {
-    call('/api/user/info/my', "GET", null)
-      .then((response) => {
-        if (response.errorCode === 'C00000') {
-          if (setProfileURL) { setProfileURL(response.data.imageURI) }
-        }
-      }).catch((error) => { return null });
-  }, [])
-
+  const data = useLoginInfo()
   return (
     <header className={`${props.opt && props.opt === 'NF' ? '' : 'fixed top-0 left-0 right-0 '}flex flex-row justify-between w-full px-[16px] py-[10px] bg-p-white
       lg:px-[360px] lg:pt-[58px] z-30`}>
@@ -27,12 +16,10 @@ function Header(props: { opt?: 'NF' }) {
           <a href="/search"><MagnifyingIcn size={24} /></a>
         </p>
         <a className="flex place-items-center" href="/user/mypage">
-          {/* <img className='w-[24px] h-[24px] rounded-full' src={profileURL && profileURL.length > 0 ? profileURL : "/profile_main.svg"} alt="마이페이지 아이콘" /> */}
-          <img className='w-[24px] h-[24px] rounded-full' src={profileURL && profileURL.length > 0 ? '/images/profile_pic.png' : "/profile_main.svg"} alt="마이페이지 아이콘" />
+          <img className='w-[24px] h-[24px] rounded-full' src={!!data && !!data.imageURI ? '/images/profile_pic.png' : "/profile_main.svg"} alt="마이페이지 아이콘" />
         </a>
       </div>
     </header>
-    // </div>
   )
 }
 export default Header;

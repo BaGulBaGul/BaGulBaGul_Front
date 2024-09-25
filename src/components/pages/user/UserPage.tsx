@@ -1,20 +1,22 @@
 "use client";
 import { UserInfoProps } from "@/components/common";
 import { CalIcn, LikeIcn, PostEditIcn } from "@/components/common/styles/Icon";
+import useLoginInfo from "@/hooks/useLoginInfo";
 import { call } from "@/service/ApiService";
 import React, { useEffect, useState } from "react";
 
 export const MyPage = () => {
-  const [userinfo, setUserinfo] = useState<UserInfoProps>();
-  useEffect(() => {
-    call('/api/user/info/my', 'GET', null)
-      .then((response) => {
-        console.log(response)
-        if (response.errorCode === "C00000") {
-          setUserinfo(response.data)
-        }
-      })
-  }, [])
+  // const [userinfo, setUserinfo] = useState<UserInfoProps>();
+  // useEffect(() => {
+  //   call('/api/user/info/my', 'GET', null)
+  //     .then((response) => {
+  //       console.log(response)
+  //       if (response.errorCode === "C00000") {
+  //         setUserinfo(response.data)
+  //       }
+  //     })
+  // }, [])
+  const userinfo = useLoginInfo()
 
   const IconChangeButton = () => {
     return (

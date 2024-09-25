@@ -4,6 +4,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import type { Viewport } from 'next'
 import AlarmHeader from '@/components/common/AlarmHeader';
+import ReactQueryProviders from '@/hooks/useReactQuery';
 
 export const metadata = {
   title: '바글바글',
@@ -30,8 +31,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script type="text/javascript" src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO}&libraries=services`}></script>
       </head>
       <body>
-        <AlarmHeader />
-        {children}
+        <ReactQueryProviders>
+          <AlarmHeader />
+          {children}
+        </ReactQueryProviders>
       </body>
     </html>
   )
