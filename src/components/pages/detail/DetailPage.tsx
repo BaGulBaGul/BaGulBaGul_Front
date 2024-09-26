@@ -1,69 +1,40 @@
-'use client';
-import { useState } from 'react';
-import { call } from '@/service/ApiService';
-import { useEffectDetail, applyLike, typeString } from '@/service/Functions';
-import { LoadingSkeleton, DetailProps, RDetailProps } from '@/components/common';
+import { typeString } from '@/service/Functions';
+import { LoadingSkeleton } from '@/components/common';
 import SubHeader from '@/components/layout/subHeader';
 import { Detail } from '@/components/pages/detail';
+import useLoginInfo from '@/hooks/useLoginInfo';
+import { useAddLike, useAddSave, useDetailInfo, useDetailLike, useDetailSave } from '@/hooks/useInDetail';
 
 export function DetailPage(props: { origin: 'event' | 'event/recruitment'; postId: any; }) {
-  const [isLoading, setLoading] = useState(true)
-  const [data, setData] = useState<DetailProps | RDetailProps>()
-  const [liked, setLiked] = useState(false)
-  const [likeCount, setLikeCount] = useState<number>()
-  const [saved, setSaved] = useState(false)
-  // * 임시 로그인여부 파악용
-  const [loginfo, setLoginfo] = useState(false)
+  const userinfo = useLoginInfo()
 
-  useEffectDetail(props.origin, props.postId, setData, setLoading, setLiked, setLikeCount, setLoginfo, setSaved)
+  const { data: data, isLoading: isLoadingD, isError: isErrorD } = useDetailInfo(props.origin, props.postId)
+  const { data: liked, isLoading: isLoadingL, isError: isErrorL } = useDetailLike(props.origin, props.postId, userinfo)
+  const { data: saved, isLoading: isLoadingS, isError: isErrorS } = useDetailSave(props.origin, props.postId, userinfo)
 
-  const handleLike = () => {
-    applyLike(loginfo, liked, `/api/${props.origin}/${props.postId}/like`, setLiked, setLikeCount)
+  const mutateLike = useAddLike(props.origin, props.postId, liked)
+  const handleLike = () => { if (!!userinfo) { mutateLike.mutate() } }
+  const mutateSave = useAddSave(props.origin, props.postId, saved)
+  const handleCalendar = () => { if (!!userinfo) { mutateSave.mutate() } }
+
+  if (isLoadingD) {
+    return (<>{props.origin === 'event' ? <LoadingSkeleton type={'DTLE'} /> : <LoadingSkeleton type={'DTLR'} />}</>)
   }
-  const handleCalendar = () => {
-    if (loginfo) {
-      let urlRoot = props.origin === 'event' ? 'event' : 'recruitment'
-      if (!saved) {
-        call(`/api/user/calendar/${urlRoot}/${props.postId}`, "POST", null)
-          .then((response) => {
-            if (response.errorCode === 'C00000') {
-              setSaved(true)
-              console.log('캘린더에 추가됨')
-            }
-          }).catch((error) => console.error(error));
-      } else {
-        call(`/api/user/calendar/${urlRoot}/${props.postId}`, "DELETE", null)
-          .then((response) => {
-            if (response.errorCode === 'C00000') {
-              setSaved(false)
-              console.log('캘린더에서 제외됨')
-            }
-          }).catch((error) => console.error(error));
-      }
-    }
-  }
-
+  // if (isErrorD) {}
   return (
-    <>{
-      props.origin === 'event'
-        ? <>
-          <SubHeader name={data ? typeString[(data as DetailProps).event.type as string] : ''} />
-          <div className='flex flex-col w-full'>
-            {isLoading ? <LoadingSkeleton type={'DTLE'} />
-              : data && Object.keys(data).length > 0
-                ? <Detail opt='EVT' data={data} liked={liked} likeCount={likeCount} handleLike={handleLike} saved={saved} handleCalendar={handleCalendar} /> : <></>
-            }
-          </div>
-        </>
-        : <>
-          <SubHeader name='모집글' />
-          <div className='flex flex-col w-full'>
-            {isLoading ? <LoadingSkeleton type={'DTLR'} />
-              : data && Object.keys(data).length > 0
-                ? <Detail opt='RCT' data={data} liked={liked} likeCount={likeCount} handleLike={handleLike} saved={saved} handleCalendar={handleCalendar} /> : <></>
-            }
-          </div>
-        </>
+    <>{props.origin === 'event'
+      ? <>
+        <SubHeader name={data ? typeString[data.event.type as string] : ''} />
+        {data && Object.keys(data).length > 0
+          ? <Detail opt='EVT' data={data} liked={liked} likeCount={data.post.likeCount} handleLike={handleLike} saved={saved} handleCalendar={handleCalendar} /> : <></>
+        }
+      </>
+      : <>
+        <SubHeader name='모집글' />
+        {data && Object.keys(data).length > 0
+          ? <Detail opt='RCT' data={data} liked={liked} likeCount={data.post.likeCount} handleLike={handleLike} saved={saved} handleCalendar={handleCalendar} /> : <></>
+        }
+      </>
     }</>
   );
 }

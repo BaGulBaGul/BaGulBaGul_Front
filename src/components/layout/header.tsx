@@ -2,6 +2,7 @@
 import React from 'react'
 import { MagnifyingIcn } from '../common/styles/Icon';
 import useLoginInfo from '@/hooks/useLoginInfo';
+import Link from 'next/link';
 
 function Header(props: { opt?: 'NF' }) {
   const data = useLoginInfo()
@@ -13,11 +14,11 @@ function Header(props: { opt?: 'NF' }) {
       </p>
       <div className='flex flex-row gap-[10px]'>
         <p className="flex w-6 h-6 relative">
-          <a href="/search"><MagnifyingIcn size={24} /></a>
+          <Link href="/search"><MagnifyingIcn size={24} /></Link>
         </p>
-        <a className="flex place-items-center" href="/user/mypage">
+        <Link className="flex place-items-center" href="/user/mypage">
           <img className='w-[24px] h-[24px] rounded-full' src={!!data && !!data.imageURI ? '/images/profile_pic.png' : "/profile_main.svg"} alt="마이페이지 아이콘" />
-        </a>
+        </Link>
       </div>
     </header>
   )

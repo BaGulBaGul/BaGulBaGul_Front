@@ -5,6 +5,7 @@ import { CmtLikeIcn, VerticalMoreIcn } from "@/components/common/styles/Icon";
 import { CommentProps, NoUser } from "@/components/common";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const handleToggle = (e: MouseEvent, opt: 'CMT' | 'RPL', setOpenD: any, setTargetM: any, value: any) => {
   e.stopPropagation();
@@ -33,11 +34,11 @@ export function CommentBlock(props: CommentBlockProps) {
         ? <>
           <div className='flex flex-row justify-between pb-[10px]' id='comment-head'>
             {props.data.userId === null ? <NoUser />
-              : <a href={`/user/${props.data.userId}`} className='flex flex-row items-center gap-[8px]'>
+              : <Link href={`/user/${props.data.userId}`} className='flex flex-row items-center gap-[8px]'>
                 {/* <img className='rounded-full w-[24px] h-[24px]' src={props.data.userProfileImageUrl ?? '/profile_main.svg'} /> */}
                 <img className='w-[24px] h-[24px] rounded-full' src="/profile_main.svg" />
                 <p className="text-14">{props.data.username}</p>
-              </a>
+              </Link>
             }
             <button onClick={(e) => handleToggle(e, props.opt, props.setOpenD, props.setTargetM, toggleValue)}><VerticalMoreIcn opt='CMT' /></button>
           </div>
@@ -49,11 +50,11 @@ export function CommentBlock(props: CommentBlockProps) {
         : <div onClick={(e) => { props.handleMention(props.data, e) }}>
           <div className='flex flex-row justify-between pb-[10px]' id='comment-head'>
             {props.data.userId === null ? <NoUser />
-              : <a onClick={(e) => { e.stopPropagation(); }} href={`/user/${props.data.userId}`} className='flex flex-row items-center gap-[8px]'>
+              : <Link onClick={(e) => { e.stopPropagation(); }} href={`/user/${props.data.userId}`} className='flex flex-row items-center gap-[8px]'>
                 {/* <img className='rounded-full w-[24px] h-[24px]' src={props.data.userProfileImageUrl ?? '/profile_main.svg'} /> */}
                 <img className='w-[24px] h-[24px] rounded-full' src="/profile_main.svg" />
                 <p className="text-14">{props.data.userName}</p>
-              </a>
+              </Link>
             }
             <button onClick={(e) => handleToggle(e, props.opt, props.setOpenD, props.setTargetM, toggleValue)}><VerticalMoreIcn opt='CMT' /></button>
           </div>

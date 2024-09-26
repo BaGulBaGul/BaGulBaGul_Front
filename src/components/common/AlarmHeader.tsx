@@ -4,9 +4,16 @@ import { alarmSSE } from "../pages/user/AlarmSSE";
 import { createTheme, Snackbar, ThemeProvider, Alert } from "@mui/material";
 import { AlarmCmtIcn } from "../pages/user/AlarmBlock";
 import { useRouter } from "next/navigation";
+import useLoginInfo from '@/hooks/useLoginInfo';
 
 interface SnackbarMessage { message: string; key: number; }
 export default function AlarmHeader() {
+  const data = useLoginInfo()
+  console.log(data)
+  return (<div>{!!data ? <AlarmSnack /> : <></>} </div>)
+}
+
+function AlarmSnack() {
   const [snackPack, setSnackPack] = useState<readonly SnackbarMessage[]>([]);
   const [open, setOpen] = useState(false)
   const [messageInfo, setMessageInfo] = useState<SnackbarMessage | undefined>(undefined);
@@ -26,17 +33,15 @@ export default function AlarmHeader() {
   const handleExited = () => { setMessageInfo(undefined); };
 
   return (
-    <div>
-      <ThemeProvider theme={alarmTheme}>
-        <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'center' }} autoHideDuration={3000}
-          open={open} onClose={handleClose} TransitionProps={{ onExited: handleExited }}
-          key={messageInfo ? messageInfo.key : undefined} >
-          <Alert icon={<AlarmCmtIcn val={false} />} severity="info" sx={{ width: '100%' }}
-            onClick={() => { router.push('/user/mypage/alarm') }}>
-            {messageInfo ? messageInfo.message : ''}</Alert>
-        </Snackbar>
-      </ThemeProvider>
-    </div>
+    <ThemeProvider theme={alarmTheme}>
+      <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'center' }} autoHideDuration={3000}
+        open={open} onClose={handleClose} TransitionProps={{ onExited: handleExited }}
+        key={messageInfo ? messageInfo.key : undefined} >
+        <Alert icon={<AlarmCmtIcn val={false} />} severity="info" sx={{ width: '100%' }}
+          onClick={() => { router.push('/user/mypage/alarm') }}>
+          {messageInfo ? messageInfo.message : ''}</Alert>
+      </Snackbar>
+    </ThemeProvider>
   )
 }
 

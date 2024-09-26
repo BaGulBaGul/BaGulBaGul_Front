@@ -6,6 +6,7 @@ import { MoreButton, NoEvent, TabPanels, PostTab, LikeProps, LikeRProps } from '
 import { LikeIcn } from '@/components/common/styles/Icon';
 import { ViewToggle } from './UserButtons';
 import dayjs from 'dayjs';
+import Link from 'next/link';
 
 export function LikedTab() {
   const [value, setValue] = useState(0);
@@ -99,7 +100,7 @@ function LikedPostBlock(props: { data: LikeProps }) {
     applyLike(true, liked, `/api/event/${props.data.eventId}/like`, setLiked)
   }
   return (
-    <a href={`/event/${props.data.eventId}`} className='flex flex-row px-[16px] py-[18px] gap-[20px]'>
+    <Link href={`/event/${props.data.eventId}`} className='flex flex-row px-[16px] py-[18px] gap-[20px]'>
       <img className='rounded-[4px] h-[104px] w-[84px] min-w-[84px] object-cover' src={props.data.headImageUrl ?? '/default_list_thumb3x.png'} />
       <div className='flex flex-col justify-between w-full'>
         <div className='flex flex-col justify-between w-full'>
@@ -115,7 +116,7 @@ function LikedPostBlock(props: { data: LikeProps }) {
           {props.data.content ?? "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consectetur turpis congue massa laoreet rutrum."}
         </span>
       </div>
-    </a>
+    </Link>
   )
 }
 
@@ -126,7 +127,7 @@ function LikedAccompanyBlock(props: { data: LikeRProps }) {
     applyLike(true, liked, `/api/event/recruitment/${props.data.recruitmentId}/like`, setLiked)
   }
   return (
-    <a href={`/recruitment/${props.data.recruitmentId}`} className='flex flex-col px-[16px] py-[18px] gap-[4px]'>
+    <Link href={`/recruitment/${props.data.recruitmentId}`} className='flex flex-col px-[16px] py-[18px] gap-[4px]'>
       <div className='flex flex-row justify-between items-start'>
         <div className='flex flex-col gap-[4px]'>
           <span className='text-14 text-gray3'>{dayjs(props.data.startDate).format('YY.MM.DD')}</span>
@@ -137,6 +138,6 @@ function LikedAccompanyBlock(props: { data: LikeRProps }) {
           <LikeIcn val={liked} />
         </button>
       </div>
-    </a>
+    </Link>
   )
 }

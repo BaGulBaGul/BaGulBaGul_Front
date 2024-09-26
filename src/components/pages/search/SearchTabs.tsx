@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react"
 import { call } from "@/service/ApiService"
 import { ReadonlyURLSearchParams } from "next/navigation"
 import dayjs from "dayjs"
+import Link from "next/link"
 
 export function SearchTabs(props: { opt: 'TTL' | 'TAG'; sp: ReadonlyURLSearchParams }) {
   // const searchParams = useSearchParams()
@@ -102,7 +103,7 @@ function ResultBlock(props: { data: ListProps; opt: 0 | 1; }) {
   if (props.data.event.type !== 'PARTY') {
     return (
       <div className="flex flex-col justify-between py-[18px] px-[16px]">
-        <a href={urlLink} className='flex flex-row justify-between items-center'>
+        <Link href={urlLink} className='flex flex-row justify-between items-center'>
           <div className='flex flex-col justify-between w-[230px] h-[116px]'>
             <div className='flex flex-col gap-[4px]'>
               <p className='text-16 font-semibold truncate'>{props.data.post.title}</p>
@@ -113,32 +114,32 @@ function ResultBlock(props: { data: ListProps; opt: 0 | 1; }) {
             </div>
             <div className='flex flex-row items-center gap-[4px] text-14'>
               {props.data.post.writer.userId === null ? <NoUser />
-                : <a href={`/user/${props.data.post.writer.userId}`} className='flex flex-row items-center gap-[4px]'>
+                : <Link href={`/user/${props.data.post.writer.userId}`} className='flex flex-row items-center gap-[4px]'>
                   {/* <img className='rounded-full w-[24px] h-[24px]' src={props.data.post.writer.userProfileImageUrl ?? '/profile_main.svg'} /> */}
                   <img className='rounded-full w-[24px] h-[24px]' src="/profile_main.svg" />
                   <p className="text-black">{props.data.post.writer.userName}</p>
-                </a>
+                </Link>
               }
             </div>
           </div>
           <img className='rounded-[4px] w-[92px] h-[116px] object-cover' src={props.data.post.headImageUrl ?? '/default_list_thumb3x.png'} />
-        </a>
+        </Link>
         {props.opt === 1 ? <HashtagAccordion tag={props.data.post.tags} /> : <></>}
       </div>
     )
   } else {
     return (
       <div className="flex flex-col justify-between py-[18px] px-[16px]">
-        <a href={urlLink} className='flex flex-col items-start gap-[4px]'>
+        <Link href={urlLink} className='flex flex-col items-start gap-[4px]'>
           <p className='text-16 font-semibold truncate'>{props.data.post.title}</p>
           <p className='text-14 text-gray3'>{FormatDateRange(props.data.event.startDate, props.data.event.endDate)}</p>
           <div className='flex flex-row items-center gap-[4px] text-14'>
             {props.data.post.writer.userId === null ? <NoUser />
-              : <a href={`/user/${props.data.post.writer.userId}`} className='flex flex-row items-center gap-[4px]'>
+              : <Link href={`/user/${props.data.post.writer.userId}`} className='flex flex-row items-center gap-[4px]'>
                 {/* <img className='rounded-full w-[24px] h-[24px]' src={props.data.post.writer.userProfileImageUrl ?? '/profile_main.svg'} /> */}
                 <img className='rounded-full w-[24px] h-[24px]' src="/profile_main.svg" />
                 <p className="text-black">{props.data.post.writer.userName}</p>
-              </a>
+              </Link>
             }
             <DividerDot />
             <p className='text-gray3'>{`${props.data.event.currentHeadCount}/${props.data.event.maxHeadCount}(명)`}</p>
@@ -146,7 +147,7 @@ function ResultBlock(props: { data: ListProps; opt: 0 | 1; }) {
               : <p className="done-chip">모집완료</p>
             }
           </div>
-        </a>
+        </Link>
         {props.opt === 1 ? <HashtagAccordion tag={props.data.post.tags} /> : <></>}
       </div>
     )

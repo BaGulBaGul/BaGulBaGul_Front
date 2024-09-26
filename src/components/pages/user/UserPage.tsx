@@ -1,23 +1,13 @@
 "use client";
-import { UserInfoProps } from "@/components/common";
+import React from "react";
+import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
 import { CalIcn, LikeIcn, PostEditIcn } from "@/components/common/styles/Icon";
 import useLoginInfo from "@/hooks/useLoginInfo";
-import { call } from "@/service/ApiService";
-import React, { useEffect, useState } from "react";
+import { fetchFromURL } from "@/service/ApiService";
 
 export const MyPage = () => {
-  // const [userinfo, setUserinfo] = useState<UserInfoProps>();
-  // useEffect(() => {
-  //   call('/api/user/info/my', 'GET', null)
-  //     .then((response) => {
-  //       console.log(response)
-  //       if (response.errorCode === "C00000") {
-  //         setUserinfo(response.data)
-  //       }
-  //     })
-  // }, [])
   const userinfo = useLoginInfo()
-
   const IconChangeButton = () => {
     return (
       <button className="absolute right-0 bottom-0 w-[30px] h-[30px] z-10">
@@ -71,16 +61,10 @@ export const MyPage = () => {
 }
 
 export const UserPage = (props: { userId: number }) => {
-  const [userinfo, setUserinfo] = useState<UserInfoProps>();
-  useEffect(() => {
-    call(`/api/user/info/${props.userId}`, 'GET', null)
-      .then((response) => {
-        console.log(response)
-        if (response.errorCode === "C00000") {
-          setUserinfo(response.data)
-        }
-      })
-  }, [])
+  const { data: userinfo, isLoading, isError } = useQuery({ 
+    queryKey: ['user', props.userId], queryFn: () => fetchFromURL(`/api/user/info/${props.userId}`, false) })
+  // if (isLoading) {}
+  // if (isError) {}
   return (
     <div className="pt-[60px]">
       <div className="flex flex-col mb-[11px]">
@@ -108,7 +92,7 @@ export const UserPage = (props: { userId: number }) => {
 
 const SetBlock = (props: { opt: 0 | 1; icon?: any; title: string; count?: number; url: string; }) => {
   return (
-    <a href={props.url}
+    <Link href={props.url}
       className="flex flex-row justify-between p-[16px] text-14 text-black">
       <div className="flex flex-row items-center gap-[8px]">
         {props.icon ? <div className="w-[24px] h-[24px]">{props.icon}</div> : <></>}
@@ -118,7 +102,7 @@ const SetBlock = (props: { opt: 0 | 1; icon?: any; title: string; count?: number
         {props.opt === 1 ? <></> : <span>{props.count || props.count === 0 ? props.count : '-'}개</span>}
         <img src='/arrow_next.svg' className="p-[4px] w-[24px] h-[24px]" />
       </div>
-    </a>
+    </Link>
   )
 }
 

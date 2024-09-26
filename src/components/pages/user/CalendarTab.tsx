@@ -1,8 +1,9 @@
 "use client";
+import Link from 'next/link';
 import { CalProps, NoEvent, Divider, NoUser } from '@/components/common';
+import { DividerDot } from '@/components/common/styles/Icon';
 import { FormatDateRange, typeString } from '@/service/Functions';
 import dayjs from 'dayjs';
-import { DividerDot } from '@/components/common/styles/Icon';
 
 export function CalendarTab(props: { focusDay: any; events?: { [key: string]: any[] }; isLoading: boolean; router: any; }) {
   const focusedEvent = props.events === undefined ? [] : props.events[dayjs(props.focusDay).format('YYYY-MM-DD')] ?? []
@@ -40,11 +41,11 @@ function CalendarBlock(props: { data: CalProps; router: any }) {
             </div>
             <div className='flex flex-row items-center gap-[4px]'>
               {props.data.userId === null ? <NoUser />
-                : <a href={`/user/${props.data.userId}`} className='flex flex-row items-center gap-[4px]'>
+                : <Link href={`/user/${props.data.userId}`} className='flex flex-row items-center gap-[4px]'>
                   {/* <img className='rounded-full w-[24px] h-[24px]' src={props.data.userProfileImageUrl ?? '/profile_main.svg'} /> */}
                   <img className='rounded-full w-[24px] h-[24px]' src="/profile_main.svg" />
                   <p className="text-14 text-black">{props.data.userName ?? '-'}</p>
-                </a>
+                </Link>
               }
               {props.data.type === 'PARTY' && props.data.currentHeadCount && props.data.maxHeadCount
                 ? <>
@@ -71,11 +72,11 @@ function CalendarBlock(props: { data: CalProps; router: any }) {
             </div>
             <div className='flex flex-row items-center gap-[4px]'>
               {props.data.userId === null ? <NoUser />
-                : <a href={`/user/${props.data.userId}`} className='flex flex-row items-center gap-[4px]'>
+                : <Link href={`/user/${props.data.userId}`} className='flex flex-row items-center gap-[4px]'>
                   {/* <img className='rounded-full w-[24px] h-[24px]' src={props.data.userProfileImageUrl ?? '/profile_main.svg'} /> */}
                   <img className='rounded-full w-[24px] h-[24px]' src="/profile_main.svg" />
                   <p className="text-14 text-black">{props.data.userName ?? '-'}</p>
-                </a>
+                </Link>
               }
               <DividerDot />
               <p className='text-gray3'>{`${props.data.currentHeadCount ?? 0}/${props.data.maxHeadCount ?? 0}(명)`}</p>

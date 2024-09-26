@@ -38,6 +38,17 @@ export async function call(api: string, method: string, request?: any) {
   })
 }
 
+export const fetchFromURL = async (apiURL: string, cred: boolean) => {
+  const data = cred ? await fetch(`${API_BASE_URL}${apiURL}`, { credentials: 'include' }) : await fetch(`${API_BASE_URL}${apiURL}`)
+  const json = await data.json();
+  return json.data;
+}
+export const mutateForURL = async (apiURL: string, method: string) => {
+  const data = await fetch(`${API_BASE_URL}${apiURL}`, { method: method, credentials: 'include' })
+  const json = await data.json()
+  return json.data;
+}
+
 export async function isSigned(cookies?: any) {
   try {
     const res = await fetch(

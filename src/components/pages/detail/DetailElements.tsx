@@ -9,6 +9,7 @@ import { HashtagButton } from "../../common/HashtagAccordion";
 import { LikeIcn, CalIcn, VerticalMoreIcn } from "../../common/styles/Icon";
 import { NoUser } from "../../common";
 import dayjs from "dayjs";
+import Link from "next/link";
 
 export function PostSlide(props: { images: string[] }) {
   const [index, setIndex] = useState(0);
@@ -54,10 +55,10 @@ export function PostTitle(props: PostTitleProps) {
       </div>
       <div className='flex flex-row justify-between items-center pt-[4px]'>
         {props.userId === null ? <NoUser />
-          : <a href={`/user/${props.userId}`} className='flex flex-row items-center gap-[4px]'>
+          : <Link href={`/user/${props.userId}`} className='flex flex-row items-center gap-[4px]'>
             <img className='w-[24px] h-[24px] rounded-full' src={"/images/profile_pic.png"} />
             <p className='text-14 text-gray3'>{props.userName}</p>
-          </a>
+          </Link>
         }
         {props.categories !== undefined
           ? <div className='flex flex-row gap-[8px]'>
@@ -159,10 +160,10 @@ export function PostTools(props: PostToolsProps) {
           <LikeIcn val={props.liked} />
           <p>{props.likeCount}</p>
         </button>
-        <a className="flex flex-row items-center gap-[4px]" href={props.commentURL}>
+        <Link className="flex flex-row items-center gap-[4px]" href={props.commentURL}>
           <CmtIcn />
           <p>{props.commentCount}</p>
-        </a>
+        </Link>
       </div>
       <div className='flex flex-row gap-[10px]'>
         {/* {props.opt === 'EVT' && props.saved !== undefined ? <button onClick={props.handleCalendar}><CalIcn val={props.saved} /></button> : <></>} */}

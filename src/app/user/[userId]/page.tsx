@@ -1,6 +1,7 @@
 "use client";
 import { SubTopHeader } from "@/components/layout/subHeader";
 import { MyPage, UserPage } from '@/components/pages/user'
+import Link from "next/link";
 import React, { useState } from "react";
 
 export default function Page({ params }: { params: { userId: 'mypage' | number } }) {
@@ -18,12 +19,12 @@ export default function Page({ params }: { params: { userId: 'mypage' | number }
 const AlarmButton = () => {
   const [isAlarm, setIsAlarm] = useState<boolean>(true);
   return (
-    <a href='/user/mypage/alarm' className='relative w-[24px] h-[24px]'>
+    <Link href='/user/mypage/alarm' className='relative w-[24px] h-[24px]'>
       <AlarmIcn />
       {!isAlarm ? <></>
         : <div id='alarm-check' className="absolute top-0 right-[3px] w-[8px] h-[8px] bg-primary-blue rounded-full z-10"></div>
       }
-    </a>
+    </Link>
   )
 }
 

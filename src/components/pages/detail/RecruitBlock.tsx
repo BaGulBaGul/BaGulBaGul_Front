@@ -1,6 +1,7 @@
 import { DividerDot } from "@/components/common/styles/Icon";
 import { NoUser, RListProps, HashtagAccordion } from "@/components/common";
 import dayjs from "dayjs";
+import Link from "next/link";
 
 export function RecruitBlock(props: { data: RListProps, router: any }) {
   return (
@@ -11,11 +12,11 @@ export function RecruitBlock(props: { data: RListProps, router: any }) {
         <div className='flex flex-row items-center gap-[8px]'>
           <div className='flex flex-row items-center gap-[4px] text-14'>
             {props.data.post.writer.userId === null ? <NoUser />
-              : <a href={`/user/${props.data.post.writer.userId}`} className='flex flex-row items-center gap-[4px]'>
+              : <Link href={`/user/${props.data.post.writer.userId}`} className='flex flex-row items-center gap-[4px]'>
                 {/* <img className='rounded-full w-[24px] h-[24px]' src={props.data.post.writer.userProfileImageUrl ?? '/profile_main.svg'} /> */}
                 <img className='rounded-full w-[24px] h-[24px]' src="/profile_main.svg" />
                 <p className="text-black">{props.data.post.writer.userName}</p>
-              </a>
+              </Link>
             }
             <DividerDot />
             <p className='text-gray3'>{`${props.data.recruitment.currentHeadCount}/${props.data.recruitment.maxHeadCount}(명)`}</p>
