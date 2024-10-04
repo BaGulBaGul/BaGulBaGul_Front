@@ -1,5 +1,5 @@
 import { SubTopHeader } from '@/components/layout/subHeader';
-import { EditButton, LikedTab } from '@/components/pages/user';
+import { LikedTab } from '@/components/pages/user';
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function Page({ params }: { params: { userId: 'mypage' | number } }) {
   return (
     <>
-      <SubTopHeader name='좋아요' child={<EditButton/>} />
+      <SubTopHeader name='좋아요' />
       <LikedTab />
     </>
   );

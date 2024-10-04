@@ -38,6 +38,14 @@ export async function call(api: string, method: string, request?: any) {
   })
 }
 
+export const fetchFromURLWithPage = async (apiURL: string, { pageParam }: any) => {
+  console.log('apiURL: ', apiURL);
+  console.log('pageParam: ', pageParam);
+  const data = await fetch(`${API_BASE_URL}${apiURL}&page=${pageParam}`, { credentials: 'include' })
+  const json = await data.json();
+  console.log(json.data)
+  return json.data;
+}
 export const fetchFromURL = async (apiURL: string, cred: boolean) => {
   const data = cred ? await fetch(`${API_BASE_URL}${apiURL}`, { credentials: 'include' }) : await fetch(`${API_BASE_URL}${apiURL}`)
   const json = await data.json();
@@ -46,6 +54,7 @@ export const fetchFromURL = async (apiURL: string, cred: boolean) => {
 export const mutateForURL = async (apiURL: string, method: string) => {
   const data = await fetch(`${API_BASE_URL}${apiURL}`, { method: method, credentials: 'include' })
   const json = await data.json()
+  console.log(json)
   return json.data;
 }
 

@@ -4,14 +4,14 @@ export const alarmSSE = async (setOpen: any, setSnackPack: any) => {
     eventSource = new EventSource(`${process.env.NEXT_PUBLIC_ALARM_BASE_URL}/alarm/subscribe`, { withCredentials: true });
     console.info("Listenting on SEE", eventSource);
 
-    eventSource.onmessage = async (e: MessageEvent) => {
+    eventSource.addEventListener("message", async (e: MessageEvent) => {
       const res = await e.data;
-      console.log(res)
       if (res !== 'HB') {
+        const alarmData = JSON.parse(res)
         setOpen(true)
-        setSnackPack((prev: any) => [...prev, { message: e.data, key: new Date().getTime() }]);
+        setSnackPack((prev: any) => [...prev, alarmData]);
       }
-    }
+    })
   } catch (error) { }
 
   return {

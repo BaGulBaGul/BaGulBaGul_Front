@@ -7,7 +7,7 @@ export const EditButton = () => {
 }
 
 export const ViewToggle = (props: { view: string; setView: Dispatch<SetStateAction<string>> }) => {
-  const handleView = (event: React.MouseEvent<HTMLElement>, newVal: string | null) => {
+  const handleView = (e: React.MouseEvent<HTMLElement>, newVal: string | null) => {
     if (newVal !== null) { props.setView(newVal); }
   }
   return (

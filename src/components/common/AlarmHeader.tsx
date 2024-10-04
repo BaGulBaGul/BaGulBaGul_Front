@@ -2,14 +2,14 @@
 import { useEffect, useState } from "react";
 import { alarmSSE } from "../pages/user/AlarmSSE";
 import { createTheme, Snackbar, ThemeProvider, Alert } from "@mui/material";
-import { AlarmCmtIcn } from "../pages/user/AlarmBlock";
+import { AlarmIcn } from "../pages/user/AlarmBlock";
 import { useRouter } from "next/navigation";
 import useLoginInfo from '@/hooks/useLoginInfo';
+import dayjs from "dayjs";
 
-interface SnackbarMessage { message: string; key: number; }
+export interface SnackbarMessage { alarmId: number; type: string; title: string; message: string; subject: string; time: string; }
 export default function AlarmHeader() {
   const data = useLoginInfo()
-  console.log(data)
   return (<div>{!!data ? <AlarmSnack /> : <></>} </div>)
 }
 
@@ -36,10 +36,18 @@ function AlarmSnack() {
     <ThemeProvider theme={alarmTheme}>
       <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'center' }} autoHideDuration={3000}
         open={open} onClose={handleClose} TransitionProps={{ onExited: handleExited }}
-        key={messageInfo ? messageInfo.key : undefined} >
-        <Alert icon={<AlarmCmtIcn val={false} />} severity="info" sx={{ width: '100%' }}
-          onClick={() => { router.push('/user/mypage/alarm') }}>
-          {messageInfo ? messageInfo.message : ''}</Alert>
+        key={!!messageInfo ? messageInfo.alarmId : undefined} >
+        {!messageInfo ? <div></div>
+          : <Alert icon={<AlarmIcn type={messageInfo.type} val={false} />} severity="info" sx={{ width: '100%' }}
+            onClick={() => { router.push('/user/mypage/alarm') }}>
+            <div className="flex flex-col gap-[1.5px] text-12">
+              <p className="text-black">{messageInfo.title}</p>
+              <p className="text-gray3">{messageInfo.message ?? ''}</p>
+              <div className="flex flex-row gap-[5px] text-gray3">
+                <p>{dayjs(messageInfo.time).format('YY.MM.DD')}</p><p>{dayjs(messageInfo.time).format('HH:mm')}</p>
+              </div>
+            </div>
+          </Alert>}
       </Snackbar>
     </ThemeProvider>
   )
@@ -55,7 +63,8 @@ const alarmTheme = createTheme({
           backdropFilter: 'blur(50px)', boxShadow: 'unset',
           borderRadius: '8px', fontSize: '12px', lineHeight: '140%', fontFamily: 'inherit'
         },
-        icon: { padding: 'unset', marginRight: '18px' }
+        icon: { padding: 'unset', marginRight: '18px' },
+        message: {padding: 'unset'},
       }
     }
   },

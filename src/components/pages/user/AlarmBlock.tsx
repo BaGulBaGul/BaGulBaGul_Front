@@ -1,16 +1,16 @@
 import { AlarmProps } from "@/components/common";
 import { DeleteIcn } from "@/components/common/styles/Icon";
+import { handleClickAlarm } from "@/service/Functions";
 import dayjs from "dayjs";
 
-export const AlarmBlock = (props: { data: AlarmProps, handleClick: any, handleDelete: any }) => {
+export const AlarmBlock = (props: { data: AlarmProps, handleDelete: any, router: any; }) => {
   return (
     <div className="flex flex-row w-full px-[16px] py-[10px] gap-[20px]">
       <div className="w-[30px] h-[30px]">
-        {props.data.type === 'NEW_COMMENT' || props.data.type === 'NEW_COMMENT_CHILD'
-          ? <AlarmCmtIcn val={props.data.checked} /> : <AlarmLikeIcn val={props.data.checked} />}
+        <AlarmIcn type={props.data.type} val={props.data.checked} />
       </div>
       <div className="flex flex-row items-start gap-[8px]">
-        <div onClick={(e) => { props.handleClick(e, props.data.alarmId, props.data.checked, props.data.subject, props.data.type) }}
+        <div onClick={(e) => { handleClickAlarm(e, props.router, props.data.alarmId, props.data.checked, props.data.subject, props.data.type) }}
           className="flex flex-col gap-[2px] w-[calc(100vw-114px)] cursor-pointer">
           {props.data.checked
             ? <>
@@ -35,6 +35,23 @@ export const AlarmBlock = (props: { data: AlarmProps, handleClick: any, handleDe
   )
 };
 
+export const AlarmIcn = (props: { type: string, val: boolean }) => {
+  switch (props.type) {
+    case "NEW_EVENT_COMMENT":
+    case "NEW_EVENT_COMMENT_CHILD":
+    case "NEW_RECRUITMENT_COMMENT":
+    case "NEW_RECRUITMENT_COMMENT_CHILD":
+      return <AlarmCmtIcn val={props.val} />
+    case "NEW_EVENT_COMMENT_LIKE":
+    case "NEW_EVENT_COMMENT_CHILD_LIKE":
+    case "NEW_RECRUITMENT_COMMENT_LIKE":
+    case "NEW_RECRUITMENT_COMMENT_CHILD_LIKE":
+    case "NEW_EVENT_LIKE":
+    case "NEW_RECRUITMENT_LIKE":
+      return <AlarmLikeIcn val={props.val} />
+  }
+}
+
 const AlarmLikeIcn = (props: { val: boolean }) => {
   return (
     <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -44,7 +61,7 @@ const AlarmLikeIcn = (props: { val: boolean }) => {
   )
 }
 
-export const AlarmCmtIcn = (props: { val: boolean }) => {
+const AlarmCmtIcn = (props: { val: boolean }) => {
   return (
     <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
       <circle cx="15" cy="15" r="15" fill={props.val ? '#C1C1C1' : '#4A6AFE'} />

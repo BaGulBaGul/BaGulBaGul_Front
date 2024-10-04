@@ -105,7 +105,7 @@ export interface UserInfoProps {
 
 export interface LikeProps {
   eventId: number; startDate: string; endDate: string; title: string; abstractLocation: string;
-  content: string; headImageUrl: string;
+  content: string; headImageUrl: string; userId?: number; userName?: string;
 }
 
 export interface LikeRProps {
