@@ -7,6 +7,7 @@ import { ko } from "date-fns/locale/ko";
 import { getMonth, getYear } from "date-fns";
 import dayjs from "dayjs";
 import { HeadSelect, PartiSelect } from "./Select";
+import { FilterProps } from ".";
 
 interface ViewButtonProps { handleOpen: any; cnt: number; fs: 14 | 18; }
 export function ViewButton(props: ViewButtonProps) {
@@ -28,29 +29,17 @@ const FilterIcn = () => (
     <circle cx="9.43555" cy="17.6069" r="1.5" fill="white" stroke="#6C6C6C" strokeWidth="1.5" />
     <circle cx="14.5645" cy="12" r="1.5" fill="white" stroke="#6C6C6C" strokeWidth="1.5" />
   </svg>
-
 )
 
-interface ViewSelectProps {
-  sort: string; setSort: any; setOpen: any; routeToFilter?: any; dateRange: [any, any]; setDateRange: any;
-  participants: number; setParticipants: any; headCount?: { from?: number, to?: number }; setHeadCount?: any;
-  recruiting?: boolean; setRecruiting?: any; proceeding?: boolean; setProceeding?: any;
-}
+interface ViewSelectProps { p: FilterProps; setP: any; setOpen: any; routeToFilter?: any; }
 export function ViewSelect(props: ViewSelectProps) {
   registerLocale("ko", ko);
-  // 정렬
-  const handleView = (e: ChangeEvent<HTMLInputElement>, newSort: string) => {
-    props.setSort(newSort)
-  }
-  // 모집중
-  const handleRecruiting = (e: React.ChangeEvent<HTMLInputElement>) => {
-    props.setRecruiting(e.target.checked);
-  }
-  // 종료된 행사 제외
-  const handleProceeding = (e: React.ChangeEvent<HTMLInputElement>) => {
-    props.setProceeding(e.target.checked);
-  }
-  // 날짜 캘린더
+  const handleView = (e: ChangeEvent<HTMLInputElement>, newSort: string) => { props.setP((prev: any) => ({ ...prev, sort: newSort })) }
+  const handleRecruiting = (e: React.ChangeEvent<HTMLInputElement>) => { props.setP((prev: any) => ({ ...prev, recruiting: e.target.checked })) }
+  const handleProceeding = (e: React.ChangeEvent<HTMLInputElement>) => { props.setP((prev: any) => ({ ...prev, proceeding: e.target.checked })) }
+  const setParticipants = (value: number) => { props.setP((prev: any) => ({ ...prev, participants: value })) }
+  const setHeadCount = (value: any) => { props.setP((prev: any) => ({ ...prev, headCount: value })) }
+  
   const [openCal, setOpenCal] = useState(false);
   const handleOpenCal = () => { setOpenCal(!openCal) }
   const [openParti, setOpenParti] = useState(false);
@@ -66,8 +55,8 @@ export function ViewSelect(props: ViewSelectProps) {
     if (props.routeToFilter !== undefined) { props.routeToFilter(); }
   }
 
-  const onChange = (dates: [any, any]) => { props.setDateRange(dates) };
-  const [startDate, endDate] = props.dateRange ?? [null, null];
+  const onChange = (dates: [any, any]) => { props.setP((prev: any) => ({ ...prev, dateRange: dates })) };
+  const [startDate, endDate] = props.p.dateRange ?? [undefined, undefined];
 
   return (
     <ThemeProvider theme={viewTheme}>
@@ -78,30 +67,30 @@ export function ViewSelect(props: ViewSelectProps) {
         </div>
         <div className="flex flex-col px-[16px] pb-[20px] gap-[16px]">
           <ThemeProvider theme={viewRadioTheme}>
-            {props.proceeding === undefined ? <></>
+            {props.p.proceeding === undefined ? <></>
               : <div className="flex flex-row justify-between pt-[10px]" id="filter-proceeding">
                 <div className="text-14 pb-[2px]">종료된 행사 제외하기</div>
                 <ThemeProvider theme={viewCheckTheme}>
                   <FormControl>
-                    <FormControlLabel control={<Checkbox checked={props.proceeding} onChange={handleProceeding} />} label="" />
+                    <FormControlLabel control={<Checkbox checked={props.p.proceeding} onChange={handleProceeding} />} label="" />
                   </FormControl>
                 </ThemeProvider>
               </div>
             }
-            {props.recruiting === undefined ? <></>
+            {props.p.recruiting === undefined ? <></>
               : <div className="flex flex-row justify-between pt-[10px]" id="filter-recruiting">
                 <div className="text-14 pb-[2px]">모집 중만 보기</div>
                 <ThemeProvider theme={viewCheckTheme}>
                   <FormControl>
-                    <FormControlLabel control={<Checkbox checked={props.recruiting} onChange={handleRecruiting} />} label="" />
+                    <FormControlLabel control={<Checkbox checked={props.p.recruiting} onChange={handleRecruiting} />} label="" />
                   </FormControl>
                 </ThemeProvider>
               </div>
             }
             <div className="flex flex-col" id="filter-sort">
-              <div className={props.proceeding === undefined && props.recruiting === undefined ? "py-[10px] text-14 font-semibold" : "pb-[10px] text-14 font-semibold"}>정렬</div>
+              <div className={props.p.proceeding === undefined && props.p.recruiting === undefined ? "py-[10px] text-14 font-semibold" : "pb-[10px] text-14 font-semibold"}>정렬</div>
               <FormControl>
-                <RadioGroup row value={props.sort} onChange={handleView}>
+                <RadioGroup row value={props.p.sort} onChange={handleView}>
                   <FormControlLabel value="createdAt,desc" control={<Radio />} label="최신순" />
                   <FormControlLabel value="views,desc" control={<Radio />} label="조회수" />
                   <FormControlLabel value="likeCount,desc" control={<Radio />} label="좋아요수" />
@@ -112,13 +101,13 @@ export function ViewSelect(props: ViewSelectProps) {
             <div className="flex flex-col" id="filter-date">
               <div className="flex flex-row gap-[16px]">
                 <div className="text-14 font-semibold">날짜선택</div>
-                <button onClick={handleOpenCal} className={`filter-btn px-[8px] gap-[8px] ${startDate === null ? '' : 'border-primary-blue'}`}>
-                  <span className={startDate === null ? '' : "text-primary-blue"}>
+                <button onClick={handleOpenCal} className={`filter-btn px-[8px] gap-[8px] ${!!startDate ? 'border-primary-blue':''}`}>
+                  <span className={!!startDate ? "text-primary-blue":''}>
                     <CalIcn val={false} color="currentColor" />
                   </span>
                   <span>
-                    {startDate === null ? <span>날짜를 선택하세요</span>
-                      : endDate === null ? <span>{dayjs(startDate).format('YYYY.MM.DD')} - </span>
+                    {!startDate ? <span>날짜를 선택하세요</span>
+                      : !endDate ? <span>{dayjs(startDate).format('YYYY.MM.DD')} - </span>
                         : <span>{`${dayjs(startDate).format('YYYY.MM.DD')} - ${dayjs(endDate).format('YYYY.MM.DD')}`}</span>
                     }
                   </span>
@@ -139,9 +128,9 @@ export function ViewSelect(props: ViewSelectProps) {
                 />
               </Collapse>
             </div>
-            <PartiSelect openParti={openParti} handleOpenParti={handleOpenParti} participants={props.participants} setParticipants={props.setParticipants} />
-            {props.headCount === undefined ? <></>
-              : <HeadSelect openHead={openHead} handleOpenHead={handleOpenHead} headCount={props.headCount} setHeadCount={props.setHeadCount} />
+            <PartiSelect openParti={openParti} handleOpenParti={handleOpenParti} participants={props.p.participants} setParticipants={setParticipants} />
+            {props.p.headCount === undefined ? <></>
+              : <HeadSelect openHead={openHead} handleOpenHead={handleOpenHead} headCount={props.p.headCount} setHeadCount={setHeadCount} />
             }
           </ThemeProvider>
         </div >

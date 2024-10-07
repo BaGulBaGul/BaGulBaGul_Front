@@ -7,6 +7,7 @@ import { TabPanel, TabPanels } from './TabPanel'
 import { ViewButton, ViewSelect } from './ViewFilter'
 import { ViewFilterApplied } from './ViewFilterApplied'
 import { LoadingSkeleton, LoadingCircle } from './Loading'
+import { InfiniteData } from '@tanstack/react-query'
 
 export {
   CategoryButtons,
@@ -25,11 +26,10 @@ export const Divider = (props: {color?: string;}) => {
 export interface RangeProps { from: undefined | number, to: undefined | number }
 
 export interface ParamProps {
-  title?: string; page: number; categories?: string[] | undefined; type?: string | undefined; sort?: string | undefined;
+  title?: string; page?: number; categories?: string[] | undefined; type?: string | undefined; sort?: string | undefined;
   state?: string; tags?: string; startDate?: string | undefined; endDate?: string | undefined; leftHeadCount?: string | undefined;
   totalHeadCountMax?: string | undefined; totalHeadCountMin?: string | undefined;
 }
-
 
 export interface ListProps {
   event: {
@@ -53,9 +53,13 @@ export interface RListProps {
   }
 }
 
+export interface FilterProps {
+  sort: string; dateRange: (Date | undefined)[]; participants: number;
+  headCount?: RangeProps; proceeding?: boolean; recruiting?: boolean;
+}
+
 export interface TabBlockProps {
-  opt: 0 | 1; events: never[]; page: { current: number; total: number; }; setPage: any; isLoading: boolean;
-  params?: ParamProps, setParams?: any, router?: any;
+  opt: 0 | 1; events: InfiniteData<any, unknown> | undefined; hasNextPage: boolean; handleMore: any; status: any;
 }
 
 export interface DetailProps {
@@ -98,10 +102,10 @@ export interface CalProps {
   currentHeadCount?: number; maxHeadCount?: number;
 }
 
-export interface UserInfoProps {
-  id: number; nickname: string; email: string; profileMessage: string; imageURI: string;
-  writingCount: number; postLikeCount?: number; calendarCount?: number;
-}
+// export interface UserInfoProps {
+//   id: number; nickname: string; email: string; profileMessage: string; imageURI: string;
+//   writingCount: number; postLikeCount?: number; calendarCount?: number;
+// }
 
 export interface LikeProps {
   eventId: number; startDate: string; endDate: string; title: string; abstractLocation: string;

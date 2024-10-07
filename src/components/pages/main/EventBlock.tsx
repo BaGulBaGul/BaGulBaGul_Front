@@ -3,11 +3,7 @@ import { DividerDot } from "@/components/common/styles/Icon"
 import { FormatDateRange } from "@/service/Functions"
 import Link from "next/link"
 
-export function EventBlock(props: { data: ListProps, router: any }) {
-  const handleClick = (e: any) => {
-    e.preventDefault();
-    props.router.push(`/event/${props.data.event.eventId}`)
-  } 
+export function EventBlock(props: { data: ListProps }) {
   return (
     <div className="flex flex-col justify-between py-[18px] px-[16px]">
       <Link href={`/event/${props.data.event.eventId}`} className='flex flex-row justify-between items-center'>

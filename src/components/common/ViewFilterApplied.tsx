@@ -1,27 +1,27 @@
-import { Chip, ThemeProvider } from "@mui/material";
-import { filterChipTheme } from "./ViewFilterTheme";
 import { sortLabel } from "@/service/Functions";
 import { Dispatch, SetStateAction } from "react";
 import dayjs from "dayjs";
+import { FilterProps } from ".";
 
 interface FilterAppliedProps {
-  filterCnt: number; filters: string[], setFilters: Dispatch<SetStateAction<string[]>>; sort: string;
-  dateRange: [any, any]; setDateRange: any; participants: number; setParticipants: any;
-  headCount?: { from: undefined | number, to: undefined | number }; setHeadCount?: any; handleRt?: any;
+  filterCnt: number; filters: string[], setFilters: Dispatch<SetStateAction<string[]>>;
+  p: FilterProps; setP: any; handleRt?: any;
 }
 export const ViewFilterApplied = (props: FilterAppliedProps) => {
-  const [startDate, endDate] = props.dateRange ?? [null, null];
-  const handleDelete = (event: any) => {
-    props.setFilters((props.filters).filter((f) => f !== event.target.parentNode.id))
-    switch (event.target.parentNode.id) {
+  const [startDate, endDate] = props.p.dateRange ?? [null, null];
+  const handleDelete = (e: React.MouseEvent, value: string) => {
+    e.preventDefault();
+    console.log('delete')
+    props.setFilters((props.filters).filter((f) => f !== value))
+    switch (value) {
       case 'dayRange':
-        props.setDateRange([null, null])
+        props.setP((prev: any) => ({ ...prev, dateRange: [null, null] }))
         break;
       case 'ptcp':
-        props.setParticipants(undefined)
+        props.setP((prev: any) => ({ ...prev, participants: undefined }))
         break;
       case 'headCount':
-        props.setHeadCount({ from: undefined, to: undefined })
+        props.setP((prev: any) => ({ ...prev, headCount: { from: undefined, to: undefined } }))
         break;
     }
     if (props.handleRt !== undefined) { props.handleRt() }
@@ -31,25 +31,28 @@ export const ViewFilterApplied = (props: FilterAppliedProps) => {
       {props.filterCnt > 0
         ? <div className='overflow-hidden	h-[26px]'>
           <div className='x-scroll-wrap h-[56px] px-[16px]'>
-            <ThemeProvider theme={filterChipTheme}>
-              <Chip label={sortLabel(props.sort)} variant="outlined" />
-              {(props.filters).includes('dayRange')
-                ? <Chip id='dayRange' label={startDate !== null && endDate === null ?
-                  dayjs(startDate).format('YY.MM.DD') : `${dayjs(startDate).format('YY.MM.DD')} - ${dayjs(endDate).format('YY.MM.DD')}`}
-                  onDelete={handleDelete} deleteIcon={<FilterDeleteIcn />} variant="outlined" />
-                : <></>
-              }
-              {(props.filters).includes('ptcp')
-                ? <Chip id='ptcp' label={`참여 ${props.participants}명`} onDelete={handleDelete}
-                  deleteIcon={<FilterDeleteIcn />} variant="outlined" />
-                : <></>
-              }
-              {(props.filters).includes('headCount') && props.headCount !== undefined
-                ? <Chip id='headCount' label={`규모 ${props.headCount.from ?? ''} - ${props.headCount.to ?? ''}명`}
-                  onDelete={handleDelete} deleteIcon={<FilterDeleteIcn />} variant="outlined" />
-                : <></>
-              }
-            </ThemeProvider>
+            <div className='filter-chip'>
+              <span>{sortLabel(props.p.sort)}</span>
+            </div>
+            {!(props.filters).includes('dayRange') ? <></>
+              : <div className='filter-chip'>
+                <span>{startDate !== null && endDate === null ?
+                  dayjs(startDate).format('YY.MM.DD') : `${dayjs(startDate).format('YY.MM.DD')} - ${dayjs(endDate).format('YY.MM.DD')}`}</span>
+                <button onClick={(e) => handleDelete(e, 'dayRange')}><FilterDeleteIcn /></button>
+              </div>
+            }
+            {!(props.filters).includes('ptcp') ? <></>
+              : <div className='filter-chip'>
+                <span>{`참여 ${props.p.participants}명`}</span>
+                <button onClick={(e) => handleDelete(e, 'ptcp')}><FilterDeleteIcn /></button>
+              </div>
+            }
+            {!((props.filters).includes('headCount') && props.p.headCount !== undefined) ? <></>
+              : <div className='filter-chip'>
+                <span>{`규모 ${props.p.headCount.from ?? ''} - ${props.p.headCount.to ?? ''}명`}</span>
+                <button onClick={(e) => handleDelete(e, 'headCount')}><FilterDeleteIcn /></button>
+              </div>
+            }
           </div>
         </div>
         : <></>

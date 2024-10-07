@@ -1,23 +1,5 @@
 import { createTheme, styled } from "@mui/material"
 
-export const filterChipTheme = createTheme({
-  components: {
-    MuiButtonBase: { defaultProps: { disableRipple: true, }, },
-    MuiChip: {
-      styleOverrides: {
-        root: {
-          padding: '1.5px 7.5px !important', border: '0.5px solid #C1C1C1 !important', borderRadius: '20px !important',
-          fontSize: '14px !important', fontWeight: '400', lineHeight: '160%', color: '#6C6C6C !important',
-          height: '25px',
-          '&:not(:last-child)': { marginRight: '4px' }
-        },
-        label: { padding: '0 !important', height: '22px' },
-        deleteIcon: { margin: '0 !important', height: '22px' }
-      }
-    }
-  }
-});
-
 const CheckboxIcn = (props: { val: boolean }) => {
   if (!props.val) {
     return (
