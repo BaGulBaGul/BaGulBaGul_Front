@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { fetchFromURL, mutateForURL } from '@/service/ApiService';
+import { qKey } from './useInCommon';
 
-const qKey = (origin: 'event' | 'event/recruitment') => { return origin === 'event' ? 'event' : 'recruitment' }
 export const useDetailInfo = (origin: 'event' | 'event/recruitment', postId: any) => {
   return useQuery({
     queryKey: [qKey(origin), postId, 'data'],

@@ -11,35 +11,37 @@ import { WriteFab } from '@/components/common/WriteFab';
 export default function Template({ children }: { children: React.ReactNode }) {
   const prms = useParams()
   const searchParams = useSearchParams()
-
-  // 정렬기준(default 최신순), 날짜, 참여인원, 규모
-  const [recruiting, setRecruiting] = useState(searchParams.get('state') === 'r' ? true : false);
-  const [sort, setSort] = useState(searchParams.get('sort') ?? 'createdAt,desc');
-  const [dateRange, setDateRange] = useState<[any, any]>([searchParams.get('sD') ?? null, searchParams.get('eD') ?? null]);
-  const [participants, setParticipants] = useState(Number(searchParams.get('ptcp')) ?? 0);
+  // 정렬기준, 날짜, 참여인원, 진행여부
+  const [p, setP] = useState({
+    sort: searchParams.get('sort') ?? 'createdAt,desc',
+    dateRange: [
+      searchParams.get('sD') !== null ? dayjs(searchParams.get('sD'), "YYYYMMDD").toDate() : undefined,
+      searchParams.get('eD') !== null ? dayjs(searchParams.get('eD'), "YYYYMMDD").toDate() : undefined
+    ], participants: Number(searchParams.get('ptcp')) ?? 0,
+    recruiting: searchParams.get('state') === 'r' ? true : false
+  })
 
   // 적용된 필터들, 적용된 필터 개수
   const [filters, setFilters] = useState(['sort'])
   const [filterCnt, setFilterCnt] = useState(0)
   // // searchParams로 넘어온 필터 count
-  useEffectCntFilter(searchParams, setFilters, setFilterCnt, sort)
+  useEffectCntFilter(searchParams, setFilters, setFilterCnt, p.sort)
 
   const router = useRouter()
+  const [startDate, endDate] = p.dateRange ?? [null, null];
+  const routeToFilter = () => {
+    let params = {
+      sort: p.sort ?? '', state: p.recruiting ? 'r' : '',
+      sD: !!startDate ? dayjs(startDate).format('YYYYMMDD') : '',
+      eD: !!endDate ? dayjs(endDate).format('YYYYMMDD') : '',
+      ptcp: p.participants > 0 ? p.participants : '',
+    }
+    router.replace(Object.keys(params).length > 0 ? `/event/${prms.eventId}/recruitment?${getParams(params)}` : `/event/${prms.eventId}/recruitment`)
+  }
+
   const [rt, setRt] = useState(false)
   // 필터 삭제 시 변경대로 redirect
   const handleRt = () => { setRt(!rt) }
-
-  const [startDate, endDate] = dateRange ?? [null, null];
-  const routeToFilter = () => {
-    let params = {
-      sort: sort ?? '', state: recruiting ? 'r' : '',
-      sD: startDate !== null ? dayjs(startDate).format('YYYYMMDD') : '',
-      eD: endDate !== null ? dayjs(endDate).format('YYYYMMDD') : '',
-      ptcp: participants > 0 ? participants : '',
-    }
-    router.push(Object.keys(params).length > 0 ? `/event/${prms.eventId}/recruitment?${getParams(params)}` : `/event/${prms.eventId}/recruitment`)
-  }
-
   useEffect(() => {
     routeToFilter()
   }, [rt])
@@ -56,13 +58,11 @@ export default function Template({ children }: { children: React.ReactNode }) {
       </div>
       {filterCnt <= 0 ? <></>
         : <div className='fixed top-[104px] w-full h-[36px] bg-p-white z-10'>
-          <ViewFilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters} sort={sort} dateRange={dateRange} setDateRange={setDateRange}
-            participants={participants} setParticipants={setParticipants} handleRt={handleRt} />
+          <ViewFilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters} p={p} setP={setP} handleRt={handleRt} />
         </div>
       }
       <Backdrop open={open} className='z-paper'>
-        <ViewSelect sort={sort} setSort={setSort} setOpen={setOpen} routeToFilter={routeToFilter} dateRange={dateRange} setDateRange={setDateRange}
-          participants={participants} setParticipants={setParticipants} recruiting={recruiting} setRecruiting={setRecruiting} />
+        <ViewSelect p={p} setP={setP} setOpen={setOpen} routeToFilter={routeToFilter} />
       </Backdrop>
       <div className={`flex flex-col w-full ${filterCnt > 0 ? 'pt-[140px]' : 'pt-[104px]'}`}>
         {children}

@@ -92,7 +92,7 @@ export interface CommentProps {
   replyTargetUserName?: string;
 }
 
-export interface CommentMProps { commentId: number; content: string; userId?: number; replyTargetUserName?: string; } // 댓글수정용
+export interface CommentMProps { commentId: number; content: string; userId?: number; replyTargetUserName?: string; opt?: 'CMT'|'RPL' } // 댓글수정용
 
 export interface CalProps {
   eventId?: number; recruitmentId?: number; title: string; type?: string; state?: string;

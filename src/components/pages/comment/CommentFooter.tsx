@@ -4,20 +4,15 @@ import { call } from "@/service/ApiService";
 import { Button, ThemeProvider, TextField } from '@mui/material';
 import { commentTheme } from '@/components/common/styles/Themes';
 import ScrollToTop from './ScrollToTop';
+import { useNewComment } from '@/hooks/useInComment';
 
-export function CommentFooter(props: { url: string; setLoading: any; setTmp: any; setTmpP: any; }) {
+export function CommentFooter(props: { url: string; qKey: any; }) {
   const cmtRef = useRef<HTMLInputElement>(null);
+  const mutateComment = useNewComment(`/api/${props.url}/comment`, props.qKey, cmtRef)
   const handleComment = () => {
     if (cmtRef.current && cmtRef.current.value.length > 0) {
       console.log(cmtRef.current.value)
-      call(`/api/${props.url}/comment`, "POST", { "content": cmtRef.current.value })
-        .then((response) => {
-          console.log(response)
-          props.setTmp([])
-          props.setTmpP(undefined)
-          props.setLoading(true)
-          if (cmtRef.current) { cmtRef.current.value = '' }
-        }).catch((error) => console.error(error));
+      mutateComment.mutate()
     }
   }
 

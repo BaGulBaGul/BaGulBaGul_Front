@@ -1,44 +1,22 @@
 import { API_BASE_URL } from "../api-config";
 
-interface Options { headers: Headers; url: string; method: string; body?: string; credentials: RequestCredentials }
-// export async function call(api: string, method: string, request?: any) {
-//   let options: Options = {
-//     headers: new Headers({ "Content-Type": "application/json", }),
-//     url: API_BASE_URL + api, method: method,
-//     credentials: 'include',
-//   };
-
-//   if (request) {
-//     options.body = JSON.stringify(request);
-//   }
-
-//   return fetch(options.url, options).then(async (response) => {
-//     if (response.status === 200) {
-//       return response.json();
-//     }
-//     return response.text().then(text => { throw new Error(text) })
-//   })
-// }
+interface Options { headers?: Headers; url: string; method: string; body?: string; credentials: RequestCredentials }
 export async function call(api: string, method: string, request?: any) {
   let options: Options = {
     headers: new Headers({ "Content-Type": "application/json", }),
     url: API_BASE_URL + api, method: method,
     credentials: 'include',
   };
-
-  if (request) {
-    options.body = JSON.stringify(request);
-  }
+  if (request) { options.body = JSON.stringify(request); }
 
   return await fetch(options.url, options).then(async (response) => {
-    if (response.status === 200) {
-      return response.json();
-    }
+    if (response.status === 200) { return response.json(); }
     return response.text().then(text => { throw new Error(text) })
   })
 }
 
 export const fetchFromURLWithPage = async (apiURL: string, { pageParam }: any) => {
+  console.log('fetchFromURLWithPage-  ', apiURL)
   console.log('apiURL: ', apiURL);
   console.log('pageParam: ', pageParam);
   const data = await fetch(`${API_BASE_URL}${apiURL}&page=${pageParam}`, { credentials: 'include' })
@@ -46,13 +24,17 @@ export const fetchFromURLWithPage = async (apiURL: string, { pageParam }: any) =
   console.log(json.data)
   return json.data;
 }
-export const fetchFromURL = async (apiURL: string, cred: boolean) => {
+export const fetchFromURL = async (apiURL: string, cred: boolean, throwIfNull?: boolean) => {
+  console.log('fetchFromURL-  ', apiURL)
   const data = cred ? await fetch(`${API_BASE_URL}${apiURL}`, { credentials: 'include' }) : await fetch(`${API_BASE_URL}${apiURL}`)
   const json = await data.json();
+  if (!!throwIfNull && json.data === null) { throw new Error }
   return json.data;
 }
-export const mutateForURL = async (apiURL: string, method: string) => {
-  const data = await fetch(`${API_BASE_URL}${apiURL}`, { method: method, credentials: 'include' })
+export const mutateForURL = async (apiURL: string, method: string, body?: any) => {
+  let options: Options = { url: `${API_BASE_URL}${apiURL}`, headers: new Headers({ "Content-Type": "application/json", }), method: method, credentials: 'include' }
+  if (body) { options.body = JSON.stringify(body); }
+  const data = await fetch(options.url, options)
   const json = await data.json()
   console.log(json)
   return json.data;

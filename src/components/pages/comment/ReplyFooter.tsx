@@ -2,12 +2,12 @@
 import { Dispatch, SetStateAction, useEffect, useState, FocusEvent, memo } from 'react';
 import { ThemeProvider, TextField, Button } from '@mui/material';
 import { commentTheme } from '@/components/common/styles/Themes';
-import { call } from '@/service/ApiService';
 import ScrollToTop from './ScrollToTop';
+import { useNewReply } from '@/hooks/useInComment';
 
 function ReplyFooter(props: {
-  mentioning: boolean; setMentioning: Dispatch<SetStateAction<boolean>>; commentId: any; target: any; mentionRef: any; replyRef: any;
-  setLoadingC: any; setLoadingR: any; setTmp: any; setTmpP: any; origin: 'event' | 'event/recruitment';
+  url: string; qKey: any; mentioning: boolean;
+  setMentioning: Dispatch<SetStateAction<boolean>>; target: any; mentionRef: any; replyRef: any;
 }) {
   const [value, setValue] = useState('')
   const handleInput = (e: any) => {
@@ -57,34 +57,13 @@ function ReplyFooter(props: {
     }
   }
 
+  const mutateReply = useNewReply(props.url, props.qKey, props.replyRef, props.mentionRef, props.target)
   const handleComment = () => {
-    if (props.mentionRef.current && props.mentionRef.current.innerText.length > 0 && props.target) {
-      console.log('mention: ', props.mentionRef.current.innerText, props.target.id)
-      call(`/api/${props.origin}/comment/${props.commentId}/children`, "POST",
-        { "content": props.mentionRef.current.innerText, "replyTargetPostCommentChildId": props.target.id })
-        .then((response) => {
-          console.log(response)
-          props.setTmp([])
-          props.setTmpP(undefined)
-          props.setLoadingC(true)
-          props.setLoadingR(true)
-          if (props.mentionRef.current) { props.mentionRef.current.innerText = '' }
-          props.setMentioning(false);
-        }).catch((error) => console.error(error));
-    } else if (props.replyRef.current && props.replyRef.current.value.length > 0) {
-      call(`/api/${props.origin}/comment/${props.commentId}/children`, "POST",
-        { "content": props.replyRef.current.value })
-        .then((response) => {
-          console.log(response)
-          props.setTmp([])
-          props.setTmpP(undefined)
-          props.setLoadingC(true)
-          props.setLoadingR(true)
-          if (props.replyRef.current) { props.replyRef.current.value = '' }
-        }).catch((error) => console.error(error));
-    } else {
-      alert('댓글 내용을 입력해주세요.')
+    if ((props.mentionRef.current && props.mentionRef.current.innerText.length > 0 && props.target)
+      || (props.replyRef.current && props.replyRef.current.value.length > 0)) {
+      mutateReply.mutate()
     }
+    else { alert('댓글 내용을 입력해주세요.') }
   }
 
   const [scrolled, setScrolled] = useState(false);

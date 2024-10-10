@@ -1,5 +1,5 @@
 import { Checkbox } from "@mui/material";
-import { useState, MouseEvent } from "react";
+import { useState, MouseEvent, useEffect } from "react";
 import { applyLike } from "@/service/Functions";
 import { CmtLikeIcn, VerticalMoreIcn } from "@/components/common/styles/Icon";
 import { CommentProps, NoUser } from "@/components/common";
@@ -7,9 +7,10 @@ import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-const handleToggle = (e: MouseEvent, opt: 'CMT' | 'RPL', setOpenD: any, setTargetM: any, value: any) => {
+const handleToggle = (e: MouseEvent, setOpenD: any, setTargetM: any, value: any) => {
   e.stopPropagation();
-  setOpenD(opt === 'CMT' ? 1 : 2)
+  console.log('handleToggle: ', value)
+  setOpenD(true)
   setTargetM(value)
 }
 
@@ -20,12 +21,17 @@ interface CommentBlockProps {
 export function CommentBlock(props: CommentBlockProps) {
   const router = useRouter()
   const [liked, setLiked] = useState(props.data.myLike ?? false)
+  const [likeCount, setLikeCount] = useState<number>(props.data.likeCount ?? undefined)
+  useEffect(()=>{
+    if (liked !== props.data.myLike) {setLiked(props.data.myLike)}
+    if (likeCount !== props.data.likeCount) {setLikeCount(props.data.likeCount)}
+  }, [props.data])
+
   let apiURL = props.opt === 'CMT' ? `/api/${props.origin}/comment/${props.data.commentId}/like`
     : `/api/${props.origin}/comment/children/${props.data.commentChildId}/like`
-  const [likeCount, setLikeCount] = useState<number>(props.data.likeCount ?? undefined)
   const toggleValue = {
     commentId: props.data.commentId ?? props.data.commentChildId, content: props.data.content, userId: props.data.userId,
-    replyTargetUserName: props.data.replyTargetUserName
+    replyTargetUserName: props.data.replyTargetUserName, opt: props.opt
   }
 
   return (
@@ -40,7 +46,7 @@ export function CommentBlock(props: CommentBlockProps) {
                 <p className="text-14">{props.data.username}</p>
               </Link>
             }
-            <button onClick={(e) => handleToggle(e, props.opt, props.setOpenD, props.setTargetM, toggleValue)}><VerticalMoreIcn opt='CMT' /></button>
+            <button onClick={(e) => handleToggle(e, props.setOpenD, props.setTargetM, toggleValue)}><VerticalMoreIcn opt='CMT' /></button>
           </div>
           <div className='text-14 text-gray3 pb-[6px]' id='comment-body'>{props.data.content}</div>
           <div className='flex flex-row text-12 text-gray3 pb-[8px]' id='comment-datetime'>
@@ -56,7 +62,7 @@ export function CommentBlock(props: CommentBlockProps) {
                 <p className="text-14">{props.data.userName}</p>
               </Link>
             }
-            <button onClick={(e) => handleToggle(e, props.opt, props.setOpenD, props.setTargetM, toggleValue)}><VerticalMoreIcn opt='CMT' /></button>
+            <button onClick={(e) => handleToggle(e, props.setOpenD, props.setTargetM, toggleValue)}><VerticalMoreIcn opt='CMT' /></button>
           </div>
           <div className='text-14 text-gray3 pb-[6px]' id='comment-body'>
             {props.data.replyTargetUserName
@@ -89,7 +95,8 @@ export function CommentBlock(props: CommentBlockProps) {
         }
         <div className='flex flex-row items-center gap-[2px]' id='comment-likes'>
           <Checkbox icon={<CmtLikeIcn val={false} />} checkedIcon={<CmtLikeIcn val={true} />} checked={liked}
-            onChange={() => applyLike(true, liked, apiURL, setLiked, setLikeCount)}
+            onChange={() => applyLike(true, liked, apiURL, setLiked, setLikeCount)} 
+            // onChange={handleLike}
             disableRipple className='p-0' />
           {likeCount > 0 ? <p className='text-12 text-gray3'>{likeCount}</p> : <></>}
         </div>

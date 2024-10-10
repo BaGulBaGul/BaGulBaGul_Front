@@ -2,56 +2,61 @@
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { SubHeaderCnt } from '@/components/layout/subHeader';
-import { call } from '@/service/ApiService';
-import { CommentMProps, CommentProps, LoadingSkeleton, Divider } from '@/components/common';
-import { Replies, MemoizedReplyFooter, CommentBlock, CommentDrawer, ModifyInputR } from '@/components/pages/comment';
+import { fetchFromURL, fetchFromURLWithPage } from '@/service/ApiService';
+import { CommentMProps, CommentProps, LoadingSkeleton, Divider, MoreButton } from '@/components/common';
+import { MemoizedReplyFooter, CommentBlock, CommentDrawer, ModifyInputR } from '@/components/pages/comment';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import useLoginInfo from '@/hooks/useLoginInfo';
+import { useDeleteComment } from '@/hooks/useInComment';
 
 
 export function RepliesPage(props: { origin: 'event' | 'event/recruitment'; commentId: any; postId: any; }) {
-  const [count, setCount] = useState(0);
-  const [isLoadingC, setLoadingC] = useState(true)
-  const [isLoadingR, setLoadingR] = useState(true)
   // menu drawer
-  // 0: closed 1: for comment 2: for reply
-  const [openD, setOpenD] = useState(0);
-  const toggleDrawer = (newOpen: number) => () => { setOpenD(newOpen); };
+  const [openD, setOpenD] = useState(false);
+  const toggleDrawer = (newOpen: boolean) => () => { setOpenD(newOpen); };
 
   const [openM, setOpenM] = useState(false);
   const [targetM, setTargetM] = useState<CommentMProps | undefined>();
 
+  // 댓글 / 좋아요여부
+  const userinfo = useLoginInfo()
+  const { data: comment, isLoading: isLoadingC, isError: isErrorC } = useQuery({
+    queryKey: ['comment', props.commentId],
+    queryFn: () => fetchFromURL(`/api/${props.origin}/comment/${props.commentId}`, false, true),
+    retry: false
+  })
+  console.log('isErrorC:', isErrorC)
   const router = useRouter()
+  if (isErrorC) {
+    let urlRoot = props.origin === 'event' ? 'event' : 'recruitment'
+    router.replace(`/${urlRoot}/${props.postId}/comments`)
+  }
+  const { data: liked, isLoading: isLoadingL, isError: isErrorL } = useQuery({
+    queryKey: ['comment', props.commentId, 'liked'],
+    queryFn: () => fetchFromURL(`/api/${props.origin}/comment/${props.commentId}/ismylike`, true),
+    select: data => data.myLike, enabled: !!userinfo && !!comment && !isErrorC
+  })
+  // 답글
+  const { data: replies, fetchNextPage, hasNextPage, status } = useInfiniteQuery({
+    queryKey: ['comment', props.commentId, 'replies'],
+    queryFn: (pageParam) => fetchFromURLWithPage(`/api/${props.origin}/comment/${props.commentId}/children?sort=createdAt,desc&size=10`, pageParam),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, allPages, lastPageParam) => {
+      if (lastPageParam >= lastPage.totalPages - 1) { return undefined }
+      return lastPageParam + 1
+    }, enabled: !!comment && !isErrorC
+  })
+  const handleMore = () => { if (hasNextPage) { fetchNextPage() } }
 
-  // 코멘트
-  const [comment, setComment] = useState<CommentProps>()
-  useEffect(() => {
-    if (isLoadingC) {
-      let apiURL = `/api/${props.origin}/comment/${props.commentId}`;
-      let cmt: CommentProps | undefined = undefined;
-      console.log("###", apiURL)
-      call(apiURL, "GET", null)
-        .then((response) => {
-          if (response.errorCode === 'C00000' && response.data !== null) {
-            console.log(response);
-            cmt = response.data;
-          } else {
-            let urlRoot = props.origin === 'event' ? 'event' : 'recruitment'
-            router.replace(`/${urlRoot}/${props.postId}/comments`)
-          }
-        }).then(() => {
-          if (cmt !== undefined) {
-            let apiURL2 = `/api/${props.origin}/comment/${props.commentId}/ismylike`;
-            call(apiURL2, "GET", null).then((response) => {
-              if (response.errorCode === 'C00000' && response.data !== null) {
-                console.log('** ', response.data.myLike)
-                cmt!.myLike = response.data.myLike;
-                setComment(cmt);
-                setLoadingC(false)
-              }
-            })
-          }
-        })
-    }
-  }, [isLoadingC])
+  console.log('targetM: ', targetM)
+  let apiURL = !targetM ? '' : targetM.opt === 'CMT' ? `/api/${props.origin}/comment/${targetM?.commentId}` : `/api/${props.origin}/comment/children/${targetM?.commentId}`
+  let dKey = !targetM ? '' : targetM.opt === 'CMT' ? ['comment', props.commentId] : ['comment', props.commentId, 'replies']
+  const mutateDelete = useDeleteComment(apiURL, dKey)
+  const handleDelete = () => {
+    let confirmDelete = confirm("댓글을 삭제하시겠습니까?");
+    if (targetM && confirmDelete) { mutateDelete.mutate(); }//setTargetM(undefined)
+  }
+
   // 멘션 관련 처리
   const [mentioning, setMentioning] = useState(false)
   const [mentionTarget, setMentionTarget] = useState<{ id: number, name: string } | undefined>(undefined)
@@ -59,7 +64,6 @@ export function RepliesPage(props: { origin: 'event' | 'event/recruitment'; comm
   const mentionRef = useRef<HTMLDivElement>(null);
   const replyRef = useRef<HTMLInputElement>(null);
 
-  // const handleClose = () => { setOpen(false); };
   // 멘션 대상 설정
   const switchMention = (data: { id: number, name: string }) => {
     setMentioning(true)
@@ -85,36 +89,29 @@ export function RepliesPage(props: { origin: 'event' | 'event/recruitment'; comm
     if (mentioning && mentionRef && mentionRef.current) { mentionRef.current.focus() }
   }, [mentionTarget])
 
-  const [tmp, setTmp] = useState<any[]>([])
-  const [tmpP, setTmpP] = useState<number>();
-
-  const handleDelete = () => {
-    let confirmDelete = confirm("댓글을 삭제하시겠습니까?");
-    if (targetM && confirmDelete) {
-      let apiURL = openD > 1 ? `/api/${props.origin}/comment/children/${targetM.commentId}` : `/api/${props.origin}/comment/${targetM.commentId}`
-      console.log(apiURL)
-      call(apiURL, "DELETE", null)
-        .then((response) => {
-          console.log(response)
-          setTmp([])
-          setTmpP(undefined)
-          setLoadingC(true)
-          setLoadingR(true)
-        }).catch((error) => console.error(error));
-    }
-  }
 
   let postUrl = `/${props.origin === 'event' ? 'event' : 'recruitment'}/${props.postId}`
   return (
     <>
-      <SubHeaderCnt name='답글' cnt={count} url={postUrl} />
-      {!isLoadingC && comment !== undefined
+      <SubHeaderCnt name='답글' cnt={!!replies ? replies.pages[0].totalElements : ''} url={postUrl} />
+      {!isLoadingC && !!comment && !isLoadingL
         ? <div className='flex flex-col w-full min-h-[calc(100vh-104px)] pb-[88px] bg-gray1'>
-          <div className='px-[16px] py-[12px] mb-[2px] bg-p-white'>
-            <CommentBlock opt='CMT' data={comment} setOpenD={setOpenD} setTargetM={setTargetM} disabled={true} origin={props.origin} />
+          <div className='px-[16px] py-[12px] mb-[2px] bg-p-white' id='head-cmt'>
+            <CommentBlock opt='CMT' data={{ ...comment, myLike: liked }} setOpenD={setOpenD} setTargetM={setTargetM} disabled={true} origin={props.origin} />
           </div>
-          <Replies setCount={setCount} setOpenD={setOpenD} setTargetM={setTargetM} handleMention={handleMention} commentId={props.commentId}
-            isLoadingR={isLoadingR} setLoadingR={setLoadingR} tmp={tmp} setTmp={setTmp} setTmpP={setTmpP} tmpP={tmpP} origin={props.origin} />
+          {!!replies && !replies.pages[0].empty
+            ? <div className='flex flex-col w-full'>
+              {replies.pages.map((reply) => (
+                reply.content.map((item: CommentProps, idx: number) => (
+                  <div className={idx % 2 == 0 ? 'bg-p-white ps-[48px] pe-[16px] py-[12px]' : 'bg-gray1 ps-[48px] pe-[16px] py-[12px]'} key={`reply-${idx}`} id={`reply-${idx}`} >
+                    <CommentBlock opt="RPL" data={item} key={`cmt-${idx}`} setOpenD={setOpenD} setTargetM={setTargetM} handleMention={handleMention} origin={props.origin} />
+                  </div>
+                ))
+              ))}
+              {hasNextPage ? <MoreButton onClick={handleMore} /> : <></>}
+            </div>
+            : <></>
+          }
         </div>
         : <div className='flex flex-col gap-[2px]'>
           <LoadingSkeleton type='CMT' />
@@ -122,10 +119,11 @@ export function RepliesPage(props: { origin: 'event' | 'event/recruitment'; comm
           <LoadingSkeleton type='RPL' />
         </div>
       }
-      <MemoizedReplyFooter mentioning={mentioning} setMentioning={setMentioning} commentId={props.commentId} target={mentionTarget}
-        mentionRef={mentionRef} replyRef={replyRef} setLoadingC={setLoadingC} setLoadingR={setLoadingR} setTmp={setTmp} setTmpP={setTmpP} origin={props.origin} />
-      <CommentDrawer open={openD} toggleDrawer={toggleDrawer} setOpenM={setOpenM} handleDelete={handleDelete} />
-      <ModifyInputR open={openM} setOpenM={setOpenM} target={targetM} setTarget={setTargetM} setLoading={setLoadingR} setTmp={setTmp} setTmpP={setTmpP} origin={props.origin} />
+      <MemoizedReplyFooter url={`/api/${props.origin}/comment/${props.commentId}/children`} qKey={['comment', props.commentId, 'replies']}
+        mentioning={mentioning} setMentioning={setMentioning} target={mentionTarget} mentionRef={mentionRef} replyRef={replyRef} />
+      <CommentDrawer open={openD} opt={!!userinfo && !!targetM && userinfo.id === targetM.userId ? 0 : 1}
+        toggleDrawer={toggleDrawer} setOpenM={setOpenM} handleDelete={handleDelete} />
+      <ModifyInputR open={openM} setOpenM={setOpenM} target={targetM} setTarget={setTargetM} origin={props.origin} qKey={['comment', props.commentId, 'replies']} />
     </>
   );
 }

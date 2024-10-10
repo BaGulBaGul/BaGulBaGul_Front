@@ -3,10 +3,10 @@ import { NoUser, RListProps, HashtagAccordion } from "@/components/common";
 import dayjs from "dayjs";
 import Link from "next/link";
 
-export function RecruitBlock(props: { data: RListProps, router: any }) {
+export function RecruitBlock(props: { data: RListProps }) {
   return (
     <div className='flex flex-col py-[18px] px-[16px]'>
-      <div className='flex flex-col gap-[4px] cursor-pointer' onClick={() => { props.router.push(`/recruitment/${props.data.recruitment.recruitmentId}`) }}>
+      <Link href={`/recruitment/${props.data.recruitment.recruitmentId}`} className='flex flex-col gap-[4px]'>
         <p className='truncate text-16'>{props.data.post.title}</p>
         <p className='text-14 text-gray3'>{dayjs(props.data.recruitment.startDate).format('YY.MM.DD')}</p>
         <div className='flex flex-row items-center gap-[8px]'>
@@ -23,7 +23,7 @@ export function RecruitBlock(props: { data: RListProps, router: any }) {
           </div>
           {props.data.recruitment.state === "PROCEEDING" ? <></> : <p className="done-chip">모집완료</p>}
         </div>
-      </div>
+      </Link>
       {props.data.post.tags ? <HashtagAccordion tag={props.data.post.tags} /> : <></>}
     </div>
   )

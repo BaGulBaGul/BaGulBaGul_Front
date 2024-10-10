@@ -1,70 +1,53 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
-import { useParams, useSearchParams, useRouter } from 'next/navigation';
-import { call } from '@/service/ApiService';
-import { getParams, setPageInfo, setUniqueList } from "@/service/Functions";
-import { LoadingCircle, LoadingSkeleton, MoreButton, ParamProps, RListProps, Divider } from '@/components/common';
+import React from "react";
+import { useParams, useSearchParams } from 'next/navigation';
+import { fetchFromURLWithPage } from '@/service/ApiService';
+import { getParams } from "@/service/Functions";
+import { LoadingCircle, LoadingSkeleton, MoreButton, RListProps, Divider, NoEvent } from '@/components/common';
 import { RecruitBlock } from "@/components/pages/detail";
 import dayjs from "dayjs";
+import { useInfiniteQuery } from "@tanstack/react-query";
 
 export default function Page() {
   const prms = useParams()
   const searchParams = useSearchParams()
-  const router = useRouter()
-  const [isLoading, setLoading] = useState(true)
-  const [recruits, setRecruits] = useState<RListProps[]>([]);
+  let params = {
+    sort: searchParams.get('sort') ?? 'createdAt,desc',
+    startDate: searchParams.get('sD') ? `${dayjs(searchParams.get('sD'), "YYYYMMDD").format('YYYY-MM-DD')}T00:00:00` : '',
+    endDate: searchParams.get('eD') ? `${dayjs(searchParams.get('eD'), "YYYYMMDD").format('YYYY-MM-DD')}T23:59:59` : '',
+    leftHeadCount: searchParams.get('ptcp') ?? '',
+  }
+  let apiURL = !!params && Object.keys(params).length !== 0 ? `/api/event/${prms.eventId}/recruitment?size=10&${getParams(params)}` : `/api/event/${prms.eventId}/recruitment?size=10`
+  const { data: recruits, fetchNextPage, hasNextPage, status } = useInfiniteQuery({
+    queryKey: ['recruits', params],
+    queryFn: (pageParam) => fetchFromURLWithPage(apiURL, pageParam),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, allPages, lastPageParam) => {
+      if (lastPageParam >= lastPage.totalPages - 1) { return undefined }
+      return lastPageParam + 1
+    }, enabled: !!params,
+  })
+  const handleMore = () => { if (hasNextPage) { fetchNextPage() } }
 
-  const [params, setParams] = useState<ParamProps | undefined>();
-
-  const [page, setPage] = useState({ current: 0, total: 0, });
-  const initialSet = useRef(false);
-  useEffect(() => {
-    if (initialSet.current) { initialSet.current = false }
-    setRecruits([])
-    setLoading(true);
-    setParams({
-      page: 0, sort: searchParams.get('sort') ?? 'createdAt,desc',
-      state: searchParams.get('state') && searchParams.get('state') === 'r' ? 'PROCEEDING' : '',
-      startDate: searchParams.get('sD') ? `${dayjs(searchParams.get('sD')).format('YYYY-MM-DD')}T00:00:00` : '',
-      endDate: searchParams.get('eD') ? `${dayjs(searchParams.get('eD')).format('YYYY-MM-DD')}T23:59:59` : '',
-      leftHeadCount: searchParams.get('ptcp') ?? ''
-    })
-  }, [searchParams])
-
-  // 조건에 따라 리스트 호출
-  useEffect(() => {
-    if (params) {
-      let apiURL = Object.keys(params).length !== 0 ? `/api/event/${prms.eventId}/recruitment?size=10&${getParams(params)}` : `/api/event/${prms.eventId}/recruitment?size=10`
-      console.log('** ', apiURL)
-      call(apiURL, "GET", null)
-        .then((response) => {
-          console.log(response.data);
-          if (response.data.empty === false) {
-            // 페이지값 초기설정
-            if (!initialSet.current) {
-              setPage({ current: 0, total: response.data.totalPages })
-              initialSet.current = true;
-            }
-            setUniqueList('EVT', response.data.content, setRecruits, recruits)
-          }
-          setLoading(false)
-        })
-    }
-  }, [params])
-
-  const handleMore = () => { setPageInfo(page, setPage, page.current + 1, params, setParams) }
-  if (isLoading && page.current === 0) { return <LoadingSkeleton type='RCT' /> }
-  else if (isLoading && page.current > 0) { return <LoadingCircle /> }
-  else {
+  // if (isLoading && page.current === 0) { return <LoadingSkeleton type='RCT' /> }
+  // else if (isLoading && page.current > 0) { return <LoadingCircle /> }
+  if (status === 'success') {
     return (
       <>
-        {recruits.map((post, idx) => (
-          <div key={`recruit-${idx}`}>
-            {idx === 0 ? <></> : <Divider />}
-            <RecruitBlock data={post} router={router} />
-          </div>
-        ))}
-        {page.total > 1 && page.current + 1 < page.total ? <MoreButton onClick={handleMore} /> : <></>}
+        {!!recruits && !recruits.pages[0].empty
+          ? <>
+            {recruits.pages.map((recruit) => (
+              recruit.content.map((item: RListProps, idx: any) => (
+                <div key={`recruit-${idx}`}>
+                  {idx === 0 ? <></> : <Divider />}
+                  <RecruitBlock data={item} />
+                </div>
+              ))
+            ))}
+            {hasNextPage ? <MoreButton onClick={handleMore} /> : <></>}
+          </>
+          : <NoEvent text1="찾는 행사가 없어요." text2="지금 인기 있는 페스티벌을 만나보세요." buttonText={"페스티벌 인기순 보러가기"} />
+        }
       </>
     )
   }

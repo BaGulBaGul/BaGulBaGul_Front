@@ -3,27 +3,20 @@ import React, { Fragment, useRef, FocusEvent } from "react";
 import { CommentMProps, Divider } from "@/components/common";
 import { call } from "@/service/ApiService";
 import { HeaderBackIcn } from "@/components/common/styles/Icon";
+import { useModify } from "@/hooks/useInComment";
 
 interface ModifyProps {
-  open: boolean; setOpenM: any; target?: CommentMProps; setTarget: any; setLoading?: any; setTmp: any; setTmpP: any; origin: 'event' | 'event/recruitment';
+  open: boolean; setOpenM: any; target?: CommentMProps; setTarget: any; origin: 'event' | 'event/recruitment'; qKey: any;
 }
 
 export function ModifyInput(props: ModifyProps) {
   const mdfRef = useRef<HTMLInputElement>(null);
+  const mutateModify = useModify(`/api/${props.origin}/comment/${props.target?.commentId}`, props.qKey, mdfRef, props.setTarget, props.setOpenM)
+
   const handleModify = () => {
-    console.log(props.target?.commentId)
-    console.log(mdfRef.current?.value)
     if (mdfRef.current?.value.replace(/\n$/, '').replace(/ /g, '').length === 0) { alert('댓글 내용을 입력해주세요.') }
-    else if (mdfRef.current && mdfRef.current.value.length > 0 && props.target) {
-      call(`/api/${props.origin}/comment/${props.target.commentId}`, "PATCH", { "content": mdfRef.current.value })
-        .then((response) => {
-          console.log(response)
-          props.setTmp([])
-          props.setTmpP(undefined)
-          props.setLoading(true)
-          props.setTarget(undefined);
-          props.setOpenM(false);
-        }).catch((error) => console.error(error));
+    else if (!!mdfRef.current && mdfRef.current.value.length > 0 && !!props.target) {
+      mutateModify.mutate()
     }
   }
 
@@ -45,9 +38,6 @@ export function ModifyInputR(props: ModifyProps) {
         { "content": mdfRef.current.innerText, "replyTargetUserId": (props.target.replyTargetUserName !== undefined && mentionTag === null) ? null : 0 })
         .then((response) => {
           console.log(response);
-          props.setTmp([])
-          props.setTmpP(undefined)
-          props.setLoading(true)
           props.setTarget(undefined);
           props.setOpenM(false);
         }).catch((error) => console.error(error));
