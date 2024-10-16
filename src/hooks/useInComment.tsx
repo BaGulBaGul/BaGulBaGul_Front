@@ -1,11 +1,23 @@
-import { InfiniteData, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { mutateForURL } from '@/service/ApiService';
-import { RefObject } from 'react';
+import { Dispatch, RefObject, SetStateAction } from 'react';
 
 export const useModify = (url: string, qKey: any, mdfRef: React.RefObject<HTMLInputElement>, setTarget: any, setOpenM: any) => {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: () => mutateForURL(url, 'PATCH', { 'content': mdfRef.current!.value }),
+    onSuccess: () => {
+      setTarget(undefined);
+      setOpenM(false);
+      queryClient.invalidateQueries({ queryKey: qKey })
+    }
+  })
+}
+
+export const useModifyR = (url: string, qKey: any, mdfRef: React.RefObject<HTMLDivElement>, setTarget: any, setOpenM: any) => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (replying: boolean) => mutateForURL(url, 'PATCH', { "content": mdfRef.current!.innerText, "replyTargetUserId": replying ? null : 0 }),
     onSuccess: () => {
       setTarget(undefined);
       setOpenM(false);
@@ -35,7 +47,7 @@ export const useNewComment = (url: string, qKey: any, cmtRef: RefObject<HTMLInpu
   })
 }
 
-export const useNewReply = (url: string, qKey: any, replyRef?: any, mentionRef?: any, target?: any) => {
+export const useNewReply = (url: string, qKey: any, replyRef?: any, mentionRef?: any, target?: any, setMentioning?: Dispatch<SetStateAction<boolean>>) => {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: () => {
@@ -50,6 +62,7 @@ export const useNewReply = (url: string, qKey: any, replyRef?: any, mentionRef?:
     onSuccess: () => {
       if (mentionRef.current) { mentionRef.current.innerText = '' }
       if (replyRef.current) { replyRef.current.value = '' }
+      if (!!setMentioning) { setMentioning(false) }
       queryClient.invalidateQueries({ queryKey: qKey })
     }
   })

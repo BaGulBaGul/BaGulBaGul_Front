@@ -6,8 +6,8 @@ import ScrollToTop from './ScrollToTop';
 import { useNewReply } from '@/hooks/useInComment';
 
 function ReplyFooter(props: {
-  url: string; qKey: any; mentioning: boolean;
-  setMentioning: Dispatch<SetStateAction<boolean>>; target: any; mentionRef: any; replyRef: any;
+  url: string; qKey: any; mentioning: boolean; setMentioning: Dispatch<SetStateAction<boolean>>; 
+  target: any; setMentionTarget?: Dispatch<SetStateAction<any>>; mentionRef: any; replyRef: any;
 }) {
   const [value, setValue] = useState('')
   const handleInput = (e: any) => {
@@ -57,7 +57,7 @@ function ReplyFooter(props: {
     }
   }
 
-  const mutateReply = useNewReply(props.url, props.qKey, props.replyRef, props.mentionRef, props.target)
+  const mutateReply = useNewReply(props.url, props.qKey, props.replyRef, props.mentionRef, props.target, props.setMentioning)
   const handleComment = () => {
     if ((props.mentionRef.current && props.mentionRef.current.innerText.length > 0 && props.target)
       || (props.replyRef.current && props.replyRef.current.value.length > 0)) {

@@ -1,9 +1,8 @@
 import { ThemeProvider, Dialog, AppBar, Toolbar, TextField, createTheme } from "@mui/material";
 import React, { Fragment, useRef, FocusEvent } from "react";
 import { CommentMProps, Divider } from "@/components/common";
-import { call } from "@/service/ApiService";
 import { HeaderBackIcn } from "@/components/common/styles/Icon";
-import { useModify } from "@/hooks/useInComment";
+import { useModify, useModifyR } from "@/hooks/useInComment";
 
 interface ModifyProps {
   open: boolean; setOpenM: any; target?: CommentMProps; setTarget: any; origin: 'event' | 'event/recruitment'; qKey: any;
@@ -15,9 +14,7 @@ export function ModifyInput(props: ModifyProps) {
 
   const handleModify = () => {
     if (mdfRef.current?.value.replace(/\n$/, '').replace(/ /g, '').length === 0) { alert('댓글 내용을 입력해주세요.') }
-    else if (!!mdfRef.current && mdfRef.current.value.length > 0 && !!props.target) {
-      mutateModify.mutate()
-    }
+    else if (!!mdfRef.current && mdfRef.current.value.length > 0 && !!props.target) { mutateModify.mutate() }
   }
 
   return (
@@ -28,19 +25,14 @@ export function ModifyInput(props: ModifyProps) {
 
 export function ModifyInputR(props: ModifyProps) {
   const mdfRef = useRef<HTMLDivElement>(null);
+  const mutateModify = useModifyR(`/api/${props.origin}/comment/children/${props.target?.commentId}`, props.qKey, mdfRef, props.setTarget, props.setOpenM)
+
   const handleModify = () => {
     if (mdfRef.current?.innerText.replace(/\n$/, '').replace(/ /g, '').length === 0) { alert('댓글 내용을 입력해주세요.') }
     else if (mdfRef.current && mdfRef.current.innerText.length > 0 && props.target) {
       let mentionTag = mdfRef.current.children.namedItem('mention-highlight')
-      console.log(`/api/${props.origin}/comment/children/${props.target.commentId}`)
-      console.log(`{ "content": ${mdfRef.current.innerText}, "replyTargetUserId": ${(props.target.replyTargetUserName !== undefined && mentionTag === null) ? null : 0}}`)
-      call(`/api/${props.origin}/comment/children/${props.target.commentId}`, "PATCH",
-        { "content": mdfRef.current.innerText, "replyTargetUserId": (props.target.replyTargetUserName !== undefined && mentionTag === null) ? null : 0 })
-        .then((response) => {
-          console.log(response);
-          props.setTarget(undefined);
-          props.setOpenM(false);
-        }).catch((error) => console.error(error));
+      let replying = props.target.replyTargetUserName !== undefined && mentionTag === null
+      mutateModify.mutate(replying)
     }
   }
 
@@ -90,17 +82,15 @@ export function ModifyInputR(props: ModifyProps) {
       <div className="py-[12px] px-[16px]">
         <div className='mention-reply-section' ref={mdfRef} contentEditable onFocus={handleFocus}
           onKeyUp={handleCaret} onKeyDown={handleCaret} onMouseUp={handleCaret} suppressContentEditableWarning={true} >
-          {
-            props.target && props.target.replyTargetUserName
-              ? <>
-                <span contentEditable={false} id='mention-highlight' className='text-primary-blue'>{`@${props.target.replyTargetUserName} `}</span>
-                {
-                  props.target.content.startsWith('@') && props.target.content.slice(1, props.target.replyTargetUserName.length + 1) === props.target.replyTargetUserName
-                    ? props.target.content.slice(props.target.replyTargetUserName.length + 2)
-                    : props.target.content ?? ''
-                }
-              </>
-              : <span className='w-full' contentEditable suppressContentEditableWarning={true}>{props.target?.content ?? ''}</span>
+          {props.target && props.target.replyTargetUserName
+            ? <>
+              <span contentEditable={false} id='mention-highlight' className='text-primary-blue'>{`@${props.target.replyTargetUserName} `}</span>
+              {props.target.content.startsWith('@') && props.target.content.slice(1, props.target.replyTargetUserName.length + 1) === props.target.replyTargetUserName
+                ? props.target.content.slice(props.target.replyTargetUserName.length + 2)
+                : props.target.content ?? ''
+              }
+            </>
+            : <span className='w-full' contentEditable suppressContentEditableWarning={true}>{props.target?.content ?? ''}</span>
           }
         </div>
       </div>
