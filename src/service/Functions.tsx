@@ -1,4 +1,5 @@
-import { MutableRefObject, useEffect, useRef } from "react";
+"use client"
+import { useEffect } from "react";
 import { createSearchParams } from 'react-router-dom'
 import { call } from "./ApiService";
 
@@ -8,7 +9,7 @@ import 'dayjs/locale/ko';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 
-import { CalProps, CommentProps, ListProps, ParamProps, RListProps, LikeProps, LikeRProps, AlarmProps, FilterProps } from "@/components/common";
+import { CalProps, CommentProps, ListProps, RListProps, LikeProps, LikeRProps, AlarmProps, FilterProps } from "@/components/common";
 
 // dayjs 설정
 dayjs.extend(isSameOrBefore);
@@ -36,13 +37,6 @@ export const sortLabel = (sort: string) => {
     case 'views,desc': return '조회수'
     case 'likeCount,desc': return '좋아요수'
     case 'commentCount,desc': return '댓글수'
-  }
-}
-
-export function setPageInfo(page: any, setPage: any, currentPage: number, params?: ParamProps, setParams?: any) {
-  setPage({ ...page, current: currentPage });
-  if (params !== undefined && setParams !== undefined) {
-    setParams({ ...params, page: currentPage });
   }
 }
 
@@ -140,46 +134,6 @@ export const applyLike = (loginfo: boolean, liked: boolean, url: string, setLike
         if (setLikeCount !== undefined) { setLikeCount(response.data.likeCount) }
       }).catch((error) => console.error(error));
   }
-}
-
-// 댓글 대댓글
-export const useEffectRefreshComment = (opt: 'CMT' | 'RPL', url: string, initialSet: MutableRefObject<boolean>, page: any, setPage: any,
-  setCount: any, isLoading: boolean, setLoading: any, setComments: any, tmp: any[], setTmp: any, setTmpP: any, tmpP?: number) => {
-  useEffect(() => {
-    var tmpA: any[] = [];
-    console.log('useEffectRefreshComment (1)')
-    async function fetchComment() {
-      if (isLoading) {
-        for (let p = 0; p < page.current + 1; p++) {
-          await call(`${url}&page=${p}`, "GET", null).then((response: any) => {
-            console.log(`${url}&page=${p}`)
-            if (!response.data.empty) {
-              if (p === 0) {
-                if (!initialSet.current) { // 페이지값 초기설정
-                  setPage({ current: 0, total: response.data.totalPages })
-                  initialSet.current = true;
-                }
-                setCount(response.data.totalElements)
-              }
-              console.log('response: ', response.data.content)
-              response.data.content.forEach(function (d: any) { tmpA.push(d) })
-              console.log('(1) - tmpA: ', tmpA)
-              setTmpP(p)
-            }
-          })
-        }
-        setTmp(tmpA)
-      }
-    }
-    fetchComment();
-  }, [page, isLoading])
-  useEffect(() => {
-    console.log('useEffectRefreshComment (2) ', tmpP, page.current)
-    if (tmpP === page.current && tmp.length > 0) {
-      setUniqueList(opt, [], setComments, tmp)
-      setLoading(false)
-    }
-  }, [tmp])
 }
 
 // 캘린더 : 디스플레이 되는 달의 이벤트 처리

@@ -1,3 +1,4 @@
+"use client";
 import { ChangeEvent, useState } from "react";
 import { ThemeProvider, FormControl, FormControlLabel, RadioGroup, Radio, Collapse, Checkbox } from "@mui/material";
 import { viewTheme, viewRadioTheme, viewCheckTheme } from "./ViewFilterTheme";

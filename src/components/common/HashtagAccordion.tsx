@@ -1,3 +1,4 @@
+"use client";
 import { useState, useLayoutEffect, createRef } from 'react';
 import { styled, IconButton, IconButtonProps } from '@mui/material';
 import Link from 'next/link';

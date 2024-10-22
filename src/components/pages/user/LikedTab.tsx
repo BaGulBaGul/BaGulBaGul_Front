@@ -3,8 +3,7 @@ import { useState } from 'react';
 import { tabList } from '@/service/Functions';
 import { fetchFromURLWithPage } from '@/service/ApiService';
 import { MoreButton, NoEvent, TabPanels, PostTab, LikeProps, LikeRProps, Divider } from '@/components/common';
-import { ViewToggle } from './UserButtons';
-import { LikedAccompanyBlock, LikedPostBlock } from './LikedBlock';
+import { ViewToggle, LikedAccompanyBlock, LikedPostBlock } from '.';
 import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query';
 
 export function LikedTab() {
@@ -48,7 +47,7 @@ interface LikedTabBlockProps {
   events: InfiniteData<any, unknown> | undefined; hasNextPage: boolean; handleMore: any; status: any;
   value: number; view: string;
 }
-const TabBlock = (props: LikedTabBlockProps) => {
+function TabBlock(props: LikedTabBlockProps) {
   if (props.status === 'success' && !!props.events) {
     return (
       <div className='bg-p-white'>

@@ -1,16 +1,16 @@
 "use client";
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import DatePicker, { registerLocale } from "react-datepicker";
 import { call } from '@/service/ApiService';
 import { getEvents } from '@/service/Functions';
 import { ChevronIcn } from '@/components/common/styles/Icon';
-import dayjs from 'dayjs';
+import { CalendarTab } from '.';
+import { CalProps } from '@/components/common';
 
-import DatePicker, { registerLocale } from "react-datepicker";
+import dayjs from 'dayjs';
 import { ko } from "date-fns/locale/ko";
 import { getMonth, getYear } from "date-fns";
-import { CalendarTab } from './CalendarTab';
-import { useRouter } from 'next/navigation';
-import { CalProps } from '@/components/common';
 
 export function Calendar() {
   registerLocale("ko", ko);
@@ -48,7 +48,7 @@ interface CalendarHeaderProps {
   date: Date, decreaseMonth: VoidFunction, increaseMonth: VoidFunction, prevMonthButtonDisabled: boolean, nextMonthButtonDisabled: boolean,
   displayM: number, setDisplayM: any, setEventDates: any, setEvents: any, setLoading: any
 }
-const CalendarHeader = (props: CalendarHeaderProps) => {
+function CalendarHeader(props: CalendarHeaderProps) {
   const handlePrev = () => { props.decreaseMonth(); props.setDisplayM(props.displayM - 1) }
   const handleNext = () => { props.increaseMonth(); props.setDisplayM(props.displayM + 1) }
   useEffect(() => {

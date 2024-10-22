@@ -3,7 +3,7 @@ import { DeleteIcn } from "@/components/common/styles/Icon";
 import { handleClickAlarm } from "@/service/Functions";
 import dayjs from "dayjs";
 
-export const AlarmBlock = (props: { data: AlarmProps, handleDelete: any, router: any; }) => {
+export function AlarmBlock(props: { data: AlarmProps, handleDelete: any, router: any; }) {
   return (
     <div className="flex flex-row w-full px-[16px] py-[10px] gap-[20px]">
       <div className="w-[30px] h-[30px]">
@@ -35,7 +35,7 @@ export const AlarmBlock = (props: { data: AlarmProps, handleDelete: any, router:
   )
 };
 
-export const AlarmIcn = (props: { type: string, val: boolean }) => {
+export function AlarmIcn(props: { type: string, val: boolean }) {
   switch (props.type) {
     case "NEW_EVENT_COMMENT":
     case "NEW_EVENT_COMMENT_CHILD":

@@ -3,9 +3,9 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { AlarmProps, MoreButton } from "@/components/common";
 import { fetchFromURLWithPage } from "@/service/ApiService";
-import { AlarmBlock } from "./AlarmBlock";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useDeleteAlarm, useDeleteAlarmAll } from "@/hooks/useInAlarm";
+import { AlarmBlock } from ".";
 
 export function AlarmTab() {
   const { data: alarms, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage, status, } = useInfiniteQuery({

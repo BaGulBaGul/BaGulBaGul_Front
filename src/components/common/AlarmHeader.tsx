@@ -2,10 +2,10 @@
 import { useEffect, useState } from "react";
 import { alarmSSE } from "../pages/user/AlarmSSE";
 import { createTheme, Snackbar, ThemeProvider, Alert } from "@mui/material";
-import { AlarmIcn } from "../pages/user/AlarmBlock";
 import { useRouter } from "next/navigation";
 import useLoginInfo from '@/hooks/useLoginInfo';
 import dayjs from "dayjs";
+import { AlarmIcn } from "../pages/user";
 
 export interface SnackbarMessage { alarmId: number; type: string; title: string; message: string; subject: string; time: string; }
 export default function AlarmHeader() {
