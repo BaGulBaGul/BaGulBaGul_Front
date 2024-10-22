@@ -3,6 +3,7 @@ import { ListProps, LoadingSkeleton, MoreButton, RListProps } from '@/components
 import { tabTheme } from '@/components/common/styles/Themes';
 import { InfiniteData, UseInfiniteQueryResult } from '@tanstack/react-query';
 import { MyPostBlock, UserPostBlock } from '.';
+import { handleMore } from '@/hooks/useInCommon';
 
 export function UserPostTabs(props: {value:0|1; handleChange: any}) {
   return (
@@ -19,7 +20,6 @@ export function UserPostTabs(props: {value:0|1; handleChange: any}) {
 
 export function UserPostTab(props: { me: boolean; posts: UseInfiniteQueryResult<InfiniteData<any, unknown>, Error>, opt: 'EVT' | 'RCT' }) {
   let posts = props.posts
-  const handleMore = () => { if (posts.hasNextPage) { posts.fetchNextPage() } }
   if (posts.isLoading) { return (<LoadingSkeleton type='EVT' />) }
   return (
     <>{!!posts.data && !posts.data.pages[0].empty
@@ -29,7 +29,7 @@ export function UserPostTab(props: { me: boolean; posts: UseInfiniteQueryResult<
             props.me ? <MyPostBlock opt={props.opt} data={item} key={`like-${idx}`} /> : <UserPostBlock opt={props.opt} data={item} key={`like-${idx}`} />
           ))
         ))}
-        {posts.hasNextPage ? <MoreButton onClick={handleMore} /> : <></>}
+        {posts.hasNextPage ? <MoreButton onClick={() => handleMore(posts.hasNextPage, posts.fetchNextPage)} /> : <></>}
       </div>
       : <></>
     }</>

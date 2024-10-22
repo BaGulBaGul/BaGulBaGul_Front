@@ -1,10 +1,9 @@
 import { getParams, tabList } from "@/service/Functions"
 import { ListProps, MoreButton, NoEvent, TabPanels, Divider, TabBlockProps } from "../../common"
-import { fetchFromURLWithPage } from "@/service/ApiService"
 import { ReadonlyURLSearchParams } from "next/navigation"
 import dayjs from "dayjs"
-import { useInfiniteQuery } from "@tanstack/react-query"
 import { ResultBlock, SuggestBlock } from "./SearchBlock"
+import { handleMore, useListWithPageE } from "@/hooks/useInCommon"
 
 export function SearchTabs(props: { opt: 'TTL' | 'TAG'; sp: ReadonlyURLSearchParams }) {
   let tab = Number(props.sp.get('tab_id')) ?? 0
@@ -19,25 +18,16 @@ export function SearchTabs(props: { opt: 'TTL' | 'TAG'; sp: ReadonlyURLSearchPar
     totalHeadCountMin: props.sp.get('hcMin') ?? '',
   }
   let apiURL = !!params && Object.keys(params).length > 0 ? `/api/event?size=10&${getParams(params)}` : '/api/event?size=10&type=FESTIVAL'
-  const { data: events, fetchNextPage, hasNextPage, status } = useInfiniteQuery({
-    queryKey: ['events', params],
-    queryFn: (pageParam) => fetchFromURLWithPage(apiURL, pageParam),
-    initialPageParam: 0,
-    getNextPageParam: (lastPage, allPages, lastPageParam) => {
-      if (lastPageParam >= lastPage.totalPages - 1) { return undefined }
-      return lastPageParam + 1
-    }, enabled: !!params,
-  })
-  const handleMore = () => { if (hasNextPage) { fetchNextPage() } }
+  const { data: events, fetchNextPage, hasNextPage, status } = useListWithPageE(apiURL, ['events', params], !!params)
 
   return (
     <TabPanels value={tab}
-      child1={<TabBlock opt={props.opt === 'TTL' ? 0 : 1} events={events} hasNextPage={hasNextPage} handleMore={handleMore} status={status} />}
-      child2={<TabBlock opt={props.opt === 'TTL' ? 0 : 1} events={events} hasNextPage={hasNextPage} handleMore={handleMore} status={status} />} />
+      child1={<TabBlock opt={props.opt === 'TTL' ? 0 : 1} events={events} hasNextPage={hasNextPage} handleMore={() => handleMore(hasNextPage, fetchNextPage)} status={status} />}
+      child2={<TabBlock opt={props.opt === 'TTL' ? 0 : 1} events={events} hasNextPage={hasNextPage} handleMore={() => handleMore(hasNextPage, fetchNextPage)} status={status} />} />
   )
 }
 
-const TabBlock = (props: TabBlockProps) => {
+function TabBlock(props: TabBlockProps) {
   // if (props.isLoading) { return <LoadingSkeleton /> }
   if (props.status === 'success') {
     return (

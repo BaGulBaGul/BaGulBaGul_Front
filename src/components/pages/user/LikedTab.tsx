@@ -1,10 +1,10 @@
 "use client";
 import { useState } from 'react';
 import { tabList } from '@/service/Functions';
-import { fetchFromURLWithPage } from '@/service/ApiService';
 import { MoreButton, NoEvent, TabPanels, PostTab, LikeProps, LikeRProps, Divider } from '@/components/common';
 import { ViewToggle, LikedAccompanyBlock, LikedPostBlock } from '.';
-import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query';
+import { InfiniteData } from '@tanstack/react-query';
+import { handleMore, useListWithPage } from '@/hooks/useInCommon';
 
 export function LikedTab() {
   const [value, setValue] = useState(0);
@@ -17,16 +17,7 @@ export function LikedTab() {
 
   const apiURL = view === 'EVT' ? `/api/event/mylike?type=${tabList[value]}&size=10`
     : `/api/event/recruitment/mylike?type=${tabList[value]}&size=10`
-  const { data: events, fetchNextPage, hasNextPage, status } = useInfiniteQuery({
-    queryKey: ['liked-posts', value, view],
-    queryFn: (pageParam) => fetchFromURLWithPage(apiURL, pageParam),
-    initialPageParam: 0,
-    getNextPageParam: (lastPage, allPages, lastPageParam) => {
-      if (lastPageParam >= lastPage.totalPages - 1) { return undefined }
-      return lastPageParam + 1
-    },
-  })
-  const handleMore = () => { if (hasNextPage) { fetchNextPage() } }
+  const { data: events, fetchNextPage, hasNextPage, status } = useListWithPage(apiURL, ['liked-posts', value, view])
 
   return (
     <div className='flex flex-col w-full pb-[10px]'>
@@ -36,8 +27,8 @@ export function LikedTab() {
       </div>
       <div className='mt-[108px]'>
         <TabPanels value={value}
-          child1={<TabBlock events={events} hasNextPage={hasNextPage} handleMore={handleMore} status={status} value={value} view={view} />}
-          child2={<TabBlock events={events} hasNextPage={hasNextPage} handleMore={handleMore} status={status} value={value} view={'EVT'} />} />
+          child1={<TabBlock events={events} hasNextPage={hasNextPage} handleMore={() => handleMore(hasNextPage, fetchNextPage)} status={status} value={value} view={view} />}
+          child2={<TabBlock events={events} hasNextPage={hasNextPage} handleMore={() => handleMore(hasNextPage, fetchNextPage)} status={status} value={value} view={'EVT'} />} />
       </div>
     </div >
   )

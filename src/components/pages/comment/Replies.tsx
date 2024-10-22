@@ -1,28 +1,18 @@
 "use client";
-import { fetchFromURLWithPage } from '@/service/ApiService';
 import { CommentMProps, CommentProps, LoadingSkeleton, MoreButton } from '@/components/common';
 import { CommentBlock } from '@/components/pages/comment';
-import { useInfiniteQuery } from '@tanstack/react-query';
 import { Dispatch, SetStateAction, useEffect } from 'react';
+import { handleMore, useListWithPage } from '@/hooks/useInCommon';
 
 interface RepliesProps {
-  origin: 'event' | 'event/recruitment'; rKey: any[]; apiURL: string; setOpenD: Dispatch<SetStateAction<boolean>>; 
+  origin: 'event' | 'event/recruitment'; rKey: any[]; apiURL: string; setOpenD: Dispatch<SetStateAction<boolean>>;
   setTargetM: Dispatch<SetStateAction<CommentMProps | undefined>>; setRCnt: Dispatch<SetStateAction<number | undefined>>; handleMention: any;
 }
 export function Replies(props: RepliesProps) {
-  const { data: replies, fetchNextPage, hasNextPage, status, isLoading } = useInfiniteQuery({
-    queryKey: props.rKey,
-    queryFn: (pageParam) => fetchFromURLWithPage(`${props.apiURL}/children?sort=createdAt,desc&size=10`, pageParam),
-    initialPageParam: 0,
-    getNextPageParam: (lastPage, allPages, lastPageParam) => {
-      if (lastPageParam >= lastPage.totalPages - 1) { return undefined }
-      return lastPageParam + 1
-    }
-  })
+  const { data: replies, fetchNextPage, hasNextPage, status, isLoading } = useListWithPage(`${props.apiURL}/children?sort=createdAt,desc&size=10`, props.rKey)
   useEffect(() => {
     if (!!replies) { props.setRCnt(replies.pages[0].totalElements) }
   }, [replies])
-  const handleMore = () => { if (hasNextPage) { fetchNextPage() } }
 
   return (
     <>{isLoading ? <LoadingSkeleton type='RPL' />
@@ -35,7 +25,7 @@ export function Replies(props: RepliesProps) {
               </div>
             ))
           ))}
-          {hasNextPage ? <MoreButton onClick={handleMore} /> : <></>}
+          {hasNextPage ? <MoreButton onClick={() => handleMore(hasNextPage, fetchNextPage)} /> : <></>}
         </div>
         : <></>
       }</>

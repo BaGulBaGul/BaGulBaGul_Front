@@ -1,12 +1,11 @@
 "use client";
 import React from "react";
 import { useParams, useSearchParams } from 'next/navigation';
-import { fetchFromURLWithPage } from '@/service/ApiService';
 import { getParams } from "@/service/Functions";
 import { LoadingCircle, LoadingSkeleton, MoreButton, RListProps, Divider, NoEvent } from '@/components/common';
 import { RecruitBlock } from "@/components/pages/detail";
 import dayjs from "dayjs";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { handleMore, useListWithPageE } from "@/hooks/useInCommon";
 
 export default function Page() {
   const prms = useParams()
@@ -18,16 +17,7 @@ export default function Page() {
     leftHeadCount: searchParams.get('ptcp') ?? '',
   }
   let apiURL = !!params && Object.keys(params).length !== 0 ? `/api/event/${prms.eventId}/recruitment?size=10&${getParams(params)}` : `/api/event/${prms.eventId}/recruitment?size=10`
-  const { data: recruits, fetchNextPage, hasNextPage, status } = useInfiniteQuery({
-    queryKey: ['recruits', params],
-    queryFn: (pageParam) => fetchFromURLWithPage(apiURL, pageParam),
-    initialPageParam: 0,
-    getNextPageParam: (lastPage, allPages, lastPageParam) => {
-      if (lastPageParam >= lastPage.totalPages - 1) { return undefined }
-      return lastPageParam + 1
-    }, enabled: !!params,
-  })
-  const handleMore = () => { if (hasNextPage) { fetchNextPage() } }
+  const { data: recruits, fetchNextPage, hasNextPage, status } = useListWithPageE(apiURL, ['recruits', params], !!params)
 
   // if (isLoading && page.current === 0) { return <LoadingSkeleton type='RCT' /> }
   // else if (isLoading && page.current > 0) { return <LoadingCircle /> }
@@ -44,7 +34,7 @@ export default function Page() {
                 </div>
               ))
             ))}
-            {hasNextPage ? <MoreButton onClick={handleMore} /> : <></>}
+            {hasNextPage ? <MoreButton onClick={() => handleMore(hasNextPage, fetchNextPage)} /> : <></>}
           </>
           : <NoEvent text1="찾는 행사가 없어요." text2="지금 인기 있는 페스티벌을 만나보세요." buttonText={"페스티벌 인기순 보러가기"} />
         }

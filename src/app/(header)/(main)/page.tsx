@@ -4,8 +4,7 @@ import { TabPanels } from '@/components/common';
 import { getParams, tabList } from '@/service/Functions';
 import { MainTabBlock } from '@/components/pages/main';
 import dayjs from 'dayjs';
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { fetchFromURLWithPage } from '@/service/ApiService';
+import { handleMore, useListWithPageE } from "@/hooks/useInCommon";
 
 export default function Page() {
   const searchParams = useSearchParams()
@@ -32,20 +31,11 @@ export default function Page() {
     totalHeadCountMin: searchParams.get('hcMin') ?? ''
   }
   let apiURL = !!params && Object.keys(params).length > 0 ? `/api/event?size=10&${getParams(params)}` : '/api/event?size=10&type=FESTIVAL'
-  const { data: events, fetchNextPage, hasNextPage, status } = useInfiniteQuery({
-    queryKey: ['events', params],
-    queryFn: (pageParam) => fetchFromURLWithPage(apiURL, pageParam),
-    initialPageParam: 0,
-    getNextPageParam: (lastPage, allPages, lastPageParam) => {
-      if (lastPageParam >= lastPage.totalPages - 1) { return undefined }
-      return lastPageParam + 1
-    }, enabled: !!params,
-  })
-  const handleMore = () => { if (hasNextPage) { fetchNextPage() } }
+  const { data: events, fetchNextPage, hasNextPage, status } = useListWithPageE(apiURL, ['events', params], !!params)
 
   return (
     <TabPanels value={tab}
-      child1={<MainTabBlock opt={0} events={events} hasNextPage={hasNextPage} handleMore={handleMore} status={status} />}
-      child2={<MainTabBlock opt={1} events={events} hasNextPage={hasNextPage} handleMore={handleMore} status={status} />} />
+      child1={<MainTabBlock opt={0} events={events} hasNextPage={hasNextPage} handleMore={() => handleMore(hasNextPage, fetchNextPage)} status={status} />}
+      child2={<MainTabBlock opt={1} events={events} hasNextPage={hasNextPage} handleMore={() => handleMore(hasNextPage, fetchNextPage)} status={status} />} />
   )
 }

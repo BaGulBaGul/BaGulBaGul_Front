@@ -1,13 +1,10 @@
 "use client";
 import { useState } from 'react';
-import { fetchFromURLWithPage } from "@/service/ApiService";
 import { SubHeaderCnt } from '@/components/layout/subHeader';
 import { CommentMProps, CommentProps, MoreButton } from '@/components/common';
 import { CommentBlock, CommentDrawer, CommentFooter, ModifyInput } from '@/components/pages/comment';
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { qKey } from '@/hooks/useInCommon';
+import { handleMore, originText, useDelete, useListWithPage } from '@/hooks/useInCommon';
 import useLoginInfo from '@/hooks/useLoginInfo';
-import { useDeleteComment } from '@/hooks/useInComment';
 
 export function CommentsPage(props: { origin: 'event' | 'event/recruitment'; postId: any; }) {
   // menu drawer
@@ -20,24 +17,16 @@ export function CommentsPage(props: { origin: 'event' | 'event/recruitment'; pos
   const userinfo = useLoginInfo()
 
   let apiURL = `/api/${props.origin}/${props.postId}/comment?sort=createdAt,desc&size=10`
-  const { data: comments, fetchNextPage, hasNextPage, status } = useInfiniteQuery({
-    queryKey: [qKey(props.origin), props.postId, 'comments'],
-    queryFn: (pageParam) => fetchFromURLWithPage(apiURL, pageParam),
-    initialPageParam: 0,
-    getNextPageParam: (lastPage, allPages, lastPageParam) => {
-      if (lastPageParam >= lastPage.totalPages - 1) { return undefined }
-      return lastPageParam + 1
-    }
-  })
-  const handleMore = () => { if (hasNextPage) { fetchNextPage() } }
+  let qKey = [originText(props.origin), props.postId, 'comments']
+  const { data: comments, fetchNextPage, hasNextPage, status } = useListWithPage(apiURL, qKey)
 
-  const mutateDelete = useDeleteComment(`/api/${props.origin}/comment/${targetM?.commentId}`, [qKey(props.origin), props.postId, 'comments'])
+  const mutateDelete = useDelete(`/api/${props.origin}/comment/${targetM?.commentId}`, qKey, '댓글')
   const handleDelete = () => {
     let confirmDelete = confirm("댓글을 삭제하시겠습니까?");
     if (targetM && confirmDelete) { mutateDelete.mutate() }
   }
 
-  let postUrl = `/${props.origin === 'event' ? 'event' : 'recruitment'}/${props.postId}`
+  let postUrl = `/${originText(props.origin)}/${props.postId}`
   return (
     <>
       <SubHeaderCnt name='글 댓글' cnt={!!comments ? comments.pages[0].totalElements : ''} url={postUrl} />
@@ -50,15 +39,15 @@ export function CommentsPage(props: { origin: 'event' | 'event/recruitment'; pos
               </div>
             ))
           ))}
-            {hasNextPage ? <MoreButton onClick={handleMore} /> : <></>}
+            {hasNextPage ? <MoreButton onClick={() => handleMore(hasNextPage, fetchNextPage)} /> : <></>}
           </>
           : <></>
         }
       </div>
-      <CommentFooter url={`${props.origin}/${props.postId}`} qKey={[qKey(props.origin), props.postId, 'comments']} />
+      <CommentFooter url={`${props.origin}/${props.postId}`} qKey={qKey} />
       <CommentDrawer open={openD} opt={!!userinfo && !!targetM && userinfo.id === targetM.userId ? 0 : 1}
         toggleDrawer={toggleDrawer} setOpenM={setOpenM} handleDelete={handleDelete} />
-      <ModifyInput open={openM} setOpenM={setOpenM} target={targetM} setTarget={setTargetM} origin={props.origin} qKey={[qKey(props.origin), props.postId, 'comments']} />
+      <ModifyInput open={openM} setOpenM={setOpenM} target={targetM} setTarget={setTargetM} origin={props.origin} qKey={qKey} />
     </>
   );
 }

@@ -7,7 +7,7 @@ import { CommentMProps, CommentProps, LoadingSkeleton, Divider } from '@/compone
 import { RepliedComment, Replies, MemoizedReplyFooter, CommentDrawer, ModifyInputR } from '@/components/pages/comment';
 import { useQuery } from '@tanstack/react-query';
 import useLoginInfo from '@/hooks/useLoginInfo';
-import { useDeleteComment } from '@/hooks/useInComment';
+import { originText, useDelete } from '@/hooks/useInCommon';
 
 export function RepliesPage(props: { origin: 'event' | 'event/recruitment'; commentId: any; postId: any; }) {
   // 댓글
@@ -16,11 +16,15 @@ export function RepliesPage(props: { origin: 'event' | 'event/recruitment'; comm
   let rKey = ['comment', props.commentId, 'replies'];
   let lKey = ['comment', props.commentId, 'liked']
   let apiURL = `/api/${props.origin}/comment/${props.commentId}`
-  const comment = useQuery({ queryKey: cKey, queryFn: () => fetchFromURL(apiURL, false, true), retry: false })
+  const comment = useQuery({
+    queryKey: cKey,
+    queryFn: () => fetchFromURL(apiURL, false, true),
+    retry: false
+  })
 
   const router = useRouter()
   if (comment.isError) {
-    router.replace(`/${props.origin === 'event' ? 'event' : 'recruitment'}/${props.postId}/comments`)
+    router.replace(`/${originText(props.origin)}/${props.postId}/comments`)
   }
   const [rCnt, setRCnt] = useState<number>();
 
@@ -32,7 +36,7 @@ export function RepliesPage(props: { origin: 'event' | 'event/recruitment'; comm
   const [targetM, setTargetM] = useState<CommentMProps | undefined>();
   let deleteURL = !targetM ? '' : targetM.opt === 'CMT' ? `/api/${props.origin}/comment/${targetM?.commentId}` : `/api/${props.origin}/comment/children/${targetM?.commentId}`
   let dKey = !targetM ? '' : targetM.opt === 'CMT' ? cKey : rKey
-  const mutateDelete = useDeleteComment(deleteURL, dKey)
+  const mutateDelete = useDelete(deleteURL, dKey, '댓글')
   const handleDelete = () => {
     let confirmDelete = confirm("댓글을 삭제하시겠습니까?");
     if (targetM && confirmDelete) { mutateDelete.mutate(); }
@@ -67,7 +71,7 @@ export function RepliesPage(props: { origin: 'event' | 'event/recruitment'; comm
     if (mentioning && mentionRef && mentionRef.current) { mentionRef.current.focus() }
   }, [mentionTarget])
 
-  let postUrl = `/${props.origin === 'event' ? 'event' : 'recruitment'}/${props.postId}`
+  let postUrl = `/${originText(props.origin)}/${props.postId}`
   return (
     <>
       <SubHeaderCnt name='답글' cnt={rCnt ?? ''} url={postUrl} />

@@ -2,31 +2,21 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import { AlarmProps, MoreButton } from "@/components/common";
-import { fetchFromURLWithPage } from "@/service/ApiService";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { useDeleteAlarm, useDeleteAlarmAll } from "@/hooks/useInAlarm";
+import { useDeleteAlarm } from "@/hooks/useInAlarm";
+import { handleMore, useDelete, useListWithPage } from "@/hooks/useInCommon";
 import { AlarmBlock } from ".";
 
 export function AlarmTab() {
-  const { data: alarms, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage, status, } = useInfiniteQuery({
-    queryKey: ['alarms'],
-    queryFn: (pageParam) => fetchFromURLWithPage('/api/user/alarm/?', pageParam),
-    initialPageParam: 0,
-    getNextPageParam: (lastPage, allPages, lastPageParam) => {
-      if (lastPageParam >= lastPage.totalPages - 1) { return undefined }
-      return lastPageParam + 1
-    },
-  })
+  const { data: alarms, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage, status, } = useListWithPage('/api/user/alarm/?', ['alarms'])
   const router = useRouter()
 
   const mutateDelete = useDeleteAlarm()
   const handleDelete = (e: any, alarmId: number) => { mutateDelete.mutate(alarmId) }
-  const mutateDeleteAll = useDeleteAlarmAll()
+  const mutateDeleteAll = useDelete('/api/user/alarm/', ['alarms'], '알림')
   const handleDeleteAll = () => {
     let confirmDelete = confirm("모든 알림을 삭제하시겠습니까?");
     if (confirmDelete) { mutateDeleteAll.mutate() }
   }
-  const handleMore = () => { if (hasNextPage) { fetchNextPage() } }
 
   return (
     <div className="mt-[60px]">
@@ -47,7 +37,7 @@ export function AlarmTab() {
           : <></>
         }
       </div>
-      {hasNextPage ? <MoreButton onClick={handleMore} /> : <></>}
+      {hasNextPage ? <MoreButton onClick={() => handleMore(hasNextPage, fetchNextPage)} /> : <></>}
     </div>
   );
 };

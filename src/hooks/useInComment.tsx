@@ -26,16 +26,6 @@ export const useModifyR = (url: string, qKey: any, mdfRef: React.RefObject<HTMLD
   })
 }
 
-export const useDeleteComment = (url: string, qKey: any) => {
-  const queryClient = useQueryClient()
-  return useMutation({
-    mutationFn: () => mutateForURL(url, 'DELETE'),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: qKey })
-    }
-  })
-}
-
 export const useNewComment = (url: string, qKey: any, cmtRef: RefObject<HTMLInputElement>) => {
   const queryClient = useQueryClient()
   return useMutation({

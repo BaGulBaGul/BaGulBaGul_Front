@@ -2,8 +2,8 @@ import Link from 'next/link';
 import { ListProps, RListProps } from '@/components/common';
 import { FormatDateRange } from '@/service/Functions';
 import { PostEditIcn, DeleteIcn } from '@/components/common/styles/Icon';
-import { useDeletePost } from '@/hooks/useInUser';
 import { UseMutationResult } from '@tanstack/react-query';
+import { useDelete } from '@/hooks/useInCommon';
 
 export function MyPostBlock(props: { opt: 'EVT' | 'RCT', data: ListProps | RListProps }) {
   const handleDelete = (e: any, mutateDelete: UseMutationResult<any, Error, void, unknown>) => {
@@ -15,7 +15,7 @@ export function MyPostBlock(props: { opt: 'EVT' | 'RCT', data: ListProps | RList
   if (props.opt === 'EVT') {
     let data = props.data as ListProps
     let content = '일반 티켓은 2023년 4월 18일(화) 오후 6시부터 예매 가능하며, 한정 수량 소진 시 예매가 조기종료될 수 있습니다. Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
-    const mutateDelete = useDeletePost(`/api/event/${data.event.eventId}`, ['my-posts', 0])
+    const mutateDelete = useDelete(`/api/event/${data.event.eventId}`, ['my-posts', 0], '작성글')
     return (
       <Link href={`/event/${data.event.eventId}`} className='flex flex-row px-[16px] py-[18px] gap-[20px] bg-p-white'>
         <img className='rounded-[4px] h-[104px] w-[84px] min-w-[84px] object-cover' src={data.post.headImageUrl} />
@@ -36,7 +36,7 @@ export function MyPostBlock(props: { opt: 'EVT' | 'RCT', data: ListProps | RList
     )
   } else {
     let data = props.data as RListProps
-    const mutateDelete = useDeletePost(`/api/event/${data.recruitment.recruitmentId}`, ['my-posts', 1])
+    const mutateDelete = useDelete(`/api/event/${data.recruitment.recruitmentId}`, ['my-posts', 1], '작성글')
     return (
       <Link href={`/recruitment/${data.recruitment.recruitmentId}`} className='flex flex-col justify-between w-full px-[16px] py-[18px] gap-[4px] bg-p-white'>
         <div className='flex flex-col'>

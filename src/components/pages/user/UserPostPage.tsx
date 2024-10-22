@@ -2,8 +2,9 @@
 import { useState } from 'react';
 import { TabPanel } from '@/components/common';
 import useLoginInfo from '@/hooks/useLoginInfo';
-import { useUserInfo, useUserPosts } from '@/hooks/useInUser';
+import { useUserInfo } from '@/hooks/useInUser';
 import { UserPostTab, UserPostTabs } from '.';
+import { useListWithPageE } from '@/hooks/useInCommon';
 
 const apiURL = (value: 0 | 1, nickname: string) => {
   if (value === 0) { return `/api/event?type=PARTY&size=10&username=${nickname}` }
@@ -14,7 +15,7 @@ export function MyPostPage() {
   const [value, setValue] = useState<0 | 1>(0);
   const handleChange = (e: React.SyntheticEvent, newValue: 0 | 1) => { setValue(newValue); };
   const userinfo = useLoginInfo()
-  const posts = useUserPosts(apiURL(value, userinfo?.nickname), ['my-posts', value], !!userinfo && !!userinfo.nickname)
+  const posts = useListWithPageE(apiURL(value, userinfo?.nickname), ['my-posts', value], !!userinfo && !!userinfo.nickname)
   return (
     <div className='flex flex-col w-full pb-[10px]'>
       <UserPostTabs value={value} handleChange={handleChange} />
@@ -28,7 +29,7 @@ export function UserPostPage(props: { userId: number }) {
   const [value, setValue] = useState<0 | 1>(0);
   const handleChange = (e: React.SyntheticEvent, newValue: 0 | 1) => { setValue(newValue); };
   const userinfo = useUserInfo(props.userId).data
-  const posts = useUserPosts(apiURL(value, userinfo?.nickname), ['user-posts', value], !!userinfo && !!userinfo.nickname)
+  const posts = useListWithPageE(apiURL(value, userinfo?.nickname), ['user-posts', value], !!userinfo && !!userinfo.nickname)
   return (
     <div className='flex flex-col w-full pb-[10px]'>
       <UserPostTabs value={value} handleChange={handleChange} />
