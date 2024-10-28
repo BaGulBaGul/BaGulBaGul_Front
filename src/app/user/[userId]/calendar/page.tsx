@@ -1,6 +1,5 @@
-import { SubTopHeader } from '@/components/layout/subHeader';
 import { redirect } from 'next/navigation';
-import { Calendar, EditButton } from '@/components/pages/user';
+import { CalendarPage } from '@/components/pages/user';
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -10,12 +9,6 @@ export const metadata: Metadata = {
 
 export default function Page({ params }: { params: { userId: 'mypage' | number } }) {
   if (params.userId === 'mypage') {
-
-    return (
-      <>
-        <SubTopHeader name='캘린더' child={<EditButton />} />
-        <Calendar />
-      </>
-    );
+    return ( <CalendarPage /> );
   } else { redirect(`/user/${params.userId}`) }
 }

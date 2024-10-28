@@ -1,7 +1,7 @@
 import { sortLabel } from "@/service/Functions";
 import { Dispatch, SetStateAction } from "react";
 import dayjs from "dayjs";
-import { FilterProps } from ".";
+import { FilterProps } from "..";
 
 interface FilterAppliedProps {
   filterCnt: number; filters: string[], setFilters: Dispatch<SetStateAction<string[]>>;

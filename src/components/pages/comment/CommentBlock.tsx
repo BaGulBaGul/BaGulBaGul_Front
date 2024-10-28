@@ -2,10 +2,9 @@ import { Checkbox } from "@mui/material";
 import { useState, MouseEvent, useEffect } from "react";
 import { applyLike } from "@/service/Functions";
 import { CmtLikeIcn, VerticalMoreIcn } from "@/components/common/styles/Icon";
-import { CommentProps, NoUser } from "@/components/common";
+import { CommentProps, UserProfile } from "@/components/common";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 
 const handleToggle = (e: MouseEvent, setOpenD: any, setTargetM: any, value: any) => {
   e.stopPropagation();
@@ -22,9 +21,9 @@ export function CommentBlock(props: CommentBlockProps) {
   const router = useRouter()
   const [liked, setLiked] = useState(props.data.myLike ?? false)
   const [likeCount, setLikeCount] = useState<number>(props.data.likeCount ?? undefined)
-  useEffect(()=>{
-    if (liked !== props.data.myLike) {setLiked(props.data.myLike)}
-    if (likeCount !== props.data.likeCount) {setLikeCount(props.data.likeCount)}
+  useEffect(() => {
+    if (liked !== props.data.myLike) { setLiked(props.data.myLike) }
+    if (likeCount !== props.data.likeCount) { setLikeCount(props.data.likeCount) }
   }, [props.data])
 
   let apiURL = props.opt === 'CMT' ? `/api/${props.origin}/comment/${props.data.commentId}/like`
@@ -39,13 +38,7 @@ export function CommentBlock(props: CommentBlockProps) {
       {props.opt === 'CMT'
         ? <>
           <div className='flex flex-row justify-between pb-[10px]' id='comment-head'>
-            {props.data.userId === null ? <NoUser />
-              : <Link href={`/user/${props.data.userId}`} className='flex flex-row items-center gap-[8px]'>
-                {/* <img className='rounded-full w-[24px] h-[24px]' src={props.data.userProfileImageUrl ?? '/profile_main.svg'} /> */}
-                <img className='w-[24px] h-[24px] rounded-full' src="/profile_main.svg" />
-                <p className="text-14">{props.data.username}</p>
-              </Link>
-            }
+            <UserProfile userId={props.data.userId} userName={props.data.username} userProfileImageUrl={props.data.userProfileImageUrl} gap='8px' />
             <button onClick={(e) => handleToggle(e, props.setOpenD, props.setTargetM, toggleValue)}><VerticalMoreIcn opt='CMT' /></button>
           </div>
           <div className='text-14 text-gray3 pb-[6px]' id='comment-body'>{props.data.content}</div>
@@ -55,13 +48,7 @@ export function CommentBlock(props: CommentBlockProps) {
         </>
         : <div onClick={(e) => { props.handleMention(props.data, e) }}>
           <div className='flex flex-row justify-between pb-[10px]' id='comment-head'>
-            {props.data.userId === null ? <NoUser />
-              : <Link onClick={(e) => { e.stopPropagation(); }} href={`/user/${props.data.userId}`} className='flex flex-row items-center gap-[8px]'>
-                {/* <img className='rounded-full w-[24px] h-[24px]' src={props.data.userProfileImageUrl ?? '/profile_main.svg'} /> */}
-                <img className='w-[24px] h-[24px] rounded-full' src="/profile_main.svg" />
-                <p className="text-14">{props.data.userName}</p>
-              </Link>
-            }
+            <UserProfile userId={props.data.userId} userName={props.data.userName} userProfileImageUrl={props.data.userProfileImageUrl} gap='8px' />
             <button onClick={(e) => handleToggle(e, props.setOpenD, props.setTargetM, toggleValue)}><VerticalMoreIcn opt='CMT' /></button>
           </div>
           <div className='text-14 text-gray3 pb-[6px]' id='comment-body'>
@@ -95,7 +82,7 @@ export function CommentBlock(props: CommentBlockProps) {
         }
         <div className='flex flex-row items-center gap-[2px]' id='comment-likes'>
           <Checkbox icon={<CmtLikeIcn val={false} />} checkedIcon={<CmtLikeIcn val={true} />} checked={liked}
-            onChange={() => applyLike(true, liked, apiURL, setLiked, setLikeCount)} 
+            onChange={() => applyLike(true, liked, apiURL, setLiked, setLikeCount)}
             // onChange={handleLike}
             disableRipple className='p-0' />
           {likeCount > 0 ? <p className='text-12 text-gray3'>{likeCount}</p> : <></>}

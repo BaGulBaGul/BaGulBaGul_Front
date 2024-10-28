@@ -2,10 +2,6 @@
 import { Dispatch, SetStateAction } from "react"
 import { ToggleButtonGroup, ToggleButton, ThemeProvider, createTheme } from "@mui/material"
 
-export function EditButton() {
-  return (<button className='text-16 text-gray3'>편집</button>)
-}
-
 export function ViewToggle(props: { view: string; setView: Dispatch<SetStateAction<string>> }) {
   const handleView = (e: React.MouseEvent<HTMLElement>, newVal: string | null) => {
     if (newVal !== null) { props.setView(newVal); }

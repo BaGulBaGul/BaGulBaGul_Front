@@ -136,36 +136,6 @@ export const applyLike = (loginfo: boolean, liked: boolean, url: string, setLike
   }
 }
 
-// 캘린더 : 디스플레이 되는 달의 이벤트 처리
-export const getEvents = function (data: CalProps[], setEventDates: any, setEvents: any) {
-  // 1. 데이터 저장
-  let arrE: { [key: string]: any[] } | undefined = undefined;
-  data.forEach(function (event) {
-    for (var dt = dayjs(event.startTime); dt.isBefore(dayjs(event.endTime).add(1, 'day')); dt = dt.add(1, 'day')) {
-      let dtS = dt.format('YYYY-MM-DD')
-      if (arrE === undefined) { arrE = { [dtS]: [event] } }
-      else if (arrE[dtS] === undefined) { arrE[dtS] = [event] }
-      else if (arrE[dtS].length > 0) { arrE[dtS].push(event) }
-    }
-  });
-  // 2. 데이터 정렬
-  if (arrE !== undefined && Object.keys(arrE).length > 0) {
-    Object.keys(arrE).forEach((key) => {
-      if (arrE !== undefined && arrE[key].length > 1) {
-        arrE[key].sort((a, b) => Date.parse(a.startTime) - Date.parse(b.startTime))
-      }
-    })
-  }
-  // 3. 데이터 반영
-  if (arrE !== undefined) {
-    setEventDates(Object.keys(arrE).map(date => new Date(date)))
-    setEvents(arrE)
-  } else {
-    setEventDates([])
-    setEvents([])
-  }
-};
-
 export const headCountString = (from?: number | null, to?: number | null) => {
   if ((from !== undefined && from !== null && from > 0) || (to !== undefined && to !== null && to > 0)) {
     if (from === undefined) { return ` - ${to}` }

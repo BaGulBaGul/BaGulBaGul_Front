@@ -16,7 +16,7 @@ export default function Page() {
     endDate: searchParams.get('eD') ? `${dayjs(searchParams.get('eD'), "YYYYMMDD").format('YYYY-MM-DD')}T23:59:59` : '',
     leftHeadCount: searchParams.get('ptcp') ?? '',
   }
-  let apiURL = !!params && Object.keys(params).length !== 0 ? `/api/event/${prms.eventId}/recruitment?size=10&${getParams(params)}` : `/api/event/${prms.eventId}/recruitment?size=10`
+  let apiURL = !!params && Object.keys(params).length !== 0 ? `/api/event/recruitment?size=10&eventId=${prms.eventId}&${getParams(params)}` : `/api/event/recruitment?size=10&eventId=${prms.eventId}`
   const { data: recruits, fetchNextPage, hasNextPage, status } = useListWithPageE(apiURL, ['recruits', params], !!params)
 
   // if (isLoading && page.current === 0) { return <LoadingSkeleton type='RCT' /> }

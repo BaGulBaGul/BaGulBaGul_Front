@@ -1,22 +1,27 @@
 import CategoryButtons from './CategoryButtons'
 import HashtagAccordion, { HashtagButton } from './HashtagAccordion'
 import MoreButton from './MoreButton'
-import { NoEvent, NoUser } from './NoEvent'
+import { NoEvent } from './NoEvent'
 import PostTab from './PostTab'
 import { TabPanel, TabPanels } from './TabPanel'
-import { ViewButton, ViewSelect } from './ViewFilter'
-import { ViewFilterApplied } from './ViewFilterApplied'
+import { ViewButton, ViewSelect } from './filter/ViewFilter'
+import { ViewFilterApplied } from './filter/ViewFilterApplied'
 import { LoadingSkeleton, LoadingCircle } from './Loading'
+import { UserProfile } from './block/UserProfile'
+import { HeadCount } from './block/HeadCount'
+
 import { InfiniteData } from '@tanstack/react-query'
+import { BlockInfo, BlockInfoDT } from './block/BlockInfo'
 
 export {
   CategoryButtons,
   HashtagAccordion, HashtagButton,
   MoreButton,
-  NoEvent, NoUser,
+  NoEvent,
   PostTab, TabPanel, TabPanels,
   ViewButton, ViewSelect, ViewFilterApplied,
   LoadingSkeleton, LoadingCircle,
+  UserProfile, HeadCount, BlockInfo, BlockInfoDT
 }
 
 export const Divider = (props: {color?: string;}) => {

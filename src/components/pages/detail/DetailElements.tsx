@@ -5,9 +5,8 @@ import { menuTheme } from "../../common/styles/Themes";
 import Slider from "react-slick";
 import { postData } from "../../common/Data";
 import { FormatDateRange } from "@/service/Functions";
-import { HashtagButton } from "../../common/HashtagAccordion";
+import { HashtagButton, UserProfile } from "../../common";
 import { LikeIcn, CalIcn, VerticalMoreIcn } from "../../common/styles/Icon";
-import { NoUser } from "../../common";
 import dayjs from "dayjs";
 import Link from "next/link";
 
@@ -54,12 +53,7 @@ export function PostTitle(props: PostTitleProps) {
         </div>
       </div>
       <div className='flex flex-row justify-between items-center pt-[4px]'>
-        {props.userId === null ? <NoUser />
-          : <Link href={`/user/${props.userId}`} className='flex flex-row items-center gap-[4px]'>
-            <img className='w-[24px] h-[24px] rounded-full' src={"/images/profile_pic.png"} />
-            <p className='text-14 text-gray3'>{props.userName}</p>
-          </Link>
-        }
+        <UserProfile userId={props.userId} userName={props.userName} userProfileImageUrl={"/images/profile_pic.png"} color='gray3' />
         {props.categories !== undefined
           ? <div className='flex flex-row gap-[8px]'>
             {props.categories.map((cate, idx) => (<button className="cate-btn" key={`cate-${idx}`}>{cate}</button>))}
