@@ -15,8 +15,8 @@ export default function Template({ children }: { children: React.ReactNode }) {
   const [p, setP] = useState({
     sort: searchParams.get('sort') ?? 'createdAt,desc',
     dateRange: [
-      searchParams.get('sD') !== null ? dayjs(searchParams.get('sD'), "YYYYMMDD").toDate() : undefined,
-      searchParams.get('eD') !== null ? dayjs(searchParams.get('eD'), "YYYYMMDD").toDate() : undefined
+      !!searchParams.get('sD')? dayjs(searchParams.get('sD'), "YYYYMMDD").toDate() : undefined,
+      !!searchParams.get('eD') ? dayjs(searchParams.get('eD'), "YYYYMMDD").toDate() : undefined
     ], participants: Number(searchParams.get('ptcp')) ?? 0,
     recruiting: searchParams.get('state') === 'r' ? true : false
   })

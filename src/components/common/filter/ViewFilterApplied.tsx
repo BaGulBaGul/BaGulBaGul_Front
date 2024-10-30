@@ -36,7 +36,7 @@ export const ViewFilterApplied = (props: FilterAppliedProps) => {
             </div>
             {!(props.filters).includes('dayRange') ? <></>
               : <div className='filter-chip'>
-                <span>{startDate !== null && endDate === null ?
+                <span>{!!startDate && !!endDate ?
                   dayjs(startDate).format('YY.MM.DD') : `${dayjs(startDate).format('YY.MM.DD')} - ${dayjs(endDate).format('YY.MM.DD')}`}</span>
                 <button onClick={(e) => handleDelete(e, 'dayRange')}><FilterDeleteIcn /></button>
               </div>

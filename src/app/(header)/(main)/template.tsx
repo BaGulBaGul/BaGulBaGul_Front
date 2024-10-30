@@ -17,8 +17,8 @@ export default function Template({ children }: { children: React.ReactNode }) {
   const [p, setP] = useState({
     sort: searchParams.get('sort') ?? 'createdAt,desc',
     dateRange: [
-      searchParams.get('sD') !== null ? dayjs(searchParams.get('sD'), "YYYYMMDD").toDate() : undefined,
-      searchParams.get('eD') !== null ? dayjs(searchParams.get('eD'), "YYYYMMDD").toDate() : undefined
+      !!searchParams.get('sD') ? dayjs(searchParams.get('sD'), "YYYYMMDD").toDate() : undefined,
+      !!searchParams.get('eD') ? dayjs(searchParams.get('eD'), "YYYYMMDD").toDate() : undefined
     ], participants: Number(searchParams.get('ptcp')) ?? 0,
     headCount: { from: Number(searchParams.get('hcMin')) ?? undefined, to: Number(searchParams.get('hcMax')) ?? undefined },
     proceeding: searchParams.get('state') === 'p' ? true : false
@@ -38,8 +38,8 @@ export default function Template({ children }: { children: React.ReactNode }) {
       sD: !!startDate ? dayjs(startDate).format('YYYYMMDD') : '',
       eD: !!endDate ? dayjs(endDate).format('YYYYMMDD') : '',
       ptcp: p.participants > 0 ? p.participants : '',
-      hcMin: p.headCount.from === null || p.headCount.from === undefined || p.headCount.from <= 0 ? '' : p.headCount.from,
-      hcMax: p.headCount.to === null || p.headCount.to === undefined || p.headCount.to <= 0 ? '' : p.headCount.to,
+      hcMin: !!p.headCount.from ? p.headCount.from : '',
+      hcMax: !!p.headCount.to ? p.headCount.to : '',
     }
     router.replace(Object.keys(params).length > 0 ? `?${getParams(params)}&tab_id=${tab}` : ``)
   }

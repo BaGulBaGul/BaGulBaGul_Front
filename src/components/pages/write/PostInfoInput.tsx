@@ -51,23 +51,23 @@ const DateSelect = (props: { title: string; date: dayjs.Dayjs | null; setDate: a
     <>
       <div className='flex flex-row items-start gap-[16px]'>
         <span className='text-14 font-semibold'>{props.title}</span>
-        <button className={`filter-btn px-[8px] py-[4px] gap-[8px] ${props.date === null ? '' : 'border-primary-blue'}`}
+        <button className={`filter-btn px-[8px] py-[4px] gap-[8px] ${!!props.date ? 'border-primary-blue' : ''}`}
           onClick={handleOpen}>
-          <span className={props.date === null ? '' : "text-primary-blue"}>
+          <span className={!!props.date ? "text-primary-blue" : ''}>
             <CalIcn val={false} color="currentColor" />
           </span>
-          {props.date === null
-            ? <div className='flex flex-row gap-[10px] text-gray2'>
-              <span>{dayjs().format('YYYY년 M월 DD일')}</span>
-              <span>{dayjs().format('A hh:mm')}</span>
-            </div>
-            : <div className='flex flex-row gap-[10px]'>
+          {!!props.date
+            ? <div className='flex flex-row gap-[10px]'>
               <span>{props.date.format('YYYY년 M월 DD일')}</span>
               <span>{props.date.format('A HH:mm')}</span>
             </div>
+            : <div className='flex flex-row gap-[10px] text-gray2'>
+              <span>{dayjs().format('YYYY년 M월 DD일')}</span>
+              <span>{dayjs().format('A hh:mm')}</span>
+            </div>
           }
         </button>
-      </div>
+      </div >
       <ScrollPicker open={open} setOpen={setOpen} data={props.date} setData={props.setDate} />
     </>
   )

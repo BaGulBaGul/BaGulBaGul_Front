@@ -16,8 +16,8 @@ export const SearchLayout = (props: { opt: 'TTL' | 'TAG'; sp: ReadonlyURLSearchP
   const [p, setP] = useState({
     sort: props.sp.get('sort') ?? 'createdAt,desc',
     dateRange: [
-      props.sp.get('sD') !== null ? dayjs(props.sp.get('sD'), "YYYYMMDD").toDate() : undefined,
-      props.sp.get('eD') !== null ? dayjs(props.sp.get('eD'), "YYYYMMDD").toDate() : undefined
+      !!props.sp.get('sD') ? dayjs(props.sp.get('sD'), "YYYYMMDD").toDate() : undefined,
+      !!props.sp.get('eD') ? dayjs(props.sp.get('eD'), "YYYYMMDD").toDate() : undefined
     ],
     participants: Number(props.sp.get('ptcp')) ?? 0,
     headCount: { from: Number(props.sp.get('hcMin')) ?? undefined, to: Number(props.sp.get('hcMax')) ?? undefined },
@@ -39,8 +39,8 @@ export const SearchLayout = (props: { opt: 'TTL' | 'TAG'; sp: ReadonlyURLSearchP
         sD: !!startDate ? dayjs(startDate).format('YYYYMMDD') : '',
         eD: !!endDate ? dayjs(endDate).format('YYYYMMDD') : '',
         ptcp: p.participants > 0 ? p.participants : '',
-        hcMin: p.headCount.from === null || p.headCount.from === undefined || p.headCount.from <= 0 ? '' : p.headCount.from,
-        hcMax: p.headCount.to === null || p.headCount.to === undefined || p.headCount.to <= 0 ? '' : p.headCount.to,
+        hcMin: !!p.headCount.from ? p.headCount.from : '',
+        hcMax: !!p.headCount.to ? p.headCount.to : '',
       }
       if (title.length > 0) {
         props.router.push(Object.keys(params).length > 0 ? `/searched?query=${title}&${getParams(params)}&tab_id=${tab}` : `/searched?query=${title}&tab_id=${tab}`)
@@ -48,11 +48,11 @@ export const SearchLayout = (props: { opt: 'TTL' | 'TAG'; sp: ReadonlyURLSearchP
     } else if (props.opt === 'TAG') {
       let params = {
         tag: tag, sort: p.sort ?? '', ct: selectedCate ?? '',
-        sD: startDate !== null ? dayjs(startDate).format('YYYYMMDD') : '',
-        eD: endDate !== null ? dayjs(endDate).format('YYYYMMDD') : '',
+        sD: !!startDate ? dayjs(startDate).format('YYYYMMDD') : '',
+        eD: !!endDate ? dayjs(endDate).format('YYYYMMDD') : '',
         ptcp: p.participants > 0 ? p.participants : '',
-        hcMin: p.headCount.from === null || p.headCount.from === undefined || p.headCount.from <= 0 ? '' : p.headCount.from,
-        hcMax: p.headCount.to === null || p.headCount.to === undefined || p.headCount.to <= 0 ? '' : p.headCount.to,
+        hcMin: !!p.headCount.from ? p.headCount.from : '',
+        hcMax: !!p.headCount.to ? p.headCount.to : '',
       }
       if (tag.length > 0) {
         props.router.push(`/tag?${getParams(params)}&tab_id=${tab}`)

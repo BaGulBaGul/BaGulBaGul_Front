@@ -39,7 +39,7 @@ function ReplyFooter(props: {
     let el = props.mentionRef.current
     let caretOffset = 0;
     let winSel = window.getSelection()
-    if (winSel !== null && winSel !== undefined) {
+    if (!!winSel) {
       var range = winSel.getRangeAt(0);
       var preCaretRange = range.cloneRange();
       preCaretRange.selectNodeContents(el);

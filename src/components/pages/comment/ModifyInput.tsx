@@ -58,7 +58,7 @@ export function ModifyInputR(props: ModifyProps) {
     let el = mdfRef.current
     let caretOffset = 0;
     let winSel = window.getSelection()
-    if (winSel !== null && winSel !== undefined && el !== null) {
+    if (!!winSel && el !== null) {
       var range = winSel.getRangeAt(0);
       var preCaretRange = range.cloneRange();
       preCaretRange.selectNodeContents(el);

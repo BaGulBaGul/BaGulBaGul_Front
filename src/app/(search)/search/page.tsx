@@ -28,16 +28,18 @@ export default function Page() {
 
   const [open, setOpen] = useState(false);
   const [startDate, endDate] = p.dateRange ?? [null, null];
+  console.log('sd, ed: ', startDate, endDate)
   // Searchbar
   const router = useRouter()
   const [title, setTitle] = useState('')
   const params = {
     ct: selectedCate.length > 0 ? selectedCate : '', sort: p.sort,
-    sD: startDate !== null ? dayjs(startDate).format('YYYYMMDD') : '',
-    eD: endDate !== null ? dayjs(endDate).format('YYYYMMDD') : '', ptcp: p.participants > 0 ? p.participants : '',
-    hcMin: p.headCount.from === null || p.headCount.from === undefined || p.headCount.from <= 0 ? '' : p.headCount.from,
-    hcMax: p.headCount.to === null || p.headCount.to === undefined || p.headCount.to <= 0 ? '' : p.headCount.to,
+    sD: !!startDate ? dayjs(startDate).format('YYYYMMDD') : '',
+    eD: !!endDate ? dayjs(endDate).format('YYYYMMDD') : '', ptcp: p.participants > 0 ? p.participants : '',
+    hcMin: !!p.headCount.from ? p.headCount.from : '',
+    hcMax: !!p.headCount.to ? p.headCount.to : '',
   }
+
   useEffect(() => {
     if (title.length > 0) { router.push(`/searched?query=${title}&${getParams(params)}&tab_id=${tab}`) }
   }, [title])
@@ -47,7 +49,7 @@ export default function Page() {
       <SearchBar opt={0} title={title} setOpen={setOpen} filterCnt={filterCnt} setTitle={setTitle} router={router} />
       <div className='w-full p-0 pt-[66px]'>
         <div className='fixed top-[66px] w-full bg-p-white z-10'>
-          <ViewFilterApplied filterCnt={filterCnt} filters={filters} p={p} setP={setP} setFilters={setFilters}  />
+          <ViewFilterApplied filterCnt={filterCnt} filters={filters} p={p} setP={setP} setFilters={setFilters} />
           <ThemeProvider theme={tabTheme}>
             <ToggleButtonGroup value={tab} exclusive onChange={handleTab} >
               <ToggleButton value={0}>페스티벌</ToggleButton>
