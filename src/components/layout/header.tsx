@@ -1,4 +1,3 @@
-"use client";
 import React from 'react'
 import { MagnifyingIcn } from '../common/styles/Icon';
 import useLoginInfo from '@/hooks/useLoginInfo';

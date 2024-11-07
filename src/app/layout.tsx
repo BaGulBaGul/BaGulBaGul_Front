@@ -32,7 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <ReactQueryProviders>
-          <AlarmHeader />
+          {/* <AlarmHeader /> */}
           {children}
         </ReactQueryProviders>
       </body>

@@ -13,7 +13,6 @@ export function MyPage() {
           <div className="flex flex-row px-[16px] py-[18px] gap-[16px] bg-p-white" id='mypage-profile'>
             <div className="relative w-[77px] h-[70px] rounded-full">
               <img src={userinfo?.imageURI ?? "/default_icon.svg"} className="w-[70px] h-[70px] rounded-full" />
-              <IconChangeButton />
             </div>
             <div className="flex flex-col">
               <span className="font-semibold text-18 text-black">{userinfo?.nickname ?? '-'}</span>
@@ -29,8 +28,7 @@ export function MyPage() {
           </div>
           <div className="flex flex-col bg-p-white" id='mypage-set2'>
             <div className="p-[16px] text-14 font-semibold text-black">계정 관리</div>
-            <SetBlock opt={1} icon={<SmileIcn />} title='닉네임 재설정' url='/' />
-            <SetBlock opt={1} icon={<MailIcn />} title='이메일 주소 재설정' url='/' />
+            <SetBlock opt={1} icon={<SmileIcn />} title='프로필 수정' url='/user/mypage/edit' />
           </div>
           <div className="flex flex-col bg-p-white" id='mypage-set3'>
             <div className="p-[16px] text-14 font-semibold text-black"> 이용 정보</div>
@@ -88,18 +86,6 @@ function SetBlock(props: { opt: 0 | 1; icon?: any; title: string; count?: number
     </Link>
   )
 }
-
-function IconChangeButton() {
-  return (
-    <button className="absolute right-0 bottom-0 w-[30px] h-[30px] z-10">
-      <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="15" cy="15" r="15" fill="#FCFCFC" />
-        <path d="M23 19.6364C23 20.0221 22.8468 20.3921 22.574 20.6649C22.3012 20.9377 21.9312 21.0909 21.5455 21.0909H8.45455C8.06878 21.0909 7.69881 20.9377 7.42603 20.6649C7.15325 20.3921 7 20.0221 7 19.6364V11.6364C7 11.2506 7.15325 10.8806 7.42603 10.6078C7.69881 10.3351 8.06878 10.1818 8.45455 10.1818H11.3636L12.8182 8H17.1818L18.6364 10.1818H21.5455C21.9312 10.1818 22.3012 10.3351 22.574 10.6078C22.8468 10.8806 23 11.2506 23 11.6364V19.6364Z" fill="#6C6C6C" />
-        <path d="M14.9989 18.1815C16.6056 18.1815 17.908 16.879 17.908 15.2724C17.908 13.6657 16.6056 12.3633 14.9989 12.3633C13.3923 12.3633 12.0898 13.6657 12.0898 15.2724C12.0898 16.879 13.3923 18.1815 14.9989 18.1815Z" stroke="#FCFCFC" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    </button>
-  );
-};
 
 const SmileIcn = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

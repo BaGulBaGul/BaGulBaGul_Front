@@ -10,6 +10,7 @@ import { MyPage, UserPage } from "./UserPage";
 import { MyPostPage, UserPostPage } from "./UserPostPage";
 import { UserPostTabs, UserPostTab } from "./UserPostTabs";
 import { MyPostBlock, UserPostBlock } from "./UserPostBlock";
+import { EditProfilePage } from "./EditProfilePage";
 
 export {
   AlarmTab,
@@ -21,5 +22,6 @@ export {
   MyPostPage, UserPostPage,
   UserPostTabs, UserPostTab,
   MyPostBlock, UserPostBlock,
+  EditProfilePage,
   ViewToggle,
 }
