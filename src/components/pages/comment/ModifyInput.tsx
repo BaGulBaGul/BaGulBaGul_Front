@@ -1,8 +1,8 @@
-import { ThemeProvider, Dialog, AppBar, Toolbar, TextField, createTheme } from "@mui/material";
-import React, { Fragment, useRef, FocusEvent } from "react";
-import { CommentMProps, Divider } from "@/components/common";
-import { HeaderBackIcn } from "@/components/common/styles/Icon";
+import { TextField } from "@mui/material";
+import React, { useRef, FocusEvent } from "react";
+import { CommentMProps } from "@/components/common";
 import { useModify, useModifyR } from "@/hooks/useInComment";
+import { FullscreenDialog } from "@/components/common/FullscreenDialog";
 
 interface ModifyProps {
   open: boolean; setOpenM: any; target?: CommentMProps; setTarget: any; origin: 'event' | 'event/recruitment'; qKey: any;
@@ -16,10 +16,13 @@ export function ModifyInput(props: ModifyProps) {
     if (mdfRef.current?.value.replace(/\n$/, '').replace(/ /g, '').length === 0) { alert('댓글 내용을 입력해주세요.') }
     else if (!!mdfRef.current && mdfRef.current.value.length > 0 && !!props.target) { mutateModify.mutate() }
   }
-
+  const handleClose = () => {
+    props.setTarget(undefined);
+    props.setOpenM(false);
+  };
   return (
-    <ModifyFragment child={<TextField multiline defaultValue={props.target?.content} inputRef={mdfRef} />}
-      setTarget={props.setTarget} open={props.open} setOpenM={props.setOpenM} handleModify={handleModify} />
+    <FullscreenDialog child={<TextField multiline defaultValue={props.target?.content} inputRef={mdfRef} />}
+      open={props.open} handleClose={handleClose} handleDone={handleModify} headerText='댓글 수정' footerText='수정 완료' />
   )
 }
 
@@ -77,7 +80,7 @@ export function ModifyInputR(props: ModifyProps) {
     }
   }
 
-  const ReplyField = () => {
+  function ReplyField() {
     return (
       <div className="py-[12px] px-[16px]">
         <div className='mention-reply-section' ref={mdfRef} contentEditable onFocus={handleFocus}
@@ -97,64 +100,11 @@ export function ModifyInputR(props: ModifyProps) {
     )
   }
 
-  return (
-    <ModifyFragment child={<ReplyField />} setTarget={props.setTarget} open={props.open} setOpenM={props.setOpenM} handleModify={handleModify} />
-  )
-}
-
-const ModifyFragment = (props: { child: React.JSX.Element, setTarget: any, open: boolean, setOpenM: any, handleModify: any }) => {
   const handleClose = () => {
     props.setTarget(undefined);
     props.setOpenM(false);
   };
   return (
-    <ThemeProvider theme={modifyCommentTheme}>
-      <Fragment>
-        <Dialog fullScreen open={props.open} onClose={handleClose} >
-          <AppBar>
-            <Toolbar>
-              <button onClick={handleClose} ><HeaderBackIcn /></button>
-              <p>댓글 수정</p>
-              <p className='w-[24px] h-[24px]'></p>
-            </Toolbar>
-          </AppBar>
-          <Divider />
-          {props.child}
-          <button className='footer-btn' onClick={props.handleModify}>수정 완료</button>
-        </Dialog>
-      </Fragment>
-    </ThemeProvider>
+    <FullscreenDialog child={<ReplyField />} open={props.open} handleClose={handleClose} handleDone={handleModify} headerText='댓글 수정' footerText='수정 완료' />
   )
 }
-
-const modifyCommentTheme = createTheme({
-  components: {
-    MuiAppBar: {
-      styleOverrides: {
-        root: {
-          backgroundColor: '#FFF', boxShadow: 'unset',
-          color: '#1E1E1E', fontSize: '18px', lineHeight: '160%',
-          position: 'relative', padding: '0px !important'
-        }
-      }
-    },
-    MuiToolbar: {
-      styleOverrides: {
-        root: {
-          display: 'flex', justifyContent: 'space-between', flexDirection: 'row', padding: '15.5px 17px !important',
-          minHeight: 'unset !important'
-        }
-      }
-    },
-    MuiTextField: { styleOverrides: { root: { height: '100%' } } },
-    MuiInputBase: {
-      styleOverrides: {
-        root: { padding: '12px 16px !important', },
-        input: {
-          height: 'calc(100vh - 161px) !important', fontSize: '14px', lineHeight: '160%', color: '#6C6C6C',
-        }
-      }
-    },
-    MuiOutlinedInput: { styleOverrides: { root: { border: 'none', "& fieldset": { border: 'none' }, } } }
-  }
-})

@@ -1,11 +1,22 @@
+"use client";
 import React from "react";
 import Link from "next/link";
 import { CalIcn, LikeIcn, PostEditIcn } from "@/components/common/styles/Icon";
 import useLoginInfo from "@/hooks/useLoginInfo";
 import { useUserInfo } from "@/hooks/useInUser";
+import Cookies from "js-cookie";
+import { useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 
 export function MyPage() {
+  const router = useRouter();
   const userinfo = useLoginInfo()
+  const queryClient = useQueryClient()
+  const handleSignout = () => {
+    Cookies.remove('Access_Token')
+    queryClient.removeQueries({ queryKey: ['loginData'] })
+    router.replace('/')
+  }
   return (
     <div className="pt-[60px]">
       <div className="flex flex-col mb-[11px]">
@@ -37,7 +48,7 @@ export function MyPage() {
           </div>
         </div>
         <div className="p-[24px]">
-          <button className="w-full bg-p-white text-gray3 text-16 p-[16px]">로그아웃</button>
+          <button className="w-full bg-p-white text-gray3 text-16 p-[16px]" onClick={handleSignout}>로그아웃</button>
         </div>
       </div>
     </div>

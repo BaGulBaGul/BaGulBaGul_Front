@@ -9,6 +9,7 @@ import { HashtagButton, UserProfile } from "../../common";
 import { LikeIcn, CalIcn, VerticalMoreIcn } from "../../common/styles/Icon";
 import dayjs from "dayjs";
 import Link from "next/link";
+import { ReportDialog } from "@/components/common/report/ReportDialog";
 
 export function PostSlide(props: { images: string[] }) {
   const [index, setIndex] = useState(0);
@@ -169,21 +170,25 @@ export function PostTools(props: PostToolsProps) {
 }
 
 export function PostDrawer(props: { open: boolean; toggleDrawer: any; }) {
+  const [openD, setOpenD] = useState(false);
   const handleReport = () => {
-    console.log('신고하기');
+    setOpenD(true);
   }
   return (
-    <ThemeProvider theme={menuTheme}>
-      <Drawer open={props.open} onClose={props.toggleDrawer(false)} anchor='bottom'>
-        <div onClick={props.toggleDrawer(false)}>
-          <List>
-            <ListItem disablePadding>
-              <ListItemButton onClick={handleReport} disableRipple><ListItemText primary="신고하기" /></ListItemButton>
-            </ListItem>
-          </List>
-        </div>
-      </Drawer>
-    </ThemeProvider>
+    <>
+      <ThemeProvider theme={menuTheme}>
+        <Drawer open={props.open} onClose={props.toggleDrawer(false)} anchor='bottom'>
+          <div onClick={props.toggleDrawer(false)}>
+            <List>
+              <ListItem disablePadding>
+                <ListItemButton onClick={handleReport} disableRipple><ListItemText primary="신고하기" /></ListItemButton>
+              </ListItem>
+            </List>
+          </div>
+        </Drawer>
+      </ThemeProvider>
+      <ReportDialog open={openD} setOpen={setOpenD} />
+    </>
   )
 }
 

@@ -1,5 +1,5 @@
 import { Collapse } from "@mui/material";
-import { CmtLikeIcn } from "./styles/Icon";
+import { CmtLikeIcn } from "../styles/Icon";
 import { headCountString } from "@/service/Functions";
 import { HeadNumberInput, PartiNumberInput } from "./NumberInput";
 
