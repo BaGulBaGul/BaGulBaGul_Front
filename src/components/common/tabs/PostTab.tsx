@@ -1,5 +1,5 @@
 import { ThemeProvider, Tabs, Tab } from '@mui/material';
-import { tabTheme } from './styles/Themes';
+import { tabTheme } from '../styles/Themes';
 
 export default function PostTab(props: { value: number; handleChange: any; cN?: string; }) {
   return (

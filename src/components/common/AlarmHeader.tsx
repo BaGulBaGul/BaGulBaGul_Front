@@ -10,7 +10,8 @@ import { AlarmIcn } from "../pages/user";
 export interface SnackbarMessage { alarmId: number; type: string; title: string; message: string; subject: string; time: string; }
 export default function AlarmHeader() {
   const data = useLoginInfo()
-  return (<div>{!!data ? <AlarmSnack /> : <></>} </div>)
+  if (!!data) { return (<AlarmSnack />) }
+  else { return (<></>) }
 }
 
 function AlarmSnack() {

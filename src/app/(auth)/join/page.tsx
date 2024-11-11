@@ -20,16 +20,11 @@ export default function Page() {
 
   console.log('toP1, toP2 :', toP1, toP2)
   const handlePrev = () => {
-    if (toP2) {
-      setToP1(true)
-      setToP2(false)
-    }
+    if (toP2) { setToP1(true); setToP2(false); }
+    else { router.replace('/signin') }
   }
   const handleNext = () => {
-    if (!toP2 && nameChecked) {
-      setToP1(false)
-      setToP2(true)
-    }
+    if (!toP2 && nameChecked) { setToP1(false); setToP2(true); }
   }
 
   const handleJoin = (opt: 0 | 1, e: any) => {

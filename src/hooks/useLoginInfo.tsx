@@ -1,6 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { API_BASE_URL } from "../api-config";
-import Cookies from 'js-cookie'
 
 const fetchLoginInfo = async () => {
   const data = await fetch(`${API_BASE_URL}/api/user/info/my`, { credentials: 'include', })
@@ -8,9 +7,13 @@ const fetchLoginInfo = async () => {
   else { return null }
 }
 export default function useLoginInfo() {
-  if (Cookies.get('Access_Token')) {
-    const { data, isLoading, isPending, isError } = useQuery({ queryKey: ['loginData'], queryFn: fetchLoginInfo })
-    if (!isError && !isPending && !!data) { return data.data; }
+  const queryClient = useQueryClient()
+  let loginData = queryClient.getQueryData(['login-user'])
+  if (!!loginData) { console.log('1) cache : ', loginData); return loginData }
+  else {
+    console.log('login-user()')
+    const { data, isLoading, isPending, isError } = useQuery({ queryKey: ['login-user'], queryFn: fetchLoginInfo })
+    if (!isError && !isPending && !!data) { console.log('2) new data : ', data.data); return data.data; }
   }
   return null;
 }

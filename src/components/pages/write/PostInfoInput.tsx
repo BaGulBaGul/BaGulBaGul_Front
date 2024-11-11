@@ -6,7 +6,7 @@ import { viewCheckTheme } from '@/components/common/filter/ViewFilterTheme';
 import { Checkbox, FormControl, FormControlLabel, ThemeProvider } from '@mui/material'
 import dayjs from 'dayjs';
 import { ScrollPicker } from './ScrollPicker';
-import { HeadSelect, PartiSelect } from '@/components/common/Select';
+import { HeadSelect, PartiSelect } from '@/components/common/input/Select';
 
 interface PostInfoInputProps {
   type: 'p' | 'r';

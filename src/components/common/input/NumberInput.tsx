@@ -3,7 +3,7 @@ import { Unstable_NumberInput as NumberInput, NumberInputProps } from '@mui/base
 import {
   HeadInputRoot, HeadInputElement, HeadButton,
   PartiInputRoot, PartiInputElement, PartiButton
-} from "./filter/ViewFilterTheme";
+} from "../filter/ViewFilterTheme";
 
 export const PartiNumberInput = forwardRef(
   function CustomNumberInput(props: NumberInputProps, ref: React.ForwardedRef<HTMLDivElement>,) {

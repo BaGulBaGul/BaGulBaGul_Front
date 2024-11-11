@@ -3,7 +3,6 @@ import './animation.css'
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import type { Viewport } from 'next'
-import AlarmHeader from '@/components/common/AlarmHeader';
 import ReactQueryProviders from '@/hooks/useReactQuery';
 
 export const metadata = {

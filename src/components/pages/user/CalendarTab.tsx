@@ -42,7 +42,7 @@ function CalendarBlock(props: { data: CalProps; editing: boolean; qKey: string[]
   if (!!props.data.eventId) {
     const mutateDelete = useDelete(`/api/user/calendar/event/${props.data.eventId}`, props.qKey, '캘린더에서 이벤트')
     return (
-      <Link href={`/event/${props.data.eventId}`} className='flex justify-between py-[18px] px-[16px]'>
+      <Link href={`/event/${props.data.eventId}`} passHref legacyBehavior className='flex justify-between py-[18px] px-[16px]'>
         <div className='flex flex-row justify-between items-center pb-[10px] w-full'>
           <div className='flex flex-col justify-between gap-[17px] h-[104px]'>
             <BlockInfo title={props.data.title} date={FormatDateRange(props.data.startTime, props.data.endTime)} address={props.data.abstractLocation}

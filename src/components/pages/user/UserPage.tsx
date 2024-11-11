@@ -12,19 +12,19 @@ export function MyPage() {
         <div className="flex flex-col gap-[8px]">
           <div className="flex flex-row px-[16px] py-[18px] gap-[16px] bg-p-white" id='mypage-profile'>
             <div className="relative w-[77px] h-[70px] rounded-full">
-              <img src={userinfo?.imageURI ?? "/default_icon.svg"} className="w-[70px] h-[70px] rounded-full" />
+              <img src={userinfo?.data.imageURI ?? "/default_icon.svg"} className="w-[70px] h-[70px] rounded-full" />
             </div>
             <div className="flex flex-col">
-              <span className="font-semibold text-18 text-black">{userinfo?.nickname ?? '-'}</span>
-              <span className="text-14 text-gray3">{userinfo?.email ?? '-'}</span>
-              <span className="text-14 text-gray3">{userinfo?.profileMessage ?? '바글이의 한마디를 적어주세요.'}</span>
+              <span className="font-semibold text-18 text-black">{userinfo?.data.nickname ?? '-'}</span>
+              <span className="text-14 text-gray3">{userinfo?.data.email ?? '등록된 이메일이 없습니다.'}</span>
+              <span className="text-14 text-gray3">{userinfo?.data.profileMessage ?? '바글이의 한마디를 적어주세요.'}</span>
             </div>
           </div>
           <div className="flex flex-col bg-p-white" id='mypage-set1'>
             <div className="p-[16px] text-14 font-semibold text-black">나의 바글바글</div>
-            <SetBlock opt={0} icon={<LikeIcn color='#6C6C6C' />} title='좋아요' count={userinfo?.postLikeCount} url='/user/mypage/liked' />
-            <SetBlock opt={0} icon={<PostEditIcn />} title='작성글' count={userinfo?.writingCount} url='/user/mypage/post' />
-            <SetBlock opt={0} icon={<CalIcn val={false} color='#6C6C6C' />} title='캘린더' count={userinfo?.calendarCount} url='/user/mypage/calendar' />
+            <SetBlock opt={0} icon={<LikeIcn color='#6C6C6C' />} title='좋아요' count={userinfo?.data.postLikeCount} url='/user/mypage/liked' />
+            <SetBlock opt={0} icon={<PostEditIcn />} title='작성글' count={userinfo?.data.writingCount} url='/user/mypage/post' />
+            <SetBlock opt={0} icon={<CalIcn val={false} color='#6C6C6C' />} title='캘린더' count={userinfo?.data.calendarCount} url='/user/mypage/calendar' />
           </div>
           <div className="flex flex-col bg-p-white" id='mypage-set2'>
             <div className="p-[16px] text-14 font-semibold text-black">계정 관리</div>
