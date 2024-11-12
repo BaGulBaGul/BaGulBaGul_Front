@@ -1,17 +1,14 @@
 "use client";
 import { SubTopHeader } from "@/components/layout/subHeader";
-import { MyPage, UserPage } from '@/components/pages/user'
+import { MyPage } from '@/components/pages/user'
 import Link from "next/link";
 import React, { useState } from "react";
 
-export default function Page({ params }: { params: { userId: 'mypage' | number } }) {
+export default function Page() {
   return (
     <>
-      {params.userId === 'mypage'
-        ? <SubTopHeader name='마이페이지' child={<AlarmButton />} />
-        : <SubTopHeader name='프로필' />
-      }
-      {params.userId === 'mypage' ? <MyPage /> : <UserPage userId={params.userId} />}
+      <SubTopHeader name='마이페이지' child={<AlarmButton />} />
+      <MyPage />
     </>
   );
 }
@@ -19,7 +16,7 @@ export default function Page({ params }: { params: { userId: 'mypage' | number }
 const AlarmButton = () => {
   const [isAlarm, setIsAlarm] = useState<boolean>(true);
   return (
-    <Link href='/user/mypage/alarm' className='relative w-[24px] h-[24px]'>
+    <Link href='/mypage/alarm' className='relative w-[24px] h-[24px]'>
       <AlarmIcn />
       {!isAlarm ? <></>
         : <div id='alarm-check' className="absolute top-0 right-[3px] w-[8px] h-[8px] bg-primary-blue rounded-full z-10"></div>

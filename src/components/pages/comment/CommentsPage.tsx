@@ -14,7 +14,7 @@ export function CommentsPage(props: { origin: 'event' | 'event/recruitment'; pos
   const [openM, setOpenM] = useState(false);
   const [targetM, setTargetM] = useState<CommentMProps | undefined>();
 
-  const userinfo = useLoginInfo()
+  const userinfo = useLoginInfo().data
 
   let apiURL = `/api/${props.origin}/${props.postId}/comment?sort=createdAt,desc&size=10`
   let qKey = [originText(props.origin), props.postId, 'comments']

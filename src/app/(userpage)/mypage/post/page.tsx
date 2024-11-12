@@ -1,5 +1,5 @@
 import { SubTopHeader } from '@/components/layout/subHeader';
-import { MyPostPage, UserPostPage } from '@/components/pages/user';
+import { MyPostPage } from '@/components/pages/user';
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -7,11 +7,11 @@ export const metadata: Metadata = {
   description: '모여봐요 바글바글',
 }
 
-export default function Page({ params }: { params: { userId: 'mypage' | number } }) {
+export default function Page() {
   return (
     <>
       <SubTopHeader name='작성글' />
-      {params.userId === 'mypage' ? <MyPostPage /> : <UserPostPage userId={params.userId} />}
+      <MyPostPage />
     </>
   );
 }

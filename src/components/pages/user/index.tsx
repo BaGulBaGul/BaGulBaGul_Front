@@ -6,11 +6,12 @@ import { CalendarTab } from "./CalendarTab";
 import { LikedTab } from "./LikedTab";
 import { LikedAccompanyBlock, LikedPostBlock } from './LikedBlock';
 import { ViewToggle } from "./UserButtons";
-import { MyPage, UserPage } from "./UserPage";
+import { UserPage } from "./UserPage";
 import { MyPostPage, UserPostPage } from "./UserPostPage";
 import { UserPostTabs, UserPostTab } from "./UserPostTabs";
 import { MyPostBlock, UserPostBlock } from "./UserPostBlock";
 import { EditProfilePage } from "./EditProfilePage";
+import { MyPage } from "./MyPage";
 
 export {
   AlarmTab,

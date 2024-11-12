@@ -11,7 +11,7 @@ import { originText, useDelete } from '@/hooks/useInCommon';
 
 export function RepliesPage(props: { origin: 'event' | 'event/recruitment'; commentId: any; postId: any; }) {
   // 댓글
-  const userinfo = useLoginInfo()
+  const userinfo = useLoginInfo().data
   let cKey = ['comment', props.commentId];
   let rKey = ['comment', props.commentId, 'replies'];
   let lKey = ['comment', props.commentId, 'liked']

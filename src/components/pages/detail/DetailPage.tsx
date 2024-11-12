@@ -6,7 +6,7 @@ import useLoginInfo from '@/hooks/useLoginInfo';
 import { useAddLike, useAddSave, useDetailInfo, useDetailLike, useDetailSave } from '@/hooks/useInDetail';
 
 export function DetailPage(props: { origin: 'event' | 'event/recruitment'; postId: any; }) {
-  const userinfo = useLoginInfo()
+  const userinfo = useLoginInfo().data
 
   const { data: data, isLoading: isLoadingD, isError: isErrorD } = useDetailInfo(props.origin, props.postId)
   const { data: liked, isLoading: isLoadingL, isError: isErrorL } = useDetailLike(props.origin, props.postId, userinfo)

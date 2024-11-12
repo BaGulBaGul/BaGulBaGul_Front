@@ -10,7 +10,7 @@ import { AlarmIcn } from "../pages/user";
 export interface SnackbarMessage { alarmId: number; type: string; title: string; message: string; subject: string; time: string; }
 export default function AlarmHeader() {
   const data = useLoginInfo()
-  if (!!data) { return (<AlarmSnack />) }
+  if (!!data.data) { return (<AlarmSnack />) }
   else { return (<></>) }
 }
 
@@ -40,7 +40,7 @@ function AlarmSnack() {
         key={!!messageInfo ? messageInfo.alarmId : undefined} >
         {!messageInfo ? <div></div>
           : <Alert icon={<AlarmIcn type={messageInfo.type} val={false} />} severity="info" sx={{ width: '100%' }}
-            onClick={() => { router.push('/user/mypage/alarm') }}>
+            onClick={() => { router.push('/mypage/alarm') }}>
             <div className="flex flex-col gap-[1.5px] text-12">
               <p className="text-black">{messageInfo.title}</p>
               <p className="text-gray3">{messageInfo.message ?? ''}</p>

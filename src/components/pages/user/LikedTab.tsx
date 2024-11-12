@@ -18,7 +18,6 @@ export function LikedTab() {
   const apiURL = view === 'EVT' ? `/api/event/mylike?type=${tabList[value]}&size=10`
     : `/api/event/recruitment/mylike?type=${tabList[value]}&size=10`
   const { data: events, fetchNextPage, hasNextPage, status } = useListWithPage(apiURL, ['liked-posts', value, view])
-
   return (
     <div className='flex flex-col w-full pb-[10px]'>
       <div className='fixed top-[60px] flex flex-row justify-between items-center w-full px-[16px] bg-p-white z-10'>

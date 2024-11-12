@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: '모여봐요 바글바글',
 }
 
-export default function Page({ params }: { params: { userId: 'mypage' | number } }) {
+export default function Page() {
   return (
     <>
       <SubTopHeader name='좋아요' />

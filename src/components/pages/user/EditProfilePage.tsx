@@ -3,7 +3,7 @@ import useLoginInfo from "@/hooks/useLoginInfo";
 import { MutableRefObject, useRef } from "react";
 
 export function EditProfilePage() {
-  const userinfo = useLoginInfo()
+  const userinfo = useLoginInfo().data
 
   const nameRef = useRef<any>(null)
   const emailRef = useRef<any>(null)

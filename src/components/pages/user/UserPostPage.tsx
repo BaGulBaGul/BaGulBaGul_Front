@@ -14,7 +14,7 @@ const apiURL = (value: 0 | 1, nickname: string) => {
 export function MyPostPage() {
   const [value, setValue] = useState<0 | 1>(0);
   const handleChange = (e: React.SyntheticEvent, newValue: 0 | 1) => { setValue(newValue); };
-  const userinfo = useLoginInfo()
+  const userinfo = useLoginInfo().data
   const posts = useListWithPageE(apiURL(value, userinfo?.nickname), ['my-posts', value], !!userinfo && !!userinfo.nickname)
   return (
     <div className='flex flex-col w-full pb-[10px]'>
