@@ -9,7 +9,7 @@ export function ReportDialog(props: { open: boolean; setOpen: any; type: 'commen
   const handleClose = () => { props.setOpen(false); };
   const etcRef = useRef<HTMLInputElement>(null);
 
-  const mutateReport = useReport(props.type, setValue, props.setOpen)
+const mutateReport = useReport(props.type, setValue, props.setOpen)
   const handleReport = () => {
     if (!value) { alert('신고하는 이유를 반드시 선택해주세요.') }
     else if (value === 'ETC' && !!etcRef.current && etcRef.current.value.length === 0) {

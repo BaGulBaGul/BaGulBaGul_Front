@@ -187,7 +187,6 @@ export function PostDrawer(props: { open: boolean; toggleDrawer: any; opt: 'EVT'
       </ThemeProvider>
       <ReportDialog open={openD} setOpen={setOpenD} type={props.opt === 'EVT' ? 'event' : 'recruitment'} target={props.target} />
     </>
-
   )
 }
 
