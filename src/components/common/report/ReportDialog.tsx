@@ -2,20 +2,20 @@ import { FullscreenDialog } from "../FullscreenDialog";
 import { useRef, useState } from "react";
 import { ReportRadios } from "./ReportRadios";
 import { Divider } from "..";
+import { useReport } from "@/hooks/useInReport";
 
-export function ReportDialog(props: { open: boolean, setOpen: any }) {
+export function ReportDialog(props: { open: boolean; setOpen: any; type: 'comment' | 'comment-child' | 'event' | 'recruitment'; target: number; }) {
   const [value, setValue] = useState<string | undefined>(undefined)
   const handleClose = () => { props.setOpen(false); };
   const etcRef = useRef<HTMLInputElement>(null);
 
+  const mutateReport = useReport(props.type, setValue, props.setOpen)
   const handleReport = () => {
-    if (value === 'etc' && !!etcRef.current && etcRef.current.value.length === 0) {
-      alert('신고하는 이유를 반드시 작성해주세요.')
+    if (!value) { alert('신고하는 이유를 반드시 선택해주세요.') }
+    else if (value === 'ETC' && !!etcRef.current && etcRef.current.value.length === 0) {
+      alert('기타를 선택한 경우 설명을 반드시 작성해주세요.')
     } else {
-      console.log(value, etcRef.current?.value)
-      alert('제출되었습니다.')
-      setValue(undefined);
-      props.setOpen(false);
+      mutateReport.mutate({ [targetKey(props.type)]: props.target, "reportType": value, "message": etcRef.current?.value ?? '' })
     }
   }
 
@@ -38,4 +38,13 @@ export function ReportDialog(props: { open: boolean, setOpen: any }) {
   return (
     <FullscreenDialog child={<ReportTab />} open={props.open} handleClose={handleClose} handleDone={handleReport} headerText='신고하기' footerText='제출하기' bg='#ECECEC' />
   )
+}
+
+const targetKey = (type: 'comment' | 'comment-child' | 'event' | 'recruitment') => {
+  switch (type) {
+    case 'comment': return 'commentId'
+    case 'comment-child': return 'commentChildId'
+    case 'event': return 'eventId'
+    case 'recruitment': return 'recruitmentId'
+  }
 }

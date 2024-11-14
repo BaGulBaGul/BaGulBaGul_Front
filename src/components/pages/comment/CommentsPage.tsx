@@ -45,7 +45,7 @@ export function CommentsPage(props: { origin: 'event' | 'event/recruitment'; pos
         }
       </div>
       <CommentFooter url={`${props.origin}/${props.postId}`} qKey={qKey} />
-      <CommentDrawer open={openD} opt={!!userinfo && !!targetM && userinfo.id === targetM.userId ? 0 : 1}
+      <CommentDrawer open={openD} opt={!!userinfo && !!targetM && userinfo.id === targetM.userId ? 0 : 1} target={targetM}
         toggleDrawer={toggleDrawer} setOpenM={setOpenM} handleDelete={handleDelete} />
       <ModifyInput open={openM} setOpenM={setOpenM} target={targetM} setTarget={setTargetM} origin={props.origin} qKey={qKey} />
     </>

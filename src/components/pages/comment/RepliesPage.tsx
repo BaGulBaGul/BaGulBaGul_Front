@@ -84,7 +84,7 @@ export function RepliesPage(props: { origin: 'event' | 'event/recruitment'; comm
       </div>
       <MemoizedReplyFooter url={`${apiURL}/children`} qKey={rKey} mentioning={mentioning} setMentioning={setMentioning}
         target={mentionTarget} setMentionTarget={setMentionTarget} mentionRef={mentionRef} replyRef={replyRef} />
-      <CommentDrawer open={openD} opt={!!userinfo && !!targetM && userinfo.id === targetM.userId ? 0 : 1}
+      <CommentDrawer open={openD} opt={!!userinfo && !!targetM && userinfo.id === targetM.userId ? 0 : 1} target={targetM}
         toggleDrawer={toggleDrawer} setOpenM={setOpenM} handleDelete={handleDelete} />
       <ModifyInputR open={openM} setOpenM={setOpenM} target={targetM} setTarget={setTargetM} origin={props.origin} qKey={rKey} />
     </>

@@ -5,7 +5,7 @@ import { Divider } from "..";
 export function ReportRadios(props: { value?: string; setValue: any; etcRef: RefObject<HTMLInputElement> }) {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => { props.setValue((event.target as HTMLInputElement).value); };
   // 입력창 선택 시 '기타' 로 자동 설정
-  const handleTextFocus = () => { if (props.value !== 'etc') { props.setValue('etc') } }
+  const handleTextFocus = () => { if (props.value !== 'ETC') { props.setValue('etc') } }
   const handleTextChange = () => { setCnt(props.etcRef.current?.value.length ?? 0) }
 
   let [cnt, setCnt] = useState(0)
@@ -13,14 +13,14 @@ export function ReportRadios(props: { value?: string; setValue: any; etcRef: Ref
     <ThemeProvider theme={reportRadioTheme}>
       <FormControl>
         <RadioGroup value={props.value} onChange={handleChange} >
-          <FormControlLabelColored value="offtopic" control={<Radio />} label="바글바글과 관련 없는 홍보 내용" />
+          <FormControlLabelColored value="NOT_RELEVANT" control={<Radio />} label="바글바글과 관련 없는 홍보 내용" />
           <Divider />
-          <FormControlLabelColored value="gross" control={<Radio />} label="욕설 및 음란성, 사행성 내용 등 불쾌감을 주는 후기" />
+          <FormControlLabelColored value="OFFENSIVE_CONTENT" control={<Radio />} label="욕설 및 음란성, 사행성 내용 등 불쾌감을 주는 후기" />
           <Divider />
-          <FormControlLabelColored value="insult" control={<Radio />} label="비방, 비하, 차별성 발언, 모욕 등 명예훼손성 후기" />
+          <FormControlLabelColored value="DEFAMATORY" control={<Radio />} label="비방, 비하, 차별성 발언, 모욕 등 명예훼손성 후기" />
           <Divider />
           <div className="flex flex-col p-[16px] gap-[8px]">
-            <FormControlLabelColored value="etc" control={<Radio />} label="기타" className="p-0" />
+            <FormControlLabelColored value="ETC" control={<Radio />} label="기타" className="p-0" />
             <TextField placeholder='상세한 설명이 추가로 필요한 경우에만 작성해주세요.' fullWidth multiline inputRef={props.etcRef} maxRows={6} minRows={6}
               inputProps={{ maxLength: 20 }} onFocus={handleTextFocus} onChange={handleTextChange} />
             <div className="flex flex-row justify-end text-14">

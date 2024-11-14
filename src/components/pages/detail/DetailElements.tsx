@@ -169,7 +169,7 @@ export function PostTools(props: PostToolsProps) {
   )
 }
 
-export function PostDrawer(props: { open: boolean; toggleDrawer: any; }) {
+export function PostDrawer(props: { open: boolean; toggleDrawer: any; opt: 'EVT' | 'RCT'; target: number; }) {
   const [openD, setOpenD] = useState(false);
   const handleReport = () => { setOpenD(true); }
   return (
@@ -185,7 +185,7 @@ export function PostDrawer(props: { open: boolean; toggleDrawer: any; }) {
           </div>
         </Drawer>
       </ThemeProvider>
-      <ReportDialog open={openD} setOpen={setOpenD} />
+      <ReportDialog open={openD} setOpen={setOpenD} type={props.opt === 'EVT' ? 'event' : 'recruitment'} target={props.target} />
     </>
 
   )

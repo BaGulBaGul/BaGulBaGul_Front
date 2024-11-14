@@ -40,7 +40,7 @@ export const Detail = (props: DetailsProps) => {
           <PostTools opt='EVT' handleOpen={handleOpen} likeCount={props.likeCount} liked={props.liked} handleLike={props.handleLike}
             commentCount={data.post.commentCount} commentURL={commentURL} saved={props.saved} handleCalendar={props.handleCalendar} />
         </div>
-        <PostDrawer open={openD} toggleDrawer={toggleDrawer} />
+        <PostDrawer open={openD} toggleDrawer={toggleDrawer} opt='EVT' target={data.event.eventId} />
         { // 페스티벌, 지역행사는 '모집글 보러가기' 버튼 배치
           data.event.type !== 'PARTY' ? <PostFooter title='모집글 보러가기' path={`/event/${data.event.eventId}/recruitment`} /> : <></>
         }
@@ -71,7 +71,7 @@ export const Detail = (props: DetailsProps) => {
               commentCount={data.post.commentCount} commentURL={commentURL} saved={props.saved} handleCalendar={props.handleCalendar} />
           </div>
         </div>
-        <PostDrawer open={openD} toggleDrawer={toggleDrawer} />
+        <PostDrawer open={openD} toggleDrawer={toggleDrawer} opt='RCT' target={data.recruitment.recruitmentId} />
       </>
     )
   }
