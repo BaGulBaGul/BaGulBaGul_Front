@@ -2,7 +2,7 @@
 import React from "react";
 import { useParams, useSearchParams } from 'next/navigation';
 import { getParams } from "@/service/Functions";
-import { LoadingCircle, LoadingSkeleton, MoreButton, RListProps, Divider, NoEvent } from '@/components/common';
+import { LoadingCircle, LoadingSkeleton, MoreButton, RListProps, Divider, NoData } from '@/components/common';
 import { RecruitBlock } from "@/components/pages/detail";
 import dayjs from "dayjs";
 import { handleMore, useListWithPageE } from "@/hooks/useInCommon";
@@ -36,7 +36,7 @@ export default function Page() {
             ))}
             {hasNextPage ? <MoreButton onClick={() => handleMore(hasNextPage, fetchNextPage)} /> : <></>}
           </>
-          : <NoEvent text1="찾는 행사가 없어요." text2="지금 인기 있는 페스티벌을 만나보세요." buttonText={"페스티벌 인기순 보러가기"} />
+          : <NoData text1="찾는 행사가 없어요." text2="지금 인기 있는 페스티벌을 만나보세요." buttonText="페스티벌 인기순 보러가기" buttonLink="/?sort=likeCount%2Cdesc" />
         }
       </>
     )

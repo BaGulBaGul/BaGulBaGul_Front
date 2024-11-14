@@ -1,7 +1,7 @@
 import CategoryButtons from './input/CategoryButtons'
 import HashtagAccordion, { HashtagButton } from './block/HashtagAccordion'
 import MoreButton from './MoreButton'
-import { NoEvent } from './block/NoEvent'
+import { NoData } from './block/NoEvent'
 import PostTab from './tabs/PostTab'
 import { TabPanel, TabPanels } from './tabs/TabPanel'
 import { ViewButton, ViewSelect } from './filter/ViewFilter'
@@ -17,7 +17,7 @@ export {
   CategoryButtons,
   HashtagAccordion, HashtagButton,
   MoreButton,
-  NoEvent,
+  NoData,
   PostTab, TabPanel, TabPanels,
   ViewButton, ViewSelect, ViewFilterApplied,
   LoadingSkeleton, LoadingCircle,

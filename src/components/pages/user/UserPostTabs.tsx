@@ -1,13 +1,13 @@
 import { Tab, Tabs, ThemeProvider } from '@mui/material';
-import { ListProps, LoadingSkeleton, MoreButton, RListProps } from '@/components/common';
+import { ListProps, LoadingSkeleton, MoreButton, NoData, RListProps } from '@/components/common';
 import { tabTheme } from '@/components/common/styles/Themes';
 import { InfiniteData, UseInfiniteQueryResult } from '@tanstack/react-query';
 import { MyPostBlock, UserPostBlock } from '.';
 import { handleMore } from '@/hooks/useInCommon';
 
-export function UserPostTabs(props: {value:0|1; handleChange: any}) {
+export function UserPostTabs(props: { value: 0 | 1; handleChange: any; fixed: boolean }) {
   return (
-    <div className='fixed top-[60px] w-full bg-p-white z-10'>
+    <div className={`${props.fixed ? 'fixed top-[60px]' : ''} w-full bg-p-white z-10`}>
       <ThemeProvider theme={tabTheme}>
         <Tabs value={props.value} onChange={props.handleChange} className='items-center min-h-0 px-[16px] py-[10px]'>
           <Tab label="파티" />
@@ -31,7 +31,7 @@ export function UserPostTab(props: { me: boolean; posts: UseInfiniteQueryResult<
         ))}
         {posts.hasNextPage ? <MoreButton onClick={() => handleMore(posts.hasNextPage, posts.fetchNextPage)} /> : <></>}
       </div>
-      : <></>
+      : <NoData text1="작성한 게시물이 없어요." />
     }</>
   )
 }

@@ -1,5 +1,5 @@
 import { getParams, tabList } from "@/service/Functions"
-import { ListProps, MoreButton, NoEvent, TabPanels, Divider, TabBlockProps } from "../../common"
+import { ListProps, MoreButton, NoData, TabPanels, Divider, TabBlockProps } from "../../common"
 import { ReadonlyURLSearchParams } from "next/navigation"
 import dayjs from "dayjs"
 import { ResultBlock, SuggestBlock } from "./SearchBlock"
@@ -60,7 +60,7 @@ function TabBlock(props: TabBlockProps) {
             </div>
             : <div className='flex flex-col'>
               <SuggestBlock type={0} />
-              <NoEvent text1="찾는 검색결과가 없어요." text2="지금 인기 있는 페스티벌을 만나보세요." buttonText={"페스티벌 인기순 보러가기"} />
+              <NoData text1="찾는 검색결과가 없어요." text2="지금 인기 있는 페스티벌을 만나보세요." buttonText="페스티벌 인기순 보러가기" buttonLink="/?sort=likeCount%2Cdesc" />
             </div>
         }
       </>

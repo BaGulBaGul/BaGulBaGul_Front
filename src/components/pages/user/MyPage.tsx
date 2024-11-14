@@ -2,44 +2,46 @@ import React from "react";
 import { CalIcn, LikeIcn, PostEditIcn } from "@/components/common/styles/Icon";
 import useLoginInfo from "@/hooks/useLoginInfo";
 import Link from "next/link";
+import { useSignout } from "@/hooks/useInUser";
 
 export function MyPage() {
   let userinfo = useLoginInfo()
   let userdata = userinfo?.data
-  if (userinfo.isLoading) {return (<></>)}
+
+  const mutateSignout = useSignout();
+  const handleSignout = () => { mutateSignout.mutate() }
+  if (userinfo.isLoading) { return (<></>) }
   return (
-    <div className="pt-[60px]">
-      <div className="flex flex-col mb-[11px]">
-        <div className="flex flex-col gap-[8px]">
-          <div className="flex flex-row px-[16px] py-[18px] gap-[16px] bg-p-white" id='mypage-profile'>
-            <div className="relative w-[77px] h-[70px] rounded-full">
-              <img src={userdata?.imageURI ?? "/default_icon.svg"} className="w-[70px] h-[70px] rounded-full" />
-            </div>
-            <div className="flex flex-col">
-              <span className="font-semibold text-18 text-black">{userdata?.nickname ?? '-'}</span>
-              <span className="text-14 text-gray3">{userdata?.email ?? '등록된 이메일이 없습니다.'}</span>
-              <span className="text-14 text-gray3">{userdata?.profileMessage ?? '바글이의 한마디를 적어주세요.'}</span>
-            </div>
+    <div className="flex flex-col mb-[11px] pt-[60px]">
+      <div className="flex flex-col gap-[8px]">
+        <div className="flex flex-row px-[16px] py-[18px] gap-[16px] bg-p-white" id='mypage-profile'>
+          <div className="relative w-[77px] h-[70px] rounded-full">
+            <img src={userdata?.imageURI ?? "/default_icon.svg"} className="w-[70px] h-[70px] rounded-full" />
           </div>
-          <div className="flex flex-col bg-p-white" id='mypage-set1'>
-            <div className="p-[16px] text-14 font-semibold text-black">나의 바글바글</div>
-            <SetBlock opt={0} icon={<LikeIcn color='#6C6C6C' />} title='좋아요' count={userdata?.postLikeCount} url='/mypage/liked' />
-            <SetBlock opt={0} icon={<PostEditIcn />} title='작성글' count={userdata?.writingCount} url='/mypage/post' />
-            <SetBlock opt={0} icon={<CalIcn val={false} color='#6C6C6C' />} title='캘린더' count={userdata?.calendarCount} url='/mypage/calendar' />
-          </div>
-          <div className="flex flex-col bg-p-white" id='mypage-set2'>
-            <div className="p-[16px] text-14 font-semibold text-black">계정 관리</div>
-            <SetBlock opt={1} icon={<SmileIcn />} title='프로필 수정' url='/mypage/edit' />
-          </div>
-          <div className="flex flex-col bg-p-white" id='mypage-set3'>
-            <div className="p-[16px] text-14 font-semibold text-black"> 이용 정보</div>
-            <SetBlock opt={1} title='약관 및 정책' url='/' />
-            <SetBlock opt={1} title='회원 탈퇴히기' url='/' />
+          <div className="flex flex-col">
+            <span className="font-semibold text-18 text-black">{userdata?.nickname ?? '-'}</span>
+            <span className="text-14 text-gray3">{userdata?.email ?? '등록된 이메일이 없습니다.'}</span>
+            <span className="text-14 text-gray3">{userdata?.profileMessage ?? '바글이의 한마디를 적어주세요.'}</span>
           </div>
         </div>
-        <div className="p-[24px]">
-          <button className="w-full bg-p-white text-gray3 text-16 p-[16px]">로그아웃</button>
+        <div className="flex flex-col bg-p-white" id='mypage-set1'>
+          <div className="p-[16px] text-14 font-semibold text-black">나의 바글바글</div>
+          <SetBlock opt={0} icon={<LikeIcn color='#6C6C6C' />} title='좋아요' count={userdata?.postLikeCount} url='/mypage/liked' />
+          <SetBlock opt={0} icon={<PostEditIcn />} title='작성글' count={userdata?.writingCount} url='/mypage/post' />
+          <SetBlock opt={0} icon={<CalIcn val={false} color='#6C6C6C' />} title='캘린더' count={userdata?.calendarCount} url='/mypage/calendar' />
         </div>
+        <div className="flex flex-col bg-p-white" id='mypage-set2'>
+          <div className="p-[16px] text-14 font-semibold text-black">계정 관리</div>
+          <SetBlock opt={1} icon={<SmileIcn />} title='프로필 수정' url='/mypage/edit' />
+        </div>
+        <div className="flex flex-col bg-p-white" id='mypage-set3'>
+          <div className="p-[16px] text-14 font-semibold text-black"> 이용 정보</div>
+          <SetBlock opt={1} title='약관 및 정책' url='/' />
+          <SetBlock opt={1} title='회원 탈퇴히기' url='/' />
+        </div>
+      </div>
+      <div className="p-[24px]">
+        <button className="w-full bg-p-white text-gray3 text-16 p-[16px]" onClick={handleSignout}>로그아웃</button>
       </div>
     </div>
   )

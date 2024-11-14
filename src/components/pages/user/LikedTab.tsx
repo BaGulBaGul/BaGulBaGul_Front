@@ -1,7 +1,7 @@
 "use client";
 import { useState } from 'react';
 import { tabList } from '@/service/Functions';
-import { MoreButton, NoEvent, TabPanels, PostTab, LikeProps, LikeRProps, Divider } from '@/components/common';
+import { MoreButton, NoData, TabPanels, PostTab, LikeProps, LikeRProps, Divider } from '@/components/common';
 import { ViewToggle, LikedAccompanyBlock, LikedPostBlock } from '.';
 import { InfiniteData } from '@tanstack/react-query';
 import { handleMore, useListWithPage } from '@/hooks/useInCommon';
@@ -64,7 +64,7 @@ function TabBlock(props: LikedTabBlockProps) {
     )
   } else {
     return (
-      <NoEvent text1="좋아요 누른 게시물이 없어요." text2="인기 게시물에 좋아요를 눌러보세요!" buttonText={"페스티벌 인기순 보러가기"} />
+      <NoData text1="좋아요 누른 게시물이 없어요." text2="인기 게시물에 좋아요를 눌러보세요!" buttonText="페스티벌 인기순 보러가기" buttonLink="/?sort=likeCount%2Cdesc" />
     )
   }
 }
