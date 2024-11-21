@@ -40,6 +40,14 @@ export const mutateForURL = async (apiURL: string, method: string, body?: any) =
   return json.data;
 }
 
+export const mutateForURLJson = async (apiURL: string, method: string, body?: any) => {
+  let options: Options = { url: `${API_BASE_URL}${apiURL}`, headers: new Headers({ "Content-Type": "application/json", }), method: method, credentials: 'include' }
+  if (body) { options.body = JSON.stringify(body); }
+  const data = await fetch(options.url, options)
+  const json = await data.json()
+  return json;
+}
+
 export async function isSigned(cookies?: any) {
   try {
     const res = await fetch(

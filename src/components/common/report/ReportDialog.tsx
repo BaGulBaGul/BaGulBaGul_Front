@@ -1,22 +1,25 @@
+"use client";
 import { FullscreenDialog } from "../FullscreenDialog";
 import { useRef, useState } from "react";
 import { ReportRadios } from "./ReportRadios";
-import { Divider } from "..";
 import { useReport } from "@/hooks/useInReport";
+import { ThemeProvider } from "@emotion/react";
+import { Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
+import { dialogTheme } from "../styles/Themes";
 
 export function ReportDialog(props: { open: boolean; setOpen: any; type: 'comment' | 'comment-child' | 'event' | 'recruitment'; target: number; }) {
   const [value, setValue] = useState<string | undefined>(undefined)
   const handleClose = () => { props.setOpen(false); };
   const etcRef = useRef<HTMLInputElement>(null);
 
-const mutateReport = useReport(props.type, setValue, props.setOpen)
+  // 중복 신고 alert
+  const [openA, setOpenA] = useState(false)
+  const handleCloseA = () => { setOpenA(false); }
+
+  const mutateReport = useReport(props.type, setValue, props.setOpen, setOpenA)
   const handleReport = () => {
     if (!value) { alert('신고하는 이유를 반드시 선택해주세요.') }
-    else if (value === 'ETC' && !!etcRef.current && etcRef.current.value.length === 0) {
-      alert('기타를 선택한 경우 설명을 반드시 작성해주세요.')
-    } else {
-      mutateReport.mutate({ [targetKey(props.type)]: props.target, "reportType": value, "message": etcRef.current?.value ?? '' })
-    }
+    else { mutateReport.mutate({ [targetKey(props.type)]: props.target, "reportType": value, "message": etcRef.current?.value ?? '' }) }
   }
 
   function ReportTab() {
@@ -29,14 +32,21 @@ const mutateReport = useReport(props.type, setValue, props.setOpen)
           </div>
           <ReportRadios value={value} setValue={setValue} etcRef={etcRef} />
         </div>
-        <Divider />
-        <button className="p-[16px] bg-white text-14 text-primary-blue text-left">작성자 신고하기</button>
       </>
     )
   }
 
   return (
-    <FullscreenDialog child={<ReportTab />} open={props.open} handleClose={handleClose} handleDone={handleReport} headerText='신고하기' footerText='제출하기' bg='#ECECEC' />
+    <>
+      <FullscreenDialog child={<ReportTab />} open={props.open} handleClose={handleCloseA} handleDone={handleReport} headerText='신고하기' footerText='제출하기' bg='#ECECEC' />
+      <ThemeProvider theme={dialogTheme}>
+        <Dialog onClose={handleClose} open={openA} >
+          <DialogTitle>이미 신고한 게시글입니다</DialogTitle>
+          <DialogContent>이 글은 이미 신고되었어요!<br />더 꺠끗한 바글바글, 함께 만들어요</DialogContent>
+          <DialogActions><button onClick={handleCloseA} autoFocus>확인</button></DialogActions>
+        </Dialog>
+      </ThemeProvider>
+    </>
   )
 }
 

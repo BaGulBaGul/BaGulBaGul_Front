@@ -19,7 +19,6 @@ export {
   MoreButton,
   NoData,
   PostTab, TabPanel, TabPanels,
-  PartiSelect, HeadSelect,
   ViewButton, ViewSelect, ViewFilterApplied,
   LoadingSkeleton, LoadingCircle,
   UserProfile, HeadCount, BlockInfo, BlockInfoDT

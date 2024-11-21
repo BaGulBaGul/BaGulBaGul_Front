@@ -87,3 +87,40 @@ export const tabTheme = createTheme({
     }
   },
 });
+
+export const dialogTheme = createTheme({
+  components: {
+    MuiDialog: {
+      styleOverrides: {
+        paper: { margin: 0, borderRadius: '8px', maxHeight: 'unset', maxWidth: 'unset', width: '250px' }
+      }
+    },
+    MuiDialogTitle: {
+      styleOverrides: {
+        root: {
+          padding: '20px 18px 12px', fontWeight: '600', fontSize: '18px', lineHeight: '140%',
+          display: 'flex', flexDirection: 'row', justifyContent: 'center'
+        }
+      }
+    },
+    MuiDialogContent: {
+      styleOverrides: {
+        root: {
+          fontSize: '12px', paddingTop: '4px !important', paddingBottom: '8px', textAlign: 'center',
+          display: 'flex', flexDirection: 'row', justifyContent: 'center',
+        }
+      }
+    },
+    MuiDialogActions: {
+      styleOverrides: {
+        root: {
+          padding: '12px 15px',
+          'button': {
+            width: '100%', fontSize: '14px', fontWeight: '400', lineHeight: '160%',
+            padding: '4px 0px', backgroundColor: '#4A6AFE', color: '#ECECEC', borderRadius: '4px'
+          }
+        }
+      }
+    },
+  }
+})

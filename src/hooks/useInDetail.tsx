@@ -41,7 +41,7 @@ export const useAddSave = (origin: 'event' | 'event/recruitment', postId: any, s
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: () => mutateForURL(`/api/user/calendar/${originText(origin)}/${postId}`, saved ? 'DELETE' : 'POST'),
-    onSuccess: data => {
+    onSuccess: () => {
       queryClient.setQueryData([originText(origin), postId, 'saved'], (old: any) => { return { exists: !old.exists } })
     }
   })
