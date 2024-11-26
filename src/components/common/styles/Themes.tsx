@@ -115,9 +115,12 @@ export const dialogTheme = createTheme({
       styleOverrides: {
         root: {
           padding: '12px 15px',
-          'button': {
-            width: '100%', fontSize: '14px', fontWeight: '400', lineHeight: '160%',
+          'button, a': {
+            width: '100%', fontSize: '14px', fontWeight: '400', lineHeight: '160%', textAlign: 'center',
             padding: '4px 0px', backgroundColor: '#4A6AFE', color: '#ECECEC', borderRadius: '4px'
+          },
+          'button.secondary': {
+            backgroundColor: '#ECECEC !important', color: '#1E1E1E !important'
           }
         }
       }

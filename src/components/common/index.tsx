@@ -12,6 +12,8 @@ import { HeadCount } from './block/HeadCount'
 
 import { InfiniteData } from '@tanstack/react-query'
 import { BlockInfo, BlockInfoDT } from './block/BlockInfo'
+import { FullscreenDialog } from './FullscreenDialog'
+import { AlertDialog } from './AlertDialog'
 
 export {
   CategoryButtons,
@@ -21,7 +23,8 @@ export {
   PostTab, TabPanel, TabPanels,
   ViewButton, ViewSelect, ViewFilterApplied,
   LoadingSkeleton, LoadingCircle,
-  UserProfile, HeadCount, BlockInfo, BlockInfoDT
+  UserProfile, HeadCount, BlockInfo, BlockInfoDT,
+  FullscreenDialog, AlertDialog
 }
 
 export const Divider = (props: {color?: string;}) => {

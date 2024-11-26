@@ -1,12 +1,11 @@
 "use client";
 import { useEffect, useRef, useState } from 'react';
-import { call } from "@/service/ApiService";
 import { Button, ThemeProvider, TextField } from '@mui/material';
 import { commentTheme } from '@/components/common/styles/Themes';
 import ScrollToTop from './ScrollToTop';
 import { useNewComment } from '@/hooks/useInComment';
 
-export function CommentFooter(props: { url: string; qKey: any; }) {
+export function CommentFooter(props: { url: string; qKey: any; isLogin: boolean; setOpenA: any; }) {
   const cmtRef = useRef<HTMLInputElement>(null);
   const mutateComment = useNewComment(`/api/${props.url}/comment`, props.qKey, cmtRef)
   const handleComment = () => {
@@ -30,10 +29,15 @@ export function CommentFooter(props: { url: string; qKey: any; }) {
       <ThemeProvider theme={commentTheme}>
         {!scrolled ? <></> :
           <div className='flex justify-end pb-[16px] pe-[15px]'><ScrollToTop /></div>}
-        <div className="comment-input flex flex-row">
-          <TextField placeholder='댓글을 입력해주세요.' fullWidth multiline inputRef={cmtRef} maxRows={5} />
-          <Button onClick={handleComment}>등록</Button>
-        </div>
+        {props.isLogin
+          ? <div className="comment-input flex flex-row">
+            <TextField placeholder='댓글을 입력해주세요.' fullWidth multiline inputRef={cmtRef} maxRows={5} />
+            <Button onClick={handleComment}>등록</Button>
+          </div>
+          : <div className="comment-input flex flex-row" onClick={() => props.setOpenA(true)}>
+            <TextField disabled placeholder='로그인 후 이용이 가능합니다.' fullWidth multiline inputRef={cmtRef} maxRows={5} />
+            <Button disabled>등록</Button>
+          </div>}
       </ThemeProvider>
     </div>
   )

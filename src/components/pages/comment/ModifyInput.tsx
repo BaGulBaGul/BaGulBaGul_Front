@@ -1,8 +1,7 @@
 import { TextField } from "@mui/material";
 import React, { useRef, FocusEvent } from "react";
-import { CommentMProps } from "@/components/common";
+import { CommentMProps, FullscreenDialog } from "@/components/common";
 import { useModify, useModifyR } from "@/hooks/useInComment";
-import { FullscreenDialog } from "@/components/common/FullscreenDialog";
 
 
 interface ModifyProps {

@@ -1,11 +1,8 @@
 "use client";
-import { FullscreenDialog } from "../FullscreenDialog";
 import { useRef, useState } from "react";
 import { ReportRadios } from "./ReportRadios";
 import { useReport } from "@/hooks/useInReport";
-import { ThemeProvider } from "@emotion/react";
-import { Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
-import { dialogTheme } from "../styles/Themes";
+import { FullscreenDialog, AlertDialog } from "..";
 
 export function ReportDialog(props: { open: boolean; setOpen: any; type: 'comment' | 'comment-child' | 'event' | 'recruitment'; target: number; }) {
   const [value, setValue] = useState<string | undefined>(undefined)
@@ -38,14 +35,9 @@ export function ReportDialog(props: { open: boolean; setOpen: any; type: 'commen
 
   return (
     <>
-      <FullscreenDialog child={<ReportTab />} open={props.open} handleClose={handleCloseA} handleDone={handleReport} headerText='신고하기' footerText='제출하기' bg='#ECECEC' />
-      <ThemeProvider theme={dialogTheme}>
-        <Dialog onClose={handleClose} open={openA} >
-          <DialogTitle>이미 신고한 게시글입니다</DialogTitle>
-          <DialogContent>이 글은 이미 신고되었어요!<br />더 꺠끗한 바글바글, 함께 만들어요</DialogContent>
-          <DialogActions><button onClick={handleCloseA} autoFocus>확인</button></DialogActions>
-        </Dialog>
-      </ThemeProvider>
+      <FullscreenDialog child={<ReportTab />} open={props.open} handleClose={handleClose} handleDone={handleReport} headerText='신고하기' footerText='제출하기' bg='#ECECEC' />
+      <AlertDialog open={openA} setOpen={setOpenA} headerText='이미 신고한 게시글입니다'
+        contextText={['이 글은 이미 신고되었어요!', '더 꺠끗한 바글바글, 함께 만들어요']} buttonText1='확인' />
     </>
   )
 }
