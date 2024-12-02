@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from '@tanstack/react-query';
-import { fetchFromURLWithPage, fetchFromURL, mutateForURL } from '@/service/ApiService';
+import { fetchFromURLWithPage, fetchFromURL, mutateForURL, mutateForURLJson } from '@/service/ApiService';
 import { useRouter } from 'next/navigation';
 
 export const useUserInfo = (userId: number) => {
@@ -18,5 +18,19 @@ export const useSignout = () => {
       router.replace('/signin')
     },
     onError: () => alert('로그아웃을 실패했습니다. 다시 시도해주세요.')
+  })
+}
+
+export const useEditProfile = () => {
+  const queryClient = useQueryClient()
+  const router = useRouter();
+  return useMutation({
+    mutationFn: (body: Object) => { return mutateForURL(`/api/user/info/my`, 'PATCH', body) },
+    onSuccess: () => {
+      alert('회원정보가 수정되었습니다.')
+      queryClient.refetchQueries({ queryKey: ['login-user'] })
+      router.back()
+    },
+    onError: () => alert('회원정보 수정을 실패했습니다. 다시 시도해주세요.')
   })
 }

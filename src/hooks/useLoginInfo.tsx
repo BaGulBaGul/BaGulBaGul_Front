@@ -7,6 +7,6 @@ export default function useLoginInfo() {
   return useQuery({
     queryKey: ['login-user'],
     queryFn: () => fetchFromURL('/api/user/info/my', true),
-    enabled: !loginData
+    // enabled: !loginData
   })
 }

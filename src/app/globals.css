@@ -412,6 +412,19 @@ div.editor-body {
   box-shadow: 0 0 0 1px #4A6AFE inset;
 }
 
+input[type="file"] {
+  display: none;
+}
+
+.upload-btn {
+  position: absolute;
+  right: 0px;
+  bottom: 0px;
+  width: 30px;
+  height: 30px;
+  z-index: 10;
+}
+
 /* ---------------------- */
 /* -----slick-slider----- */
 /* ---------------------- */

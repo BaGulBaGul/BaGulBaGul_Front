@@ -1,3 +1,4 @@
+"use client";
 import { ThemeProvider, Dialog, createTheme, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import Link from "next/link";
 import React from "react";

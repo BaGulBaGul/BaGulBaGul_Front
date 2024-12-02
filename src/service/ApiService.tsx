@@ -1,13 +1,17 @@
 import { API_BASE_URL } from "../api-config";
 
-interface Options { headers?: Headers; url: string; method: string; body?: string; credentials: RequestCredentials }
-export async function call(api: string, method: string, request?: any) {
+interface Options { headers?: Headers; url: string; method: string; body?: any; credentials: RequestCredentials }
+export async function call(api: string, method: string, request?: any, headers?: 'file') {
   let options: Options = {
     headers: new Headers({ "Content-Type": "application/json", }),
     url: API_BASE_URL + api, method: method,
     credentials: 'include',
   };
-  if (request) { options.body = JSON.stringify(request); }
+  if (!!request) {
+    if (headers === 'file') { options.body = request }
+    else { options.body = JSON.stringify(request); }
+  }
+  if (headers === 'file' && !!options.headers) { options.headers.delete('Content-Type') }
 
   return await fetch(options.url, options).then(async (response) => {
     if (response.status === 200) { return response.json(); }

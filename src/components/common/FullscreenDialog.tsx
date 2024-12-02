@@ -1,3 +1,4 @@
+"use client";
 import { ThemeProvider, Dialog, AppBar, Toolbar, createTheme } from "@mui/material";
 import React, { Fragment } from "react";
 import { Divider } from "@/components/common";
