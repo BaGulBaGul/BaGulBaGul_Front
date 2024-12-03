@@ -21,7 +21,13 @@ export function EditProfilePage() {
   }
   const mutateEditProfile = useEditProfile();
   const handleDoneEditing = () => {
-    mutateEditProfile.mutate({ "email": emailRef.current.value, "profileMessage": descRef.current.value, "imageResourceId": imageKey ?? null })
+    console.log(profileImage, imageKey)
+    let body: any = { "email": emailRef.current.value, "profileMessage": descRef.current.value }
+    if (!(!!profileImage && imageKey === undefined)) { body.imageResourceId = imageKey ?? null }
+    else if (userdata.nickname !== nameRef.current.value) { body.username = nameRef.current.value }
+    console.log(body)
+    mutateEditProfile.mutate(body)
+
   }
 
   if (userinfo.isLoading) {
@@ -34,7 +40,7 @@ export function EditProfilePage() {
       <div className='flex flex-col w-full mt-[60px] mb-[77px] bg-p-white'>
         <div className='flex flex-col w-full items-center py-[18px] gap-[8px]' id='edit-profile-pic'>
           <div className="relative w-[77px] h-[70px] rounded-full">
-            <img src={profileImage ?? "/default_icon.svg"} className="w-[70px] h-[70px] rounded-full" />
+            <img src={profileImage ?? "/default_icon.svg"} className="w-[70px] h-[70px] rounded-full object-cover" />
             <ImageUploader setImage={setProfileImage} setImageKey={setImageKey} />
           </div>
           <div className="text-12 text-gray3 cursor-pointer" onClick={handleDeleteProfilePic}>이미지 삭제</div>

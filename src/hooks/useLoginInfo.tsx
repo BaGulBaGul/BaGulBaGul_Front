@@ -7,6 +7,16 @@ export default function useLoginInfo() {
   return useQuery({
     queryKey: ['login-user'],
     queryFn: () => fetchFromURL('/api/user/info/my', true),
+    refetchInterval: false,
     // enabled: !loginData
   })
+  // if (!!loginData) { return { isLoading: false, data: loginData } }
+  // else {
+  //   return useQuery({
+  //     queryKey: ['login-user'],
+  //     queryFn: () => fetchFromURL('/api/user/info/my', true),
+  //     refetchInterval: false,
+  //     // enabled: !loginData
+  //   })
+  // }
 }

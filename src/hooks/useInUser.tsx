@@ -25,11 +25,14 @@ export const useEditProfile = () => {
   const queryClient = useQueryClient()
   const router = useRouter();
   return useMutation({
-    mutationFn: (body: Object) => { return mutateForURL(`/api/user/info/my`, 'PATCH', body) },
-    onSuccess: () => {
-      alert('회원정보가 수정되었습니다.')
-      queryClient.refetchQueries({ queryKey: ['login-user'] })
-      router.back()
+    mutationFn: (body: Object) => { return mutateForURLJson(`/api/user/info/my`, 'PATCH', body) },
+    onSuccess: data => {
+      if (data.errorCode === 'C00000') {
+        alert('회원정보가 수정되었습니다.')
+        queryClient.refetchQueries({ queryKey: ['login-user'] })
+        router.back()
+      }
+      else { alert('회원정보 수정을 실패했습니다. 다시 시도해주세요.') }
     },
     onError: () => alert('회원정보 수정을 실패했습니다. 다시 시도해주세요.')
   })

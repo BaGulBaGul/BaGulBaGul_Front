@@ -16,7 +16,7 @@ export function MyPage() {
       <div className="flex flex-col gap-[8px]">
         <div className="flex flex-row px-[16px] py-[18px] gap-[16px] bg-p-white" id='mypage-profile'>
           <div className="relative w-[77px] h-[70px] rounded-full">
-            <img src={userdata?.imageURI ?? "/default_icon.svg"} className="w-[70px] h-[70px] rounded-full" />
+            <img src={userdata?.imageURI ?? "/default_icon.svg"} className="w-[70px] h-[70px] rounded-full object-cover" />
           </div>
           <div className="flex flex-col">
             <span className="font-semibold text-18 text-black">{userdata?.nickname ?? '-'}</span>

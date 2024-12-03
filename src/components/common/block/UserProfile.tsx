@@ -10,7 +10,7 @@ export function UserProfile(props: { userId?: number; userName?: string; userPro
     <>
       {!!props.userId
         ? <Link onClick={(e) => { e.stopPropagation(); }} href={`/user/${props.userId}`} className={blockstyle}>
-          <img className='rounded-full w-[24px] h-[24px]' src={props.userProfileImageUrl ?? '/profile_main.svg'} />
+          <img className='rounded-full w-[24px] h-[24px] object-cover' src={props.userProfileImageUrl ?? '/profile_main.svg'} />
           <p className={textstyle}>{props.userName ?? '-'}</p>
         </Link>
         : <NoUser />
