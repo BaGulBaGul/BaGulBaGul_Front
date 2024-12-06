@@ -1,25 +1,26 @@
 "use client";
 import { DeleteIcn, HeaderBackIcn } from "@/components/common/styles/Icon";
 import { Dialog } from "@mui/material";
-import { RefObject, useRef } from "react";
+import { RefObject, useRef, useState } from "react";
 import Script from 'next/script'
 
 export function AddressDialog(props: { open: boolean; onClose: any; setAddr: any; }) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const [abs, setAbs] = useState('')
   const handleCloseAddr = () => {
     if (inputRef.current && inputRef.current.value.length > 0) {
-      props.setAddr(inputRef.current.value)
+      props.setAddr({ full: inputRef.current.value, abs: abs })
     }
     props.onClose(false)
   }
   const handleClearAddr = () => {
-    if (inputRef.current) { inputRef.current.value = '' }
+    if (inputRef.current && abs.length > 0) { inputRef.current.value = ''; setAbs(''); }
   }
 
   return (
     <Dialog fullScreen open={props.open}>
       <Script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js" async
-        onReady={() => { execDaumPost(inputRef) }} />
+        onReady={() => { execDaumPost(inputRef, setAbs) }} />
       <div className='fixed w-full top-0 bg-p-white z-paper'>
         <div className='flex flex-row items-center ms-[16px] me-[28px] my-[18px] gap-[16px]'>
           <button onClick={handleCloseAddr}><HeaderBackIcn /></button>
@@ -34,10 +35,11 @@ export function AddressDialog(props: { open: boolean; onClose: any; setAddr: any
   )
 }
 
-const execDaumPost = (inputRef: RefObject<HTMLInputElement>) => {
+const execDaumPost = (inputRef: RefObject<HTMLInputElement>, setAbs: any) => {
   var wrap = document.getElementById('addr-wrap');
   const postcode = new window.daum.Postcode({
     oncomplete: function (data: any) {
+      console.log(data)
       var addr = '';
       var extraAddr = '';
       // R: 도로명 주소 선택 / J: 지번 주소 선택
@@ -55,6 +57,7 @@ const execDaumPost = (inputRef: RefObject<HTMLInputElement>) => {
         if (extraAddr !== '') { extraAddr = ' (' + extraAddr + ')'; }
       }
       inputRef.current!.value = addr + ' ' + extraAddr;
+      setAbs(data.sido + ' ' + data.sigungu);
     },
     width: '100%', height: '100%'
   })

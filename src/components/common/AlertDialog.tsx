@@ -4,8 +4,8 @@ import Link from "next/link";
 import React from "react";
 
 interface AlertDialogProps {
-  open: boolean; setOpen: any; headerText: string;
-  contextText: string[]; buttonText1: string; buttonText2?: string; buttonLink?: string;
+  open: boolean; setOpen: any; headerText: string; contextText: string[];
+  buttonText1: string; buttonText2?: string; buttonLink?: string; buttonAction?: any;
 }
 export const AlertDialog = (props: AlertDialogProps) => {
   const handleClose = (e: any) => { e.stopPropagation(); props.setOpen(false); }
@@ -19,9 +19,13 @@ export const AlertDialog = (props: AlertDialogProps) => {
         ))
         }</DialogContent>
         <DialogActions>{
-          !!props.buttonText2 && !!props.buttonLink
-            ? <><button onClick={handleClose} className='secondary'>{props.buttonText1}</button>
-              <Link href={props.buttonLink}>{props.buttonText2}</Link></>
+          !!props.buttonText2
+            ? <>
+              <button onClick={handleClose} className='secondary'>{props.buttonText1}</button>
+              {!!props.buttonLink ?
+                <Link href={props.buttonLink}>{props.buttonText2}</Link>
+                : <button onClick={props.buttonAction} >{props.buttonText2}</button>}
+            </>
             : <button onClick={handleClose} autoFocus>{props.buttonText1}</button>
         }</DialogActions>
       </Dialog>

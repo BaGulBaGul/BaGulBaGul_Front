@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
-import { ArrowNext, ArrowPrev } from "../../common/Arrow";
 import { Drawer, List, ListItem, ListItemButton, ListItemText, ThemeProvider } from "@mui/material";
 import { menuTheme } from "../../common/styles/Themes";
-import Slider from "react-slick";
-import { postData } from "../../common/Data";
 import { FormatDateRange } from "@/service/Functions";
 import { HashtagButton, UserProfile } from "../../common";
 import { LikeIcn, CalIcn, VerticalMoreIcn } from "../../common/styles/Icon";
@@ -11,35 +8,13 @@ import dayjs from "dayjs";
 import Link from "next/link";
 import { ReportDialog } from "@/components/common/report/ReportDialog";
 
-export function PostSlide(props: { images: string[] }) {
-  const [index, setIndex] = useState(0);
-  const settings = {
-    className: "center", infinite: true, slidesToShow: 1, slidesToScroll: 1,
-    nextArrow: <ArrowNext cN='slick-next-detail' />, prevArrow: <ArrowPrev cN='slick-prev-detail' />,
-    beforeChange: (current: any, next: any) => { setIndex(next); },
-  }
-  if (props.images.length > 0) {
-    return (
-      <div className='relative'>
-        <span className="slide-chip">{`${index + 1}/${postData.length}`}</span>
-        <Slider {...settings} className='h-[280px] bg-gray1 slider-detail'>
-          {postData.map((post, idx) => (
-            <img key={`img-{idx}`} src={post.headImageUrl} height="280" className='h-[280px] object-cover' />
-          ))}
-        </Slider>
-      </div>
-    )
-  } else {
-    return (<img className='h-[280px] object-cover' src='/default_detail_thumb3x.png' />)
-  }
-}
-
 interface PostTitleProps {
   title: string; startDate: any; endDate?: any; type?: string; views: number;
-  userId: number; userName: string; categories?: string[]; toggleDrawer: any;
+  userId: number; userName: string; userProfileImage?: string; categories?: string[]; toggleDrawer: any;
 }
 export function PostTitle(props: PostTitleProps) {
-  const dateString = props.type !== undefined && props.type !== 'PARTY' ? FormatDateRange(props.startDate, props.endDate) : dayjs(props.startDate).format('YY.MM.DD')
+  const dateString = (!props.startDate && !props.endDate) ? '-'
+    : (!!props.type && props.type !== 'PARTY') ? FormatDateRange(props.startDate, props.endDate) : dayjs(props.startDate).format('YY.MM.DD')
   return (
     <div className='flex flex-col px-[16px] py-[20px]'>
       <div className='flex flex-row justify-between pt-[10px]'>
@@ -54,8 +29,8 @@ export function PostTitle(props: PostTitleProps) {
         </div>
       </div>
       <div className='flex flex-row justify-between items-center pt-[4px]'>
-        <UserProfile userId={props.userId} userName={props.userName} userProfileImageUrl={"/images/profile_pic.png"} color='gray3' />
-        {props.categories !== undefined
+        <UserProfile userId={props.userId} userName={props.userName} userProfileImageUrl={props.userProfileImage} color='gray3' />
+        {!!props.categories
           ? <div className='flex flex-row gap-[8px]'>
             {props.categories.map((cate, idx) => (<button className="cate-btn" key={`cate-${idx}`}>{cate}</button>))}
           </div>
@@ -66,23 +41,21 @@ export function PostTitle(props: PostTitleProps) {
   )
 }
 
-interface PostInfoProps {
-  opt: 'EVT' | 'RCT'; type?: string; startDate?: any; endDate?: any; maxHeadCount?: number; currentHeadCount?: number;
-}
+interface PostInfoProps { opt: 'EVT' | 'RCT'; type?: string; startDate?: any; endDate?: any; maxHeadCount?: number; currentHeadCount?: number; }
 export function PostInfo(props: PostInfoProps) {
   return (<>
     {props.opt === 'EVT'
       ? <div className='flex flex-col px-[16px] pt-[30px] text-14' id='p-info'>
         <div className='flex flex-row pb-[6px]'>
           <p className='font-semibold pe-[20px]'>시작일시</p>
-          {props.startDate !== undefined
+          {!!props.startDate
             ? <><p className='pe-[10px]'>{dayjs(props.startDate).format('YY.MM.DD(dd)')}</p><p>{dayjs(props.startDate).format('HH:mm')}</p></>
             : <p>—</p>
           }
         </div>
         <div className='flex flex-row pb-[6px]'>
           <p className='font-semibold pe-[20px]'>종료일시</p>
-          {props.endDate !== undefined
+          {!!props.endDate
             ? <><p className='pe-[10px]'>{dayjs(props.endDate).format('YY.MM.DD(dd)')}</p><p>{dayjs(props.endDate).format('HH:mm')}</p></>
             : <p>—</p>
           }
@@ -90,10 +63,7 @@ export function PostInfo(props: PostInfoProps) {
         <div className='flex flex-row items-center'>
           <p className='font-semibold pe-[20px]'>참여인원</p>
           <p>{props.maxHeadCount ?? '-'}명</p>
-          {props.type === 'PARTY'
-            ? <p className="recruit-chip">{`${props.currentHeadCount ?? 0}명 참여 중`}</p>
-            : <></>
-          }
+          {props.type === 'PARTY' ? <p className="recruit-chip">{`${props.currentHeadCount ?? 0}명 참여 중`}</p> : <></>}
         </div>
       </div>
       : <div className='flex flex-row px-[16px] pt-[30px] text-14' id='p-info'>

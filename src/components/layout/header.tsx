@@ -16,7 +16,7 @@ function Header(props: { opt?: 'NF' }) {
           <Link href="/search"><MagnifyingIcn size={24} /></Link>
         </p>
         <Link className="flex place-items-center" href="/mypage">
-          <img className='w-[24px] h-[24px] rounded-full object-cover' src={!!data && !!data.imageURI ? '/images/profile_pic.png' : "/profile_main.svg"} alt="마이페이지 아이콘" />
+          <img className='w-[24px] h-[24px] rounded-full object-cover' src={!!data && !!data.imageURI ? data.imageURI : "/profile_main.svg"} alt="마이페이지 아이콘" />
         </Link>
       </div>
     </header>

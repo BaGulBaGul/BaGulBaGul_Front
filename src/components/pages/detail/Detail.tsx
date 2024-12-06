@@ -1,9 +1,9 @@
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { DetailProps, RDetailProps, Divider } from "../../common";
+import { DetailProps, RDetailProps, Divider, ImageSlide } from "../../common";
 import { PostFooter } from "../../layout/footer";
 import ShareDialog from "./ShareDialog";
-import { PostSlide, PostTitle, PostInfo, PostContentMap, PostContentTag, PostTools, PostDrawer } from "./DetailElements";
+import { PostTitle, PostInfo, PostContentMap, PostContentTag, PostTools, PostDrawer } from "./DetailElements";
 
 interface DetailsProps {
   opt: 'EVT' | 'RCT'; data: DetailProps | RDetailProps; liked: boolean; likeCount?: number; handleLike: any; saved: boolean; handleCalendar: any;
@@ -24,9 +24,9 @@ export const Detail = (props: DetailsProps) => {
     return (
       <>
         <div className={`flex flex-col w-full min-h-screen pt-[104px] ${data.event.type !== 'PARTY' ? 'pb-[77px]' : ''}`}>
-          <PostSlide images={data.post.imageUrls} />
+          {data.post.imageUrls.length > 0 ? <ImageSlide images={data.post.imageUrls} /> : <img className='h-[280px] object-cover' src='/default_detail_thumb3x.png' />}
           <PostTitle title={data.post.title} startDate={data.event.startDate} endDate={data.event.endDate} type={data.event.type}
-            views={data.post.views} userId={data.post.writer.userId} userName={data.post.writer.userName}
+            views={data.post.views} userId={data.post.writer.userId} userName={data.post.writer.userName} userProfileImage={data.post.writer.userProfileImageUrl}
             categories={data.event.categories} toggleDrawer={toggleDrawer} />
           <Divider />
           <PostInfo opt='EVT' type={data.event.type} startDate={data.event.startDate} endDate={data.event.endDate}
@@ -52,7 +52,7 @@ export const Detail = (props: DetailsProps) => {
       <>
         <div className='flex flex-col w-full min-h-screen pt-[104px] justify-between'>
           <div className='flex flex-col w-full'>
-            <PostSlide images={data.post.imageUrls} />
+            <ImageSlide images={data.post.imageUrls} />
             <PostTitle title={data.post.title} startDate={data.recruitment.startDate} views={data.post.views}
               userId={data.post.writer.userId} userName={data.post.writer.userName} toggleDrawer={toggleDrawer} />
             <Divider />

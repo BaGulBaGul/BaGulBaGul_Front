@@ -1,5 +1,4 @@
 'use client';
-
 import { Dispatch, SetStateAction } from "react";
 import { ToggleButton, ToggleButtonGroup, ThemeProvider, createTheme } from "@mui/material";
 
@@ -8,22 +7,26 @@ export const categories = [
 ]
 
 interface CategoryButtonProps {
-  selectedCate: string[]; setSelectedCate: Dispatch<SetStateAction<string[]>>;
+  selectedCate: string[]; setSelectedCate: Dispatch<SetStateAction<string[]>>; max?: number;
 }
 export default function CategoryButtons(props: CategoryButtonProps) {
-  const handleCate = (e: React.MouseEvent<HTMLElement>, newCate: string[]) => {
-    props.setSelectedCate(newCate);
+  const handleCate = (e: React.MouseEvent<HTMLElement>, newCate: string) => {
+    if (props.selectedCate.some(x => x === newCate)) { // 선택 해제
+      props.setSelectedCate(props.selectedCate.filter(function (cate) { return cate !== newCate }))
+    } else {  // 선택 - 갯수 초과 시 클릭 x
+      if (!props.max || (!!props.max && props.selectedCate.length + 1 <= props.max)) { props.setSelectedCate(props.selectedCate.concat(newCate)); }
+    }
   }
 
   return (
     <div className='h-[46px] overflow-hidden'>
       <div className='x-scroll-wrap h-[76px] py-[10px] px-[16px]'>
         <ThemeProvider theme={categoryButtonTheme}>
-          <ToggleButtonGroup value={props.selectedCate} onChange={handleCate}>
+          <ToggleButtonGroup value={props.selectedCate}>
             {categories.map((cate, idx) =>
               cate === '주류'
-                ? <ToggleButton value={cate} className='cateInfo gap-[2px]' key={`cate-${cate}`}><Category19 />{cate}</ToggleButton>
-                : <ToggleButton value={cate} className='cateInfo' key={`cate-${cate}`}>{cate}</ToggleButton>
+                ? <ToggleButton value={cate} selected={props.selectedCate.some(x => x === cate)} onClick={(e) => handleCate(e, cate)} className='cateInfo gap-[2px]' key={`cate-${cate}`}><Category19 />{cate}</ToggleButton>
+                : <ToggleButton value={cate} selected={props.selectedCate.some(x => x === cate)} onClick={(e) => handleCate(e, cate)} className='cateInfo' key={`cate-${cate}`}>{cate}</ToggleButton>
             )}
           </ToggleButtonGroup>
         </ThemeProvider>

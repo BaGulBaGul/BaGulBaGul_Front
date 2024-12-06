@@ -10,6 +10,7 @@ import { WriteFab } from '@/components/common/WriteFab';
 
 export default function Template({ children }: { children: React.ReactNode }) {
   const prms = useParams()
+  const eventId = Number(prms.eventId)
   const searchParams = useSearchParams()
   // 정렬기준, 날짜, 참여인원, 진행여부
   const [p, setP] = useState({
@@ -36,7 +37,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
       eD: !!endDate ? dayjs(endDate).format('YYYYMMDD') : '',
       ptcp: p.participants > 0 ? p.participants : '',
     }
-    router.replace(Object.keys(params).length > 0 ? `/event/${prms.eventId}/recruitment?${getParams(params)}` : `/event/${prms.eventId}/recruitment`)
+    router.replace(Object.keys(params).length > 0 ? `/event/${eventId}/recruitment?${getParams(params)}` : `/event/${eventId}/recruitment`)
   }
 
   const [rt, setRt] = useState(false)
@@ -67,7 +68,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
       <div className={`flex flex-col w-full ${filterCnt > 0 ? 'pt-[140px]' : 'pt-[104px]'}`}>
         {children}
       </div>
-      <WriteFab opt='r' />
+      <WriteFab opt='r' eventId={eventId} />
     </>
   )
 }

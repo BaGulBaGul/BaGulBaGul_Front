@@ -14,6 +14,7 @@ import { InfiniteData } from '@tanstack/react-query'
 import { BlockInfo, BlockInfoDT } from './block/BlockInfo'
 import { FullscreenDialog } from './FullscreenDialog'
 import { AlertDialog } from './AlertDialog'
+import { ImageSlide } from './ImageSlide'
 
 export {
   CategoryButtons,
@@ -24,7 +25,8 @@ export {
   ViewButton, ViewSelect, ViewFilterApplied,
   LoadingSkeleton, LoadingCircle,
   UserProfile, HeadCount, BlockInfo, BlockInfoDT,
-  FullscreenDialog, AlertDialog
+  FullscreenDialog, AlertDialog,
+  ImageSlide,
 }
 
 export const Divider = (props: {color?: string;}) => {

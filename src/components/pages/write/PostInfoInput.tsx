@@ -11,7 +11,7 @@ import { HeadSelect, PartiSelect } from '@/components/common/input/Select';
 interface PostInfoInputProps {
   type: 'p' | 'r';
   startDate?: dayjs.Dayjs | null; setStartDate?: any; endDate?: dayjs.Dayjs | null; setEndDate?: any;
-  headCount?: RangeProps; setHeadCount?: any; forAdult: boolean; setForAdult: any;
+  headCount?: RangeProps; setHeadCount?: any; forAdult?: boolean; setForAdult?: any;
   participants?: number; setParticipants?: any;
 }
 export function PostInfoInput(props: PostInfoInputProps) {
@@ -29,17 +29,18 @@ export function PostInfoInput(props: PostInfoInputProps) {
           <DateSelect title='종료일시' date={props.endDate!} setDate={props.setEndDate} />
           {props.headCount === undefined ? <></>
             : <HeadSelect openHead={openCollapse} handleOpenHead={handleOpenCollapse} headCount={props.headCount} setHeadCount={props.setHeadCount} />}
+          <div className="flex flex-row justify-between">
+            <div className={`${props.forAdult ? 'text-primary-blue' : 'text-gray3'} text-14 font-semibold pb-[2px]`}>19세 미만 참여불가 파티</div>
+            <ThemeProvider theme={viewCheckTheme}>
+              <FormControl>
+                <FormControlLabel control={<Checkbox checked={props.forAdult} onChange={handleAdult} />} label="" />
+              </FormControl>
+            </ThemeProvider>
+          </div>
         </>
         : <PartiSelect openParti={openCollapse} handleOpenParti={handleOpenCollapse} participants={props.participants ?? 0} setParticipants={props.setParticipants} />
       }
-      <div className="flex flex-row justify-between">
-        <div className={`${props.forAdult ? 'text-primary-blue' : 'text-gray3'} text-14 font-semibold pb-[2px]`}>19세 미만 참여불가 파티</div>
-        <ThemeProvider theme={viewCheckTheme}>
-          <FormControl>
-            <FormControlLabel control={<Checkbox checked={props.forAdult} onChange={handleAdult} />} label="" />
-          </FormControl>
-        </ThemeProvider>
-      </div>
+
     </div>
   )
 }
