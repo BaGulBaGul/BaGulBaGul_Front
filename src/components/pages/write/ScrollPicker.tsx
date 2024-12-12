@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import Picker from 'react-mobile-picker'
 
 export function ScrollPicker(props: { open: boolean, setOpen: any, data: dayjs.Dayjs | null, setData: any }) {
-  const data = props.data ?? dayjs()
+  const data = dayjs(props.data) ?? dayjs()
   const [dateValue, setDateValue] = useState({ year: data.year(), month: data.month() + 1, day: data.date() })
   const [timeValue, setTimeValue] = useState({
     ampm: data.hour() < 12 ? '오전' : '오후',

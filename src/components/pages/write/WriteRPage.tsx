@@ -1,51 +1,39 @@
 'use client';
 import { useRef, useState } from 'react';
-import { Divider } from '@/components/common';
 import dayjs from 'dayjs';
-import { PostInfoInput } from '@/components/pages/write/PostInfoInput';
 import { useWrite } from '@/hooks/useInWrite';
-import { autoResizeTextarea } from '.';
+import { Write } from '.';
+import { useDetailInfo } from '@/hooks/useInDetail';
 
-// 파티글
-export function WriteRPage(props: { text: string; eventId: number; }) {
-  const [participants, setParticipants] = useState(0);
+export function WriteRPage(props: { eventId?: number; edit?: number; }) {
+  const [headCount, setHeadCount] = useState<number>()
   const [startDate, setStartDate] = useState<dayjs.Dayjs | null>(null)
   const [endDate, setEndDate] = useState<dayjs.Dayjs | null>(null)
   const [content, setContent] = useState('');
-
+  const [images, setImages] = useState<string[]>([])
+  const [imageKey, setImageKey] = useState<Number[]>([])
   const titleRef = useRef<any>(null)
+  const prev = !!props.edit ? useDetailInfo('event/recruitment', props.edit) : undefined
 
-  const mutateWrite = useWrite('recruitment')
-  const handleConfirm = () => {
+  // 게시물 등록
+  const mutateWrite = !!props.edit ? useWrite('recruitment', props.edit) : useWrite('recruitment')
+  const handleSubmit = () => {
     if (!titleRef.current || titleRef.current.value.length <= 0) {
       alert('제목을 꼭 입력해주세요.')
     } else {
       let body = {
-        'content': content, 'endDate': endDate, 'imageIds': [], 'maxHeadCount': participants,
+        'content': content, 'endDate': endDate, 'imageIds': imageKey, 'maxHeadCount': headCount,
         'startDate': startDate, 'tags': [], 'title': titleRef.current.value
       }
-      mutateWrite.mutate({ apiURL: `/api/event/${props.eventId}/recruitment`, body: body })
+      let writeURL = !!props.eventId && !props.edit ? `/api/event/${props.eventId}/recruitment` : `/api/event/recruitment`
+      mutateWrite.mutate({ apiURL: writeURL, body: body })
     }
   }
 
   return (
-    <>
-      <div className='w-full mt-[104px] mb-[77px]'>
-        <div className='relative h-[280px] bg-gray1'>
-          {/* 이미지 들어갈 곳 */}
-        </div>
-        <input ref={titleRef} className='w-full focus:outline-none text-18 px-[16px] py-[10px]' type='text' placeholder='제목' />
-        <Divider color='gray2' />
-        <PostInfoInput type='r' participants={participants} setParticipants={setParticipants} />
-        <Divider color='gray2' />
-        <div className='px-[16px] py-[20px]'>
-          <textarea className="w-full min-h-[250px] focus:outline-none text-14"
-            placeholder={`파티에 대해서 설명해주세요!\n본문에 #을 이용해 파티 태그를 입력해보세요(최대 7개)`}
-            value={content} onChange={(e) => autoResizeTextarea(e, setContent)} />
-        </div>
-      </div>
-      <button className="footer-btn" onClick={handleConfirm}>{props.text}</button>
-    </>
+    <Write startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate}
+      headCount={headCount} setHeadCount={setHeadCount} content={content} setContent={setContent}
+      images={images} setImages={setImages} imageKey={imageKey} setImageKey={setImageKey} titleRef={titleRef}
+      handleSubmit={handleSubmit} prev={!!props.edit ? prev : undefined} />
   )
-
 }

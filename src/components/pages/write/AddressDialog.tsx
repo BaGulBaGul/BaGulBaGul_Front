@@ -4,17 +4,19 @@ import { Dialog } from "@mui/material";
 import { RefObject, useRef, useState } from "react";
 import Script from 'next/script'
 
-export function AddressDialog(props: { open: boolean; onClose: any; setAddr: any; }) {
+export function AddressDialog(props: { open: boolean; onClose: any; addr: string; setAddr: any; }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [abs, setAbs] = useState('')
   const handleCloseAddr = () => {
     if (inputRef.current && inputRef.current.value.length > 0) {
       props.setAddr({ full: inputRef.current.value, abs: abs })
+    } else if (props.addr.length > 0 && inputRef.current  && inputRef.current.value.length === 0) {
+      props.setAddr({ full: inputRef.current.value, abs: abs })
     }
     props.onClose(false)
   }
   const handleClearAddr = () => {
-    if (inputRef.current && abs.length > 0) { inputRef.current.value = ''; setAbs(''); }
+    if (inputRef.current) { inputRef.current.value = ''; setAbs(''); }
   }
 
   return (
@@ -25,7 +27,7 @@ export function AddressDialog(props: { open: boolean; onClose: any; setAddr: any
         <div className='flex flex-row items-center ms-[16px] me-[28px] my-[18px] gap-[16px]'>
           <button onClick={handleCloseAddr}><HeaderBackIcn /></button>
           <div className='search-wrap w-full'>
-            <input className='search-input' placeholder='징소, 주소 검색' ref={inputRef} />
+            <input className='search-input' placeholder='징소, 주소 검색' ref={inputRef} defaultValue={props.addr} />
             <button onClick={handleClearAddr}><DeleteIcn size='20' color='#1E1E1E' /></button>
           </div>
         </div>

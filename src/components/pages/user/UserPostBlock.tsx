@@ -11,10 +11,13 @@ export function MyPostBlock(props: { opt: 'EVT' | 'RCT', data: ListProps | RList
     let confirmDelete = confirm("작성글을 삭제하시겠습니까?");
     if (confirmDelete) { mutateDelete.mutate() }
   }
+
+  let editURL = props.opt === 'EVT' ? `/write?w=p&edit=${(props.data as ListProps).event.eventId}`
+    : `/write?w=r&edit=${(props.data as RListProps).recruitment.recruitmentId}`
   function PostButton(props: { mutateDelete: UseMutationResult<any, Error, void, unknown> }) {
     return (
       <div className='flex flex-row gap-[2px]'>
-        <Link href={'/'}><PostEditIcn /></Link>
+        <Link href={editURL}><PostEditIcn /></Link>
         <button onClick={(e) => handleDelete(e, props.mutateDelete)}><DeleteIcn /></button>
       </div>
     )

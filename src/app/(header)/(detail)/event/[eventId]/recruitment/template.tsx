@@ -3,10 +3,9 @@ import { useState, useEffect } from 'react';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { Backdrop } from '@mui/material';
 import { getParams, useEffectCntFilter } from '@/service/Functions';
-import { ViewButton, ViewSelect, ViewFilterApplied } from '@/components/common';
+import { ViewButton, ViewSelect, ViewFilterApplied, WriteFab } from '@/components/common';
 import dayjs from 'dayjs';
 import { HeaderBackIcn } from '@/components/common/styles/Icon';
-import { WriteFab } from '@/components/common/WriteFab';
 
 export default function Template({ children }: { children: React.ReactNode }) {
   const prms = useParams()

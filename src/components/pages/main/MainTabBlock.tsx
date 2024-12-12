@@ -1,6 +1,5 @@
-import { LoadingSkeleton, LoadingCircle, MoreButton, NoData, Divider, ListProps, TabBlockProps } from "@/components/common"
+import { LoadingSkeleton, LoadingCircle, MoreButton, NoData, WriteFab, Divider, ListProps, TabBlockProps } from "@/components/common"
 import { EventBlock } from "./EventBlock"
-import { WriteFab } from "@/components/common/WriteFab"
 
 export const MainTabBlock = (props: TabBlockProps) => {
   // if (props.isLoading && props.page.current === 0) { return <LoadingSkeleton /> }

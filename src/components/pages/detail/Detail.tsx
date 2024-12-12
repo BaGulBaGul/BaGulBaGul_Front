@@ -1,9 +1,11 @@
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { DetailProps, RDetailProps, Divider, ImageSlide } from "../../common";
 import { PostFooter } from "../../layout/footer";
 import ShareDialog from "./ShareDialog";
 import { PostTitle, PostInfo, PostContentMap, PostContentTag, PostTools, PostDrawer } from "./DetailElements";
+import { BottomDrawer } from "@/components/common/BottomDrawer";
+import useLoginInfo from "@/hooks/useLoginInfo";
 
 interface DetailsProps {
   opt: 'EVT' | 'RCT'; data: DetailProps | RDetailProps; liked: boolean; likeCount?: number; handleLike: any; saved: boolean; handleCalendar: any;
@@ -18,6 +20,10 @@ export const Detail = (props: DetailsProps) => {
 
   const pathname = usePathname();
   let commentURL = `${pathname}/comments`;
+  const userinfo = useLoginInfo().data
+
+  const handleDelete = () => { console.log('delete') }
+  const router = useRouter();
 
   if (props.opt === 'EVT') {
     let data = props.data as DetailProps
@@ -40,9 +46,14 @@ export const Detail = (props: DetailsProps) => {
           <PostTools opt='EVT' handleOpen={handleOpen} likeCount={props.likeCount} liked={props.liked} handleLike={props.handleLike}
             commentCount={data.post.commentCount} commentURL={commentURL} saved={props.saved} handleCalendar={props.handleCalendar} />
         </div>
-        <PostDrawer open={openD} toggleDrawer={toggleDrawer} opt='EVT' target={data.event.eventId} />
-        { // 페스티벌, 지역행사는 '모집글 보러가기' 버튼 배치
-          data.event.type !== 'PARTY' ? <PostFooter title='모집글 보러가기' path={`/event/${data.event.eventId}/recruitment`} /> : <></>
+        {data.event.type !== 'PARTY'
+          ? <>
+            <BottomDrawer open={openD} toggleDrawer={toggleDrawer} opt='EVT' target={data.event.eventId} me={false} />
+            <PostFooter title='모집글 보러가기' path={`/event/${data.event.eventId}/recruitment`} />
+          </>
+          : <BottomDrawer open={openD} toggleDrawer={toggleDrawer} opt='EVT' target={data.event.eventId}
+            me={!!userinfo && userinfo.id === data.post.writer.userId}
+            handleDelete={handleDelete} handleEdit={() => router.push(`/write?w=p&edit=${data.event.eventId}`)} />
         }
       </>
     )
@@ -71,7 +82,9 @@ export const Detail = (props: DetailsProps) => {
               commentCount={data.post.commentCount} commentURL={commentURL} saved={props.saved} handleCalendar={props.handleCalendar} />
           </div>
         </div>
-        <PostDrawer open={openD} toggleDrawer={toggleDrawer} opt='RCT' target={data.recruitment.recruitmentId} />
+        <BottomDrawer open={openD} toggleDrawer={toggleDrawer} opt='RCT' target={data.recruitment.recruitmentId}
+          me={!!userinfo && userinfo.id === data.post.writer.userId} handleDelete={handleDelete}
+          handleEdit={() => router.push(`/write?w=r&edit=${data.recruitment.recruitmentId}`)} />
       </>
     )
   }

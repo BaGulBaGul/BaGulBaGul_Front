@@ -64,3 +64,29 @@ export const HeadSelect = (props: { openHead: boolean; handleOpenHead: any; head
     </Collapse>
   </div>
 )
+
+export function MaxHeadSelect(props: { openHead: boolean; handleOpenHead: any; headCount?: number; setHeadCount: any }) {
+  return (
+    <div className="flex flex-col" id="filter-head">
+      <div className="flex flex-row gap-[16px]">
+        <span className="text-14 font-semibold">참여인원</span>
+        <button onClick={props.handleOpenHead} className={!!props.headCount ? 'filter-btn border-primary-blue' : 'filter-btn'}>
+          <CmtLikeIcn val={!!props.headCount} />
+          <span>{!!props.headCount ? props.headCount : 0}명</span>
+        </button>
+      </div>
+      <Collapse in={props.openHead} timeout="auto" className="filter-collapse">
+        <div className="flex flex-col mt-[8px] gap-[8px]">
+          <span className="text-14">최대 인원 수</span>
+          <div className="flex flex-row justify-between border border-gray2 rounded-[8px] w-[180px] px-[16px] py-[5px]">
+            <span className="text-14">최대인원</span>
+            <HeadNumberInput placeholder="10명" value={props.headCount ?? 0} min={0}
+              onInputChange={(event) => { props.setHeadCount(Number.isNaN(Number(event.target.value)) ? undefined : Number(event.target.value)) }}
+              onChange={(event, newValue) => props.setHeadCount(Number.isNaN(Number(newValue)) ? undefined : Number(newValue))}
+            />
+          </div>
+        </div>
+      </Collapse>
+    </div>
+  )
+}

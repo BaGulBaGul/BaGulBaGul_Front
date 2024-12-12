@@ -1,32 +1,32 @@
+'use client';
 import CategoryButtons from './input/CategoryButtons'
+import { PartiSelect, HeadSelect, MaxHeadSelect } from './input/Select'
+import { ImageUploader } from './input/ImageUploader'
 import HashtagAccordion, { HashtagButton } from './block/HashtagAccordion'
-import MoreButton from './MoreButton'
 import { NoData } from './block/NoEvent'
+import { UserProfile } from './block/UserProfile'
+import { HeadCount } from './block/HeadCount'
+import { BlockInfo, BlockInfoDT } from './block/BlockInfo'
 import PostTab from './tabs/PostTab'
 import { TabPanel, TabPanels } from './tabs/TabPanel'
 import { ViewButton, ViewSelect } from './filter/ViewFilter'
 import { ViewFilterApplied } from './filter/ViewFilterApplied'
-import { LoadingSkeleton, LoadingCircle } from './Loading'
-import { UserProfile } from './block/UserProfile'
-import { HeadCount } from './block/HeadCount'
-
-import { InfiniteData } from '@tanstack/react-query'
-import { BlockInfo, BlockInfoDT } from './block/BlockInfo'
+import MoreButton from './MoreButton'
+import { ImageSlide } from './ImageSlide'
+import { WriteFab } from './WriteFab';
 import { FullscreenDialog } from './FullscreenDialog'
 import { AlertDialog } from './AlertDialog'
-import { ImageSlide } from './ImageSlide'
+import { LoadingSkeleton, LoadingCircle } from './Loading'
+import { InfiniteData } from '@tanstack/react-query'
 
 export {
-  CategoryButtons,
-  HashtagAccordion, HashtagButton,
-  MoreButton,
-  NoData,
+  CategoryButtons, PartiSelect, HeadSelect, MaxHeadSelect, ImageUploader,
+  HashtagAccordion, HashtagButton, NoData, UserProfile, HeadCount, BlockInfo, BlockInfoDT,
   PostTab, TabPanel, TabPanels,
   ViewButton, ViewSelect, ViewFilterApplied,
-  LoadingSkeleton, LoadingCircle,
-  UserProfile, HeadCount, BlockInfo, BlockInfoDT,
+  MoreButton,ImageSlide, WriteFab,
   FullscreenDialog, AlertDialog,
-  ImageSlide,
+  LoadingSkeleton, LoadingCircle,
 }
 
 export const Divider = (props: {color?: string;}) => {
@@ -59,7 +59,7 @@ export interface RListProps {
   };
   post: {
     postId: number; writer: { userId: number; userName: string; userProfileImageUrl: string; }; title: string; headImageUrl: string;
-    createdAt: any; lastModifiedAt: any; tags: string[]
+    createdAt: any; lastModifiedAt: any; tags: string[];
   }
 }
 
@@ -75,7 +75,7 @@ export interface TabBlockProps {
 export interface DetailProps {
   event: {
     eventId: number; type: string; currentHeadCount: number; maxHeadCount: number; fullLocation: string; abstractLocation: string;
-    latitudeLocation: number; longitudeLocation: number; startDate: any; endDate: any; categories: string[];
+    latitudeLocation: number; longitudeLocation: number; ageLimit: boolean; startDate: any; endDate: any; categories: string[];
   };
   post: {
     postId: number; writer: { userId: number; userName: string; userProfileImageUrl: string; }; title: string; headImageUrl: string;
