@@ -42,9 +42,9 @@ function CalendarBlock(props: { data: CalProps; editing: boolean; qKey: string[]
   if (!!props.data.eventId) {
     const mutateDelete = useDelete(`/api/user/calendar/event/${props.data.eventId}`, props.qKey, '캘린더에서 이벤트')
     return (
-      <Link href={`/event/${props.data.eventId}`} passHref legacyBehavior className='flex justify-between py-[18px] px-[16px]'>
-        <div className='flex flex-row justify-between items-center pb-[10px] w-full'>
-          <div className='flex flex-col justify-between gap-[17px] h-[104px]'>
+      <Link href={`/event/${props.data.eventId}`} passHref legacyBehavior>
+        <div className='flex flex-row justify-between items-center p-[16px] w-full'>
+          <div className='flex flex-col justify-between gap-[17px]'>
             <BlockInfo title={props.data.title} date={FormatDateRange(props.data.startTime, props.data.endTime)} address={props.data.abstractLocation}
               direction='row' type={typeString[props.data.type as string]} />
             <div className='flex flex-row items-center gap-[4px]'>
@@ -63,9 +63,9 @@ function CalendarBlock(props: { data: CalProps; editing: boolean; qKey: string[]
   } else if (!!props.data.recruitmentId) {
     const mutateDelete = useDelete(`/api/user/calendar/recruitment/${props.data.recruitmentId}`, props.qKey, '캘린더에서 모집글')
     return (
-      <Link href={`/recruitment/${props.data.recruitmentId}`} className='flex justify-between py-[18px] px-[16px]'>
-        <div className='flex flex-row justify-between items-center pb-[10px] w-full'>
-          <div className='flex flex-col justify-between gap-[17px] h-[104px]'>
+      <Link href={`/recruitment/${props.data.recruitmentId}`}>
+        <div className='flex flex-row justify-between items-center p-[16px] w-full'>
+          <div className='flex flex-col justify-between gap-[17px]'>
             <BlockInfo title={props.data.title} date={FormatDateRange(props.data.startTime, props.data.endTime)}
               direction='row' type='모집글' />
             <div className='flex flex-row items-center gap-[4px]'>

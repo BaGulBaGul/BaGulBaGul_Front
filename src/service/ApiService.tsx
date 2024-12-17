@@ -60,8 +60,7 @@ export async function isSigned(cookies?: any) {
       method: "GET", credentials: 'include',
     });
     const json = await res.json();
-    console.log('json ', json.errorCode);
-    return json.errorCode;
+    return json;
   } catch (error) {
     console.log("catch error", error);
     return error;

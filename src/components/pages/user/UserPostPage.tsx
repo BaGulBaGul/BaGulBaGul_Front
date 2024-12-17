@@ -7,8 +7,8 @@ import { UserPostTab, UserPostTabs } from '.';
 import { useListWithPageE } from '@/hooks/useInCommon';
 
 const apiURL = (value: 0 | 1, nickname: string) => {
-  if (value === 0) { return `/api/event?type=PARTY&size=10&username=${nickname}` }
-  else { return `/api/event/recruitment?&size=10&username=${nickname}` }
+  if (value === 0) { return `/api/event?type=PARTY&size=10&sort=createdAt,desc&username=${nickname}` }
+  else { return `/api/event/recruitment?&size=10&sort=createdAt,desc&username=${nickname}` }
 }
 
 export function MyPostPage() {
