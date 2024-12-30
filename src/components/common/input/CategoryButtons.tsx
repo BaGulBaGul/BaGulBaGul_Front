@@ -7,14 +7,18 @@ export const categories = [
 ]
 
 interface CategoryButtonProps {
-  selectedCate: string[]; setSelectedCate: Dispatch<SetStateAction<string[]>>; max?: number;
+  selectedCate: string[]; setSelectedCate: Dispatch<SetStateAction<string[]>>;
+  max?: number; setForAdult?: Dispatch<boolean>;
 }
 export default function CategoryButtons(props: CategoryButtonProps) {
   const handleCate = (e: React.MouseEvent<HTMLElement>, newCate: string) => {
     if (props.selectedCate.some(x => x === newCate)) { // 선택 해제
       props.setSelectedCate(props.selectedCate.filter(function (cate) { return cate !== newCate }))
     } else {  // 선택 - 갯수 초과 시 클릭 x
-      if (!props.max || (!!props.max && props.selectedCate.length + 1 <= props.max)) { props.setSelectedCate(props.selectedCate.concat(newCate)); }
+      if (!props.max || (!!props.max && props.selectedCate.length + 1 <= props.max)) {
+        props.setSelectedCate(props.selectedCate.concat(newCate));
+        if (!!props.setForAdult && newCate === '주류') { props.setForAdult(true) }
+      }
     }
   }
 

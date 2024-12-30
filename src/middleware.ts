@@ -5,7 +5,7 @@ import { isSigned } from "./service/ApiService";
 export default async function middleware(request: NextRequest) {
   const { nextUrl, cookies } = request;
   const { origin, pathname } = nextUrl;
-  const AUTH_PAGES = ['/mypage'];
+  const AUTH_PAGES = ['/mypage', '/write'];
   const UNAUTH_PAGES = ['/signin', '/join']
   const DIFF_PAGES = ['/user']
 

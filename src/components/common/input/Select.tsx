@@ -69,7 +69,7 @@ export function MaxHeadSelect(props: { openHead: boolean; handleOpenHead: any; h
   return (
     <div className="flex flex-col" id="filter-head">
       <div className="flex flex-row gap-[16px]">
-        <span className="text-14 font-semibold">참여인원</span>
+        <span className="text-14 font-semibold">모집인원</span>
         <button onClick={props.handleOpenHead} className={!!props.headCount ? 'filter-btn border-primary-blue' : 'filter-btn'}>
           <CmtLikeIcn val={!!props.headCount} />
           <span>{!!props.headCount ? props.headCount : 0}명</span>

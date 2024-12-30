@@ -2,8 +2,9 @@
 import { useRef, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { call } from '@/service/ApiService';
-import { JoinBlock, JoinFooter } from '@/components/pages/join'
+import { JoinFooter } from '@/components/pages/join'
 import { HeaderBackIcn } from '@/components/common/styles/Icon';
+import { InfoInput } from '@/components/common/input/InfoInput';
 
 export default function Page() {
   const searchParams = useSearchParams();
@@ -74,10 +75,18 @@ export default function Page() {
         </div>
         <div className='w-full max-w-full px-[28px] py-[39px] overflow-hidden'>
           <div className={toP1 ? 'flex flex-col items-center slideInLeft animated' : toP2 ? 'slideOutLeft animated hidden' : 'flex flex-col items-center'}>
-            <JoinBlock opt='nnm' nameChecked={nameChecked} setNameChecked={setNameChecked} nameRef={nameRef} />
+            <div className='flex flex-col gap-[8px] w-full max-w-[500px]'>
+              <p className='text-18 font-semibold'>닉네임을 기입해주세요.</p>
+              <p className='text-[12px] text-gray3'>바글바글에서 사용할 닉네임을 지어주세요!</p>
+              <InfoInput opt='nnm' placeholder='bageul01' innerRef={nameRef} checked={nameChecked} setChecked={setNameChecked} />
+            </div>
           </div>
           <div className={toP1 ? 'slideOutRight animated hidden' : toP2 ? 'flex flex-col items-center slideInRight animated' : 'hidden'}>
-            <JoinBlock opt='eml' emailChecked={emailChecked} setEmailChecked={setEmailChecked} emailRef={emailRef} />
+            <div className='flex flex-col gap-[8px] w-full max-w-[500px]'>
+              <p className='text-18 font-semibold'>이메일을 기입해주세요.</p>
+              <p className='text-[12px] text-gray3'>이메일로 필요한 정보 및 알림을 전달드려요!</p>
+              <InfoInput opt='eml' placeholder='bageul01@naver.com' innerRef={emailRef} checked={emailChecked} setChecked={setEmailChecked} />
+            </div>
           </div>
         </div>
         <JoinFooter opt={toP2 ? 'eml' : 'nnm'} handleNext={handleNext} handleJoin={handleJoin} btnActive={btnActive} />

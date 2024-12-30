@@ -30,7 +30,6 @@ export function Write(props: WriteProps) {
       props.setImageKey(prevData.post.imageIds)
     }
   }, [])
-
   return (
     <>
       <div className='w-full mt-[104px] mb-[77px]'>
@@ -49,7 +48,7 @@ export function Write(props: WriteProps) {
                 <span className='min-w-[32px] px-[16px] text-[14px] font-semibold'>파티</span>
                 <span className='text-12 text-gray3'>카테고리는 최대 2개까지 선택가능합니다.</span>
               </div>
-              <CategoryButtons selectedCate={props.selectedCate} setSelectedCate={props.setSelectedCate} max={2} />
+              <CategoryButtons selectedCate={props.selectedCate} setSelectedCate={props.setSelectedCate} max={2} setForAdult={props.setForAdult} />
             </div>
             <Divider color='gray2' />
           </> : <></>}
