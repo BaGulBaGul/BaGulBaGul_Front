@@ -1,6 +1,6 @@
 'use client';
 import CategoryButtons from './input/CategoryButtons'
-import { PartiSelect, HeadSelect, MaxHeadSelect } from './input/Select'
+import { PartiSelect, HeadSelect, CountSelect } from './input/Select'
 import { ImageUploader } from './input/ImageUploader'
 import HashtagAccordion, { HashtagButton } from './block/HashtagAccordion'
 import { NoData } from './block/NoEvent'
@@ -20,7 +20,7 @@ import { LoadingSkeleton, LoadingCircle } from './Loading'
 import { InfiniteData } from '@tanstack/react-query'
 
 export {
-  CategoryButtons, PartiSelect, HeadSelect, MaxHeadSelect, ImageUploader,
+  CategoryButtons, PartiSelect, HeadSelect, CountSelect, ImageUploader,
   HashtagAccordion, HashtagButton, NoData, UserProfile, HeadCount, BlockInfo, BlockInfoDT,
   PostTab, TabPanel, TabPanels,
   ViewButton, ViewSelect, ViewFilterApplied,

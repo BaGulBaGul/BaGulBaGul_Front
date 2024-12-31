@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { AlertDialog, CategoryButtons, Divider, ImageSlide, ImageUploader, MaxHeadSelect } from '@/components/common';
+import { AlertDialog, CategoryButtons, Divider, ImageSlide, ImageUploader, CountSelect } from '@/components/common';
 import { MagnifyingIcn } from '@/components/common/styles/Icon';
 import { AddressDialog, autoResizeTextarea, DateSelect, WriteProps } from '.';
 import { ThemeProvider } from '@emotion/react';
@@ -14,13 +14,16 @@ export function Write(props: WriteProps) {
 
   const handleAdult = (e: React.ChangeEvent<HTMLInputElement>) => { if (!!props.setForAdult) { props.setForAdult(e.target.checked); } }
 
-  const [openCollapse, setOpenCollapse] = useState(false);
-  const handleOpenCollapse = () => { setOpenCollapse(!openCollapse) }
+  const [openMax, setOpenMax] = useState(false);
+  const handleOpenMax = () => { setOpenMax(!openMax) }
+  const [openCurrent, setOpenCurrent] = useState(false);
+  const handleOpenCurrent = () => { setOpenCurrent(!openCurrent) }
 
   useEffect(() => {
     if (!!prevData) {
       if (!!props.setSelectedCate) { props.setSelectedCate(prevData.event.categories) }
-      if (!!props.setHeadCount) { props.setHeadCount((prevData.event ?? prevData.recruitment).maxHeadCount) }
+      if (!!props.setHeadMax) { props.setHeadMax((prevData.event ?? prevData.recruitment).maxHeadCount) }
+      if (!!props.setHeadCurrent) { props.setHeadCurrent((prevData.event ?? prevData.recruitment).currentHeadCount) }
       props.setStartDate((prevData.event ?? prevData.recruitment).startDate)
       props.setEndDate((prevData.event ?? prevData.recruitment).endDate)
       if (!!props.setForAdult) { props.setForAdult(prevData.event.ageLimit) }
@@ -58,7 +61,8 @@ export function Write(props: WriteProps) {
             ? <><DateSelect title='시작일시' date={props.startDate!} setDate={props.setStartDate} />
               <DateSelect title='종료일시' date={props.endDate!} setDate={props.setEndDate} /></>
             : <></>}
-          <MaxHeadSelect openHead={openCollapse} handleOpenHead={handleOpenCollapse} headCount={props.headCount} setHeadCount={props.setHeadCount} />
+          <CountSelect title='모집인원' subtext='원하는 인원 수를 정할 수 있어요.' open={openMax} handleOpen={handleOpenMax} headCount={props.headMax} setHeadCount={props.setHeadMax} />
+          <CountSelect title='현재인원' subtext='이미 모인 인원이 있다면 입력해주세요.' open={openCurrent} handleOpen={handleOpenCurrent} headCount={props.headCurrent} setHeadCount={props.setHeadCurrent} />
           {props.forAdult !== undefined && !!props.setForAdult
             ? <div className="flex flex-row justify-between">
               <div className={`${props.forAdult ? 'text-primary-blue' : 'text-gray3'} text-14 font-semibold pb-[2px]`}>19세 미만 참여불가 파티</div>

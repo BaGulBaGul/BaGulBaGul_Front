@@ -7,7 +7,8 @@ import { useDetailInfo } from '@/hooks/useInDetail';
 
 export function WriteEPage(props: { edit?: number; }) {
   const [selectedCate, setSelectedCate] = useState<string[]>([]);
-  const [headCount, setHeadCount] = useState<number>()
+  const [headMax, setHeadMax] = useState<number>()
+  const [headCurrent, setHeadCurrent] = useState<number>()
   const [startDate, setStartDate] = useState<dayjs.Dayjs | null>(null)
   const [endDate, setEndDate] = useState<dayjs.Dayjs | null>(null)
   const [forAdult, setForAdult] = useState(false);
@@ -31,8 +32,8 @@ export function WriteEPage(props: { edit?: number; }) {
   const handleConfirm = () => {
     setOpen(false);
     let body: any = {
-      'ageLimit': forAdult, 'categories': selectedCate, 'content': content, 'endDate': endDate,
-      'imageIds': imageKey, 'maxHeadCount': headCount, 'startDate': startDate, 'tags': null,
+      'ageLimit': forAdult, 'categories': selectedCate, 'content': content, 'currentHeadCount': headCurrent,
+      'endDate': endDate, 'imageIds': imageKey, 'maxHeadCount': headMax, 'startDate': startDate, 'tags': null,
       'title': titleRef.current.value, 'type': 'PARTY'
     }
     if (!addr && (!!prev && !!prev.data && !!prev.data.event.fullLocation)) { // 공백으로 수정 시 주소 삭제
@@ -62,8 +63,8 @@ export function WriteEPage(props: { edit?: number; }) {
   return (
     <Write selectedCate={selectedCate} setSelectedCate={setSelectedCate}
       startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate}
-      headCount={headCount} setHeadCount={setHeadCount} addr={addr} setAddr={setAddr}
-      forAdult={forAdult} setForAdult={setForAdult} content={content} setContent={setContent}
+      headMax={headMax} setHeadMax={setHeadMax} headCurrent={headCurrent} setHeadCurrent={setHeadCurrent} 
+      addr={addr} setAddr={setAddr} forAdult={forAdult} setForAdult={setForAdult} content={content} setContent={setContent}
       images={images} setImages={setImages} imageKey={imageKey} setImageKey={setImageKey} titleRef={titleRef}
       open={open} setOpen={setOpen} handleSubmit={handleSubmit} handleConfirm={handleConfirm}
       prev={!!props.edit ? prev : undefined} />

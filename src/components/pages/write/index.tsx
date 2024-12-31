@@ -17,7 +17,8 @@ export interface WriteProps {
   selectedCate?: string[]; setSelectedCate?: Dispatch<SetStateAction<string[]>>;
   startDate: dayjs.Dayjs | null; setStartDate: Dispatch<SetStateAction<dayjs.Dayjs | null>>;
   endDate: dayjs.Dayjs | null; setEndDate: Dispatch<SetStateAction<dayjs.Dayjs | null>>;
-  headCount?: number; setHeadCount?: Dispatch<SetStateAction<number | undefined>>;
+  headMax?: number; setHeadMax?: Dispatch<SetStateAction<number | undefined>>;
+  headCurrent?: number; setHeadCurrent?: Dispatch<SetStateAction<number | undefined>>;
   addr?: any; setAddr?: Dispatch<SetStateAction<any>>; forAdult?: boolean; setForAdult?: Dispatch<boolean>;
   content: string; setContent: Dispatch<SetStateAction<string>>;
   images: string[]; setImages: Dispatch<SetStateAction<string[]>>; imageKey: Number[]; setImageKey: Dispatch<SetStateAction<Number[]>>;

@@ -6,7 +6,8 @@ import { Write } from '.';
 import { useDetailInfo } from '@/hooks/useInDetail';
 
 export function WriteRPage(props: { eventId?: number; edit?: number; }) {
-  const [headCount, setHeadCount] = useState<number>()
+  const [headMax, setHeadMax] = useState<number>()
+  const [headCurrent, setHeadCurrent] = useState<number>()
   const [startDate, setStartDate] = useState<dayjs.Dayjs | null>(null)
   const [endDate, setEndDate] = useState<dayjs.Dayjs | null>(null)
   const [content, setContent] = useState('');
@@ -22,8 +23,8 @@ export function WriteRPage(props: { eventId?: number; edit?: number; }) {
       alert('제목을 꼭 입력해주세요.')
     } else {
       let body = {
-        'content': content, 'endDate': endDate, 'imageIds': imageKey, 'maxHeadCount': headCount,
-        'startDate': startDate, 'tags': [], 'title': titleRef.current.value
+        'content': content, 'currentHeadCount': headCurrent, 'endDate': endDate, 'imageIds': imageKey,
+        'maxHeadCount': headMax, 'startDate': startDate, 'tags': [], 'title': titleRef.current.value
       }
       let writeURL = !!props.eventId && !props.edit ? `/api/event/${props.eventId}/recruitment` : `/api/event/recruitment`
       mutateWrite.mutate({ apiURL: writeURL, body: body })
@@ -32,8 +33,8 @@ export function WriteRPage(props: { eventId?: number; edit?: number; }) {
 
   return (
     <Write startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate}
-      headCount={headCount} setHeadCount={setHeadCount} content={content} setContent={setContent}
-      images={images} setImages={setImages} imageKey={imageKey} setImageKey={setImageKey} titleRef={titleRef}
-      handleSubmit={handleSubmit} prev={!!props.edit ? prev : undefined} />
+      headMax={headMax} setHeadMax={setHeadMax} headCurrent={headCurrent} setHeadCurrent={setHeadCurrent}
+      content={content} setContent={setContent} images={images} setImages={setImages} imageKey={imageKey}
+      setImageKey={setImageKey} titleRef={titleRef} handleSubmit={handleSubmit} prev={!!props.edit ? prev : undefined} />
   )
 }

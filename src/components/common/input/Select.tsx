@@ -65,26 +65,30 @@ export const HeadSelect = (props: { openHead: boolean; handleOpenHead: any; head
   </div>
 )
 
-export function MaxHeadSelect(props: { openHead: boolean; handleOpenHead: any; headCount?: number; setHeadCount: any }) {
+interface CountSelectProps {
+  title: string; subtext: string; open: boolean; handleOpen: any; headCount?: number; setHeadCount: any
+}
+export function CountSelect(props: CountSelectProps) {
   return (
     <div className="flex flex-col" id="filter-head">
       <div className="flex flex-row gap-[16px]">
-        <span className="text-14 font-semibold">모집인원</span>
-        <button onClick={props.handleOpenHead} className={!!props.headCount ? 'filter-btn border-primary-blue' : 'filter-btn'}>
-          <CmtLikeIcn val={!!props.headCount} />
-          <span>{!!props.headCount ? props.headCount : 0}명</span>
-        </button>
+        <span className="text-14 font-semibold">{props.title}</span>
+        <div className="flex flex-row items-center gap-[8px]">
+          <button onClick={props.handleOpen} className={!!props.headCount ? 'filter-btn border-primary-blue' : 'filter-btn'}>
+            <CmtLikeIcn val={!!props.headCount} />
+            <span>{!!props.headCount ? props.headCount : 0}명</span>
+          </button>
+          <span className="text-12 text-gray3">{props.subtext}</span>
+        </div>
       </div>
-      <Collapse in={props.openHead} timeout="auto" className="filter-collapse">
-        <div className="flex flex-col mt-[8px] gap-[8px]">
-          <span className="text-14">최대 인원 수</span>
-          <div className="flex flex-row justify-between border border-gray2 rounded-[8px] w-[180px] px-[16px] py-[5px]">
-            <span className="text-14">최대인원</span>
-            <HeadNumberInput placeholder="10명" value={props.headCount ?? 0} min={0}
-              onInputChange={(event) => { props.setHeadCount(Number.isNaN(Number(event.target.value)) ? undefined : Number(event.target.value)) }}
-              onChange={(event, newValue) => props.setHeadCount(Number.isNaN(Number(newValue)) ? undefined : Number(newValue))}
-            />
-          </div>
+      <Collapse in={props.open} timeout="auto" className="filter-collapse">
+        <div className="flex flex-row justify-between mt-[8px]">
+          <span className="text-14">인원 수</span>
+          <PartiNumberInput value={props.headCount ?? 0} min={0}
+            onInputChange={(event) => {
+              props.setHeadCount(Number.isNaN(Number(event.target.value)) ? undefined : Number(event.target.value))
+            }}
+            onChange={(event, newValue) => props.setHeadCount(Number.isNaN(Number(newValue)) ? undefined : Number(newValue))} />
         </div>
       </Collapse>
     </div>
