@@ -15,7 +15,7 @@ export const AlertDialog = (props: AlertDialogProps) => {
       <Dialog open={props.open} onClose={handleClose} >
         <DialogTitle>{props.headerText}</DialogTitle>
         <DialogContent>{props.contextText.map((text: string, idx: any) => (
-          <p>{text}</p>
+          <p key={`t-${idx}`}>{text}</p>
         ))
         }</DialogContent>
         <DialogActions>{

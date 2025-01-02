@@ -27,7 +27,7 @@ export function AddressDialog(props: { open: boolean; onClose: any; addr: string
         <div className='flex flex-row items-center ms-[16px] me-[28px] my-[18px] gap-[16px]'>
           <button onClick={handleCloseAddr}><HeaderBackIcn /></button>
           <div className='search-wrap w-full'>
-            <input className='search-input' placeholder='징소, 주소 검색' ref={inputRef} defaultValue={props.addr} />
+            <input className='search-input' placeholder='징소, 주소 검색' ref={inputRef} defaultValue={props.addr} readOnly />
             <button onClick={handleClearAddr}><DeleteIcn size='20' color='#1E1E1E' /></button>
           </div>
         </div>
