@@ -37,68 +37,36 @@ export const viewCheckTheme = createTheme({
   components: {
     MuiFormControlLabel: {
       defaultProps: { labelPlacement: 'start', },
-      styleOverrides: {
-        root: { margin: 0, padding: '4px' },
-        label: { fontSize: '12px !important', color: '#6C6C6C' }
-      }
+      styleOverrides: { root: { margin: 0, padding: '4px' }, label: { fontSize: '12px !important', color: '#6C6C6C' } }
     },
-    MuiCheckbox: {
-      defaultProps: {
-        checkedIcon: <CheckboxIcn val={true} />,
-        icon: <CheckboxIcn val={false} />,
-      },
-    },
+    MuiCheckbox: { defaultProps: { checkedIcon: <CheckboxIcn val={true} />, icon: <CheckboxIcn val={false} />, }, },
     MuiButtonBase: { styleOverrides: { root: { padding: '0 !important' } } }
   },
 });
 
-export const viewRadioTheme = createTheme({
+export const viewTheme = createTheme({
   components: {
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          borderRadius: '8px 8px 0 0', margin: '72px 0 0', position: 'absolute', bottom: '0',
+          maxHeight: 'calc(100vh-72px)', maxWidth: 'unset', width: '100vw'
+        }
+      }
+    },
+    MuiDialogTitle: { styleOverrides: { root: { fontWeight: '600', fontSize: '16px', lineHeight: '140%', padding: '20px 16px', } } },
+    MuiDialogContent: { styleOverrides: { root: { display: 'flex', flexDirection: 'column', padding: '16px 16px 40px', gap: '16px' } } },
     MuiButtonBase: { defaultProps: { disableRipple: true, }, },
     MuiFormControlLabel: {
       defaultProps: { labelPlacement: 'end', },
-      styleOverrides: {
-        root: { margin: 0, marginRight: '8px !important', },
-        label: { fontSize: '14px !important' }
-      }
+      styleOverrides: { root: { margin: 0, marginRight: '8px !important', }, label: { fontSize: '14px !important' } }
     },
     MuiRadio: {
-      defaultProps: {
-        checkedIcon: <RadioIcn val={true} />,
-        icon: <RadioIcn val={false} />,
-      },
+      defaultProps: { checkedIcon: <RadioIcn val={true} />, icon: <RadioIcn val={false} />, },
       styleOverrides: { root: { padding: 0, paddingRight: '4px !important' }, }
     },
-    MuiInput: {
-      styleOverrides: {
-        input: {
-          padding: '0 !important', width: 'unset !important',
-          maxWidth: '84px !important', minWidth: '19px !important',
-          fontSize: '14px !important', textAlign: 'right',
-        },
-        root: {
-          '&:before, &:after': { border: 'none !important' },
-        }
-      }
-    }
   }
 })
-
-export const viewTheme = createTheme({
-  components: {
-    MuiButtonBase: { defaultProps: { disableRipple: true, }, },
-    MuiMenuItem: {
-      styleOverrides: {
-        root: {
-          fontSize: '14px !important', padding: '10px 16px', minHeight: 'unset',
-          '&.Mui-selected:hover': { backgroundColor: '#ECECEC' },
-          '&.Mui-selected': { backgroundColor: '#FFF27E' }
-        }
-      }
-    },
-    MuiList: { styleOverrides: { root: { padding: '0 !important', } } },
-  },
-});
 
 export const HeadInputRoot = styled('div')(
   ({ theme }) => `

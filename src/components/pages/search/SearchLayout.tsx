@@ -3,7 +3,6 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 import { ReadonlyURLSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { CategoryButtons, PostTab, ViewFilterApplied, ViewSelect } from "@/components/common";
-import { Backdrop } from "@mui/material";
 import dayjs from 'dayjs';
 import { SearchBar } from "./SearchBar";
 
@@ -20,7 +19,7 @@ export const SearchLayout = (props: { opt: 'TTL' | 'TAG'; sp: ReadonlyURLSearchP
       !!props.sp.get('eD') ? dayjs(props.sp.get('eD'), "YYYYMMDD").toDate() : undefined
     ],
     participants: Number(props.sp.get('ptcp')) ?? 0,
-    headCount: { from: Number(props.sp.get('hcMin')) ?? undefined, to: Number(props.sp.get('hcMax')) ?? undefined },
+    headCount: { from: !!props.sp.get('hcMin') ? Number(props.sp.get('hcMin')) : undefined, to: !!props.sp.get('hcMin') ? Number(props.sp.get('hcMax')) : undefined },
   })
   const [title, setTitle] = useState(decodeURIComponent(decodeURIComponent(props.sp.get('query') ?? '')))
   const tag = decodeURIComponent(decodeURIComponent(props.sp.get('tag') ?? ''))
@@ -83,9 +82,7 @@ export const SearchLayout = (props: { opt: 'TTL' | 'TAG'; sp: ReadonlyURLSearchP
           <ViewFilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters} p={p} setP={setP} handleRt={handleRt} />
           <CategoryButtons selectedCate={selectedCate} setSelectedCate={setSelectedCate} />
         </div>
-        <Backdrop open={open ?? false} className='z-paper'>
-          <ViewSelect p={p} setP={setP} setOpen={setOpen} routeToFilter={routeToFilter} />
-        </Backdrop>
+        <ViewSelect p={p} setP={setP} open={open ?? false} setOpen={setOpen} routeToFilter={routeToFilter} />
         {<div className={filterCnt > 0 ? 'mt-[120px]' : 'mt-[94px]'}>
           {props.children}
         </div>}

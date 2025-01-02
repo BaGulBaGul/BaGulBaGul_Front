@@ -1,6 +1,5 @@
 "use client";
 import { useState, useEffect } from 'react';
-import { Backdrop } from '@mui/material';
 import { CategoryButtons, ViewButton, ViewSelect, PostTab, ViewFilterApplied } from '@/components/common';
 import { getParams, useEffectCntFilter } from '@/service/Functions';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -20,7 +19,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
       !!searchParams.get('sD') ? dayjs(searchParams.get('sD'), "YYYYMMDD").toDate() : undefined,
       !!searchParams.get('eD') ? dayjs(searchParams.get('eD'), "YYYYMMDD").toDate() : undefined
     ], participants: Number(searchParams.get('ptcp')) ?? 0,
-    headCount: { from: Number(searchParams.get('hcMin')) ?? undefined, to: Number(searchParams.get('hcMax')) ?? undefined },
+    headCount: { from: !!searchParams.get('hcMin') ? Number(searchParams.get('hcMin')) : undefined, to: !!searchParams.get('hcMax') ? Number(searchParams.get('hcMax')) : undefined },
     proceeding: searchParams.get('state') === 'p' ? true : false
   })
 
@@ -47,9 +46,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
   const [rt, setRt] = useState(false)
   // 필터 삭제 시 변경대로 redirect
   const handleRt = () => { setRt(!rt) }
-  useEffect(() => {
-    routeToFilter()
-  }, [tab, selectedCate, rt])
+  useEffect(() => { routeToFilter() }, [tab, selectedCate, rt])
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => { setOpen(true) }
@@ -68,9 +65,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
           <ViewFilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters} p={p} setP={setP} handleRt={handleRt} />
           <CategoryButtons selectedCate={selectedCate} setSelectedCate={setSelectedCate} />
         </div>
-        <Backdrop open={open} className='z-paper'>
-          <ViewSelect p={p} setP={setP} setOpen={setOpen} routeToFilter={routeToFilter} />
-        </Backdrop>
+        <ViewSelect p={p} setP={setP} open={open} setOpen={setOpen} routeToFilter={routeToFilter} />
         {children}
       </div>
     </div>

@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ThemeProvider, Backdrop, ToggleButtonGroup, ToggleButton } from '@mui/material';
+import { ThemeProvider, ToggleButtonGroup, ToggleButton } from '@mui/material';
 import { CategoryButtons, ViewFilterApplied, ViewSelect, Divider } from '@/components/common';
 import { tabTheme } from '@/components/common/styles/Themes';
 import { getParams, useEffectFilterApplied } from '@/service/Functions';
@@ -28,7 +28,6 @@ export default function Page() {
 
   const [open, setOpen] = useState(false);
   const [startDate, endDate] = p.dateRange ?? [null, null];
-  console.log('sd, ed: ', startDate, endDate)
   // Searchbar
   const router = useRouter()
   const [title, setTitle] = useState('')
@@ -64,10 +63,7 @@ export default function Page() {
           <FrequentSearches />
         </div>
       </div>
-
-      <Backdrop open={open} className='z-paper'>
-        <ViewSelect p={p} setP={setP} setOpen={setOpen} />
-      </Backdrop>
+      <ViewSelect p={p} setP={setP} open={open} setOpen={setOpen} />
     </div>
   );
 }

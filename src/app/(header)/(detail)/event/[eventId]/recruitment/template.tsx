@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect } from 'react';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
-import { Backdrop } from '@mui/material';
 import { getParams, useEffectCntFilter } from '@/service/Functions';
 import { ViewButton, ViewSelect, ViewFilterApplied, WriteFab } from '@/components/common';
 import dayjs from 'dayjs';
@@ -15,7 +14,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
   const [p, setP] = useState({
     sort: searchParams.get('sort') ?? 'createdAt,desc',
     dateRange: [
-      !!searchParams.get('sD')? dayjs(searchParams.get('sD'), "YYYYMMDD").toDate() : undefined,
+      !!searchParams.get('sD') ? dayjs(searchParams.get('sD'), "YYYYMMDD").toDate() : undefined,
       !!searchParams.get('eD') ? dayjs(searchParams.get('eD'), "YYYYMMDD").toDate() : undefined
     ], participants: Number(searchParams.get('ptcp')) ?? 0,
     recruiting: searchParams.get('state') === 'r' ? true : false
@@ -61,9 +60,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
           <ViewFilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters} p={p} setP={setP} handleRt={handleRt} />
         </div>
       }
-      <Backdrop open={open} className='z-paper'>
-        <ViewSelect p={p} setP={setP} setOpen={setOpen} routeToFilter={routeToFilter} />
-      </Backdrop>
+      <ViewSelect p={p} setP={setP} open={open} setOpen={setOpen} routeToFilter={routeToFilter} />
       <div className={`flex flex-col w-full ${filterCnt > 0 ? 'pt-[140px]' : 'pt-[104px]'}`}>
         {children}
       </div>

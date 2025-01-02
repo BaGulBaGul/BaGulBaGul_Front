@@ -20,7 +20,7 @@ export function SearchBar(props: SearchBarProps) {
       }
     }
     return (
-      <div className='fixed w-full top-0 bg-p-white z-paper'>
+      <div className='fixed w-full top-0 bg-p-white z-30'>
         <div className='flex flex-row items-center mx-[16px] my-[18px] gap-[16px]'>
           <button onClick={() => props.router.back()}><HeaderBackIcn /></button>
           <div className='flex flex-row justify-between w-full'>
@@ -37,7 +37,7 @@ export function SearchBar(props: SearchBarProps) {
   }
   else if (props.tag) {
     return (
-      <div className='fixed w-full top-0 bg-p-white z-paper h-[66px]'>
+      <div className='fixed w-full top-0 bg-p-white z-30 h-[66px]'>
         <div className='flex flex-row items-center mx-[16px] my-[18px] gap-[16px]'>
           <button onClick={() => props.router.back()}><HeaderBackIcn /></button>
           <div className='flex flex-row justify-between w-full'>
