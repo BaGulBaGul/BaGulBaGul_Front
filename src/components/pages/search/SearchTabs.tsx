@@ -1,5 +1,5 @@
 import { getParams, tabList } from "@/service/Functions"
-import { ListProps, MoreButton, NoData, TabPanels, Divider, TabBlockProps } from "../../common"
+import { ListProps, MoreButton, NoData, TabPanels, Divider, TabBlockProps, LoadingCircle, SkeletonList } from "../../common"
 import { ReadonlyURLSearchParams } from "next/navigation"
 import dayjs from "dayjs"
 import { ResultBlock, SuggestBlock } from "./SearchBlock"
@@ -18,23 +18,23 @@ export function SearchTabs(props: { opt: 'TTL' | 'TAG'; sp: ReadonlyURLSearchPar
     totalHeadCountMin: props.sp.get('hcMin') ?? '',
   }
   let apiURL = !!params && Object.keys(params).length > 0 ? `/api/event?size=10&${getParams(params)}` : '/api/event?size=10&type=FESTIVAL'
-  const { data: events, fetchNextPage, hasNextPage, status } = useListWithPageE(apiURL, ['events', params], !!params)
+  const events = useListWithPageE(apiURL, ['events', params], !!params)
 
   return (
     <TabPanels value={tab}
-      child1={<TabBlock opt={props.opt === 'TTL' ? 0 : 1} events={events} hasNextPage={hasNextPage} handleMore={() => handleMore(hasNextPage, fetchNextPage)} status={status} />}
-      child2={<TabBlock opt={props.opt === 'TTL' ? 0 : 1} events={events} hasNextPage={hasNextPage} handleMore={() => handleMore(hasNextPage, fetchNextPage)} status={status} />} />
+      child1={<TabBlock opt={props.opt === 'TTL' ? 0 : 1} events={events} tab={Number(props.sp.get('tab_id'))} />}
+      child2={<TabBlock opt={props.opt === 'TTL' ? 0 : 1} events={events} tab={Number(props.sp.get('tab_id'))} />} />
   )
 }
 
 function TabBlock(props: TabBlockProps) {
-  // if (props.isLoading) { return <LoadingSkeleton /> }
-  if (props.status === 'success') {
+  if (props.events.isLoading) { return <SkeletonList thumb={props.tab !== undefined && props.tab < 2} tag={props.opt > 0} /> }
+  if (props.events.status === 'success') {
     return (
       <>
-        {!!props.events && props.events.pages[0].totalElements > 5
+        {!!props.events && props.events.data.pages[0].totalElements > 5
           ? <div className='bg-p-white'>
-            {props.events.pages.map((event) => (
+            {props.events.data.pages.map((event) => (
               event.content.map((item: ListProps, idx: any) => (
                 <div key={`searched-${idx}`}>
                   {idx === 0 ? <></> : <Divider />}
@@ -42,12 +42,13 @@ function TabBlock(props: TabBlockProps) {
                 </div>
               ))
             ))}
-            {props.hasNextPage ? <MoreButton onClick={props.handleMore} /> : <></>}
+            {props.events.hasNextPage ? <MoreButton onClick={() => handleMore(props.events.hasNextPage, props.events.fetchNextPage)} /> : <></>}
+            {props.events.isFetchingNextPage ? <LoadingCircle /> : <></>}
           </div>
-          : !!props.events && !props.events.pages[0].empty
+          : !!props.events && !props.events.data.pages[0].empty
             ? <div className='flex flex-col gap-[8px]'>
               <div className="bg-p-white">
-                {props.events.pages.map((event) => (
+                {props.events.data.pages.map((event) => (
                   event.content.map((item: ListProps, idx: any) => (
                     <div key={`searched-${idx}`}>
                       {idx === 0 ? <></> : <Divider />}

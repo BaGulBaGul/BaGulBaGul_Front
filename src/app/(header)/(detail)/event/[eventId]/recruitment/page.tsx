@@ -2,7 +2,7 @@
 import React from "react";
 import { useParams, useSearchParams } from 'next/navigation';
 import { getParams } from "@/service/Functions";
-import { LoadingCircle, LoadingSkeleton, MoreButton, RListProps, Divider, NoData } from '@/components/common';
+import { LoadingCircle, MoreButton, RListProps, Divider, NoData, SkeletonList } from '@/components/common';
 import { RecruitBlock } from "@/components/pages/detail";
 import dayjs from "dayjs";
 import { handleMore, useListWithPageE } from "@/hooks/useInCommon";
@@ -17,10 +17,9 @@ export default function Page() {
     leftHeadCount: searchParams.get('ptcp') ?? '',
   }
   let apiURL = !!params && Object.keys(params).length !== 0 ? `/api/event/recruitment?size=10&eventId=${prms.eventId}&${getParams(params)}` : `/api/event/recruitment?size=10&eventId=${prms.eventId}`
-  const { data: recruits, fetchNextPage, hasNextPage, status } = useListWithPageE(apiURL, ['recruits', params], !!params)
+  const { data: recruits, fetchNextPage, hasNextPage, status, isLoading, isFetchingNextPage } = useListWithPageE(apiURL, ['recruits', params], !!params)
 
-  // if (isLoading && page.current === 0) { return <LoadingSkeleton type='RCT' /> }
-  // else if (isLoading && page.current > 0) { return <LoadingCircle /> }
+  if (isLoading) { return <SkeletonList thumb={false} tag={true} /> }
   if (status === 'success') {
     return (
       <>
@@ -35,6 +34,7 @@ export default function Page() {
               ))
             ))}
             {hasNextPage ? <MoreButton onClick={() => handleMore(hasNextPage, fetchNextPage)} /> : <></>}
+            {isFetchingNextPage ? <LoadingCircle /> : <></>}
           </>
           : <NoData text1="찾는 행사가 없어요." text2="지금 인기 있는 페스티벌을 만나보세요." buttonText="페스티벌 인기순 보러가기" buttonLink="/?sort=likeCount%2Cdesc" />
         }

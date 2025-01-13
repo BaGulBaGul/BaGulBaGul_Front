@@ -32,6 +32,10 @@ em {
   display: none;
 }
 
+.wk-translate50 {
+  -webkit-transform: translateX(-50%);
+}
+
 .container {
   width: 100%;
   display: flex;

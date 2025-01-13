@@ -3,11 +3,12 @@ import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { SubHeaderCnt } from '@/components/layout/subHeader';
 import { fetchFromURL } from '@/service/ApiService';
-import { CommentMProps, CommentProps, LoadingSkeleton, Divider } from '@/components/common';
+import { CommentMProps, CommentProps, Divider } from '@/components/common';
 import { RepliedComment, Replies, MemoizedReplyFooter, CommentDrawer, ModifyInputR } from '@/components/pages/comment';
 import { useQuery } from '@tanstack/react-query';
 import useLoginInfo from '@/hooks/useLoginInfo';
 import { originText, useDelete } from '@/hooks/useInCommon';
+import { SkeletonComment } from '@/components/common/loading/SkeletonComments';
 
 export function RepliesPage(props: { origin: 'event' | 'event/recruitment'; commentId: any; postId: any; }) {
   // 댓글
@@ -76,8 +77,9 @@ export function RepliesPage(props: { origin: 'event' | 'event/recruitment'; comm
     <>
       <SubHeaderCnt name='답글' cnt={rCnt ?? ''} url={postUrl} />
       <div className='flex flex-col w-full min-h-[calc(100vh-104px)] pb-[88px] bg-gray1'>
-        {comment.isLoading ? <LoadingSkeleton type='CMT' /> : !comment.data || comment.isError ? <></>
-          : <RepliedComment origin={props.origin} comment={comment} userinfo={userinfo} lKey={lKey} apiURL={apiURL} setOpenD={setOpenD} setTargetM={setTargetM} />}
+        {comment.isLoading ? <SkeletonComment color={'bg-p-white'} />
+          : !comment.data || comment.isError ? <></>
+            : <RepliedComment origin={props.origin} comment={comment} userinfo={userinfo} lKey={lKey} apiURL={apiURL} setOpenD={setOpenD} setTargetM={setTargetM} />}
         <Divider />
         {!comment.data || comment.isError ? <></>
           : <Replies origin={props.origin} rKey={rKey} apiURL={apiURL} setOpenD={setOpenD} setTargetM={setTargetM} setRCnt={setRCnt} handleMention={handleMention} />}

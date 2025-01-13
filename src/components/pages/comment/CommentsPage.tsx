@@ -1,10 +1,11 @@
 "use client";
 import { useState } from 'react';
 import { SubHeaderCnt } from '@/components/layout/subHeader';
-import { CommentMProps, CommentProps, MoreButton, AlertDialog } from '@/components/common';
+import { CommentMProps, CommentProps, MoreButton, AlertDialog, LoadingCircle } from '@/components/common';
 import { CommentBlock, CommentDrawer, CommentFooter, ModifyInput } from '@/components/pages/comment';
 import { handleMore, originText, useDelete, useListWithPage } from '@/hooks/useInCommon';
 import useLoginInfo from '@/hooks/useLoginInfo';
+import { SkeletonComments } from '@/components/common/loading/SkeletonComments';
 
 export function CommentsPage(props: { origin: 'event' | 'event/recruitment'; postId: any; }) {
   // menu drawer
@@ -20,7 +21,7 @@ export function CommentsPage(props: { origin: 'event' | 'event/recruitment'; pos
 
   let apiURL = `/api/${props.origin}/${props.postId}/comment?sort=createdAt,desc&size=10`
   let qKey = [originText(props.origin), props.postId, 'comments']
-  const { data: comments, fetchNextPage, hasNextPage, status } = useListWithPage(apiURL, qKey)
+  const { data: comments, fetchNextPage, hasNextPage, status, isLoading, isFetchingNextPage } = useListWithPage(apiURL, qKey)
 
   const mutateDelete = useDelete(`/api/${props.origin}/comment/${targetM?.commentId}`, qKey, '댓글')
   const handleDelete = () => {
@@ -33,17 +34,20 @@ export function CommentsPage(props: { origin: 'event' | 'event/recruitment'; pos
     <>
       <SubHeaderCnt name='글 댓글' cnt={!!comments ? comments.pages[0].totalElements : ''} url={postUrl} />
       <div className='flex flex-col w-full min-h-[calc(100vh-104px)] pb-[88px] bg-gray1'>
-        {!!comments && !comments.pages[0].empty
-          ? <>{comments.pages.map((comment, i) => (
-            comment.content.map((item: CommentProps, idx: number) => (
-              <div key={`cmt-${idx}`} className={idx % 2 == 0 ? 'bg-p-white px-[16px] py-[12px]' : 'bg-gray1 px-[16px] py-[12px]'}>
-                <CommentBlock opt='CMT' data={item} setOpenD={setOpenD} setTargetM={setTargetM} origin={props.origin} />
-              </div>
-            ))
-          ))}
-            {hasNextPage ? <MoreButton onClick={() => handleMore(hasNextPage, fetchNextPage)} /> : <></>}
-          </>
-          : <></>
+        {isLoading
+          ? <SkeletonComments />
+          : <>{status === "success" && !!comments && !comments.pages[0].empty
+            ? <>{comments.pages.map((comment, i) => (
+              comment.content.map((item: CommentProps, idx: number) => (
+                <div key={`cmt-${idx}`} className={idx % 2 == 0 ? 'bg-p-white px-[16px] py-[12px]' : 'bg-gray1 px-[16px] py-[12px]'}>
+                  <CommentBlock opt='CMT' data={item} setOpenD={setOpenD} setTargetM={setTargetM} origin={props.origin} />
+                </div>
+              ))
+            ))}
+              {hasNextPage ? <MoreButton onClick={() => handleMore(hasNextPage, fetchNextPage)} /> : <></>}
+              {isFetchingNextPage ? <LoadingCircle /> : <></>}
+            </>
+            : <></>}</>
         }
       </div>
       <CommentFooter url={`${props.origin}/${props.postId}`} qKey={qKey} isLogin={!!userinfo} setOpenA={setOpenA} />

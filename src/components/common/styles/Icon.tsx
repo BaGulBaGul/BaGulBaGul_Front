@@ -101,21 +101,21 @@ export const HeaderBackIcn = () => {
   )
 }
 
-export const VerticalMoreIcn = (props: { opt: 'CMT' | 'DTL' }) => {
+export const VerticalMoreIcn = (props: { opt: 'CMT' | 'DTL'; color?: string; }) => {
   if (props.opt === 'CMT') {
     return (
       <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="12.5859" cy="5.71582" r="1.25" fill="#1E1E1E" />
-        <circle cx="12.5859" cy="12.2158" r="1.25" fill="#1E1E1E" />
-        <circle cx="12.5859" cy="18.7158" r="1.25" fill="#1E1E1E" />
+        <circle cx="12.5859" cy="5.71582" r="1.25" fill={props.color ?? "#1E1E1E"} />
+        <circle cx="12.5859" cy="12.2158" r="1.25" fill={props.color ?? "#1E1E1E"} />
+        <circle cx="12.5859" cy="18.7158" r="1.25" fill={props.color ?? "#1E1E1E"} />
       </svg>
     )
   } else if (props.opt === 'DTL') {
     return (
       <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="22.75" cy="6" r="1.25" fill="#1E1E1E" />
-        <circle cx="22.75" cy="12.5" r="1.25" fill="#1E1E1E" />
-        <circle cx="22.75" cy="19" r="1.25" fill="#1E1E1E" />
+        <circle cx="22.75" cy="6" r="1.25" fill={props.color ?? "#1E1E1E"} />
+        <circle cx="22.75" cy="12.5" r="1.25" fill={props.color ?? "#1E1E1E"} />
+        <circle cx="22.75" cy="19" r="1.25" fill={props.color ?? "#1E1E1E"} />
       </svg>
     )
   }

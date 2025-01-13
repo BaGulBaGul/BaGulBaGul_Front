@@ -1,4 +1,5 @@
 'use client';
+import { Backdrop, CircularProgress } from "@mui/material"
 import CategoryButtons from './input/CategoryButtons'
 import { PartiSelect, HeadSelect, CountSelect } from './input/Select'
 import { ImageUploader } from './input/ImageUploader'
@@ -16,21 +17,35 @@ import { ImageSlide } from './ImageSlide'
 import { WriteFab } from './WriteFab';
 import { FullscreenDialog } from './FullscreenDialog'
 import { AlertDialog } from './AlertDialog'
-import { LoadingSkeleton, LoadingCircle } from './Loading'
-import { InfiniteData } from '@tanstack/react-query'
+import { InfiniteData, UseInfiniteQueryResult } from '@tanstack/react-query'
+import { SkeletonCarousel } from "./loading/SkeletonCarousel";
+import { SkeletonComments, SkeletonReplies, SkeletonComment } from "./loading/SkeletonComments";
+import { SkeletonList } from "./loading/SkeletonList";
+import { SkeletonDetail } from "./loading/SkeletonPage";
 
 export {
   CategoryButtons, PartiSelect, HeadSelect, CountSelect, ImageUploader,
   HashtagAccordion, HashtagButton, NoData, UserProfile, HeadCount, BlockInfo, BlockInfoDT,
   PostTab, TabPanel, TabPanels,
   ViewButton, ViewSelect, ViewFilterApplied,
-  MoreButton,ImageSlide, WriteFab,
+  MoreButton, ImageSlide, WriteFab,
   FullscreenDialog, AlertDialog,
-  LoadingSkeleton, LoadingCircle,
+  SkeletonCarousel,SkeletonComments, SkeletonReplies, SkeletonComment,
+  SkeletonList, SkeletonDetail,
 }
 
-export const Divider = (props: {color?: string;}) => {
-  return (<hr className={`${props.color ? `border-${props.color}`: 'border-gray1'}`} />)
+export const Divider = (props: { color?: string; }) => {
+  return (<hr className={`${props.color ? `border-${props.color}` : 'border-gray1'}`} />)
+}
+
+export function LoadingCircle() {
+  return (
+    <div>
+      <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true} >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+    </div>
+  )
 }
 
 export interface RangeProps { from: undefined | number, to: undefined | number }
@@ -69,7 +84,7 @@ export interface FilterProps {
 }
 
 export interface TabBlockProps {
-  opt: 0 | 1; events: InfiniteData<any, unknown> | undefined; hasNextPage: boolean; handleMore: any; status: any;
+  opt: 0 | 1; events: UseInfiniteQueryResult<InfiniteData<any, unknown>, Error>; tab?: number
 }
 
 export interface DetailProps {
@@ -102,7 +117,7 @@ export interface CommentProps {
   replyTargetUserName?: string;
 }
 
-export interface CommentMProps { commentId: number; content: string; userId?: number; replyTargetUserName?: string; opt?: 'CMT'|'RPL' } // 댓글수정용
+export interface CommentMProps { commentId: number; content: string; userId?: number; replyTargetUserName?: string; opt?: 'CMT' | 'RPL' } // 댓글수정용
 
 export interface CalProps {
   eventId?: number; recruitmentId?: number; title: string; type?: string; state?: string;

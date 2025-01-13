@@ -2,10 +2,12 @@ import Slider from "react-slick";
 import { postData } from "@/components/common/Data";
 import { FormatDateRange } from "@/service/Functions";
 import { ArrowNext, ArrowPrev } from "@/components/common/Arrow";
+import { SkeletonCarousel } from "@/components/common/";
 
 
 export function RecCarousel() {
   return (
+    // <SkeletonCarousel />
     <div className='flex flex-col bg-secondary-yellow w-full h-[430px] lg:px-[360px] lg:bg-gradient-to-b lg:from-grad-yellow lg:to-grad-blue'>
       <div className='flex flex-col pt-[22px] pb-[20px] px-[16px] text-[26px] leading-[140%]'>
         <p className='font-semibold'>SUMMER</p>

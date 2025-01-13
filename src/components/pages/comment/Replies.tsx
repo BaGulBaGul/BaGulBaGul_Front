@@ -1,21 +1,22 @@
 "use client";
-import { CommentMProps, CommentProps, LoadingSkeleton, MoreButton } from '@/components/common';
+import { CommentMProps, CommentProps, LoadingCircle, MoreButton } from '@/components/common';
 import { CommentBlock } from '@/components/pages/comment';
 import { Dispatch, SetStateAction, useEffect } from 'react';
 import { handleMore, useListWithPage } from '@/hooks/useInCommon';
+import { SkeletonReplies } from '@/components/common/loading/SkeletonComments';
 
 interface RepliesProps {
   origin: 'event' | 'event/recruitment'; rKey: any[]; apiURL: string; setOpenD: Dispatch<SetStateAction<boolean>>;
   setTargetM: Dispatch<SetStateAction<CommentMProps | undefined>>; setRCnt: Dispatch<SetStateAction<number | undefined>>; handleMention: any;
 }
 export function Replies(props: RepliesProps) {
-  const { data: replies, fetchNextPage, hasNextPage, status, isLoading } = useListWithPage(`${props.apiURL}/children?sort=createdAt,desc&size=10`, props.rKey)
+  const { data: replies, fetchNextPage, hasNextPage, status, isLoading, isFetchingNextPage } = useListWithPage(`${props.apiURL}/children?sort=createdAt,desc&size=10`, props.rKey)
   useEffect(() => {
     if (!!replies) { props.setRCnt(replies.pages[0].totalElements) }
   }, [replies])
 
   return (
-    <>{isLoading ? <LoadingSkeleton type='RPL' />
+    <>{isLoading ? <SkeletonReplies />
       : <>{!!replies && !replies.pages[0].empty
         ? <div className='flex flex-col w-full'>
           {replies.pages.map((reply) => (
@@ -26,6 +27,7 @@ export function Replies(props: RepliesProps) {
             ))
           ))}
           {hasNextPage ? <MoreButton onClick={() => handleMore(hasNextPage, fetchNextPage)} /> : <></>}
+          {isFetchingNextPage ? <LoadingCircle /> : <></>}
         </div>
         : <></>
       }</>

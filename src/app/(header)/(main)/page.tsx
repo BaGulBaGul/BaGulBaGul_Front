@@ -4,7 +4,7 @@ import { TabPanels } from '@/components/common';
 import { getParams, tabList } from '@/service/Functions';
 import { MainTabBlock } from '@/components/pages/main';
 import dayjs from 'dayjs';
-import { handleMore, useListWithPageE } from "@/hooks/useInCommon";
+import { useListWithPageE } from "@/hooks/useInCommon";
 
 export default function Page() {
   const searchParams = useSearchParams()
@@ -31,11 +31,9 @@ export default function Page() {
     totalHeadCountMin: searchParams.get('hcMin') ?? ''
   }
   let apiURL = !!params && Object.keys(params).length > 0 ? `/api/event?size=10&${getParams(params)}` : '/api/event?size=10&type=FESTIVAL'
-  const { data: events, fetchNextPage, hasNextPage, status } = useListWithPageE(apiURL, ['events', params], !!params)
+  const events = useListWithPageE(apiURL, ['events', params], !!params)
 
   return (
-    <TabPanels value={tab}
-      child1={<MainTabBlock opt={0} events={events} hasNextPage={hasNextPage} handleMore={() => handleMore(hasNextPage, fetchNextPage)} status={status} />}
-      child2={<MainTabBlock opt={1} events={events} hasNextPage={hasNextPage} handleMore={() => handleMore(hasNextPage, fetchNextPage)} status={status} />} />
+    <TabPanels value={tab} child1={<MainTabBlock opt={0} events={events} />} child2={<MainTabBlock opt={1} events={events} />} />
   )
 }
