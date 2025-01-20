@@ -77,7 +77,7 @@ export function RepliesPage(props: { origin: 'event' | 'event/recruitment'; comm
     <>
       <SubHeaderCnt name='답글' cnt={rCnt ?? ''} url={postUrl} />
       <div className='flex flex-col w-full min-h-[calc(100vh-104px)] pb-[88px] bg-gray1'>
-        {comment.isLoading ? <SkeletonComment color={'bg-p-white'} />
+        {comment.isPending || comment.isLoading ? <SkeletonComment color={'bg-p-white'} />
           : !comment.data || comment.isError ? <></>
             : <RepliedComment origin={props.origin} comment={comment} userinfo={userinfo} lKey={lKey} apiURL={apiURL} setOpenD={setOpenD} setTargetM={setTargetM} />}
         <Divider />

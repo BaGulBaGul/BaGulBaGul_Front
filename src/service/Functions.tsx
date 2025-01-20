@@ -2,7 +2,6 @@
 import { useEffect } from "react";
 import { createSearchParams } from 'react-router-dom'
 import { call } from "./ApiService";
-
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import 'dayjs/locale/ko';
@@ -24,11 +23,15 @@ type typeType = { [key: string]: string; }
 export const typeString: typeType = { 'FESTIVAL': '페스티벌', 'LOCAL_EVENT': '지역행사', 'PARTY': '파티' }
 
 export const FormatDateRange = (startDate: any, endDate: any) => {
-  if (dayjs(startDate).year() === dayjs(endDate).year()) {
-    return `${dayjs(startDate).format('YY.MM.DD')} - ${dayjs(endDate).format('MM.DD')}`;
-  } else if (dayjs(startDate).year() < dayjs(endDate).year()) {
-    return `${dayjs(startDate).format('YY.MM.DD')} - ${dayjs(endDate).format('YY.MM.DD')}`;
-  }
+  if (!!startDate && !!endDate) {
+    if (dayjs(startDate).year() === dayjs(endDate).year()) {
+      return `${dayjs(startDate).format('YY.MM.DD')} - ${dayjs(endDate).format('MM.DD')}`;
+    } else if (dayjs(startDate).year() < dayjs(endDate).year()) {
+      return `${dayjs(startDate).format('YY.MM.DD')} - ${dayjs(endDate).format('YY.MM.DD')}`;
+    }
+  } else if (!!startDate || !!endDate) {
+    return `${dayjs(startDate ?? endDate).format('YY.MM.DD')}`;
+  } else {return '-'}
 }
 
 export const sortLabel = (sort: string) => {

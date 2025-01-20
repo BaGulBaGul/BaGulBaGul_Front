@@ -1,6 +1,6 @@
 import { Skeleton } from "@mui/material"
 import { VerticalMoreIcn } from "../styles/Icon";
-import { SkeletonTags } from "./SkeletonList";
+import { SkeletonTags } from "./SkeletonBlock";
 
 export function SkeletonDetail(props: { map: boolean }) {
   return (

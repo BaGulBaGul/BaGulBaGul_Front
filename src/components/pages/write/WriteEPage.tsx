@@ -57,7 +57,7 @@ export function WriteEPage(props: { edit?: number; }) {
     } else { mutateWrite.mutate({ apiURL: '/api/event', body: body }) }
   }
 
-  if (!!props.edit && (!!prev && (prev.isLoading || Object.keys(prev.data).length === 0))) {
+  if (!!props.edit && (!!prev && (prev.isPending || prev.isLoading || Object.keys(prev.data).length === 0))) {
     return (<></>)
   }
   return (

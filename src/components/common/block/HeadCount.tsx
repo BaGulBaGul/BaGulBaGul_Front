@@ -1,10 +1,10 @@
-export function HeadCount(props: { currentHeadCount?: number; maxHeadCount?: number; state?: string; }) {
-  let proceeding = (!!props.state && props.state === "PROCEEDING") || (props.currentHeadCount !== undefined && props.maxHeadCount !== undefined && props.currentHeadCount < props.maxHeadCount)
+export function HeadCount(props: { currentHeadCount?: number; maxHeadCount?: number; state?: string; dot?: boolean }) {
+  let done = (!!props.state && props.state !== "PROCEEDING") || (!!props.currentHeadCount && !!props.maxHeadCount && props.currentHeadCount === props.maxHeadCount)
   return (
     <div className='flex flex-row items-center gap-[4px]'>
-      <DividerDot />
+      {props.dot === false ? <></> : <DividerDot />}
       <p className='text-14 text-gray3'>{`${props.currentHeadCount ?? '-'}/${props.maxHeadCount ?? '-'}(명)`}</p>
-      {proceeding ? <></> : <p className="done-chip">모집완료</p>}
+      {done ? <p className="done-chip">모집완료</p> : <></>}
     </div>
   )
 }

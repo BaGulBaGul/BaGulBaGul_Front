@@ -1,5 +1,5 @@
 import { Tab, Tabs, ThemeProvider } from '@mui/material';
-import { ListProps, LoadingSkeleton, MoreButton, NoData, RListProps } from '@/components/common';
+import { ListProps, LoadingCircle, MoreButton, NoData, RListProps, SkeletonList } from '@/components/common';
 import { tabTheme } from '@/components/common/styles/Themes';
 import { InfiniteData, UseInfiniteQueryResult } from '@tanstack/react-query';
 import { MyPostBlock, UserPostBlock } from '.';
@@ -19,17 +19,17 @@ export function UserPostTabs(props: { value: 0 | 1; handleChange: any; fixed: bo
 }
 
 export function UserPostTab(props: { me: boolean; posts: UseInfiniteQueryResult<InfiniteData<any, unknown>, Error>; opt: 'EVT' | 'RCT' }) {
-  let posts = props.posts
-  if (posts.isLoading) { return (<LoadingSkeleton type='EVT' />) }
+  if (props.posts.isPending || props.posts.isLoading) { return (<SkeletonList type='POST' opt={props.opt} />) }
   return (
-    <>{!!posts.data && !posts.data.pages[0].empty
+    <>{!!props.posts.data && !props.posts.data.pages[0].empty
       ? <div className='flex flex-col w-full'>
-        {posts.data.pages.map((p) => (
+        {props.posts.data.pages.map((p) => (
           p.content.map((item: ListProps | RListProps, idx: number) => (
             props.me ? <MyPostBlock opt={props.opt} data={item} key={`like-${idx}`} /> : <UserPostBlock opt={props.opt} data={item} key={`like-${idx}`} />
           ))
         ))}
-        {posts.hasNextPage ? <MoreButton onClick={() => handleMore(posts.hasNextPage, posts.fetchNextPage)} /> : <></>}
+        {props.posts.hasNextPage ? <MoreButton onClick={() => handleMore(props.posts.hasNextPage, props.posts.fetchNextPage)} /> : <></>}
+        {props.posts.isFetchingNextPage ? <LoadingCircle /> : <></>}
       </div>
       : <>{props.me ?
         props.opt === 'EVT'
@@ -39,7 +39,7 @@ export function UserPostTab(props: { me: boolean; posts: UseInfiniteQueryResult<
           ? <NoData text1="아직 유저의 게시물이 없어요." text2='바글바글의 인기 게시물을 구경해보세요!' buttonText='파티글 인기순 보러가기' buttonLink='/?sort=likeCount%2Cdesc&tab_id=2' />
           : <NoData text1="아직 유저의 게시물이 없어요." text2='바글바글의 인기 게시물을 구경해보세요!' buttonText='페스티벌 인기순 보러가기' buttonLink='/?sort=likeCount%2Cdesc' />
       }</>
-
-    }</>
+    }
+    </>
   )
 }

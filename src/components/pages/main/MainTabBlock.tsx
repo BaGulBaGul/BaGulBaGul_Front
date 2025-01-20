@@ -3,7 +3,7 @@ import { EventBlock } from "./EventBlock"
 import { handleMore } from "@/hooks/useInCommon"
 
 export const MainTabBlock = (props: TabBlockProps) => {
-  if (props.events.isLoading) { return <SkeletonList thumb={true} tag={true} /> }
+  if (props.events.isPending || props.events.isLoading) { return <SkeletonList thumb={true} tag={true} /> }
   else if (props.events.status === 'success') {
     return (
       <div className='bg-p-white'>

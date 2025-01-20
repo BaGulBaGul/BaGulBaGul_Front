@@ -1,6 +1,5 @@
-import { sortLabel } from "@/service/Functions";
+import { FormatDateRange, sortLabel } from "@/service/Functions";
 import { Dispatch, SetStateAction } from "react";
-import dayjs from "dayjs";
 import { FilterProps } from "..";
 
 interface FilterAppliedProps {
@@ -36,8 +35,7 @@ export const ViewFilterApplied = (props: FilterAppliedProps) => {
             </div>
             {!(props.filters).includes('dayRange') ? <></>
               : <div className='filter-chip'>
-                <span>{!!startDate && !!endDate ?
-                  dayjs(startDate).format('YY.MM.DD') : `${dayjs(startDate).format('YY.MM.DD')} - ${dayjs(endDate).format('YY.MM.DD')}`}</span>
+                <span>{FormatDateRange(startDate, endDate)}</span>
                 <button onClick={(e) => handleDelete(e, 'dayRange')}><FilterDeleteIcn /></button>
               </div>
             }

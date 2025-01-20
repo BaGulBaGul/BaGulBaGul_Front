@@ -13,7 +13,7 @@ export function MyPage() {
 
   const mutateSignout = useSignout();
   const handleSignout = () => { mutateSignout.mutate() }
-  if (userinfo.isLoading) { return (<></>) }
+  if (userinfo.isPending || userinfo.isLoading) { return (<></>) }
   return (
     <>
       <SubTopHeader name='마이페이지' child={<AlarmButton />} />

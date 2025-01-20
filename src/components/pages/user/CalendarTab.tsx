@@ -8,8 +8,8 @@ import { DeleteIcn } from '@/components/common/styles/Icon';
 import { useDelete } from '@/hooks/useInCommon';
 
 export function CalendarTab(props: { focusDay: Date; editing: boolean; events: UseQueryResult<any, Error>; }) {
-  if (props.events.isLoading || props.events.isFetching) {
-    return (<SkeletonList num={3} calendar={true} />)
+  if (props.events.isPending || props.events.isLoading || props.events.isFetching) {
+    return (<SkeletonList num={3} type='CAL' />)
   } else {
     let qKey = ['calendar', `${props.focusDay.getFullYear()}-${props.focusDay.getMonth() + 1}`]
     let focusedEvent = !!props.events.data && !!props.events.data.events ? props.events.data.events[dayjs(props.focusDay).format('YYYY-MM-DD')] ?? [] : []

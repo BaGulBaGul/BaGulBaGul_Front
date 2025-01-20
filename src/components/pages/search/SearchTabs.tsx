@@ -28,7 +28,7 @@ export function SearchTabs(props: { opt: 'TTL' | 'TAG'; sp: ReadonlyURLSearchPar
 }
 
 function TabBlock(props: TabBlockProps) {
-  if (props.events.isLoading) { return <SkeletonList thumb={props.tab !== undefined && props.tab < 2} tag={props.opt > 0} /> }
+  if (props.events.isPending || props.events.isLoading) { return <SkeletonList thumb={props.tab !== undefined && props.tab < 2} tag={props.opt > 0} /> }
   if (props.events.status === 'success') {
     return (
       <>

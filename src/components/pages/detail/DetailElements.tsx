@@ -13,8 +13,6 @@ interface PostTitleProps {
   userId: number; userName: string; userProfileImage?: string; categories?: string[]; toggleDrawer: any;
 }
 export function PostTitle(props: PostTitleProps) {
-  const dateString = (!props.startDate && !props.endDate) ? '-'
-    : (!!props.type && props.type !== 'PARTY') ? FormatDateRange(props.startDate, props.endDate) : dayjs(props.startDate).format('YY.MM.DD')
   return (
     <div className='flex flex-col px-[16px] py-[20px]'>
       <div className='flex flex-row justify-between pt-[10px]'>
@@ -22,7 +20,7 @@ export function PostTitle(props: PostTitleProps) {
         <button onClick={props.toggleDrawer(true)}><VerticalMoreIcn opt='DTL' /></button>
       </div>
       <div className='flex flex-row justify-between pt-[4px] text-14 text-gray3'>
-        <p>{`${dateString}`}</p>
+        <p>{`${FormatDateRange(props.startDate, props.endDate)}`}</p>
         <div className='flex flex-row items-center'>
           <ViewIcn />
           <p className='ps-[4px]'>{props.views.toLocaleString("en-US")}</p>
