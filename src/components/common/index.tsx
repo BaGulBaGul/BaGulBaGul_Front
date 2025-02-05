@@ -21,7 +21,8 @@ import { InfiniteData, UseInfiniteQueryResult } from '@tanstack/react-query'
 import { SkeletonCarousel } from "./loading/SkeletonCarousel";
 import { SkeletonComments, SkeletonReplies, SkeletonComment } from "./loading/SkeletonComments";
 import { SkeletonList } from "./loading/SkeletonList";
-import { SkeletonDetail } from "./loading/SkeletonPage";
+import { SkeletonDetail } from "./loading/SkeletonDetail";
+import { SkeletonWrite } from "./loading/SkeletonWrite";
 
 export {
   CategoryButtons, PartiSelect, HeadSelect, CountSelect, ImageUploader,
@@ -31,7 +32,7 @@ export {
   MoreButton, ImageSlide, WriteFab,
   FullscreenDialog, AlertDialog,
   SkeletonCarousel,SkeletonComments, SkeletonReplies, SkeletonComment,
-  SkeletonList, SkeletonDetail,
+  SkeletonList, SkeletonDetail, SkeletonWrite,
 }
 
 export const Divider = (props: { color?: string; }) => {

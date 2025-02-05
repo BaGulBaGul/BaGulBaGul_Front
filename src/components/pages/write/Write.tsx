@@ -6,6 +6,7 @@ import { AddressDialog, autoResizeTextarea, DateSelect, WriteProps } from '.';
 import { ThemeProvider } from '@emotion/react';
 import { viewCheckTheme } from '@/components/common/filter/ViewFilterTheme';
 import { Checkbox, FormControl, FormControlLabel } from '@mui/material';
+import TagsInput from '@/components/common/input/TagInput';
 
 export function Write(props: WriteProps) {
   let prevData = !!props.prev ? props.prev.data : undefined
@@ -90,10 +91,11 @@ export function Write(props: WriteProps) {
           </> : <></>}
         {/* 본문 */}
         <div className='px-[16px] py-[20px]'>
-          <textarea className="w-full min-h-[250px] focus:outline-none text-14"
-            placeholder={`파티에 대해서 설명해주세요!\n본문에 #을 이용해 파티 태그를 입력해보세요(최대 7개)`}
+          <textarea className="w-full min-h-[360px] focus:outline-none text-14"
+            placeholder={`파티에 대해서 설명해주세요!`}
             value={props.content} onChange={(e) => autoResizeTextarea(e, props.setContent)} />
         </div>
+        <TagsInput />
       </div>
       <button className="footer-btn" onClick={props.handleSubmit}>작성하기</button>
       {props.open !== undefined && !!props.setOpen && !!props.handleConfirm

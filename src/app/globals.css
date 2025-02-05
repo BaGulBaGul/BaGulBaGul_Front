@@ -421,6 +421,41 @@ input[type="file"] {
 }
 
 /* ---------------------- */
+/* ----- tag input ----- */
+/* ---------------------- */
+.tags-container{
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0 16px 20px;
+  font-size: 14px;
+  line-height: 160%;
+}
+
+.tag-chip{
+  display: inline-block;
+  color: #4A6AFE;
+}
+
+.tag-chip .close{
+  color: #4A6AFE;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 2px;
+  font-size: 14px;
+  line-height: 160%;
+  cursor: pointer;
+}
+
+.tags-input{
+  flex-grow: 1;
+  border: none;
+  outline: none;
+}
+
+/* ---------------------- */
 /* -----slick-slider----- */
 /* ---------------------- */
 .slick-track {

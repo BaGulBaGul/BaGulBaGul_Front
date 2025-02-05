@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import { useWrite } from '@/hooks/useInWrite';
 import { Write } from '.';
 import { useDetailInfo } from '@/hooks/useInDetail';
+import { SkeletonWrite } from '@/components/common';
 
 export function WriteRPage(props: { eventId?: number; edit?: number; }) {
   const [headMax, setHeadMax] = useState<number>()
@@ -31,6 +32,7 @@ export function WriteRPage(props: { eventId?: number; edit?: number; }) {
     }
   }
 
+  if (!!props.edit && (!!prev && !prev.isSuccess)) { return (<SkeletonWrite opt='r' />) }
   return (
     <Write startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate}
       headMax={headMax} setHeadMax={setHeadMax} headCurrent={headCurrent} setHeadCurrent={setHeadCurrent}

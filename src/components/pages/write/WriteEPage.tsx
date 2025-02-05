@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import { useWrite } from '@/hooks/useInWrite';
 import { getCoords, Write } from '.';
 import { useDetailInfo } from '@/hooks/useInDetail';
+import { SkeletonWrite } from '@/components/common';
 
 export function WriteEPage(props: { edit?: number; }) {
   const [selectedCate, setSelectedCate] = useState<string[]>([]);
@@ -57,13 +58,11 @@ export function WriteEPage(props: { edit?: number; }) {
     } else { mutateWrite.mutate({ apiURL: '/api/event', body: body }) }
   }
 
-  if (!!props.edit && (!!prev && (prev.isPending || prev.isLoading || Object.keys(prev.data).length === 0))) {
-    return (<></>)
-  }
+  if (!!props.edit && (!!prev && !prev.isSuccess)) { return (<SkeletonWrite opt='p' />) }
   return (
     <Write selectedCate={selectedCate} setSelectedCate={setSelectedCate}
       startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate}
-      headMax={headMax} setHeadMax={setHeadMax} headCurrent={headCurrent} setHeadCurrent={setHeadCurrent} 
+      headMax={headMax} setHeadMax={setHeadMax} headCurrent={headCurrent} setHeadCurrent={setHeadCurrent}
       addr={addr} setAddr={setAddr} forAdult={forAdult} setForAdult={setForAdult} content={content} setContent={setContent}
       images={images} setImages={setImages} imageKey={imageKey} setImageKey={setImageKey} titleRef={titleRef}
       open={open} setOpen={setOpen} handleSubmit={handleSubmit} handleConfirm={handleConfirm}
