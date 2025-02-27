@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { fetchFromURL, mutateForURL } from '@/service/ApiService';
+import { fetchFromURL, mutateForURL, mutateForURLJson } from '@/service/ApiService';
 import { originText } from './useInCommon';
+import { useRouter } from 'next/navigation';
 
 export const useDetailInfo = (origin: 'event' | 'event/recruitment', postId: any) => {
   return useQuery({
@@ -43,6 +44,19 @@ export const useAddSave = (origin: 'event' | 'event/recruitment', postId: any, s
     mutationFn: () => mutateForURL(`/api/user/calendar/${originText(origin)}/${postId}`, saved ? 'DELETE' : 'POST'),
     onSuccess: () => {
       queryClient.setQueryData([originText(origin), postId, 'saved'], (old: any) => { return { exists: !old.exists } })
+    }
+  })
+}
+
+export const useDeletePost = (origin: 'event' | 'event/recruitment', postId: number) => {
+  const router = useRouter();
+  return useMutation({
+    mutationFn: () => { return mutateForURLJson(`/api/${origin}/${postId}`, 'DELETE') },
+    onSuccess: data => {
+      if (data.errorCode === 'C00000') {
+        alert('성공적으로 삭제되었습니다.')
+        router.back()
+      } else {alert('삭제하지 못했습니다. 다시 시도해주세요.')}
     }
   })
 }

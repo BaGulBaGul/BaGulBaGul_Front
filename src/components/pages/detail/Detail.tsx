@@ -8,7 +8,7 @@ import { BottomDrawer } from "@/components/common/BottomDrawer";
 import useLoginInfo from "@/hooks/useLoginInfo";
 
 interface DetailsProps {
-  opt: 'EVT' | 'RCT'; data: DetailProps | RDetailProps; liked: boolean; likeCount?: number; handleLike: any; saved: boolean; handleCalendar: any;
+  opt: 'EVT' | 'RCT'; data: DetailProps | RDetailProps; liked: boolean; likeCount?: number; handleLike: any; saved: boolean; handleCalendar: any; handleDelete: any;
 }
 export const Detail = (props: DetailsProps) => {
   const [popopen, setPopopen] = useState(false);
@@ -22,7 +22,6 @@ export const Detail = (props: DetailsProps) => {
   let commentURL = `${pathname}/comments`;
   const userinfo = useLoginInfo().data
 
-  const handleDelete = () => { console.log('delete') }
   const router = useRouter();
 
   if (props.opt === 'EVT') {
@@ -53,7 +52,7 @@ export const Detail = (props: DetailsProps) => {
           </>
           : <BottomDrawer open={openD} toggleDrawer={toggleDrawer} opt='EVT' target={data.event.eventId}
             me={!!userinfo && userinfo.id === data.post.writer.userId}
-            handleDelete={handleDelete} handleEdit={() => router.push(`/write?w=p&edit=${data.event.eventId}`)} />
+            handleDelete={props.handleDelete} handleEdit={() => router.push(`/write?w=p&edit=${data.event.eventId}`)} />
         }
       </>
     )
@@ -83,7 +82,7 @@ export const Detail = (props: DetailsProps) => {
           </div>
         </div>
         <BottomDrawer open={openD} toggleDrawer={toggleDrawer} opt='RCT' target={data.recruitment.recruitmentId}
-          me={!!userinfo && userinfo.id === data.post.writer.userId} handleDelete={handleDelete}
+          me={!!userinfo && userinfo.id === data.post.writer.userId} handleDelete={props.handleDelete}
           handleEdit={() => router.push(`/write?w=r&edit=${data.recruitment.recruitmentId}`)} />
       </>
     )

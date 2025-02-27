@@ -12,7 +12,7 @@ export const useWrite = (origin: 'event' | 'recruitment', edit?: number) => {
     onSuccess: data => {
       if (data.errorCode === 'C00000') {
         alert('성공적으로 게시되었습니다.')
-        router.push(!!edit ? `/${origin}/${edit}` : origin === 'event' ? `/event/${data.data.eventId}` : `/recruitment/${data.data.recruitmentId}`)
+        router.replace(!!edit ? `/${origin}/${edit}` : origin === 'event' ? `/event/${data.data.eventId}` : `/recruitment/${data.data.recruitmentId}`)
       }
       else { alert('게시를 실패했습니다. 다시 시도해주세요.') }
     },

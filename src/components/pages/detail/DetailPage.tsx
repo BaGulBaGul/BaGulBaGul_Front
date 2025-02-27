@@ -2,7 +2,7 @@ import { typeString } from '@/service/Functions';
 import SubHeader from '@/components/layout/subHeader';
 import { Detail } from '@/components/pages/detail';
 import useLoginInfo from '@/hooks/useLoginInfo';
-import { useAddLike, useAddSave, useDetailInfo, useDetailLike, useDetailSave } from '@/hooks/useInDetail';
+import { useAddLike, useAddSave, useDeletePost, useDetailInfo, useDetailLike, useDetailSave } from '@/hooks/useInDetail';
 import { SkeletonDetail } from '@/components/common';
 
 export function DetailPage(props: { origin: 'event' | 'event/recruitment'; postId: any; }) {
@@ -17,19 +17,22 @@ export function DetailPage(props: { origin: 'event' | 'event/recruitment'; postI
   const mutateSave = useAddSave(props.origin, props.postId, saved)
   const handleCalendar = () => { if (!!userinfo) { mutateSave.mutate() } }
 
+  const mutateDelete = useDeletePost(props.origin, props.postId)
+  const handleDelete = () => { mutateDelete.mutate() }
+
   if (isLoadingD) { return (<SkeletonDetail map={props.origin === 'event'} />) }
   return (
     <>{props.origin === 'event'
       ? <>
         <SubHeader name={data ? typeString[data.event.type as string] : ''} />
         {data && Object.keys(data).length > 0
-          ? <Detail opt='EVT' data={data} liked={liked} likeCount={data.post.likeCount} handleLike={handleLike} saved={saved} handleCalendar={handleCalendar} /> : <></>
+          ? <Detail opt='EVT' data={data} liked={liked} likeCount={data.post.likeCount} handleLike={handleLike} saved={saved} handleCalendar={handleCalendar} handleDelete={handleDelete} /> : <></>
         }
       </>
       : <>
         <SubHeader name='모집글' />
         {data && Object.keys(data).length > 0
-          ? <Detail opt='RCT' data={data} liked={liked} likeCount={data.post.likeCount} handleLike={handleLike} saved={saved} handleCalendar={handleCalendar} /> : <></>
+          ? <Detail opt='RCT' data={data} liked={liked} likeCount={data.post.likeCount} handleLike={handleLike} saved={saved} handleCalendar={handleCalendar} handleDelete={handleDelete} /> : <></>
         }
       </>
     }</>
