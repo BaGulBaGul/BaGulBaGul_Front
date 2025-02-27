@@ -22,6 +22,7 @@ export function Write(props: WriteProps) {
 
   useEffect(() => {
     if (!!prevData) {
+      console.log(prevData)
       if (!!props.setSelectedCate) { props.setSelectedCate(prevData.event.categories) }
       if (!!props.setHeadMax) { props.setHeadMax((prevData.event ?? prevData.recruitment).maxHeadCount) }
       if (!!props.setHeadCurrent) { props.setHeadCurrent((prevData.event ?? prevData.recruitment).currentHeadCount) }
@@ -32,6 +33,7 @@ export function Write(props: WriteProps) {
       props.setContent(prevData.post.content)
       props.setImages(prevData.post.imageUrls)
       props.setImageKey(prevData.post.imageIds)
+      props.setTags(prevData.post.tags)
     }
   }, [])
   return (
@@ -82,7 +84,7 @@ export function Write(props: WriteProps) {
             <div className='flex flex-row justify-between gap-[16px] px-[16px] py-[10px]'>
               <span className='min-w-[49px] text-14 font-semibold'>위치</span>
               <div onClick={handleOpenAddr} className='flex flex-row items-center gap-[8px] cursor-pointer'>
-                {props.addr && props.addr.full.length > 0 ? <span className='text-14'>{props.addr.full}</span> : <span className='text-14 text-gray2'>위치 검색</span>}
+                {props.addr && props.addr.full && props.addr.full.length > 0 ? <span className='text-14'>{props.addr.full}</span> : <span className='text-14 text-gray2'>위치 검색</span>}
                 <MagnifyingIcn size={24} />
               </div>
             </div>
@@ -95,7 +97,7 @@ export function Write(props: WriteProps) {
             placeholder={`파티에 대해서 설명해주세요!`}
             value={props.content} onChange={(e) => autoResizeTextarea(e, props.setContent)} />
         </div>
-        <TagsInput />
+        <TagsInput tags={props.tags} setTags={props.setTags} />
       </div>
       <button className="footer-btn" onClick={props.handleSubmit}>작성하기</button>
       {props.open !== undefined && !!props.setOpen && !!props.handleConfirm

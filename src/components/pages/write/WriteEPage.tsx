@@ -17,6 +17,7 @@ export function WriteEPage(props: { edit?: number; }) {
   const [content, setContent] = useState('');
   const [images, setImages] = useState<string[]>([])
   const [imageKey, setImageKey] = useState<Number[]>([])
+  const [tags, setTags] = useState<string[]>([])
   const titleRef = useRef<any>(null);
   const prev = !!props.edit ? useDetailInfo('event', props.edit) : undefined
 
@@ -33,9 +34,9 @@ export function WriteEPage(props: { edit?: number; }) {
   const handleConfirm = () => {
     setOpen(false);
     let body: any = {
-      'ageLimit': forAdult, 'categories': selectedCate, 'content': content, 'currentHeadCount': headCurrent,
-      'endDate': endDate, 'imageIds': imageKey, 'maxHeadCount': headMax, 'startDate': startDate, 'tags': null,
-      'title': titleRef.current.value, 'type': 'PARTY'
+      'ageLimit': forAdult, 'categories': selectedCate, 'content': content, 'currentHeadCount': headCurrent ?? null,
+      'endDate': !!endDate ? endDate.toISOString() : null, 'imageIds': imageKey, 'maxHeadCount': headMax ?? null,
+      'startDate': !!startDate ? startDate.toISOString() : null, 'tags': tags, 'title': titleRef.current.value, 'type': 'PARTY'
     }
     if (!addr && (!!prev && !!prev.data && !!prev.data.event.fullLocation)) { // 공백으로 수정 시 주소 삭제
       body['abstractLocation'] = null
@@ -53,9 +54,10 @@ export function WriteEPage(props: { edit?: number; }) {
           body['latitudeLocation'] = coords.La
           body['longitudeLocation'] = coords.Ma
         }
+        console.log(body)
         mutateWrite.mutate({ apiURL: '/api/event', body: body })
       })
-    } else { mutateWrite.mutate({ apiURL: '/api/event', body: body }) }
+    } else { console.log(body); mutateWrite.mutate({ apiURL: '/api/event', body: body }) }
   }
 
   if (!!props.edit && (!!prev && !prev.isSuccess)) { return (<SkeletonWrite opt='p' />) }
@@ -65,7 +67,7 @@ export function WriteEPage(props: { edit?: number; }) {
       headMax={headMax} setHeadMax={setHeadMax} headCurrent={headCurrent} setHeadCurrent={setHeadCurrent}
       addr={addr} setAddr={setAddr} forAdult={forAdult} setForAdult={setForAdult} content={content} setContent={setContent}
       images={images} setImages={setImages} imageKey={imageKey} setImageKey={setImageKey} titleRef={titleRef}
-      open={open} setOpen={setOpen} handleSubmit={handleSubmit} handleConfirm={handleConfirm}
+      tags={tags} setTags={setTags} open={open} setOpen={setOpen} handleSubmit={handleSubmit} handleConfirm={handleConfirm}
       prev={!!props.edit ? prev : undefined} />
   )
 }

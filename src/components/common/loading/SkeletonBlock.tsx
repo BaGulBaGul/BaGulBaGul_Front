@@ -100,3 +100,15 @@ function SkeletonTitleAddDate() {
     </div>
   )
 }
+
+export function SkeletonSuggestImage() {
+  return (
+    <div className="flex flex-col gap-[12px]">
+      <Skeleton variant="rounded" height={148} width={120} />
+      <div className="flex flex-col gap-[8px]">
+        <Skeleton variant="rounded" height={14} />
+        <Skeleton variant="rounded" height={12} className="mx-[10px]" />
+      </div>
+    </div>
+  )
+}

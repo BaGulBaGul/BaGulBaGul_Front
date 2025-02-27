@@ -2,17 +2,17 @@ import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from '@tansta
 import { fetchFromURLWithPage, fetchFromURL, mutateForURL, mutateForURLJson } from '@/service/ApiService';
 import { useRouter } from 'next/navigation';
 
-export const useWrite = (origin: 'event' | 'recruitment', eventId?: number) => {
+export const useWrite = (origin: 'event' | 'recruitment', edit?: number) => {
   const router = useRouter();
   return useMutation({
-    mutationFn: (props: { apiURL: string, body: Object }) => { 
-      if (!!eventId) {return mutateForURLJson(`${props.apiURL}/${eventId}`, 'PATCH', props.body) }
-      return mutateForURLJson(props.apiURL, 'POST', props.body) 
+    mutationFn: (props: { apiURL: string, body: Object }) => {
+      if (!!edit) { return mutateForURLJson(`${props.apiURL}/${edit}`, 'PATCH', props.body) }
+      return mutateForURLJson(props.apiURL, 'POST', props.body)
     },
     onSuccess: data => {
       if (data.errorCode === 'C00000') {
         alert('성공적으로 게시되었습니다.')
-        router.push(!!eventId ? `/${origin}/${eventId}` : `/${origin}/${data.data.id}`)
+        router.push(!!edit ? `/${origin}/${edit}` : origin === 'event' ? `/event/${data.data.eventId}` : `/recruitment/${data.data.recruitmentId}`)
       }
       else { alert('게시를 실패했습니다. 다시 시도해주세요.') }
     },

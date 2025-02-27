@@ -57,10 +57,10 @@ function TabBlock(props: TabBlockProps) {
                   ))
                 ))}
               </div>
-              <SuggestBlock type={1} />
+              <SuggestBlock type={tabList[props.tab ?? 0]} eventRanking={true} />
             </div>
             : <div className='flex flex-col'>
-              <SuggestBlock type={0} />
+              <SuggestBlock type={tabList[props.tab ?? 0]} eventRanking={false} />
               <NoData text1="찾는 검색결과가 없어요." text2="지금 인기 있는 페스티벌을 만나보세요." buttonText="페스티벌 인기순 보러가기" buttonLink="/?sort=likeCount%2Cdesc" />
             </div>
         }

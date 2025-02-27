@@ -19,12 +19,12 @@ export function LikedPostBlock(props: { data: LikeProps }) {
         <div className='flex flex-col w-full justify-between'>
           <BlockInfo title={props.data.title} date={FormatDateRange(props.data.startDate, props.data.endDate)} address={props.data.abstractLocation} />
           <div className='flex flex-row items-center gap-[4px] text-14'>
-            <UserProfile userId={props.data.userId} userName={props.data.userName} />
+            <UserProfile userId={props.data.eventWriterId} userName={props.data.userName} />
             {/* {props.data.type === 'PARTY' ? <HeadCount currentHeadCount={props.data.currentHeadCount} maxHeadCount={props.data.maxHeadCount} state={props.data.state} /> : <></>} */}
           </div>
         </div>
       </div>
-      <img className='rounded-[4px] h-[116px] w-[92px] min-w-[92px] object-cover' src={props.data.headImageUrl ?? '/default_list_thumb3x.png'} />
+      <img className='rounded-[4px] h-[116px] w-[92px] min-w-[92px] object-cover' src={props.data.eventWriterProfileImageUrl ?? '/default_list_thumb3x.png'} />
     </Link>
   )
 }

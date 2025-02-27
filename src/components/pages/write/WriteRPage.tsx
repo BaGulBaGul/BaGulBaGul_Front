@@ -14,6 +14,7 @@ export function WriteRPage(props: { eventId?: number; edit?: number; }) {
   const [content, setContent] = useState('');
   const [images, setImages] = useState<string[]>([])
   const [imageKey, setImageKey] = useState<Number[]>([])
+  const [tags, setTags] = useState<string[]>([])
   const titleRef = useRef<any>(null)
   const prev = !!props.edit ? useDetailInfo('event/recruitment', props.edit) : undefined
 
@@ -24,8 +25,8 @@ export function WriteRPage(props: { eventId?: number; edit?: number; }) {
       alert('제목을 꼭 입력해주세요.')
     } else {
       let body = {
-        'content': content, 'currentHeadCount': headCurrent, 'endDate': endDate, 'imageIds': imageKey,
-        'maxHeadCount': headMax, 'startDate': startDate, 'tags': [], 'title': titleRef.current.value
+        'content': content, 'currentHeadCount': headCurrent ?? null, 'endDate': !!endDate ? endDate.toISOString() : null, 'imageIds': imageKey,
+        'maxHeadCount': headMax ?? null, 'startDate': !!startDate ? startDate.toISOString() : null, 'tags': tags, 'title': titleRef.current.value
       }
       let writeURL = !!props.eventId && !props.edit ? `/api/event/${props.eventId}/recruitment` : `/api/event/recruitment`
       mutateWrite.mutate({ apiURL: writeURL, body: body })
@@ -37,6 +38,7 @@ export function WriteRPage(props: { eventId?: number; edit?: number; }) {
     <Write startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate}
       headMax={headMax} setHeadMax={setHeadMax} headCurrent={headCurrent} setHeadCurrent={setHeadCurrent}
       content={content} setContent={setContent} images={images} setImages={setImages} imageKey={imageKey}
-      setImageKey={setImageKey} titleRef={titleRef} handleSubmit={handleSubmit} prev={!!props.edit ? prev : undefined} />
+      setImageKey={setImageKey} titleRef={titleRef} tags={tags} setTags={setTags} handleSubmit={handleSubmit} 
+      prev={!!props.edit ? prev : undefined} />
   )
 }

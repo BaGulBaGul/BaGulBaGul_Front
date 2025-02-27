@@ -49,6 +49,8 @@ export function LoadingCircle() {
   )
 }
 
+export type EventType = 'FESTIVAL' | 'LOCAL_EVENT' | 'PARTY'
+
 export interface RangeProps { from: undefined | number, to: undefined | number }
 
 export interface ParamProps {
@@ -135,7 +137,7 @@ export interface CalProps {
 
 export interface LikeProps {
   eventId: number; startDate: string; endDate: string; title: string; abstractLocation: string;
-  content: string; headImageUrl: string; userId?: number; userName?: string;
+  content: string; eventWriterProfileImageUrl: string; eventWriterId?: number; userName?: string;
 }
 
 export interface LikeRProps {

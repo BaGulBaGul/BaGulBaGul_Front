@@ -22,6 +22,7 @@ export interface WriteProps {
   addr?: any; setAddr?: Dispatch<SetStateAction<any>>; forAdult?: boolean; setForAdult?: Dispatch<boolean>;
   content: string; setContent: Dispatch<SetStateAction<string>>;
   images: string[]; setImages: Dispatch<SetStateAction<string[]>>; imageKey: Number[]; setImageKey: Dispatch<SetStateAction<Number[]>>;
+  tags: string[]; setTags: Dispatch<SetStateAction<string[]>>;
   titleRef: MutableRefObject<any>; open?: boolean; setOpen?: Dispatch<SetStateAction<boolean>>;
   handleSubmit: () => void; handleConfirm?: () => void; prev?: UseQueryResult<any, Error>;
 }

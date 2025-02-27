@@ -1,8 +1,7 @@
 import { FormatDateRange } from "@/service/Functions"
-import { BlockInfo, HashtagAccordion, HashtagButton, HeadCount, ListProps, UserProfile } from "../../common"
-import { useEffect, useState } from "react"
-import { call } from "@/service/ApiService"
+import { BlockInfo, EventType, HashtagAccordion, HashtagButton, HeadCount, ListProps, SkeletonList, UserProfile } from "../../common"
 import Link from "next/link"
+import { useRankEvents } from "@/hooks/useInRanking"
 
 export function ResultBlock(props: { data: ListProps; opt: 0 | 1; }) {
   let urlLink = `/event/${props.data.event.eventId}`
@@ -40,46 +39,38 @@ export function ResultBlock(props: { data: ListProps; opt: 0 | 1; }) {
 
 }
 
-export function SuggestBlock(props: { type: 0 | 1 }) {
-  const [suggestions, setSuggestions] = useState<ListProps[]>([])
-  useEffect(() => {
-    console.log(' :: suggestblock: ', props.type)
-    let apiURL = `/api/event?size=5&sort=likeCount,desc`
-    console.log('** suggest : ', apiURL)
-    call(apiURL, "GET", null)
-      .then((response) => {
-        console.log(response.data);
-        if (response.data.empty === false) {
-          setSuggestions(response.data.content)
-        }
-      })
-  }, [])
+export function SuggestBlock(props: { type: EventType; eventRanking: boolean; }) {
+  const rankedTags = ['피크페스티벌', '10cm', '서울재즈페스티벌', '펜타포트', '데이식스', '월디제', '넬', '터치드', '상상실현페스티벌']
+  const rankedEvents = useRankEvents(props.type)
 
   const SuggestText = () => {
     return (
       <div className="flex flex-col gap-[8px]">
         <span className="text-14">혹시 이건 어떠세요?</span>
-        <div className="flex flex-row gap-[6px] flex-wrap w-[382px]">
-          { // 자주 찾는 검색어, 1~2줄
-            suggestions.map((s, idx) => <HashtagButton tag={s.post.title} key={`st-${idx}`} />)
-          }
+        <div className="flex flex-row gap-[6px] flex-wrap">
+          {rankedTags.map((s, idx) => <HashtagButton tag={s} key={`st-${idx}`} />)}
         </div>
       </div>
     )
   }
   const SuggestImage = () => {
+    if (rankedEvents.isFetching || rankedEvents.isLoading) {
+      return (<div className="overflow-hidden">
+        <SkeletonList type='SGST' rowcol='row' />
+      </div>
+      )
+    }
     return (
-      <div className="overflow-hidden	h-[204px]">
+      <div className="overflow-hidden h-[204px]">
         <div className="flex flex-row gap-[16px] overflow-x-auto overflow-y-hide whitespace-nowrap">
-          {suggestions.map((s, idx) =>
-            <div className="flex flex-col w-[120px] gap-[12px]" key={`si-${idx}`}>
-              <img className='h-[148px] rounded-[5.65px] object-cover' src={s.post.headImageUrl ?? '/default_list_thumb3x.png'} />
-              <div className="flex flex-col text-14">
-                <span className="font-semibold truncate">{s.post.title}</span>
-                <span>{FormatDateRange(s.event.startDate, s.event.endDate)}</span>
+          {rankedEvents.data.map((s: any, idx: number) =>
+            <Link href={`/event/${s.eventId}`} className="flex flex-col w-[120px] gap-[12px]" key={`si-${idx}`}>
+              <img className='h-[148px] w-[120px] min-w-[120px] rounded-[5.65px] object-cover' src={s.headImageUrl ?? '/default_list_thumb3x.png'} />
+              <div className="flex flex-col text-14 items-center">
+                <span className="font-semibold truncate w-full text-center">{s.title}</span>
+                <span>{FormatDateRange(s.startDate, s.endDate)}</span>
               </div>
-            </div>
-          )}
+            </Link>)}
         </div>
       </div>
     )
@@ -88,7 +79,7 @@ export function SuggestBlock(props: { type: 0 | 1 }) {
   return (
     <div className="flex flex-col px-[16px] py-[20px] gap-[16px] bg-p-white">
       <SuggestText />
-      {props.type > 0 ? <SuggestImage /> : <></>}
+      {!!props.eventRanking ? <SuggestImage /> : <></>}
     </div>
   )
 }

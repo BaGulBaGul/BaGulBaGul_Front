@@ -8,7 +8,7 @@ import 'dayjs/locale/ko';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 
-import { CalProps, CommentProps, ListProps, RListProps, LikeProps, LikeRProps, AlarmProps, FilterProps } from "@/components/common";
+import { CalProps, CommentProps, ListProps, RListProps, LikeProps, LikeRProps, AlarmProps, FilterProps, EventType } from "@/components/common";
 
 // dayjs 설정
 dayjs.extend(isSameOrBefore);
@@ -17,7 +17,7 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.tz.setDefault('Asia/Seoul');
 
-export const tabList = ['FESTIVAL', 'LOCAL_EVENT', 'PARTY']
+export const tabList:EventType[]  = ['FESTIVAL', 'LOCAL_EVENT', 'PARTY']
 
 type typeType = { [key: string]: string; }
 export const typeString: typeType = { 'FESTIVAL': '페스티벌', 'LOCAL_EVENT': '지역행사', 'PARTY': '파티' }
@@ -31,7 +31,7 @@ export const FormatDateRange = (startDate: any, endDate: any) => {
     }
   } else if (!!startDate || !!endDate) {
     return `${dayjs(startDate ?? endDate).format('YY.MM.DD')}`;
-  } else {return '-'}
+  } else { return '-' }
 }
 
 export const sortLabel = (sort: string) => {
