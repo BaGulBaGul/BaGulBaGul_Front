@@ -1,5 +1,3 @@
-import { useState } from "react"
-
 function TagsInput(props: {tags: string[], setTags: any}) {
   function handleKeyDown(e: any) {
     const inputVal = e.target.value;
@@ -7,18 +5,17 @@ function TagsInput(props: {tags: string[], setTags: any}) {
       props.setTags([...props.tags,inputVal]);
       e.target.value = '';
     }
+    else if (e.key === "Backspace" && inputVal === '' && props.tags.length > 0) {
+      props.setTags(props.tags.slice(0, -1))
+    }
   }
 
-  function removeTag(index: number) {
-    props.setTags(props.tags.filter((el, i) => i !== index))
-  }
-
+console.log(props.tags)
   return (
     <div className="tags-container">
       {props.tags.map((tag, index) => (
         <div className="tag-chip" key={index}>
           <span className="text">#{tag}</span>
-          <span className="close" onClick={() => removeTag(index)}>&times;</span>
         </div>
       ))}
       <span className="grow">#
