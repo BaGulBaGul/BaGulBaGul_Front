@@ -1,23 +1,20 @@
 "use client";
 import { ThemeProvider, Dialog, createTheme, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import Link from "next/link";
-import React from "react";
+import React, {PropsWithChildren} from "react";
 
-interface AlertDialogProps {
-  open: boolean; setOpen: any; headerText: string; contextText: string[];
+interface AlertDialogProps extends PropsWithChildren {
+  open: boolean; setOpen: any; headerText: string;
   buttonText1: string; buttonText2?: string; buttonLink?: string; buttonAction?: any;
 }
+
 export const AlertDialog = (props: AlertDialogProps) => {
   const handleClose = (e: any) => { e.stopPropagation(); props.setOpen(false); }
-
   return (
     <ThemeProvider theme={dialogTheme}>
       <Dialog open={props.open} onClose={handleClose} >
         <DialogTitle>{props.headerText}</DialogTitle>
-        <DialogContent>{props.contextText.map((text: string, idx: any) => (
-          <p key={`t-${idx}`}>{text}</p>
-        ))
-        }</DialogContent>
+        <DialogContent>{props.children}</DialogContent>
         <DialogActions>{
           !!props.buttonText2
             ? <>

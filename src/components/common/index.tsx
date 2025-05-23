@@ -3,6 +3,7 @@ import { Backdrop, CircularProgress } from "@mui/material"
 import CategoryButtons from './input/CategoryButtons'
 import { PartiSelect, HeadSelect, CountSelect } from './input/Select'
 import { ImageUploader } from './input/ImageUploader'
+import { EditButton } from "./input/EditButton";
 import HashtagAccordion, { HashtagButton } from './block/HashtagAccordion'
 import { NoData } from './block/NoEvent'
 import { UserProfile } from './block/UserProfile'
@@ -25,7 +26,7 @@ import { SkeletonDetail } from "./loading/SkeletonDetail";
 import { SkeletonWrite } from "./loading/SkeletonWrite";
 
 export {
-  CategoryButtons, PartiSelect, HeadSelect, CountSelect, ImageUploader,
+  CategoryButtons, EditButton, PartiSelect, HeadSelect, CountSelect, ImageUploader,
   HashtagAccordion, HashtagButton, NoData, UserProfile, HeadCount, BlockInfo, BlockInfoDT,
   PostTab, TabPanel, TabPanels,
   ViewButton, ViewSelect, ViewFilterApplied,

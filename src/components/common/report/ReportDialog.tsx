@@ -36,8 +36,10 @@ export function ReportDialog(props: { open: boolean; setOpen: any; type: 'commen
   return (
     <>
       <FullscreenDialog child={<ReportTab />} open={props.open} handleClose={handleClose} handleDone={handleReport} headerText='신고하기' footerText='제출하기' bg='#ECECEC' />
-      <AlertDialog open={openA} setOpen={setOpenA} headerText='이미 신고한 게시글입니다'
-        contextText={['이 글은 이미 신고되었어요!', '더 꺠끗한 바글바글, 함께 만들어요']} buttonText1='확인' />
+      <AlertDialog open={openA} setOpen={setOpenA} headerText='이미 신고한 게시글입니다'buttonText1='확인'>
+          <p>이 글은 이미 신고되었어요!</p>
+          <p>더 꺠끗한 바글바글, 함께 만들어요</p>  
+      </AlertDialog>
     </>
   )
 }
