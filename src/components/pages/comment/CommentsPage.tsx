@@ -54,8 +54,10 @@ export function CommentsPage(props: { origin: 'event' | 'event/recruitment'; pos
       <CommentDrawer open={openD} opt={!!userinfo && !!targetM && userinfo.id === targetM.userId ? 0 : 1} target={targetM}
         toggleDrawer={toggleDrawer} setOpenM={setOpenM} handleDelete={handleDelete} />
       <ModifyInput open={openM} setOpenM={setOpenM} target={targetM} setTarget={setTargetM} origin={props.origin} qKey={qKey} />
-      <AlertDialog open={openA} setOpen={setOpenA} headerText='잠깐! 로그인이 필요해요' contextText={['함께 소통하려면 로그인해 주세요.', '금방 끝나요!']}
-        buttonText1='닫기' buttonText2='로그인 하러가기' buttonLink='/signin' />
+      <AlertDialog open={openA} setOpen={setOpenA} headerText='잠깐! 로그인이 필요해요' buttonText1='닫기' buttonText2='로그인 하러가기' buttonLink='/signin'>
+          <p>함께 소통하려면 로그인해 주세요.</p>
+          <p>금방 끝나요!</p>
+      </AlertDialog>
     </>
   );
 }

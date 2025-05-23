@@ -8,7 +8,7 @@ import 'dayjs/locale/ko';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 
-import { CalProps, CommentProps, ListProps, RListProps, LikeProps, LikeRProps, AlarmProps, FilterProps, EventType } from "@/components/common";
+import { FilterProps, EventType } from "@/components/common";
 
 // dayjs 설정
 dayjs.extend(isSameOrBefore);
@@ -40,41 +40,6 @@ export const sortLabel = (sort: string) => {
     case 'views,desc': return '조회수'
     case 'likeCount,desc': return '좋아요수'
     case 'commentCount,desc': return '댓글수'
-  }
-}
-
-// 이벤트 저장 리스트 업데이트
-export function setUniqueList(opt: string, currentList: any[], setItems: any, items?: ListProps[] | RListProps[] | CommentProps[] | CalProps[] | LikeProps[] | LikeRProps[] | AlarmProps[]) {
-
-  function setFilter(itms: any[], id: string, id2?: string,) {
-    const newItems = currentList.length > 0 ? itms.concat(currentList) : itms
-    const ids = newItems.map((post) => id2 ? post[id][id2] : post[id]);
-    console.log('ids: ', ids)
-    const filtered = newItems.filter((post, index: number) =>
-      index === 0 || index > 0 && !(ids.slice(0, index)).includes(id2 ? post[id][id2] : post[id])
-    );
-    console.log('filtered: ', filtered)
-    setItems(filtered);
-  }
-
-  if (items) {
-    console.log('opt: ', opt)
-    switch (opt) {
-      case 'EVT':
-        setFilter(items as ListProps[] | RListProps[], 'post', 'postId'); break;
-      case 'CMT':
-        setFilter(items as CommentProps[], 'commentId'); break;
-      case 'RPL':
-        setFilter(items as CommentProps[], 'commentChildId'); break;
-      case 'CAL':
-        setFilter(items as CalProps[], 'eventId'); break;
-      case 'L-EVT':
-        setFilter(items as LikeProps[], 'eventId'); break;
-      case 'L-RCT':
-        setFilter(items as LikeRProps[], 'recruitmentId'); break;
-      case 'ALRM':
-        setFilter(items as AlarmProps[], 'alarmId'); break;
-    }
   }
 }
 

@@ -1,3 +1,4 @@
+'use client';
 import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from '@tanstack/react-query';
 import { fetchFromURLWithPage, fetchFromURL, mutateForURL, mutateForURLJson } from '@/service/ApiService';
 import { useRouter } from 'next/navigation';
