@@ -40,7 +40,7 @@ export function MyPage() {
             <SetBlock opt={1} icon={<SmileIcn />} title='프로필 수정' url='/mypage/edit' />
           </div>
           <div className="flex flex-col bg-p-white" id='mypage-set3'>
-            <div className="p-[16px] text-14 font-semibold text-black"> 이용 정보</div>
+            <div className="p-[16px] text-14 font-semibold text-black">이용 정보</div>
             <SetBlock opt={1} title='약관 및 정책' url='/' />
             <SetBlock opt={1} title='회원 탈퇴히기' url='/' />
           </div>

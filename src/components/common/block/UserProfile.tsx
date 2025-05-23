@@ -28,9 +28,11 @@ function NoUser() {
         <img className='w-[24px] h-[24px]' src="/profile_ghost.svg" onClick={handleOpen} />
         <p className="text-14 ps-[4px] text-gray3">Ghost</p>
       </div>
-      <AlertDialog open={open} setOpen={setOpen} headerText='삭제된 유저입니다'
-        contextText={['죄송합니다. 사용자를 찾을 수 없습니다.', '삭제된 유저의 게시글은 확인할 수 있지만', '사용자의 정보를 불러올 수 없습니다.']}
-        buttonText1='확인' />
+      <AlertDialog open={open} setOpen={setOpen} headerText='삭제된 유저입니다' buttonText1='확인'>
+          <p>죄송합니다. 사용자를 찾을 수 없습니다.</p>
+          <p>삭제된 유저의 게시글은 확인할 수 있지만</p>
+          <p>사용자의 정보를 불러올 수 없습니다.</p>
+      </AlertDialog>
     </>
   )
 }

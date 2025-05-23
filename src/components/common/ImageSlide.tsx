@@ -1,10 +1,25 @@
 "use client";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import Slider from "react-slick";
 import { ArrowNext, ArrowPrev } from "./Arrow";
+import { TrashIcn } from "./styles/Icon";
 
-export function ImageSlide(props: { images: string[] }) {
+interface ImageSlideProps {
+  images: string[]; setImages?: Dispatch<SetStateAction<string[]>>;
+  imageKey?: Number[]; setImageKey?: Dispatch<SetStateAction<Number[]>>;
+}
+export function ImageSlide(props: ImageSlideProps) {
   const [index, setIndex] = useState(0);
+  const handleDelete = () => {
+    if (!!props.setImages && !!props.imageKey && !!props.setImageKey) {
+      if (props.images.length > 0 && props.imageKey.length > 0 && props.images.length === props.imageKey.length) {
+        let tmpImgs = (props.images).filter((value, i) => i !== index)
+        props.setImages(tmpImgs)
+        let tmpKeys = (props.imageKey).filter((value, i) => i !== index)
+        props.setImageKey(tmpKeys)
+      }
+    }
+  }
   const settings = {
     className: "center", infinite: true, slidesToShow: 1, slidesToScroll: 1,
     nextArrow: <ArrowNext cN='slick-next-detail' />, prevArrow: <ArrowPrev cN='slick-prev-detail' />,
@@ -12,7 +27,10 @@ export function ImageSlide(props: { images: string[] }) {
   }
   return (
     <div className='relative'>
-      <span className="slide-chip">{`${index + 1}/${props.images.length}`}</span>
+      <div className="slide-wrap flex flex-row justify-between">
+        <span className="slide-chip">{`${index + 1}/${props.images.length}`}</span>
+        {!!props.setImages ? <button onClick={handleDelete}><TrashIcn btn={true} /></button> : <></>}
+      </div>
       <Slider {...settings} className='h-[280px] bg-gray1 slider-detail'>
         {props.images.map((image, idx) => (
           <img key={`img-{idx}`} src={image} height="280" className='h-[280px] object-cover' />
