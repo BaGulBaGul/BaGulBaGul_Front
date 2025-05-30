@@ -1,10 +1,14 @@
-import { getParams, useEffectCntFilter } from "@/service/Functions";
+import { FormatDateRange, getParams, headCountString, useEffectCntFilter } from "@/service/Functions";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { ReadonlyURLSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
-import { CategoryButtons, PostTab, ViewFilterApplied, ViewSelect } from "@/components/common";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { CategoryButtons, PostTab, FilterApplied } from "@/components/common";
 import dayjs from 'dayjs';
 import { SearchBar } from "./SearchBar";
+import { FilterDialog } from '@/components/common/filter/FilterDialog';
+import { closeFilter, handleFilterValue } from '@/components/common/filter/Filter';
+import { FilterCollapse, FilterSortRadio } from '@/components/common/filter/FilterWrapper';
+import { FilterCalendar, FilterNumber, FilterNumberRange } from '@/components/common/filter/FilterContent';
 
 export const SearchLayout = (props: { opt: 'TTL' | 'TAG'; sp: ReadonlyURLSearchParams; router: AppRouterInstance; children: React.ReactNode; }) => {
   // type
@@ -79,10 +83,26 @@ export const SearchLayout = (props: { opt: 'TTL' | 'TAG'; sp: ReadonlyURLSearchP
           <div className='flex justify-between items-center px-[16px] py-[10px]'>
             <PostTab value={tab} handleChange={handleChange} />
           </div>
-          <ViewFilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters} p={p} setP={setP} handleRt={handleRt} />
+          <FilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters} p={p} setP={setP} handleRt={handleRt} />
           <CategoryButtons selectedCate={selectedCate} setSelectedCate={setSelectedCate} />
         </div>
-        <ViewSelect p={p} setP={setP} open={open ?? false} setOpen={setOpen} routeToFilter={routeToFilter} />
+        <FilterDialog open={open} handleClose={() => { closeFilter(setOpen, routeToFilter) }} >
+          <FilterSortRadio value={p.sort} handleChange={(e: ChangeEvent<HTMLInputElement>, newSort: string) => { handleFilterValue(setP, 'sort', newSort) }} />
+          <FilterCollapse title={'날짜선택'} type='CAL' value={!startDate ? '' : FormatDateRange(startDate, endDate)}>
+            <FilterCalendar startDate={startDate} endDate={endDate} onChange={(dates: [any, any]) => { setP((prev: any) => ({ ...prev, dateRange: dates })) }} />
+          </FilterCollapse>
+          <FilterCollapse title={'참여인원'} type="NUM" value={p.participants} >
+            <FilterNumber value={p.participants} onChange={(newValue) => handleFilterValue(setP, 'participants', newValue)} />
+          </FilterCollapse>
+          <FilterCollapse title={'규모설정'} type="NUM" value={!!p.headCount.from || !!p.headCount.to ? headCountString(p.headCount.from, p.headCount.to) : 0}>
+            <div className='flex flex-col gap-[8px]'>
+              <FilterNumberRange
+                minNumber={{ value: p.headCount.from, onChange: (newValue: any) => { handleFilterValue(setP, 'headCount', { from: newValue ?? undefined, to: p.headCount.to }) } }}
+                maxNumber={{ value: p.headCount.to, min: p.headCount.from, onChange: (newValue: any) => { handleFilterValue(setP, 'headCount', { from: p.headCount.from, to: newValue ?? undefined }) } }} />
+              <div className='self-end text-12 text-gray3'>*최대인원 제한 없을 경우 '0'명으로 표기</div>
+            </div>
+          </FilterCollapse>
+        </FilterDialog>
         {<div className={filterCnt > 0 ? 'mt-[120px]' : 'mt-[94px]'}>
           {props.children}
         </div>}

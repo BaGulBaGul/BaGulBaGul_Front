@@ -1,4 +1,4 @@
-import { Divider, ViewButton } from "@/components/common";
+import { Divider, FilterButton } from "@/components/common";
 import { HeaderBackIcn, MagnifyingIcn } from "@/components/common/styles/Icon";
 import { useRef } from "react";
 
@@ -29,7 +29,7 @@ export function SearchBar(props: SearchBarProps) {
                 placeholder={props.opt === 0 ? '피크페스티벌' : undefined} ref={inputRef} onKeyDown={handleSearch} required />
               <button onClick={handleSearch}><MagnifyingIcn size={20} /></button>
             </div>
-            <ViewButton handleOpen={handleOpen} cnt={props.filterCnt} fs={14} />
+            <FilterButton handleOpen={handleOpen} cnt={props.filterCnt} fs={14} />
           </div>
         </div>
       </div>
@@ -45,7 +45,7 @@ export function SearchBar(props: SearchBarProps) {
               <TagIcn />
               <div className="inline-block align-middle text-14">{props.tag}</div>
             </div>
-            <ViewButton handleOpen={handleOpen} cnt={props.filterCnt} fs={14} />
+            <FilterButton handleOpen={handleOpen} cnt={props.filterCnt} fs={14} />
           </div>
         </div>
         <Divider />

@@ -1,14 +1,20 @@
 "use client";
 import { Box, Collapse, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, ThemeProvider, createTheme } from '@mui/material';
-import React, { useEffect, useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 import { Users } from './_TmpData';
 import dayjs from 'dayjs';
-import { ViewButton } from '@/components/common';
+import { FilterApplied, FilterButton } from '@/components/common';
 import { ExpandButton } from '@/components/common/block/ExpandButton';
+import { FilterDialog } from '@/components/common/filter/FilterDialog';
+import { closeFilter } from '@/components/common/filter/Filter';
+import { FilterCollapse, FilterSortRadio } from '@/components/common/filter/FilterWrapper';
+import { FilterCalendar } from '@/components/common/filter/FilterContent';
+import { FormatDateRange } from '@/service/Functions';
+
 
 // * tableheader sticky 적용하기
 // * width 좀 더 수정
-// * ====== 250509 필터 적용 작업 중 : hold - 기존 ViewSelect 컴포넌트 리팩토링 필요
+// * ====== 250529 필터 적용 작업 중
 // * 정지, 삭제 시 팝업 구현
 export function UserManagePage() {
 	interface Column {
@@ -36,33 +42,39 @@ export function UserManagePage() {
 	const [filters, setFilters] = useState(['sort'])
 	const [filterCnt, setFilterCnt] = useState(0)
 	const [sort, setSort] = useState('createdAt,desc')
-	const [joinedDate, setJoinedDate] = useState(null)
-	useEffect(() => {
-	})
+	const [joinedDate, setJoinedDate] = useState<Date | undefined>(undefined)
 
 	// //   if (!!props.edit && (!!prev && !prev.isSuccess)) { return (<SkeletonWrite opt='r' />) }
 	return (
-		<ThemeProvider theme={tableTheme}>
-			<div className="pt-[60px]">
-				<UserSearchBar handleOpen={handleOpen} filterCnt={filterCnt} />
-				<TableContainer sx={{ overflowX: 'initial', paddingTop: '66px' }}>
-					<Table>
-						<TableHead>
-							<TableRow>
-								{columns.map((column) => (
-									<TableCell key={column.id} align={column.align} style={{ width: column.width ? `${column.width}px` : `${(column.minWidth! / 414) * 100}%` }}>
-										{column.label}
-									</TableCell>))}
-								<TableCell className="w-[49px]" />
-							</TableRow>
-						</TableHead>
-						<TableBody>
-							{rows.map((row) => (<UserRowBlock row={row} />))}
-						</TableBody>
-					</Table>
-				</TableContainer>
-			</div>
-		</ThemeProvider >
+		<>
+			<ThemeProvider theme={tableTheme}>
+				<div className="pt-[60px]">
+					<UserSearchBar handleOpen={handleOpen} filterCnt={filterCnt} />
+					<TableContainer sx={{ overflowX: 'initial', paddingTop: '66px' }}>
+						<Table>
+							<TableHead>
+								<TableRow>
+									{columns.map((column) => (
+										<TableCell key={column.id} align={column.align} style={{ width: column.width ? `${column.width}px` : `${(column.minWidth! / 414) * 100}%` }}>
+											{column.label}
+										</TableCell>))}
+									<TableCell className="w-[49px]" />
+								</TableRow>
+							</TableHead>
+							<TableBody>
+								{rows.map((row) => (<UserRowBlock row={row} />))}
+							</TableBody>
+						</Table>
+					</TableContainer>
+				</div>
+			</ThemeProvider >
+			<FilterDialog open={open} handleClose={() => { closeFilter(setOpen) }} >
+				<FilterSortRadio value={sort} handleChange={(e: ChangeEvent<HTMLInputElement>, newSort: string) => { setSort(newSort) }} />
+				<FilterCollapse title={'가입일자'} type='CAL' value={!joinedDate ? '' : FormatDateRange(joinedDate, null)}>
+					<FilterCalendar startDate={joinedDate} endDate={undefined} onChange={(date: any) => { setJoinedDate(date) }} range={false} />
+				</FilterCollapse>
+			</FilterDialog>
+		</>
 	)
 
 	function UserRowBlock(props: { row: any }) {
@@ -99,11 +111,11 @@ export function UserManagePage() {
 	}
 }
 
-function UserSearchBar(handleOpen: any, filterCnt: number) {
+function UserSearchBar({ handleOpen, filterCnt }: { handleOpen: any, filterCnt: number }) {
 	return (
 		<div className="flex flex-row px-[16px] py-[18px] gap-[10px] w-full bg-p-white fixed top-[60px] z-20">
 			<p className="w-full h-[30px] bg-gray1" />
-			<ViewButton handleOpen={handleOpen} cnt={filterCnt} fs={18} />
+			<FilterButton handleOpen={handleOpen} cnt={filterCnt} fs={18} />
 		</div>
 	)
 }

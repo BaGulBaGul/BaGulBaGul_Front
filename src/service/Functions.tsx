@@ -71,7 +71,7 @@ export const useEffectCntFilter = (searchParams: any, setFilters: any, setFilter
         paramFilter.push('dayRange')
       } else if ((key === 'hcMin' || key === 'hcMax') && !paramFilter.includes('headCount')) {
         paramFilter.push('headCount')
-      } else if ((key === 'sort' || key === 'ptcp') && !paramFilter.includes(key)) {
+      } else if ((key === 'sort' || key === 'ptcp' || key === 'state') && !paramFilter.includes(key)) {
         paramFilter.push(key)
       }
     }
