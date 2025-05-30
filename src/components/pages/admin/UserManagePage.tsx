@@ -11,10 +11,9 @@ import { FilterCollapse, FilterSortRadio } from '@/components/common/filter/Filt
 import { FilterCalendar } from '@/components/common/filter/FilterContent';
 import { FormatDateRange } from '@/service/Functions';
 
-
 // * tableheader sticky 적용하기
 // * width 좀 더 수정
-// * ====== 250529 필터 적용 작업 중
+// * api 호출 시 필터 적용 작업
 // * 정지, 삭제 시 팝업 구현
 export function UserManagePage() {
 	interface Column {
@@ -44,15 +43,39 @@ export function UserManagePage() {
 	const [sort, setSort] = useState('createdAt,desc')
 	const [joinedDate, setJoinedDate] = useState<Date | undefined>(undefined)
 
+	useEffect(() => {
+		if (!!joinedDate && !filters.includes('joinedDate')) {
+			filters.push('joinedDate')
+			setFilters(filters)
+		}
+		if (filters.length === 1 && sort === 'createdAt,desc') { setFilterCnt(0) }
+		else if (filters.length > 0 && filters.length !== filterCnt) { setFilterCnt(filters.length) }
+		console.log('filters', filters, 'filterCnt', filterCnt, 'sort', sort, 'joinedDate', joinedDate);
+	}, [sort, joinedDate])
+
+	const handleDeleteFilter = (value: string) => {
+		let newFilters = (filters).filter((f) => f !== value)
+		setFilters(newFilters)
+		setFilterCnt(newFilters.length)
+		switch (value) {
+			case 'sort':
+				setSort('createdAt,desc')
+				break;
+			case 'joinedDate':
+				setJoinedDate(undefined)
+				break;
+		}
+	}
 	// //   if (!!props.edit && (!!prev && !prev.isSuccess)) { return (<SkeletonWrite opt='r' />) }
 	return (
 		<>
 			<ThemeProvider theme={tableTheme}>
 				<div className="pt-[60px]">
 					<UserSearchBar handleOpen={handleOpen} filterCnt={filterCnt} />
-					<TableContainer sx={{ overflowX: 'initial', paddingTop: '66px' }}>
+					<TableContainer sx={{ overflowX: 'initial', paddingTop: '66px', backgroundColor: '#FFFFFF' }}>
 						<Table>
 							<TableHead>
+								<FilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters} opt='UPDATE' sort={sort} joinedDate={joinedDate} handleDelete={handleDeleteFilter} />
 								<TableRow>
 									{columns.map((column) => (
 										<TableCell key={column.id} align={column.align} style={{ width: column.width ? `${column.width}px` : `${(column.minWidth! / 414) * 100}%` }}>
@@ -68,7 +91,7 @@ export function UserManagePage() {
 					</TableContainer>
 				</div>
 			</ThemeProvider >
-			<FilterDialog open={open} handleClose={() => { closeFilter(setOpen) }} >
+			<FilterDialog open={open} handleClose={() => { closeFilter(setOpen); }} >
 				<FilterSortRadio value={sort} handleChange={(e: ChangeEvent<HTMLInputElement>, newSort: string) => { setSort(newSort) }} />
 				<FilterCollapse title={'가입일자'} type='CAL' value={!joinedDate ? '' : FormatDateRange(joinedDate, null)}>
 					<FilterCalendar startDate={joinedDate} endDate={undefined} onChange={(date: any) => { setJoinedDate(date) }} range={false} />
