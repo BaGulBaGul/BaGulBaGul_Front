@@ -52,7 +52,7 @@ export default function Page() {
       <SearchBar opt={0} title={title} setOpen={setOpen} filterCnt={filterCnt} setTitle={setTitle} router={router} />
       <div className='w-full p-0 pt-[66px]'>
         <div className='fixed top-[66px] w-full bg-p-white z-10'>
-          <FilterApplied filterCnt={filterCnt} filters={filters} p={p} setP={setP} setFilters={setFilters} />
+          <FilterApplied filterCnt={filterCnt} filters={filters} opt="REDIRECT" p={p} setP={setP} setFilters={setFilters} />
           <ThemeProvider theme={tabTheme}>
             <ToggleButtonGroup value={tab} exclusive onChange={handleTab} >
               <ToggleButton value={0}>페스티벌</ToggleButton>

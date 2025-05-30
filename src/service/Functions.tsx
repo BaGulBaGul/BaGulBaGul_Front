@@ -49,7 +49,7 @@ export const useEffectFilterApplied = (p: FilterProps, setFilters: any, setFilte
     let paramFilter: string[] = ['sort']
     if (JSON.stringify(p.dateRange) !== JSON.stringify([undefined, undefined]) && !paramFilter.includes('dayRange')) {
       paramFilter.push('dayRange')
-    } if (p.participants > 0 && !paramFilter.includes('ptcp')) {
+    } if (!!p.participants && !paramFilter.includes('ptcp')) {
       paramFilter.push('ptcp')
     } if (JSON.stringify(p.headCount) !== JSON.stringify({ from: undefined, to: undefined }) && !paramFilter.includes('headCount')) {
       paramFilter.push('headCount')

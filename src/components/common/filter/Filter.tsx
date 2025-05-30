@@ -1,6 +1,6 @@
-export const closeFilter = (setOpen: any, routeToFilter?: any) => {
+export const closeFilter = (setOpen: any, func?: () => void) => {
   setOpen(false);
-  if (!!routeToFilter) { routeToFilter(); }
+  if (!!func) { func(); }
 }
 
 export const handleFilterValue = (setP: any, key: string, value: any) => {

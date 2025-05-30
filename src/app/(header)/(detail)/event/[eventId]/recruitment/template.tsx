@@ -8,7 +8,7 @@ import { HeaderBackIcn } from '@/components/common/styles/Icon';
 import { FilterDialog } from '@/components/common/filter/FilterDialog';
 import { closeFilter, handleFilterValue } from '@/components/common/filter/Filter';
 import { FilterCheck, FilterCollapse, FilterSortRadio } from '@/components/common/filter/FilterWrapper';
-import { FilterCalendar, FilterNumber, FilterNumberRange } from '@/components/common/filter/FilterContent';
+import { FilterCalendar, FilterNumber } from '@/components/common/filter/FilterContent';
 
 export default function Template({ children }: { children: React.ReactNode }) {
   const prms = useParams()
@@ -61,10 +61,9 @@ export default function Template({ children }: { children: React.ReactNode }) {
       </div>
       {filterCnt <= 0 ? <></>
         : <div className='fixed top-[104px] w-full h-[36px] bg-p-white z-10'>
-          <FilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters} p={p} setP={setP} handleRt={handleRt} />
+          <FilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters} opt="REDIRECT" p={p} setP={setP} handleRt={handleRt} />
         </div>
       }
-      {/* <ViewSelect p={p} setP={setP} open={open} setOpen={setOpen} routeToFilter={routeToFilter} /> */}
       <FilterDialog open={open} handleClose={() => { closeFilter(setOpen, routeToFilter) }} >
         <FilterCheck title='모집 중만 보기' checked={p.recruiting} handleChange={(e: React.ChangeEvent<HTMLInputElement>) => { handleFilterValue(setP, 'recruiting', e.target.checked) }} />
         <FilterSortRadio value={p.sort} handleChange={(e: ChangeEvent<HTMLInputElement>, newSort: string) => { handleFilterValue(setP, 'sort', newSort) }} />

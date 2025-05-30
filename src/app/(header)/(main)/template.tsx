@@ -66,7 +66,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
           </div>
         </div>
         <div className='sticky top-[102px] relative bg-p-white z-10'>
-          <FilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters} p={p} setP={setP} handleRt={handleRt} />
+          <FilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters} opt="REDIRECT" p={p} setP={setP} handleRt={handleRt} />
           <CategoryButtons selectedCate={selectedCate} setSelectedCate={setSelectedCate} />
         </div>
         <FilterDialog open={open} handleClose={() => { closeFilter(setOpen, routeToFilter) }} >
