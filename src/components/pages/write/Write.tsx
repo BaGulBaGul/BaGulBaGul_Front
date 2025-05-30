@@ -4,7 +4,7 @@ import { AlertDialog, CategoryButtons, Divider, ImageSlide, ImageUploader, Count
 import { MagnifyingIcn } from '@/components/common/styles/Icon';
 import { AddressDialog, autoResizeTextarea, DateSelect, WriteProps } from '.';
 import { ThemeProvider } from '@emotion/react';
-import { viewCheckTheme } from '@/components/common/filter/ViewFilterTheme';
+import { filterCheckTheme } from '@/components/common/filter/FilterTheme';
 import { Checkbox, FormControl, FormControlLabel } from '@mui/material';
 import TagsInput from '@/components/common/input/TagInput';
 
@@ -70,7 +70,7 @@ export function Write(props: WriteProps) {
           {props.forAdult !== undefined && !!props.setForAdult
             ? <div className="flex flex-row justify-between">
               <div className={`${props.forAdult ? 'text-primary-blue' : 'text-gray3'} text-14 font-semibold pb-[2px]`}>19세 미만 참여불가 파티</div>
-              <ThemeProvider theme={viewCheckTheme}>
+              <ThemeProvider theme={filterCheckTheme}>
                 <FormControl>
                   <FormControlLabel control={<Checkbox checked={props.forAdult} onChange={handleAdult} />} label="" />
                 </FormControl>

@@ -33,7 +33,7 @@ const RadioIcn = (props: { val: boolean }) => {
     )
   }
 }
-export const viewCheckTheme = createTheme({
+export const filterCheckTheme = createTheme({
   components: {
     MuiFormControlLabel: {
       defaultProps: { labelPlacement: 'start', },
@@ -44,7 +44,7 @@ export const viewCheckTheme = createTheme({
   },
 });
 
-export const viewTheme = createTheme({
+export const filterTheme = createTheme({
   components: {
     MuiDialog: {
       styleOverrides: {
@@ -67,30 +67,6 @@ export const viewTheme = createTheme({
     },
   }
 })
-
-export const HeadInputRoot = styled('div')(
-  ({ theme }) => `
-  font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
-  font-weight: 400; color: #1E1E1E; display: grid; width: 84px;
-  // firefox
-  &:focus-visible { outline: 0; }
-`,
-);
-
-export const HeadInputElement = styled('input')(
-  ({ theme }) => `
-  font-size: 14px; font-family: inherit; font-weight: 400;
-  text-align: right; line-height: 160%; color: #1E1E1E;
-  border: none; outline: 0; width: 84px;
-`,
-);
-
-export const HeadButton = styled('button')(
-  ({ theme }) => `
-  display: 'hide'; -webkit-appearance: none; 
-  margin: 0;  pointer-events: none;
-`,
-);
 
 export const PartiInputRoot = styled('div')(
   ({ theme }) => `
