@@ -1,7 +1,7 @@
 'use client';
 import { Backdrop, CircularProgress } from "@mui/material"
 import CategoryButtons from './input/CategoryButtons'
-import { PartiSelect, HeadSelect, CountSelect } from './input/Select'
+import { CountSelect } from './input/Select'
 import { ImageUploader } from './input/ImageUploader'
 import { EditButton } from "./input/EditButton";
 import HashtagAccordion, { HashtagButton } from './block/HashtagAccordion'
@@ -11,8 +11,7 @@ import { HeadCount } from './block/HeadCount'
 import { BlockInfo, BlockInfoDT } from './block/BlockInfo'
 import PostTab from './tabs/PostTab'
 import { TabPanel, TabPanels } from './tabs/TabPanel'
-import { ViewButton, ViewSelect } from './filter/ViewFilter'
-import { ViewFilterApplied } from './filter/ViewFilterApplied'
+import { FilterApplied } from './filter/FilterApplied'
 import MoreButton from './MoreButton'
 import { ImageSlide } from './ImageSlide'
 import { WriteFab } from './WriteFab';
@@ -24,12 +23,13 @@ import { SkeletonComments, SkeletonReplies, SkeletonComment } from "./loading/Sk
 import { SkeletonList } from "./loading/SkeletonList";
 import { SkeletonDetail } from "./loading/SkeletonDetail";
 import { SkeletonWrite } from "./loading/SkeletonWrite";
+import { FilterButton } from "./filter/FilterButton";
 
 export {
-  CategoryButtons, EditButton, PartiSelect, HeadSelect, CountSelect, ImageUploader,
+  CategoryButtons, EditButton, CountSelect, ImageUploader,
   HashtagAccordion, HashtagButton, NoData, UserProfile, HeadCount, BlockInfo, BlockInfoDT,
   PostTab, TabPanel, TabPanels,
-  ViewButton, ViewSelect, ViewFilterApplied,
+  FilterButton, FilterApplied,
   MoreButton, ImageSlide, WriteFab,
   FullscreenDialog, AlertDialog,
   SkeletonCarousel,SkeletonComments, SkeletonReplies, SkeletonComment,
@@ -83,7 +83,7 @@ export interface RListProps {
 }
 
 export interface FilterProps {
-  sort: string; dateRange: (Date | undefined)[]; participants: number;
+  sort: string; dateRange?: (Date | undefined)[]; date?: (Date | undefined); participants?: number;
   headCount?: RangeProps; proceeding?: boolean; recruiting?: boolean;
 }
 

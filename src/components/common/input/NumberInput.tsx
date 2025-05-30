@@ -1,9 +1,8 @@
 import { forwardRef } from "react";
 import { Unstable_NumberInput as NumberInput, NumberInputProps } from '@mui/base'
 import {
-  HeadInputRoot, HeadInputElement, HeadButton,
   PartiInputRoot, PartiInputElement, PartiButton
-} from "../filter/ViewFilterTheme";
+} from "../filter/FilterTheme";
 
 export const PartiNumberInput = forwardRef(
   function CustomNumberInput(props: NumberInputProps, ref: React.ForwardedRef<HTMLDivElement>,) {
@@ -28,11 +27,3 @@ const RemoveIcn = () => (
     <path d="M18 13H6C5.45 13 5 12.55 5 12C5 11.45 5.45 11 6 11H18C18.55 11 19 11.45 19 12C19 12.55 18.55 13 18 13Z" fill="black" />
   </svg>
 )
-
-export const HeadNumberInput = forwardRef(
-  function CustomNumberInput(props: NumberInputProps, ref: React.ForwardedRef<HTMLDivElement>) {
-    return (
-      <NumberInput slots={{ root: HeadInputRoot, input: HeadInputElement, incrementButton: HeadButton, decrementButton: HeadButton, }}
-        {...props} ref={ref} />
-    );
-  });

@@ -1,10 +1,14 @@
 "use client";
-import { useState, useEffect } from 'react';
+import { useState, useEffect, ChangeEvent } from 'react';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
-import { getParams, useEffectCntFilter } from '@/service/Functions';
-import { ViewButton, ViewSelect, ViewFilterApplied, WriteFab } from '@/components/common';
+import { FormatDateRange, getParams, useEffectCntFilter } from '@/service/Functions';
+import { FilterButton, FilterApplied, WriteFab } from '@/components/common';
 import dayjs from 'dayjs';
 import { HeaderBackIcn } from '@/components/common/styles/Icon';
+import { FilterDialog } from '@/components/common/filter/FilterDialog';
+import { closeFilter, handleFilterValue } from '@/components/common/filter/Filter';
+import { FilterCheck, FilterCollapse, FilterSortRadio } from '@/components/common/filter/FilterWrapper';
+import { FilterCalendar, FilterNumber, FilterNumberRange } from '@/components/common/filter/FilterContent';
 
 export default function Template({ children }: { children: React.ReactNode }) {
   const prms = useParams()
@@ -53,14 +57,24 @@ export default function Template({ children }: { children: React.ReactNode }) {
       <div className="fixed top-[44px] left-0 right-0 flex flex-row justify-between place-items-center w-full h-[60px] px-[17px] py-[10px] bg-p-white z-30">
         <button onClick={() => router.back()}><HeaderBackIcn /></button>
         <div className='text-18'>모집글</div>
-        <ViewButton handleOpen={handleOpen} cnt={filterCnt} fs={18} />
+        <FilterButton handleOpen={handleOpen} cnt={filterCnt} fs={18} />
       </div>
       {filterCnt <= 0 ? <></>
         : <div className='fixed top-[104px] w-full h-[36px] bg-p-white z-10'>
-          <ViewFilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters} p={p} setP={setP} handleRt={handleRt} />
+          <FilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters} p={p} setP={setP} handleRt={handleRt} />
         </div>
       }
-      <ViewSelect p={p} setP={setP} open={open} setOpen={setOpen} routeToFilter={routeToFilter} />
+      {/* <ViewSelect p={p} setP={setP} open={open} setOpen={setOpen} routeToFilter={routeToFilter} /> */}
+      <FilterDialog open={open} handleClose={() => { closeFilter(setOpen, routeToFilter) }} >
+        <FilterCheck title='모집 중만 보기' checked={p.recruiting} handleChange={(e: React.ChangeEvent<HTMLInputElement>) => { handleFilterValue(setP, 'recruiting', e.target.checked) }} />
+        <FilterSortRadio value={p.sort} handleChange={(e: ChangeEvent<HTMLInputElement>, newSort: string) => { handleFilterValue(setP, 'sort', newSort) }} />
+        <FilterCollapse title={'날짜선택'} type='CAL' value={!startDate ? '' : FormatDateRange(startDate, endDate)}>
+          <FilterCalendar startDate={startDate} endDate={endDate} onChange={(dates: [any, any]) => { setP((prev: any) => ({ ...prev, dateRange: dates })) }} />
+        </FilterCollapse>
+        <FilterCollapse title={'참여인원'} type="NUM" value={p.participants} >
+          <FilterNumber value={p.participants} onChange={(newValue) => handleFilterValue(setP, 'participants', newValue)} />
+        </FilterCollapse>
+      </FilterDialog>
       <div className={`flex flex-col w-full ${filterCnt > 0 ? 'pt-[140px]' : 'pt-[104px]'}`}>
         {children}
       </div>
