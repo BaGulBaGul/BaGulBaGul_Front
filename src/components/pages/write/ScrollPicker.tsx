@@ -3,7 +3,8 @@ import { Modal } from '@mui/material'
 import dayjs from 'dayjs';
 import Picker from 'react-mobile-picker'
 
-export function ScrollPicker(props: { open: boolean, setOpen: any, data: dayjs.Dayjs | null, setData: any }) {
+// 초기값 처리 추가 필요
+export function ScrollPicker(props: { open: boolean, data: dayjs.Dayjs | null, handleClose: any }) {
   const data = dayjs(props.data) ?? dayjs()
   const [dateValue, setDateValue] = useState({ year: data.year(), month: data.month() + 1, day: data.date() })
   const [timeValue, setTimeValue] = useState({
@@ -15,8 +16,7 @@ export function ScrollPicker(props: { open: boolean, setOpen: any, data: dayjs.D
   const handleClose = () => {
     let hourV = timeValue.ampm === '오후' ? timeValue.hour + 12 : timeValue.hour
     console.log(`${dateValue.year}-${dateValue.month}-${dateValue.day} ${hourV}:${timeValue.minute}`)
-    props.setData(dayjs(`${dateValue.year}-${dateValue.month}-${dateValue.day} ${hourV}:${timeValue.minute}`))
-    props.setOpen(false);
+    props.handleClose(dayjs(`${dateValue.year}-${dateValue.month}-${dateValue.day} ${hourV}:${timeValue.minute}`), false)
   }
 
   const dateOptions: { [key: string]: any[] } = {

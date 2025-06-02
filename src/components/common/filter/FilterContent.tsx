@@ -5,11 +5,9 @@ import { ko } from "date-fns/locale/ko";
 import { getMonth, getYear } from "date-fns";
 import { NumberField } from '@base-ui-components/react/number-field';
 
-// 헤더 분리 작업중
 interface FilterCalendarProps { startDate: Date | undefined; endDate: Date | undefined; onChange: any; range?: boolean }
 export function FilterCalendar({ startDate, endDate, onChange, range = true }: FilterCalendarProps) {
   registerLocale("ko", ko);
-
   return (
     <DatePicker onChange={onChange} locale={ko} disabledKeyboardNavigation inline
       {...range ? { startDate: startDate, endDate: endDate, selectsRange: true } : { selected: startDate }}
@@ -29,7 +27,7 @@ export function FilterCalendar({ startDate, endDate, onChange, range = true }: F
 interface FilterNumberProps { value: number; onChange: (value: number | null, event: Event | undefined) => void }
 export function FilterNumber({ value, onChange }: FilterNumberProps) {
   return (
-    <div className="flex flex-row justify-between">
+    <div className="flex flex-row justify-between pt-[8px]">
       <span className="text-14">인원 수</span>
       <NumberField.Root defaultValue={100} value={value} onValueChange={onChange} min={0}>
         <NumberField.Group className='flex'>
