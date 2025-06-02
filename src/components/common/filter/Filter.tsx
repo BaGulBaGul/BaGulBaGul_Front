@@ -3,6 +3,6 @@ export const closeFilter = (setOpen: any, func?: () => void) => {
   if (!!func) { func(); }
 }
 
-export const handleFilterValue = (setP: any, key: string, value: any) => {
-  setP((prev: any) => ({ ...prev, [key]: value }))
+export const handleObjectValue = (setData: any, key: string, value: any) => {
+  setData((prev: any) => ({ ...prev, [key]: value }))
 }
