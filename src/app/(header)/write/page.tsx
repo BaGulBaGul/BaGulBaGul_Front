@@ -1,6 +1,8 @@
 'use client';
 import SubHeader from '@/components/layout/subHeader'
-import { WriteEPage, WriteRPage } from '@/components/pages/write';
+import { WriteRPage } from '@/components/pages/write/_WriteRPage';
+import { WriteEPage } from '@/components/pages/write/_WriteEPage';
+// import { WriteEPage, WriteRPage } from '@/components/pages/write';
 import { useRouter } from 'next/navigation';
 
 export default function Page({ searchParams }: { searchParams: { ['w']: 'p' | 'r', ['id']?: number, ['edit']?: number } }) {

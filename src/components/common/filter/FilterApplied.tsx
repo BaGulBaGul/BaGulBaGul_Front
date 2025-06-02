@@ -1,7 +1,7 @@
 import { FormatDateRange, sortLabel } from "@/service/Functions";
 import { Dispatch, SetStateAction } from "react";
 import { FilterProps } from "..";
-import { handleFilterValue } from "./Filter";
+import { handleObjectValue } from "./Filter";
 
 type FilterAppliedProps = { filterCnt: number; filters: string[]; setFilters: Dispatch<SetStateAction<string[]>>; } &
   ({ opt: 'REDIRECT'; p: FilterProps; setP: any; handleRt?: any; } |
@@ -21,7 +21,7 @@ export const FilterApplied = (props: FilterAppliedProps) => {
           case 'headCount': return { k: 'headCount', v: { from: undefined, to: undefined } };
         }
       }
-      handleFilterValue(props.setP, initVal(value)!.k, initVal(value)!.v)
+      handleObjectValue(props.setP, initVal(value)!.k, initVal(value)!.v)
       if (!!props.handleRt) { props.handleRt() }
     } else if (props.opt === 'UPDATE') {
       props.handleDelete(value)
