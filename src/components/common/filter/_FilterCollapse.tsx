@@ -34,7 +34,7 @@ export function FilterCollapse(props: CollapseProps) {
 export const FilterDateSelect = (props: { title: string; date: dayjs.Dayjs | null; setDate: any; }) => {
   const [open, setOpen] = useState(false);
   const handleClose = (data: dayjs.Dayjs | null, open: boolean) => {
-    props.setDate(data);
+    if (!!data && data.isValid()) { props.setDate(data); }
     setOpen(open);
   }
   let valueText = !!props.date ? `${dayjs(props.date).format('YYYY년 M월 DD일 A HH:mm')}` : '날짜 선택하기';
