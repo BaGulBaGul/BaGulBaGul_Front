@@ -4,7 +4,6 @@ import dayjs from 'dayjs';
 import { useWrite } from '@/hooks/useInWrite';
 import { useDetailInfo } from '@/hooks/useInDetail';
 import { Divider, ImageSlide, ImageUploader, SkeletonWrite } from '@/components/common';
-import { autoResizeTextarea } from '.';
 import { Write } from './_Write';
 import { TitleInput } from '@/components/common/input/_TitleInput';
 import { FilterNumber } from '@/components/common/filter/FilterContent';
@@ -19,11 +18,11 @@ export function WriteRPage(props: { eventId?: number; edit?: number; }) {
   const [headCurrent, setHeadCurrent] = useState<number | null>()
   const [startDate, setStartDate] = useState<dayjs.Dayjs | null>(null)
   const [endDate, setEndDate] = useState<dayjs.Dayjs | null>(null)
-  const [content, setContent] = useState('');
   const [images, setImages] = useState<string[]>([])
   const [imageKey, setImageKey] = useState<Number[]>([])
   const [tags, setTags] = useState<string[]>([])
   const titleRef = useRef<any>(null)
+  const contentRef = useRef<any>(null);
 
   // 게시물 등록
   const mutateWrite = !!props.edit ? useWrite('recruitment', props.edit) : useWrite('recruitment')
@@ -32,7 +31,7 @@ export function WriteRPage(props: { eventId?: number; edit?: number; }) {
       alert('제목을 꼭 입력해주세요.')
     } else {
       let body = {
-        'content': content, 'currentHeadCount': headCurrent ?? null, 'endDate': !!endDate ? endDate.toISOString() : null, 'imageIds': imageKey,
+        'content': contentRef.current ? contentRef.current.value : null, 'currentHeadCount': headCurrent ?? null, 'endDate': !!endDate ? endDate.toISOString() : null, 'imageIds': imageKey,
         'maxHeadCount': headMax ?? null, 'startDate': !!startDate ? startDate.toISOString() : null, 'tags': tags, 'title': titleRef.current.value
       }
       let writeURL = !!props.eventId && !props.edit ? `/api/event/${props.eventId}/recruitment` : `/api/event/recruitment`
@@ -60,7 +59,7 @@ export function WriteRPage(props: { eventId?: number; edit?: number; }) {
         </FilterCollapse>
       </div>
       <Divider color='gray2' />
-      <BodyInput content={content} handleContent={(e) => autoResizeTextarea(e, setContent)} />
+      <BodyInput bodyRef={contentRef} value={!!prev ? prev.data.post.content : undefined} />
       <TagsInput tags={tags} setTags={setTags} />
     </Write>
   )
