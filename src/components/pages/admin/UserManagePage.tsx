@@ -7,9 +7,10 @@ import { FilterApplied, FilterButton } from '@/components/common';
 import { ExpandButton } from '@/components/common/block/ExpandButton';
 import { FilterDialog } from '@/components/common/filter/FilterDialog';
 import { closeFilter } from '@/components/common/filter/Filter';
-import { FilterCollapse, FilterSortRadio } from '@/components/common/filter/FilterWrapper';
+import { FilterSortRadio } from '@/components/common/filter/FilterWrapper';
 import { FilterCalendar } from '@/components/common/filter/FilterContent';
 import { FormatDateRange } from '@/service/Functions';
+import { FilterCollapse } from '@/components/common/filter/_FilterCollapse';
 
 // * tableheader sticky 적용하기
 // * width 좀 더 수정

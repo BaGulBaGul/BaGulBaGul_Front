@@ -1,6 +1,7 @@
 'use client';
 import { Dispatch, SetStateAction } from "react";
-import { ToggleButton, ToggleButtonGroup, ThemeProvider, createTheme } from "@mui/material";
+import { ToggleButton, ToggleButtonGroup, ThemeProvider } from "@mui/material";
+import { categoryButtonTheme } from "./_InputTheme";
 
 export const categories = [
   '문화/예술', '공연전시/행사', '식품/음료', '교육/체험', '스포츠/레저', '지역특색', '민속/전통', '주류', '종교', '인물/역사'
@@ -29,8 +30,8 @@ export default function CategoryButtons(props: CategoryButtonProps) {
           <ToggleButtonGroup value={props.selectedCate}>
             {categories.map((cate, idx) =>
               cate === '주류'
-                ? <ToggleButton value={cate} selected={props.selectedCate.some(x => x === cate)} onClick={(e) => handleCate(e, cate)} className='cateInfo gap-[2px]' key={`cate-${cate}`}><Category19 />{cate}</ToggleButton>
-                : <ToggleButton value={cate} selected={props.selectedCate.some(x => x === cate)} onClick={(e) => handleCate(e, cate)} className='cateInfo' key={`cate-${cate}`}>{cate}</ToggleButton>
+                ? <ToggleButton value={cate} selected={props.selectedCate.some(x => x === cate)} onClick={(e) => handleCate(e, cate)} className='gap-[2px]' key={`cate-${cate}`}><Category19 />{cate}</ToggleButton>
+                : <ToggleButton value={cate} selected={props.selectedCate.some(x => x === cate)} onClick={(e) => handleCate(e, cate)} key={`cate-${cate}`}>{cate}</ToggleButton>
             )}
           </ToggleButtonGroup>
         </ThemeProvider>
@@ -45,26 +46,3 @@ const Category19 = () => (
     <circle cx="9" cy="10" r="8.75" stroke="currentColor" strokeWidth="0.5" />
   </svg>
 )
-
-const categoryButtonTheme = createTheme({
-  components: {
-    MuiButtonBase: { defaultProps: { disableRipple: true, }, },
-    MuiToggleButtonGroup: { styleOverrides: { root: { gap: '4px' } } },
-    MuiToggleButton: {
-      styleOverrides: {
-        root: {
-          fontSize: '14px !important', fontWeight: '400', lineHeight: '160%', color: '#1E1E1E!important',
-          padding: '2px 8px', minWidth: 'unset', border: '0.5px solid #ECECEC !important',
-          borderRadius: '20px!important', backgroundColor: '#ECECEC !important',
-          '&:hover, &:focus': { border: '0.5px solid #4A6AFE !important', backgroundColor: '#ECECEC' },
-          "&:active": {
-            border: '0.5px solid #4A6AFE !important', backgroundColor: '#4A6AFE', color: '#FCFCFC', fontWeight: '600',
-          },
-          '&.Mui-selected, &.Mui-selected:hover': {
-            backgroundColor: '#4A6AFE !important', color: '#FCFCFC !important', fontWeight: '600', border: '0.5px solid #4A6AFE !important'
-          }
-        }
-      }
-    },
-  },
-});
