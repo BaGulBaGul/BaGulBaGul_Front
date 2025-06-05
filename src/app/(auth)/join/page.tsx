@@ -2,9 +2,9 @@
 import { useRef, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { call } from '@/service/ApiService';
-import { JoinFooter } from '@/components/pages/join'
 import { HeaderBackIcn } from '@/components/common/styles/Icon';
-import { InfoInput } from '@/components/common/input/InfoInput';
+import { InfoInput } from '@/components/common/input';
+import { JoinFooter } from '@/components/pages/join'
 
 export default function Page() {
   const searchParams = useSearchParams();

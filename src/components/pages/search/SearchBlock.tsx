@@ -1,7 +1,8 @@
-import { FormatDateRange } from "@/service/Functions"
-import { BlockInfo, EventType, HashtagAccordion, HashtagButton, HeadCount, ListProps, SkeletonList, UserProfile } from "../../common"
 import Link from "next/link"
+import { FormatDateRange } from "@/service/Functions"
 import { useRankEvents } from "@/hooks/useInRanking"
+import { EventType, ListProps, SkeletonList } from "../../common"
+import { BlockInfo, UserProfile, HashtagAccordion, HeadCount, HashtagButton } from "@/components/common/block";
 
 export function ResultBlock(props: { data: ListProps; opt: 0 | 1; }) {
   let urlLink = `/event/${props.data.event.eventId}`

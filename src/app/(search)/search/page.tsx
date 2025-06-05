@@ -1,17 +1,14 @@
 "use client";
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ThemeProvider, ToggleButtonGroup, ToggleButton } from '@mui/material';
-import { CategoryButtons, FilterApplied, Divider } from '@/components/common';
-import { tabTheme } from '@/components/common/styles/Themes';
-import { FormatDateRange, getParams, headCountString, useEffectFilterApplied } from '@/service/Functions';
 import dayjs from 'dayjs';
+import { ThemeProvider, ToggleButtonGroup, ToggleButton } from '@mui/material';
+import { FormatDateRange, getParams, headCountString, useEffectFilterApplied } from '@/service/Functions';
+import { Divider } from '@/components/common';
+import { tabTheme } from '@/components/common/styles/Themes';
+import { FilterApplied, FilterDialog, closeFilter, FilterSortRadio, handleObjectValue, FilterCalendar } from '@/components/common/filter';
+import { CategoryButtons, InputCollapse, InputNumber, InputNumberRange } from '@/components/common/input';
 import { SearchBar, FrequentSearches } from '@/components/pages/search';
-import { FilterDialog } from '@/components/common/filter/FilterDialog';
-import { closeFilter, handleObjectValue } from '@/components/common/filter/Filter';
-import { FilterSortRadio } from '@/components/common/filter/FilterWrapper';
-import { FilterCalendar, FilterNumber, FilterNumberRange } from '@/components/common/filter/FilterContent';
-import { FilterCollapse } from '@/components/common/filter/_FilterCollapse';
 
 export default function Page() {
   const [tab, setTab] = useState(0);
@@ -70,20 +67,20 @@ export default function Page() {
       </div>
       <FilterDialog open={open} handleClose={() => { closeFilter(setOpen) }} >
         <FilterSortRadio value={p.sort} handleChange={(e: ChangeEvent<HTMLInputElement>, newSort: string) => { handleObjectValue(setP, 'sort', newSort) }} />
-        <FilterCollapse title={'날짜선택'} type='CAL' value={!startDate ? '' : FormatDateRange(startDate, endDate)}>
+        <InputCollapse title={'날짜선택'} type='CAL' value={!startDate ? '' : FormatDateRange(startDate, endDate)}>
           <FilterCalendar startDate={startDate} endDate={endDate} onChange={(dates: [any, any]) => { setP((prev: any) => ({ ...prev, dateRange: dates })) }} />
-        </FilterCollapse>
-        <FilterCollapse title={'참여인원'} type="NUM" value={p.participants} >
-          <FilterNumber value={p.participants} onChange={(newValue) => handleObjectValue(setP, 'participants', newValue)} />
-        </FilterCollapse>
-        <FilterCollapse title={'규모설정'} type="NUM" value={!!p.headCount.from || !!p.headCount.to ? headCountString(p.headCount.from, p.headCount.to) : 0}>
+        </InputCollapse>
+        <InputCollapse title={'참여인원'} type="NUM" value={p.participants} >
+          <InputNumber value={p.participants} onChange={(newValue) => handleObjectValue(setP, 'participants', newValue)} />
+        </InputCollapse>
+        <InputCollapse title={'규모설정'} type="NUM" value={!!p.headCount.from || !!p.headCount.to ? headCountString(p.headCount.from, p.headCount.to) : 0}>
           <div className='flex flex-col gap-[8px]'>
-            <FilterNumberRange
+            <InputNumberRange
               minNumber={{ value: p.headCount.from, onChange: (newValue: any) => { handleObjectValue(setP, 'headCount', { from: newValue ?? undefined, to: p.headCount.to }) } }}
               maxNumber={{ value: p.headCount.to, min: p.headCount.from, onChange: (newValue: any) => { handleObjectValue(setP, 'headCount', { from: p.headCount.from, to: newValue ?? undefined }) } }} />
             <div className='self-end text-12 text-gray3'>*최대인원 제한 없을 경우 '0'명으로 표기</div>
           </div>
-        </FilterCollapse>
+        </InputCollapse>
       </FilterDialog>
     </div>
   );

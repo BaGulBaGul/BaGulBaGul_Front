@@ -1,8 +1,7 @@
 import Slider from "react-slick";
 import { postData } from "@/components/common/Data";
 import { FormatDateRange } from "@/service/Functions";
-import { ArrowNext, ArrowPrev } from "@/components/common/Arrow";
-import { SkeletonCarousel } from "@/components/common/";
+import { ArrowNext, ArrowPrev, SkeletonCarousel } from "@/components/common";
 
 
 export function RecCarousel() {

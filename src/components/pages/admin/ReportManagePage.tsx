@@ -1,11 +1,11 @@
 "use client";
 import { useState } from 'react';
-import { UserProfile } from "@/components/common"
-import { TrashIcn } from "@/components/common/styles/Icon"
-import { FormatDateRange } from "@/service/Functions"
-import { ExpandButton } from '@/components/common/block/ExpandButton';
-import { ReportedPosts,ReportedComments } from './_TmpData';
 import { Collapse } from '@mui/material';
+import { FormatDateRange } from "@/service/Functions"
+import { ReportedPosts,ReportedComments } from './_TmpData';
+import { TrashIcn } from "@/components/common/styles/Icon"
+import { UserProfile } from '@/components/common/block';
+import { ExpandButton } from '@/components/common';
 
 // * 다중 신고 시 UI 처리 추가 필요
 export function ReportManagePage(props: { opt: 'POST' | 'CMT' }) {

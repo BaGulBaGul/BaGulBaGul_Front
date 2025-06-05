@@ -1,6 +1,5 @@
 interface ArrowProps {
-  className?: any; style?: any; onClick?: React.MouseEventHandler<HTMLDivElement>;
-  cN?: string;
+  className?: any; style?: any; onClick?: React.MouseEventHandler<HTMLDivElement>; cN?: string;
 }
 
 export function ArrowPrev({ onClick, cN }: ArrowProps) {

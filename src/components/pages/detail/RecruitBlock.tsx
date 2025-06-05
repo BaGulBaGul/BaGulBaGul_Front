@@ -1,6 +1,7 @@
-import { RListProps, HashtagAccordion, UserProfile, HeadCount, BlockInfo } from "@/components/common";
-import { FormatDateRange } from "@/service/Functions";
 import Link from "next/link";
+import { FormatDateRange } from "@/service/Functions";
+import { RListProps } from "@/components/common";
+import { BlockInfo, UserProfile, HeadCount, HashtagAccordion } from "@/components/common/block";
 
 export function RecruitBlock(props: { data: RListProps }) {
   return (

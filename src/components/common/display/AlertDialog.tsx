@@ -1,7 +1,7 @@
 "use client";
-import { ThemeProvider, Dialog, createTheme, DialogActions, DialogContent, DialogTitle } from "@mui/material";
-import Link from "next/link";
 import React, {PropsWithChildren} from "react";
+import Link from "next/link";
+import { ThemeProvider, Dialog, createTheme, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 
 interface AlertDialogProps extends PropsWithChildren {
   open: boolean; setOpen: any; headerText: string;
@@ -30,8 +30,7 @@ export const AlertDialog = (props: AlertDialogProps) => {
   )
 }
 
-
-export const dialogTheme = createTheme({
+const dialogTheme = createTheme({
   components: {
     MuiDialog: {
       styleOverrides: {

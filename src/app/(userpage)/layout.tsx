@@ -1,5 +1,5 @@
-import AlarmHeader from '@/components/common/AlarmHeader';
 import type { Metadata } from 'next'
+import AlarmHeader from '@/components/layout/AlarmHeader';
 
 export const metadata: Metadata = {
   title: '마이페이지 • 바글바글',

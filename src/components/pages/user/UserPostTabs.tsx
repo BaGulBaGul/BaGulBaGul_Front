@@ -1,9 +1,10 @@
 import { Tab, Tabs, ThemeProvider } from '@mui/material';
-import { ListProps, LoadingCircle, MoreButton, NoData, RListProps, SkeletonList } from '@/components/common';
-import { tabTheme } from '@/components/common/styles/Themes';
 import { InfiniteData, UseInfiniteQueryResult } from '@tanstack/react-query';
-import { MyPostBlock, UserPostBlock } from '.';
 import { handleMore } from '@/hooks/useInCommon';
+import { tabTheme } from '@/components/common/styles/Themes';
+import { ListProps, LoadingCircle, MoreButton, RListProps, SkeletonList } from '@/components/common';
+import { NoData } from '@/components/common/block';
+import { MyPostBlock, UserPostBlock } from '.';
 
 export function UserPostTabs(props: { value: 0 | 1; handleChange: any; fixed: boolean }) {
   return (

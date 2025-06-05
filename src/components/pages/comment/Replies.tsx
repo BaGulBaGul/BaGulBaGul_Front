@@ -1,9 +1,8 @@
 "use client";
-import { CommentMProps, CommentProps, LoadingCircle, MoreButton } from '@/components/common';
-import { CommentBlock } from '@/components/pages/comment';
 import { Dispatch, SetStateAction, useEffect } from 'react';
 import { handleMore, useListWithPage } from '@/hooks/useInCommon';
-import { SkeletonReplies } from '@/components/common/loading/SkeletonComments';
+import { CommentMProps, CommentProps, LoadingCircle, MoreButton, SkeletonReplies } from '@/components/common';
+import { CommentBlock } from '@/components/pages/comment';
 
 interface RepliesProps {
   origin: 'event' | 'event/recruitment'; rKey: any[]; apiURL: string; setOpenD: Dispatch<SetStateAction<boolean>>;
