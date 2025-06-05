@@ -1,15 +1,12 @@
 "use client";
 import { useState, useEffect, ChangeEvent } from 'react';
-import { CategoryButtons, FilterButton, PostTab, FilterApplied } from '@/components/common';
-import { FormatDateRange, getParams, headCountString, useEffectCntFilter } from '@/service/Functions';
 import { useRouter, useSearchParams } from 'next/navigation';
 import dayjs from 'dayjs';
+import { FormatDateRange, getParams, headCountString, useEffectCntFilter } from '@/service/Functions';
+import { PostTab } from '@/components/common';
+import { FilterButton, FilterApplied, FilterDialog, closeFilter, handleObjectValue, FilterSortRadio, FilterCalendar } from '@/components/common/filter';
+import { CategoryButtons, InputCheck, InputCollapse, InputNumber, InputNumberRange } from '@/components/common/input';
 import { RecCarousel } from '@/components/pages/main';
-import { FilterDialog } from '@/components/common/filter/FilterDialog';
-import { closeFilter, handleObjectValue } from '@/components/common/filter/Filter';
-import { FilterCheck, FilterSortRadio } from '@/components/common/filter/FilterWrapper';
-import { FilterCalendar, FilterNumber, FilterNumberRange } from '@/components/common/filter/FilterContent';
-import { FilterCollapse } from '@/components/common/filter/_FilterCollapse';
 
 export default function Template({ children }: { children: React.ReactNode }) {
   const searchParams = useSearchParams()
@@ -71,22 +68,22 @@ export default function Template({ children }: { children: React.ReactNode }) {
           <CategoryButtons selectedCate={selectedCate} setSelectedCate={setSelectedCate} />
         </div>
         <FilterDialog open={open} handleClose={() => { closeFilter(setOpen, routeToFilter) }} >
-          <FilterCheck title='종료된 행사 제외하기' checked={p.proceeding} handleChange={(e: React.ChangeEvent<HTMLInputElement>) => { handleObjectValue(setP, 'proceeding', e.target.checked) }} />
+          <InputCheck title='종료된 행사 제외하기' checked={p.proceeding} handleChange={(e: React.ChangeEvent<HTMLInputElement>) => { handleObjectValue(setP, 'proceeding', e.target.checked) }} />
           <FilterSortRadio value={p.sort} handleChange={(e: ChangeEvent<HTMLInputElement>, newSort: string) => { handleObjectValue(setP, 'sort', newSort) }} />
-          <FilterCollapse title={'날짜선택'} type='CAL' value={!startDate ? '' : FormatDateRange(startDate, endDate)}>
+          <InputCollapse title={'날짜선택'} type='CAL' value={!startDate ? '' : FormatDateRange(startDate, endDate)}>
             <FilterCalendar startDate={startDate} endDate={endDate} onChange={(dates: [any, any]) => { handleObjectValue(setP, 'dateRange', dates) }} />
-          </FilterCollapse>
-          <FilterCollapse title={'참여인원'} type="NUM" value={p.participants} >
-            <FilterNumber value={p.participants} onChange={(newValue) => handleObjectValue(setP, 'participants', newValue)} />
-          </FilterCollapse>
-          <FilterCollapse title={'규모설정'} type="NUM" value={!!p.headCount.from || !!p.headCount.to ? headCountString(p.headCount.from, p.headCount.to) : 0}>
+          </InputCollapse>
+          <InputCollapse title={'참여인원'} type="NUM" value={p.participants} >
+            <InputNumber value={p.participants} onChange={(newValue) => handleObjectValue(setP, 'participants', newValue)} />
+          </InputCollapse>
+          <InputCollapse title={'규모설정'} type="NUM" value={!!p.headCount.from || !!p.headCount.to ? headCountString(p.headCount.from, p.headCount.to) : 0}>
             <div className='flex flex-col gap-[8px]'>
-              <FilterNumberRange
+              <InputNumberRange
                 minNumber={{ value: p.headCount.from, onChange: (newValue: any) => { handleObjectValue(setP, 'headCount', { from: newValue ?? undefined, to: p.headCount.to }) } }}
                 maxNumber={{ value: p.headCount.to, min: p.headCount.from, onChange: (newValue: any) => { handleObjectValue(setP, 'headCount', { from: p.headCount.from, to: newValue ?? undefined }) } }} />
               <div className='self-end text-12 text-gray3'>*최대인원 제한 없을 경우 '0'명으로 표기</div>
             </div>
-          </FilterCollapse>
+          </InputCollapse>
         </FilterDialog>
         {children}
       </div>

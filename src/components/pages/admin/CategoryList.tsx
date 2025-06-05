@@ -4,8 +4,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { DndContext, DragEndEvent, DragStartEvent, MouseSensor, TouchSensor, UniqueIdentifier, useDroppable, useSensor, useSensors } from "@dnd-kit/core";
 import { useSortable, SortableContext, arrayMove as dndKitArrayMove } from '@dnd-kit/sortable';
 import { restrictToParentElement, restrictToVerticalAxis } from "@dnd-kit/modifiers";
-import { Checkbox, ThemeProvider } from "@mui/material";
-import { ToggleButton, ToggleButtonGroup, createTheme } from "@mui/material";
+import { Checkbox, ToggleButton, ToggleButtonGroup, ThemeProvider, createTheme } from "@mui/material";
 
 interface ListProps { items: string[]; updateItems: (newData: string[]) => void; editing: boolean; selectedItems: string[]; handleCategory: any; }
 function CategoryList({ items, updateItems, editing, selectedItems, handleCategory }: ListProps) {

@@ -1,9 +1,8 @@
 "use client";
+import { useState } from "react";
 import { ThemeProvider, Drawer, List, ListItem, ListItemButton, ListItemText } from "@mui/material";
 import { menuTheme } from "@/components/common/styles/Themes";
-import { CommentMProps, Divider } from "@/components/common";
-import { ReportDialog } from "@/components/common/report/ReportDialog";
-import { useState } from "react";
+import { ReportDialog, CommentMProps, Divider } from "@/components/common";
 
 export function CommentDrawer(props: { open: boolean; opt: 0 | 1; target?: CommentMProps; toggleDrawer: any; setOpenM: any; handleDelete: any; }) {
   const handleClickOpen = () => { props.setOpenM(true); };

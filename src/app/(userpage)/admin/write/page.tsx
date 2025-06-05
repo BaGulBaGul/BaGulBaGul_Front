@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { SubTopHeader } from '@/components/layout/subHeader';
-import { WriteAPage } from '@/components/pages/write/_WriteAPage';
+import { WriteAPage } from '@/components/pages/write/WriteAPage';
 
 export const metadata: Metadata = {
   title: '게시글 작성 • 바글바글',

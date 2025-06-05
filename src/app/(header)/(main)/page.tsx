@@ -1,10 +1,10 @@
 "use client";
 import { useSearchParams } from "next/navigation";
-import { TabPanels } from '@/components/common';
-import { getParams, tabList } from '@/service/Functions';
-import { MainTabBlock } from '@/components/pages/main';
 import dayjs from 'dayjs';
+import { getParams, tabList } from '@/service/Functions';
 import { useListWithPageE } from "@/hooks/useInCommon";
+import { TabPanels } from '@/components/common';
+import { MainTabBlock } from '@/components/pages/main';
 
 export default function Page() {
   const searchParams = useSearchParams()

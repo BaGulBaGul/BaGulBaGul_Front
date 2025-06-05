@@ -1,5 +1,5 @@
 
-import AlarmHeader from '@/components/common/AlarmHeader';
+import AlarmHeader from '@/components/layout/AlarmHeader';
 import { ClientRootLayout } from './client-layout';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

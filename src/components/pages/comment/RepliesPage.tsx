@@ -1,14 +1,13 @@
 "use client";
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { SubHeaderCnt } from '@/components/layout/subHeader';
-import { fetchFromURL } from '@/service/ApiService';
-import { CommentMProps, CommentProps, Divider } from '@/components/common';
-import { RepliedComment, Replies, MemoizedReplyFooter, CommentDrawer, ModifyInputR } from '@/components/pages/comment';
 import { useQuery } from '@tanstack/react-query';
+import { fetchFromURL } from '@/service/ApiService';
 import useLoginInfo from '@/hooks/useLoginInfo';
 import { originText, useDelete } from '@/hooks/useInCommon';
-import { SkeletonComment } from '@/components/common/loading/SkeletonComments';
+import { SubHeaderCnt } from '@/components/layout/subHeader';
+import { CommentMProps, CommentProps, Divider, SkeletonComment } from '@/components/common';
+import { RepliedComment, Replies, MemoizedReplyFooter, CommentDrawer, ModifyInputR } from '@/components/pages/comment';
 
 export function RepliesPage(props: { origin: 'event' | 'event/recruitment'; commentId: any; postId: any; }) {
   // 댓글

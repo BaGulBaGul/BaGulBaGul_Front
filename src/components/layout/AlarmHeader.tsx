@@ -1,13 +1,13 @@
 "use client";
 import { useEffect, useState } from "react";
-import { alarmSSE } from "../pages/user/AlarmSSE";
-import { createTheme, Snackbar, ThemeProvider, Alert } from "@mui/material";
 import { useRouter } from "next/navigation";
-import useLoginInfo from '@/hooks/useLoginInfo';
 import dayjs from "dayjs";
+import { createTheme, Snackbar, ThemeProvider, Alert } from "@mui/material";
+import useLoginInfo from '@/hooks/useLoginInfo';
 import { AlarmIcn } from "../pages/user";
+import { alarmSSE } from "../pages/user/AlarmSSE";
 
-export interface SnackbarMessage { alarmId: number; type: string; title: string; message: string; subject: string; time: string; }
+interface SnackbarMessage { alarmId: number; type: string; title: string; message: string; subject: string; time: string; }
 export default function AlarmHeader() {
   const data = useLoginInfo()
   if (!!data.data) { return (<AlarmSnack />) }

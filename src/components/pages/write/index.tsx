@@ -1,39 +1,20 @@
-import { UseQueryResult } from "@tanstack/react-query";
-import dayjs from "dayjs";
-import { Dispatch, SetStateAction, MutableRefObject } from "react";
+import { UseMutationResult } from "@tanstack/react-query";
 import { AddressDialog } from "./AddressDialog";
-import { DateSelect } from "./DateSelect";
+import { BodyInput } from "./BodyInput";
+import { TitleInput } from "./TitleInput";
+import { TagsInput } from "./TagInput";
+import { TypeToggle } from "./TypeToggle";
+import { InputDateSelect } from "./InputDateSelect";
+import { SearchBox } from "./SearchBox";
 import { Write } from "./Write";
-import { WriteEPage } from "./WriteEPage";
-import { WriteRPage } from "./WriteRPage";
 
 export {
-  AddressDialog, DateSelect,
+  BodyInput, TitleInput, TagsInput, 
+  TypeToggle, 
+  InputDateSelect, 
+  SearchBox, AddressDialog,
   Write,
-  WriteEPage, WriteRPage,
 }
-
-export interface WriteProps {
-  selectedCate?: string[]; setSelectedCate?: Dispatch<SetStateAction<string[]>>;
-  startDate: dayjs.Dayjs | null; setStartDate: Dispatch<SetStateAction<dayjs.Dayjs | null>>;
-  endDate: dayjs.Dayjs | null; setEndDate: Dispatch<SetStateAction<dayjs.Dayjs | null>>;
-  headMax?: number; setHeadMax?: Dispatch<SetStateAction<number | undefined>>;
-  headCurrent?: number; setHeadCurrent?: Dispatch<SetStateAction<number | undefined>>;
-  addr?: any; setAddr?: Dispatch<SetStateAction<any>>; forAdult?: boolean; setForAdult?: Dispatch<boolean>;
-  content: string; setContent: Dispatch<SetStateAction<string>>;
-  images: string[]; setImages: Dispatch<SetStateAction<string[]>>; imageKey: Number[]; setImageKey: Dispatch<SetStateAction<Number[]>>;
-  tags: string[]; setTags: Dispatch<SetStateAction<string[]>>;
-  titleRef: MutableRefObject<any>; open?: boolean; setOpen?: Dispatch<SetStateAction<boolean>>;
-  handleSubmit: () => void; handleConfirm?: () => void; prev?: UseQueryResult<any, Error>;
-}
-
-// textarea 높이 자동 조정 함수
-export const autoResizeTextarea = (e: any, setContent: any) => {
-  const textarea = e.target;
-  textarea.style.height = 'auto';
-  textarea.style.height = `${textarea.scrollHeight + 10}px`;
-  setContent(textarea.value);
-};
 
 // 위경도 반환 함수
 export const getCoords = (address: string, geocoder: any) => {
@@ -45,4 +26,33 @@ export const getCoords = (address: string, geocoder: any) => {
       } else { reject(status) }
     })
   })
+}
+
+export const handleWrite = (
+  apiURL: string, mutateWrite: UseMutationResult<any, Error, { apiURL: string; body: Object; }, unknown>,
+  body: any, addr?: { full: string, abs: string } | null, edit?: number, prev?: any
+) => {
+  if (!addr && (!!prev && !!prev.data && !!prev.data.event.fullLocation)) { // 공백으로 수정 시 주소 삭제
+    body['abstractLocation'] = null
+    body['fullLocation'] = null
+    body['latitudeLocation'] = null
+    body['longitudeLocation'] = null
+  }
+  if (!!addr && (!edit || (!!prev && !!prev.data && prev.data.event.fullLocation !== addr.full))) {  // 새로운 주소 입력 시 위경도 찾고 등록
+    body['abstractLocation'] = addr.abs
+    body['fullLocation'] = addr.full
+    window.kakao.maps.load(async function () {
+      var geocoder = new window.kakao.maps.services.Geocoder();
+      const coords: any = !!addr ? await getCoords(addr.full, geocoder) : undefined
+      if (!!coords) {
+        body['latitudeLocation'] = coords.La
+        body['longitudeLocation'] = coords.Ma
+      }
+      console.log(body)
+      // mutateWrite.mutate({ apiURL: apiURL, body: body })
+    })
+  } else {
+    console.log(body);
+    // mutateWrite.mutate({ apiURL: apiURL, body: body })
+  }
 }

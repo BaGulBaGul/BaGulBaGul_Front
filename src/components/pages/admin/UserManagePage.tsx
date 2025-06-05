@@ -1,16 +1,12 @@
 "use client";
-import { Box, Collapse, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, ThemeProvider, createTheme } from '@mui/material';
 import React, { ChangeEvent, useEffect, useState } from 'react'
-import { Users } from './_TmpData';
+import { Box, Collapse, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, ThemeProvider, createTheme } from '@mui/material';
 import dayjs from 'dayjs';
-import { FilterApplied, FilterButton } from '@/components/common';
-import { ExpandButton } from '@/components/common/block/ExpandButton';
-import { FilterDialog } from '@/components/common/filter/FilterDialog';
-import { closeFilter } from '@/components/common/filter/Filter';
-import { FilterSortRadio } from '@/components/common/filter/FilterWrapper';
-import { FilterCalendar } from '@/components/common/filter/FilterContent';
 import { FormatDateRange } from '@/service/Functions';
-import { FilterCollapse } from '@/components/common/filter/_FilterCollapse';
+import { Users } from './_TmpData';
+import { ExpandButton } from '@/components/common';
+import { FilterApplied, FilterDialog, closeFilter, FilterSortRadio, FilterCalendar, FilterButton } from '@/components/common/filter';
+import { InputCollapse } from '@/components/common/input';
 
 // * tableheader sticky 적용하기
 // * width 좀 더 수정
@@ -94,9 +90,9 @@ export function UserManagePage() {
 			</ThemeProvider >
 			<FilterDialog open={open} handleClose={() => { closeFilter(setOpen); }} >
 				<FilterSortRadio value={sort} handleChange={(e: ChangeEvent<HTMLInputElement>, newSort: string) => { setSort(newSort) }} />
-				<FilterCollapse title={'가입일자'} type='CAL' value={!joinedDate ? '' : FormatDateRange(joinedDate, null)}>
+				<InputCollapse title={'가입일자'} type='CAL' value={!joinedDate ? '' : FormatDateRange(joinedDate, null)}>
 					<FilterCalendar startDate={joinedDate} endDate={undefined} onChange={(date: any) => { setJoinedDate(date) }} range={false} />
-				</FilterCollapse>
+				</InputCollapse>
 			</FilterDialog>
 		</>
 	)

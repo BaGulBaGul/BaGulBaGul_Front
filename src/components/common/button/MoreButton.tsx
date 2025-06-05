@@ -1,5 +1,5 @@
 'use client';
-import { Divider } from ".";
+import { Divider } from "..";
 
 export default function MoreButton(props: { onClick: any; }) {
   return (

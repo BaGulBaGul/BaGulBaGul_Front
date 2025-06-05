@@ -1,6 +1,7 @@
-import { HashtagAccordion, HeadCount, ListProps, UserProfile, BlockInfo } from "@/components/common"
-import { FormatDateRange } from "@/service/Functions"
 import Link from "next/link"
+import { FormatDateRange } from "@/service/Functions"
+import { ListProps } from "@/components/common"
+import { BlockInfo, UserProfile, HeadCount, HashtagAccordion } from "@/components/common/block"
 
 export function EventBlock(props: { data: ListProps }) {
   return (

@@ -1,31 +1,8 @@
 "use client";
-import { ChevronIcn } from "../styles/Icon";
-import DatePicker, { registerLocale } from "react-datepicker";
-import { ko } from "date-fns/locale/ko";
-import { getMonth, getYear } from "date-fns";
 import { NumberField } from '@base-ui-components/react/number-field';
 
-interface FilterCalendarProps { startDate: Date | undefined; endDate: Date | undefined; onChange: any; range?: boolean }
-export function FilterCalendar({ startDate, endDate, onChange, range = true }: FilterCalendarProps) {
-  registerLocale("ko", ko);
-  return (
-    <DatePicker onChange={onChange} locale={ko} disabledKeyboardNavigation inline
-      {...range ? { startDate: startDate, endDate: endDate, selectsRange: true } : { selected: startDate }}
-      renderCustomHeader={({ date, decreaseMonth, increaseMonth, prevMonthButtonDisabled, nextMonthButtonDisabled }) => (
-        <div className='react-datepicker__current-month flex flex-row justify-between'>
-          <button onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
-            <ChevronIcn direction='left' />
-          </button>
-          <h2>{getMonth(date) + 1}월, {getYear(date)}</h2>
-          <button onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
-            <ChevronIcn direction='right' />
-          </button>
-        </div>)} />
-  )
-}
-
-interface FilterNumberProps { value: number; onChange: (value: number | null, event: Event | undefined) => void }
-export function FilterNumber({ value, onChange }: FilterNumberProps) {
+interface InputNumberProps { value: number; onChange: (value: number | null, event: Event | undefined) => void }
+export function InputNumber({ value, onChange }: InputNumberProps) {
   return (
     <div className="flex flex-row justify-between pt-[8px]">
       <span className="text-14">인원 수</span>
@@ -56,8 +33,8 @@ const PlusIcn = () => (
 )
 
 interface NumberInputProps { value?: number; onChange: any; min?: number; }
-interface FilterNumberRange { minNumber: NumberInputProps; maxNumber: NumberInputProps; }
-export function FilterNumberRange({ minNumber, maxNumber }: FilterNumberRange) {
+interface InputNumberRangeProps { minNumber: NumberInputProps; maxNumber: NumberInputProps; }
+export function InputNumberRange({ minNumber, maxNumber }: InputNumberRangeProps) {
   return (
     <div className="flex flex-col gap-[8px]">
       <span className="text-14">최소/최대 설정하기</span>

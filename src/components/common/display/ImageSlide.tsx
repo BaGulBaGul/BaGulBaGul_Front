@@ -1,8 +1,8 @@
 "use client";
 import { Dispatch, SetStateAction, useState } from "react";
 import Slider from "react-slick";
-import { ArrowNext, ArrowPrev } from "./Arrow";
-import { TrashIcn } from "./styles/Icon";
+import { TrashIcn } from "../styles/Icon";
+import { ArrowNext, ArrowPrev } from "..";
 
 interface ImageSlideProps {
   images: string[]; setImages?: Dispatch<SetStateAction<string[]>>;

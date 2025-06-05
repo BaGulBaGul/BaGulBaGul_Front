@@ -1,10 +1,8 @@
 "use client";
 import { PropsWithChildren, useState } from "react";
-import dayjs from 'dayjs';
 import { Collapse } from "@mui/material";
 import { CalIcn, CmtLikeIcn } from "../styles/Icon";
-import { FilterContainer } from "./FilterWrapper";
-import { ScrollPicker } from "@/components/pages/write/ScrollPicker";
+import { InputContainer } from ".";
 
 export function CollapseButton({ handleOpen, type, value, valueText }: { handleOpen: () => void; type: 'CAL' | 'NUM'; value?: boolean; valueText?: string }) {
   return (
@@ -16,34 +14,17 @@ export function CollapseButton({ handleOpen, type, value, valueText }: { handleO
 }
 
 interface CollapseProps extends PropsWithChildren { title: string; value?: string | Number; type: 'CAL' | 'NUM'; desc?: string; }
-export function FilterCollapse(props: CollapseProps) {
+export function InputCollapse(props: CollapseProps) {
   const [open, setOpen] = useState(false);
   let defaultText = props.type === 'CAL' ? '날짜 선택하기' : '0명';
   let valueText = !!props.value ? `${props.value}${props.type === 'CAL' ? '' : '명'}` : defaultText;
 
   return (
-    <FilterContainer title={props.title} desc={props.desc}
+    <InputContainer title={props.title} desc={props.desc}
       btn={<CollapseButton type={props.type} handleOpen={() => setOpen(!open)} valueText={valueText} value={!!props.value} />}>
       <Collapse in={open} timeout="auto">
         {props.children}
       </Collapse>
-    </FilterContainer>
-  )
-}
-
-export const FilterDateSelect = (props: { title: string; date: dayjs.Dayjs | null; setDate: any; }) => {
-  const [open, setOpen] = useState(false);
-  const handleClose = (data: dayjs.Dayjs | null, open: boolean) => {
-    if (!!data && data.isValid()) { props.setDate(data); }
-    setOpen(open);
-  }
-  let valueText = !!props.date ? `${dayjs(props.date).format('YYYY년 M월 DD일 A HH:mm')}` : '날짜 선택하기';
-  return (
-    <>
-      <FilterContainer title={props.title}
-        btn={<CollapseButton type={'CAL'} handleOpen={() => setOpen(!open)} value={!!props.date} valueText={valueText} />}>
-        <ScrollPicker open={open} data={props.date} handleClose={handleClose} />
-      </FilterContainer>
-    </>
+    </InputContainer>
   )
 }

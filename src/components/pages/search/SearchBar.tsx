@@ -1,6 +1,7 @@
-import { Divider, FilterButton } from "@/components/common";
-import { HeaderBackIcn, MagnifyingIcn } from "@/components/common/styles/Icon";
 import { useRef } from "react";
+import { HeaderBackIcn, MagnifyingIcn } from "@/components/common/styles/Icon";
+import { Divider } from "@/components/common";
+import { FilterButton } from "@/components/common/filter";
 
 interface SearchBarProps {
   opt?: 0 | 1; title?: string; tag?: string; setOpen: any; filterCnt: number; setTitle?: any; handleRt?: any; router: any;

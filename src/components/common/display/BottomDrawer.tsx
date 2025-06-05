@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Divider, Drawer, List, ListItem, ListItemButton, ListItemText, ThemeProvider } from "@mui/material";
 import { ReportDialog } from "@/components/common/report/ReportDialog";
-import { menuTheme } from "./styles/Themes";
-import { CommentMProps } from ".";
+import { menuTheme } from "../styles/Themes";
+import { CommentMProps } from "..";
 
 interface BottomDrawerProps {
   open: boolean; toggleDrawer: any; opt: 'EVT' | 'RCT' | 'CMT'; target: number | CommentMProps; me: boolean;

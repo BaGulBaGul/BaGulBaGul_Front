@@ -1,7 +1,7 @@
 'use client';
 import { Dispatch, SetStateAction } from "react";
 import { ToggleButton, ToggleButtonGroup, ThemeProvider } from "@mui/material";
-import { categoryButtonTheme } from "./_InputTheme";
+import { inputToggleTheme } from "../styles/Themes";
 
 export const categories = [
   '문화/예술', '공연전시/행사', '식품/음료', '교육/체험', '스포츠/레저', '지역특색', '민속/전통', '주류', '종교', '인물/역사'
@@ -11,7 +11,7 @@ interface CategoryButtonProps {
   selectedCate: string[]; setSelectedCate: Dispatch<SetStateAction<string[]>>;
   max?: number; setForAdult?: Dispatch<boolean>;
 }
-export default function CategoryButtons(props: CategoryButtonProps) {
+export function CategoryButtons(props: CategoryButtonProps) {
   const handleCate = (e: React.MouseEvent<HTMLElement>, newCate: string) => {
     if (props.selectedCate.some(x => x === newCate)) { // 선택 해제
       props.setSelectedCate(props.selectedCate.filter(function (cate) { return cate !== newCate }))
@@ -26,7 +26,7 @@ export default function CategoryButtons(props: CategoryButtonProps) {
   return (
     <div className='h-[46px] overflow-hidden'>
       <div className='x-scroll-wrap h-[76px] py-[10px] px-[16px]'>
-        <ThemeProvider theme={categoryButtonTheme}>
+        <ThemeProvider theme={inputToggleTheme}>
           <ToggleButtonGroup value={props.selectedCate}>
             {categories.map((cate, idx) =>
               cate === '주류'

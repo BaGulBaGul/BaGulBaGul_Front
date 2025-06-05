@@ -1,9 +1,10 @@
-import { getParams, tabList } from "@/service/Functions"
-import { ListProps, MoreButton, NoData, TabPanels, Divider, TabBlockProps, LoadingCircle, SkeletonList } from "../../common"
 import { ReadonlyURLSearchParams } from "next/navigation"
 import dayjs from "dayjs"
-import { ResultBlock, SuggestBlock } from "./SearchBlock"
+import { getParams, tabList } from "@/service/Functions"
 import { handleMore, useListWithPageE } from "@/hooks/useInCommon"
+import { ListProps, MoreButton, TabPanels, Divider, TabBlockProps, LoadingCircle, SkeletonList } from "../../common"
+import { NoData } from "@/components/common/block"
+import { ResultBlock, SuggestBlock } from "./SearchBlock"
 
 export function SearchTabs(props: { opt: 'TTL' | 'TAG'; sp: ReadonlyURLSearchParams }) {
   let tab = Number(props.sp.get('tab_id')) ?? 0

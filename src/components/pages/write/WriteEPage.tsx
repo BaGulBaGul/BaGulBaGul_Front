@@ -2,24 +2,33 @@
 import { useRef, useState } from 'react';
 import dayjs from 'dayjs';
 import { useWrite } from '@/hooks/useInWrite';
-import { getCoords, Write } from '.';
 import { useDetailInfo } from '@/hooks/useInDetail';
-import { SkeletonWrite } from '@/components/common';
+import { Divider, ImageSlide, SkeletonWrite } from '@/components/common';
+import { ImageUploader, InputContainer, CategoryButtons, InputCollapse, InputNumber, InputCheck } from '@/components/common/input';
+import { AddressDialog, BodyInput, handleWrite, InputDateSelect, SearchBox, TagsInput, TitleInput, Write } from '.';
+
 
 export function WriteEPage(props: { edit?: number; }) {
+  // * ====== 250602 게시물 수정 시 기존 데이터 불러오기 테스트 필요
+  const prev = !!props.edit ? useDetailInfo('event', props.edit) : undefined
+
   const [selectedCate, setSelectedCate] = useState<string[]>([]);
-  const [headMax, setHeadMax] = useState<number>()
-  const [headCurrent, setHeadCurrent] = useState<number>()
+  const [headMax, setHeadMax] = useState<number | null>()
+  const [headCurrent, setHeadCurrent] = useState<number | null>()
   const [startDate, setStartDate] = useState<dayjs.Dayjs | null>(null)
   const [endDate, setEndDate] = useState<dayjs.Dayjs | null>(null)
   const [forAdult, setForAdult] = useState(false);
   const [addr, setAddr] = useState<{ full: string, abs: string } | null>(null)
-  const [content, setContent] = useState('');
   const [images, setImages] = useState<string[]>([])
   const [imageKey, setImageKey] = useState<Number[]>([])
   const [tags, setTags] = useState<string[]>([])
   const titleRef = useRef<any>(null);
-  const prev = !!props.edit ? useDetailInfo('event', props.edit) : undefined
+  const contentRef = useRef<any>(null);
+
+  const handleAdult = (e: React.ChangeEvent<HTMLInputElement>) => { if (!!setForAdult) { setForAdult(e.target.checked); } }
+
+  const [openAddr, setOpenAddr] = useState(false);
+  const handleOpenAddr = () => { setOpenAddr(true) }
 
   // 게시물 등록
   const [open, setOpen] = useState(false);
@@ -34,40 +43,43 @@ export function WriteEPage(props: { edit?: number; }) {
   const handleConfirm = () => {
     setOpen(false);
     let body: any = {
-      'ageLimit': forAdult, 'categories': selectedCate, 'content': content, 'currentHeadCount': headCurrent ?? null,
-      'endDate': !!endDate ? endDate.toISOString() : null, 'imageIds': imageKey, 'maxHeadCount': headMax ?? null,
+      'ageLimit': forAdult, 'categories': selectedCate, 'content': contentRef.current ? contentRef.current.value : null,
+      'currentHeadCount': headCurrent ?? null, 'endDate': !!endDate ? endDate.toISOString() : null, 'imageIds': imageKey, 'maxHeadCount': headMax ?? null,
       'startDate': !!startDate ? startDate.toISOString() : null, 'tags': tags, 'title': titleRef.current.value, 'type': 'PARTY'
     }
-    if (!addr && (!!prev && !!prev.data && !!prev.data.event.fullLocation)) { // 공백으로 수정 시 주소 삭제
-      body['abstractLocation'] = null
-      body['fullLocation'] = null
-      body['latitudeLocation'] = null
-      body['longitudeLocation'] = null
-    }
-    if (!!addr && (!props.edit || (!!prev && !!prev.data && prev.data.event.fullLocation !== addr.full))) {  // 새로운 주소 입력 시 위경도 찾고 등록
-      body['abstractLocation'] = addr.abs
-      body['fullLocation'] = addr.full
-      window.kakao.maps.load(async function () {
-        var geocoder = new window.kakao.maps.services.Geocoder();
-        const coords: any = !!addr ? await getCoords(addr.full, geocoder) : undefined
-        if (!!coords) {
-          body['latitudeLocation'] = coords.La
-          body['longitudeLocation'] = coords.Ma
-        }
-        console.log(body)
-        mutateWrite.mutate({ apiURL: '/api/event', body: body })
-      })
-    } else { console.log(body); mutateWrite.mutate({ apiURL: '/api/event', body: body }) }
+    handleWrite('/api/event', mutateWrite, body, addr, props.edit, prev);
   }
 
   if (!!props.edit && (!!prev && !prev.isSuccess)) { return (<SkeletonWrite opt='p' />) }
   return (
-    <Write selectedCate={selectedCate} setSelectedCate={setSelectedCate}
-      startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate}
-      headMax={headMax} setHeadMax={setHeadMax} headCurrent={headCurrent} setHeadCurrent={setHeadCurrent}
-      addr={addr} setAddr={setAddr} forAdult={forAdult} setForAdult={setForAdult} content={content} setContent={setContent}
-      images={images} setImages={setImages} imageKey={imageKey} setImageKey={setImageKey} titleRef={titleRef}
-      tags={tags} setTags={setTags} open={open} setOpen={setOpen} handleSubmit={handleSubmit} handleConfirm={handleConfirm}
-      prev={!!props.edit ? prev : undefined} />
+    <Write handleSubmit={handleSubmit}>
+      <div className='relative h-[280px] bg-gray1'>
+        {images.length > 0 ? <ImageSlide images={images} setImages={setImages} /> : <></>}
+        <ImageUploader setImage={setImages} setImageKey={setImageKey} multiple={true} />
+      </div>
+      <TitleInput titleRef={titleRef} prev={!!prev ? prev.data.post.title : undefined} />
+      <Divider color='gray2' />
+      <InputContainer title="카테고리" desc="카테고리는 최대 2개까지 선택가능합니다." p={true}>
+        <CategoryButtons selectedCate={selectedCate} setSelectedCate={setSelectedCate} max={2} setForAdult={setForAdult} />
+      </InputContainer>
+      <Divider color='gray2' />
+      <div className='flex flex-col px-[16px] py-[10px] gap-[16px]'>
+        <InputDateSelect title={'시작일시'} date={startDate} setDate={setStartDate} />
+        <InputDateSelect title={'종료일시'} date={endDate} setDate={setEndDate} />
+        <InputCollapse title={'모집인원'} type="NUM" value={headMax ?? 0} >
+          <InputNumber value={headMax ?? 0} onChange={(newValue) => setHeadMax(newValue)} />
+        </InputCollapse>
+        <InputCollapse title={'현재인원'} type="NUM" value={headCurrent ?? 0} >
+          <InputNumber value={headCurrent ?? 0} onChange={(newValue) => setHeadCurrent(newValue)} />
+        </InputCollapse>
+        <InputCheck title='19세 미만 참여불가 파티' checked={forAdult} handleChange={handleAdult} />
+      </div>
+      <Divider color='gray2' />
+      <SearchBox title={'위치'} defaultText={'위치 검색'} value={!!addr ? addr.full : undefined} handleClick={handleOpenAddr} />
+      <Divider color='gray2' />
+      <BodyInput bodyRef={contentRef} value={!!prev ? prev.data.post.content : undefined} />
+      <AddressDialog open={openAddr} onClose={setOpenAddr} addr={!!addr ? addr.full : ''} setAddr={setAddr} />
+      <TagsInput tags={tags} setTags={setTags} />
+    </Write>
   )
 }

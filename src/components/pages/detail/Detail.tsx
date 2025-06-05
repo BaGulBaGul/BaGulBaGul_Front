@@ -1,11 +1,10 @@
-import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
-import { DetailProps, RDetailProps, Divider, ImageSlide } from "../../common";
-import { PostFooter } from "../../layout/footer";
-import ShareDialog from "./ShareDialog";
-import { PostTitle, PostInfo, PostContentMap, PostContentTag, PostTools, PostDrawer } from "./DetailElements";
-import { BottomDrawer } from "@/components/common/BottomDrawer";
+import { usePathname, useRouter } from "next/navigation";
 import useLoginInfo from "@/hooks/useLoginInfo";
+import { PostFooter } from "../../layout/footer";
+import { DetailProps, RDetailProps, Divider, ImageSlide, BottomDrawer } from "@/components/common";
+import ShareDialog from "./ShareDialog";
+import { PostTitle, PostInfo, PostContentMap, PostContentTag, PostTools } from "./DetailElements";
 
 interface DetailsProps {
   opt: 'EVT' | 'RCT'; data: DetailProps | RDetailProps; liked: boolean; likeCount?: number; handleLike: any; saved: boolean; handleCalendar: any; handleDelete: any;

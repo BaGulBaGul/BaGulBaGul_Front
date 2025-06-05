@@ -1,10 +1,11 @@
 import { Checkbox } from "@mui/material";
 import { useState, MouseEvent, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import dayjs from "dayjs";
 import { applyLike } from "@/service/Functions";
 import { CmtLikeIcn, VerticalMoreIcn } from "@/components/common/styles/Icon";
-import { CommentProps, UserProfile } from "@/components/common";
-import dayjs from "dayjs";
-import { useRouter } from "next/navigation";
+import { CommentProps } from "@/components/common";
+import { UserProfile } from "@/components/common/block";
 
 const handleToggle = (e: MouseEvent, setOpenD: any, setTargetM: any, value: any) => {
   e.stopPropagation();

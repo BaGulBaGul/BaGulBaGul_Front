@@ -1,11 +1,10 @@
 "use client";
 import { useState } from 'react';
-import { SubHeaderCnt } from '@/components/layout/subHeader';
-import { CommentMProps, CommentProps, MoreButton, AlertDialog, LoadingCircle } from '@/components/common';
-import { CommentBlock, CommentDrawer, CommentFooter, ModifyInput } from '@/components/pages/comment';
 import { handleMore, originText, useDelete, useListWithPage } from '@/hooks/useInCommon';
 import useLoginInfo from '@/hooks/useLoginInfo';
-import { SkeletonComments } from '@/components/common/loading/SkeletonComments';
+import { SubHeaderCnt } from '@/components/layout/subHeader';
+import { CommentMProps, CommentProps, MoreButton, AlertDialog, LoadingCircle, SkeletonComments } from '@/components/common';
+import { CommentBlock, CommentDrawer, CommentFooter, ModifyInput } from '@/components/pages/comment';
 
 export function CommentsPage(props: { origin: 'event' | 'event/recruitment'; postId: any; }) {
   // menu drawer

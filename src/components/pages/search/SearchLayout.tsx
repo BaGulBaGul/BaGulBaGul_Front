@@ -2,14 +2,11 @@ import { FormatDateRange, getParams, headCountString, useEffectCntFilter } from 
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { ReadonlyURLSearchParams } from "next/navigation";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { CategoryButtons, PostTab, FilterApplied } from "@/components/common";
+import { PostTab } from "@/components/common";
 import dayjs from 'dayjs';
 import { SearchBar } from "./SearchBar";
-import { FilterDialog } from '@/components/common/filter/FilterDialog';
-import { closeFilter, handleObjectValue } from '@/components/common/filter/Filter';
-import { FilterSortRadio } from '@/components/common/filter/FilterWrapper';
-import { FilterCalendar, FilterNumber, FilterNumberRange } from '@/components/common/filter/FilterContent';
-import { FilterCollapse } from "@/components/common/filter/_FilterCollapse";
+import { FilterApplied, FilterDialog, closeFilter, FilterSortRadio, handleObjectValue, FilterCalendar } from "@/components/common/filter";
+import { CategoryButtons, InputCollapse, InputNumber, InputNumberRange } from "@/components/common/input";
 
 export const SearchLayout = (props: { opt: 'TTL' | 'TAG'; sp: ReadonlyURLSearchParams; router: AppRouterInstance; children: React.ReactNode; }) => {
   // type
@@ -89,20 +86,20 @@ export const SearchLayout = (props: { opt: 'TTL' | 'TAG'; sp: ReadonlyURLSearchP
         </div>
         <FilterDialog open={open} handleClose={() => { closeFilter(setOpen, routeToFilter) }} >
           <FilterSortRadio value={p.sort} handleChange={(e: ChangeEvent<HTMLInputElement>, newSort: string) => { handleObjectValue(setP, 'sort', newSort) }} />
-          <FilterCollapse title={'날짜선택'} type='CAL' value={!startDate ? '' : FormatDateRange(startDate, endDate)}>
+          <InputCollapse title={'날짜선택'} type='CAL' value={!startDate ? '' : FormatDateRange(startDate, endDate)}>
             <FilterCalendar startDate={startDate} endDate={endDate} onChange={(dates: [any, any]) => { setP((prev: any) => ({ ...prev, dateRange: dates })) }} />
-          </FilterCollapse>
-          <FilterCollapse title={'참여인원'} type="NUM" value={p.participants} >
-            <FilterNumber value={p.participants} onChange={(newValue) => handleObjectValue(setP, 'participants', newValue)} />
-          </FilterCollapse>
-          <FilterCollapse title={'규모설정'} type="NUM" value={!!p.headCount.from || !!p.headCount.to ? headCountString(p.headCount.from, p.headCount.to) : 0}>
+          </InputCollapse>
+          <InputCollapse title={'참여인원'} type="NUM" value={p.participants} >
+            <InputNumber value={p.participants} onChange={(newValue) => handleObjectValue(setP, 'participants', newValue)} />
+          </InputCollapse>
+          <InputCollapse title={'규모설정'} type="NUM" value={!!p.headCount.from || !!p.headCount.to ? headCountString(p.headCount.from, p.headCount.to) : 0}>
             <div className='flex flex-col gap-[8px]'>
-              <FilterNumberRange
+              <InputNumberRange
                 minNumber={{ value: p.headCount.from, onChange: (newValue: any) => { handleObjectValue(setP, 'headCount', { from: newValue ?? undefined, to: p.headCount.to }) } }}
                 maxNumber={{ value: p.headCount.to, min: p.headCount.from, onChange: (newValue: any) => { handleObjectValue(setP, 'headCount', { from: p.headCount.from, to: newValue ?? undefined }) } }} />
               <div className='self-end text-12 text-gray3'>*최대인원 제한 없을 경우 '0'명으로 표기</div>
             </div>
-          </FilterCollapse>
+          </InputCollapse>
         </FilterDialog>
         {<div className={filterCnt > 0 ? 'mt-[120px]' : 'mt-[94px]'}>
           {props.children}

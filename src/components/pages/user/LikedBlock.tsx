@@ -1,10 +1,10 @@
 "use client";
 import { useState } from 'react';
-import { FormatDateRange, applyLike } from '@/service/Functions';
-import { BlockInfo, BlockInfoDT, LikeProps, LikeRProps, UserProfile } from '@/components/common';
-import { LikeIcn } from '@/components/common/styles/Icon';
-import dayjs from 'dayjs';
 import Link from 'next/link';
+import { FormatDateRange, applyLike } from '@/service/Functions';
+import { LikeIcn } from '@/components/common/styles/Icon';
+import { LikeProps, LikeRProps } from '@/components/common';
+import { BlockInfo, UserProfile, BlockInfoDT } from '@/components/common/block';
 
 export function LikedPostBlock(props: { data: LikeProps }) {
   const [liked, setLiked] = useState(true);

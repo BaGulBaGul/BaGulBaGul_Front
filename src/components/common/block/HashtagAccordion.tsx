@@ -1,9 +1,9 @@
 "use client";
 import { useState, useLayoutEffect, createRef } from 'react';
 import Link from 'next/link';
-import { ExpandButton } from './ExpandButton';
+import { ExpandButton } from '..';
 
-export default function HashtagAccordion(props: { tag: string[]; }) {
+export function HashtagAccordion(props: { tag: string[]; }) {
   const ref = createRef<HTMLDivElement>();
   const [expanded, setExpanded] = useState(false);
   const [showMore, setShowMore] = useState(false);

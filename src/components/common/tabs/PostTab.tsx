@@ -1,7 +1,7 @@
 import { ThemeProvider, Tabs, Tab } from '@mui/material';
 import { tabTheme } from '../styles/Themes';
 
-export default function PostTab(props: { value: number; handleChange: any; cN?: string; }) {
+export function PostTab(props: { value: number; handleChange: any; cN?: string; }) {
   return (
     <ThemeProvider theme={tabTheme}>
       <Tabs value={props.value} onChange={props.handleChange} className={props.cN ?? 'items-center min-h-0'}>

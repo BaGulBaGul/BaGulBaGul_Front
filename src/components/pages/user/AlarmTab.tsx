@@ -1,9 +1,10 @@
 "use client";
 import React from "react";
 import { useRouter } from "next/navigation";
-import { AlarmProps, MoreButton, NoData } from "@/components/common";
 import { useDeleteAlarm } from "@/hooks/useInAlarm";
 import { handleMore, useDelete, useListWithPage } from "@/hooks/useInCommon";
+import { AlarmProps, MoreButton } from "@/components/common";
+import { NoData } from "@/components/common/block";
 import { AlarmBlock } from ".";
 
 export function AlarmTab() {
