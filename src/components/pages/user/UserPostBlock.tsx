@@ -1,6 +1,7 @@
 import Link from 'next/link';
-import { ListProps, RListProps, BlockInfoDT, BlockInfo, HeadCount, UserProfile } from '@/components/common';
 import { FormatDateRange } from '@/service/Functions';
+import { ListProps, RListProps } from '@/components/common';
+import { BlockInfo, HeadCount, BlockInfoDT, UserProfile } from '@/components/common/block';
 
 export function MyPostBlock(props: { opt: 'EVT' | 'RCT', data: ListProps | RListProps }) {
   if (props.opt === 'EVT') {

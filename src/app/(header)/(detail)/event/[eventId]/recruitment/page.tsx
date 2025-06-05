@@ -1,11 +1,12 @@
 "use client";
 import React from "react";
 import { useParams, useSearchParams } from 'next/navigation';
-import { getParams } from "@/service/Functions";
-import { LoadingCircle, MoreButton, RListProps, Divider, NoData, SkeletonList } from '@/components/common';
-import { RecruitBlock } from "@/components/pages/detail";
 import dayjs from "dayjs";
+import { getParams } from "@/service/Functions";
 import { handleMore, useListWithPageE } from "@/hooks/useInCommon";
+import { LoadingCircle, MoreButton, RListProps, Divider, SkeletonList } from '@/components/common';
+import { NoData } from "@/components/common/block";
+import { RecruitBlock } from "@/components/pages/detail";
 
 export default function Page() {
   const prms = useParams()

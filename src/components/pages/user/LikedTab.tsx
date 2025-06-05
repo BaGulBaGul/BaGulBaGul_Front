@@ -1,10 +1,11 @@
 "use client";
 import { useState } from 'react';
-import { tabList } from '@/service/Functions';
-import { MoreButton, NoData, TabPanels, PostTab, LikeProps, LikeRProps, Divider, LoadingCircle, SkeletonList } from '@/components/common';
-import { ViewToggle, LikedAccompanyBlock, LikedPostBlock } from '.';
 import { InfiniteData, UseInfiniteQueryResult } from '@tanstack/react-query';
+import { tabList } from '@/service/Functions';
 import { handleMore, useListWithPage } from '@/hooks/useInCommon';
+import { MoreButton, TabPanels, PostTab, LikeProps, LikeRProps, Divider, LoadingCircle, SkeletonList } from '@/components/common';
+import { NoData } from '@/components/common/block';
+import { ViewToggle, LikedAccompanyBlock, LikedPostBlock } from '.';
 
 export function LikedTab() {
   const [value, setValue] = useState(0);

@@ -1,9 +1,9 @@
 "use client";
 import { useEffect, useRef, useState } from 'react';
 import { Button, ThemeProvider, TextField } from '@mui/material';
-import { commentTheme } from '@/components/common/styles/Themes';
-import ScrollToTop from './ScrollToTop';
 import { useNewComment } from '@/hooks/useInComment';
+import { commentTheme } from '.';
+import ScrollToTop from './ScrollToTop';
 
 export function CommentFooter(props: { url: string; qKey: any; isLogin: boolean; setOpenA: any; }) {
   const cmtRef = useRef<HTMLInputElement>(null);

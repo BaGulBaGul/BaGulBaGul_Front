@@ -1,9 +1,8 @@
 "use client";
-import { ImageUploader } from "@/components/common/input/ImageUploader";
-import { InfoInput } from "@/components/common/input/InfoInput";
+import { useEffect, useRef, useState } from "react";
 import { useEditProfile } from "@/hooks/useInUser";
 import useLoginInfo from "@/hooks/useLoginInfo";
-import { useEffect, useRef, useState } from "react";
+import { ImageUploader, InfoInput } from "@/components/common/input";
 
 export function EditProfilePage() {
   let userinfo = useLoginInfo()

@@ -1,14 +1,15 @@
 "use client"
 import { useEffect } from "react";
 import { createSearchParams } from 'react-router-dom'
-import { call } from "./ApiService";
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import 'dayjs/locale/ko';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
+import { call } from "./ApiService";
 
-import { FilterProps, EventType } from "@/components/common";
+import { EventType } from "@/components/common";
+import { FilterProps } from "@/components/common/filter";
 
 // dayjs 설정
 dayjs.extend(isSameOrBefore);

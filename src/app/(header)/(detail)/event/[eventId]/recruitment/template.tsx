@@ -1,15 +1,12 @@
 "use client";
 import { useState, useEffect, ChangeEvent } from 'react';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
-import { FormatDateRange, getParams, useEffectCntFilter } from '@/service/Functions';
-import { FilterButton, FilterApplied, WriteFab } from '@/components/common';
 import dayjs from 'dayjs';
+import { FormatDateRange, getParams, useEffectCntFilter } from '@/service/Functions';
+import { WriteFab } from '@/components/common';
 import { HeaderBackIcn } from '@/components/common/styles/Icon';
-import { FilterDialog } from '@/components/common/filter/FilterDialog';
-import { closeFilter, handleObjectValue } from '@/components/common/filter/Filter';
-import { FilterCheck, FilterSortRadio } from '@/components/common/filter/FilterWrapper';
-import { FilterCalendar, FilterNumber } from '@/components/common/filter/FilterContent';
-import { FilterCollapse } from '@/components/common/filter/_FilterCollapse';
+import { closeFilter, FilterApplied, FilterButton, FilterCalendar, FilterDialog, FilterSortRadio, handleObjectValue } from '@/components/common/filter';
+import { InputCheck, InputCollapse, InputNumber } from '@/components/common/input';
 
 export default function Template({ children }: { children: React.ReactNode }) {
   const prms = useParams()
@@ -66,14 +63,14 @@ export default function Template({ children }: { children: React.ReactNode }) {
         </div>
       }
       <FilterDialog open={open} handleClose={() => { closeFilter(setOpen, routeToFilter) }} >
-        <FilterCheck title='모집 중만 보기' checked={p.recruiting} handleChange={(e: React.ChangeEvent<HTMLInputElement>) => { handleObjectValue(setP, 'recruiting', e.target.checked) }} />
+        <InputCheck title='모집 중만 보기' checked={p.recruiting} handleChange={(e: React.ChangeEvent<HTMLInputElement>) => { handleObjectValue(setP, 'recruiting', e.target.checked) }} />
         <FilterSortRadio value={p.sort} handleChange={(e: ChangeEvent<HTMLInputElement>, newSort: string) => { handleObjectValue(setP, 'sort', newSort) }} />
-        <FilterCollapse title={'날짜선택'} type='CAL' value={!startDate ? '' : FormatDateRange(startDate, endDate)}>
+        <InputCollapse title={'날짜선택'} type='CAL' value={!startDate ? '' : FormatDateRange(startDate, endDate)}>
           <FilterCalendar startDate={startDate} endDate={endDate} onChange={(dates: [any, any]) => { setP((prev: any) => ({ ...prev, dateRange: dates })) }} />
-        </FilterCollapse>
-        <FilterCollapse title={'참여인원'} type="NUM" value={p.participants} >
-          <FilterNumber value={p.participants} onChange={(newValue) => handleObjectValue(setP, 'participants', newValue)} />
-        </FilterCollapse>
+        </InputCollapse>
+        <InputCollapse title={'참여인원'} type="NUM" value={p.participants} >
+          <InputNumber value={p.participants} onChange={(newValue) => handleObjectValue(setP, 'participants', newValue)} />
+        </InputCollapse>
       </FilterDialog>
       <div className={`flex flex-col w-full ${filterCnt > 0 ? 'pt-[140px]' : 'pt-[104px]'}`}>
         {children}
