@@ -54,7 +54,7 @@ export function WriteEPage(props: { edit?: number; }) {
   return (
     <Write handleSubmit={handleSubmit}>
       <div className='relative h-[280px] bg-gray1'>
-        {images.length > 0 ? <ImageSlide images={images} setImages={setImages} /> : <></>}
+        <ImageSlide images={images} setImages={setImages} default={<></>} />
         <ImageUploader setImage={setImages} setImageKey={setImageKey} multiple={true} />
       </div>
       <TitleInput titleRef={titleRef} prev={!!prev ? prev.data.post.title : undefined} />

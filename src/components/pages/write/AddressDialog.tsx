@@ -1,8 +1,9 @@
 "use client";
-import { DeleteIcn, HeaderBackIcn } from "@/components/common/styles/Icon";
-import { Dialog } from "@mui/material";
 import { RefObject, useRef, useState } from "react";
 import Script from 'next/script'
+import { Dialog } from "@mui/material";
+import { DeleteIcn, HeaderBackIcn } from "@/components/common/styles/Icon";
+import { SearchInput } from "@/components/common/input";
 
 export function AddressDialog(props: { open: boolean; onClose: any; addr: string; setAddr: any; }) {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -10,7 +11,7 @@ export function AddressDialog(props: { open: boolean; onClose: any; addr: string
   const handleCloseAddr = () => {
     if (inputRef.current && inputRef.current.value.length > 0) {
       props.setAddr({ full: inputRef.current.value, abs: abs })
-    } else if (props.addr.length > 0 && inputRef.current  && inputRef.current.value.length === 0) {
+    } else if (props.addr.length > 0 && inputRef.current && inputRef.current.value.length === 0) {
       props.setAddr({ full: inputRef.current.value, abs: abs })
     }
     props.onClose(false)
@@ -26,10 +27,9 @@ export function AddressDialog(props: { open: boolean; onClose: any; addr: string
       <div className='fixed w-full top-0 bg-p-white z-paper'>
         <div className='flex flex-row items-center ms-[16px] me-[28px] my-[18px] gap-[16px]'>
           <button onClick={handleCloseAddr}><HeaderBackIcn /></button>
-          <div className='search-wrap w-full'>
-            <input className='search-input' placeholder='징소, 주소 검색' ref={inputRef} defaultValue={props.addr} readOnly />
+          <SearchInput placeholder='징소, 주소 검색' inputRef={inputRef} defaultValue={props.addr} readOnly={true}>
             <button onClick={handleClearAddr}><DeleteIcn size='20' color='#1E1E1E' /></button>
-          </div>
+          </SearchInput>
         </div>
       </div>
       <div id='addr-wrap' className="mt-[66px] w-full h-full"></div>

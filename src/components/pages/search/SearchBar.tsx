@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { HeaderBackIcn, MagnifyingIcn } from "@/components/common/styles/Icon";
 import { Divider } from "@/components/common";
 import { FilterButton } from "@/components/common/filter";
+import { SearchInput } from "@/components/common/input";
 
 interface SearchBarProps {
   opt?: 0 | 1; title?: string; tag?: string; setOpen: any; filterCnt: number; setTitle?: any; handleRt?: any; router: any;
@@ -24,14 +25,11 @@ export function SearchBar(props: SearchBarProps) {
       <div className='fixed w-full top-0 bg-p-white z-30'>
         <div className='flex flex-row items-center mx-[16px] my-[18px] gap-[16px]'>
           <button onClick={() => props.router.back()}><HeaderBackIcn /></button>
-          <div className='flex flex-row justify-between w-full'>
-            <div className='search-wrap'>
-              <input className='search-input' defaultValue={props.opt === 0 ? undefined : props.title}
-                placeholder={props.opt === 0 ? '피크페스티벌' : undefined} ref={inputRef} onKeyDown={handleSearch} required />
-              <button onClick={handleSearch}><MagnifyingIcn size={20} /></button>
-            </div>
-            <FilterButton handleOpen={handleOpen} cnt={props.filterCnt} fs={14} />
-          </div>
+          <SearchInput inputRef={inputRef} defaultValue={props.opt === 0 ? undefined : props.title}
+            placeholder={props.opt === 0 ? '피크페스티벌' : undefined} handleKeyDown={handleSearch} required>
+            <button onClick={handleSearch}><MagnifyingIcn size={20} /></button>
+          </SearchInput>
+          <FilterButton handleOpen={handleOpen} cnt={props.filterCnt} fs={14} />
         </div>
       </div>
     )

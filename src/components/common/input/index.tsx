@@ -4,6 +4,7 @@ import { InfoInput } from "./InfoInput";
 import { CollapseButton, InputCollapse } from "./InputCollapse";
 import { InputNumber, InputNumberRange } from "./InputNumber";
 import { InputCheck, InputContainer } from "./InputWrapper";
+import { SearchInput } from "./SearchInput";
 
 
 export {
@@ -11,4 +12,5 @@ export {
   CollapseButton, InputCollapse,
   InputCheck, InputContainer, 
   InputNumber, InputNumberRange,
+  SearchInput,
 }

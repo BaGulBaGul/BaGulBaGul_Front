@@ -1,45 +1,70 @@
 "use client";
-import { useState, useLayoutEffect, createRef } from 'react';
+import { useState, useLayoutEffect, useRef } from 'react';
 import Link from 'next/link';
 import { ExpandButton } from '..';
 
-export function HashtagAccordion(props: { tag: string[]; }) {
-  const ref = createRef<HTMLDivElement>();
-  const [expanded, setExpanded] = useState(false);
+// * 리스트 내 블록들에서도 적용 잘되는지 확인
+export function HashtagAccordion({ tags }: { tags: string[] }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const measureRef = useRef<HTMLDivElement>(null);
+
   const [showMore, setShowMore] = useState(false);
-  useLayoutEffect(() => {
-    if (ref.current && (ref.current.clientHeight > 27)) {
-      setShowMore(true);
+  const [expanded, setExpanded] = useState(false);
+
+  // Use a hidden flex-nowrap div to measure overflow
+  const checkOverflow = () => {
+    if (containerRef.current && measureRef.current) {
+      const containerWidth = containerRef.current.offsetWidth;
+      const tagListWidth = measureRef.current.clientWidth;
+      setShowMore(tagListWidth > containerWidth);
     }
-  }, [ref]);
-  const handleExpandClick = () => { setExpanded(!expanded); }
-  if (props.tag.length > 0 && props.tag[0].length > 0) {
-    return (
-      <div className='pt-[10px]'>
-        <div ref={ref} className='flex flex-row justify-between'>
-          {showMore
-            ? <>
-              <div className={expanded ? "container-expand" : "container-shrink"}>
-                {(props.tag).map((tag, idx) => <HashtagButton tag={tag} key={`tag-${idx}`} />)}
-              </div>
-              <ExpandButton handleExpandClick={handleExpandClick} expanded={expanded} />
-            </>
-            : <div className='container'>
-              {(props.tag).map((tag, idx) => <HashtagButton tag={tag} key={`tag-${idx}`} />)}
-            </div>
-          }
-        </div>
+  };
+  useLayoutEffect(() => {
+    checkOverflow();
+    window.addEventListener('resize', checkOverflow);
+    return () => window.removeEventListener('resize', checkOverflow);
+  }, [tags]);
+
+  const handleExpandClick = () => setExpanded((prev) => !prev);
+
+  if (!tags.length) return null;
+
+  return (
+    <div className="pt-[10px]">
+      {/* Hidden measuring div */}
+      <div ref={measureRef} className="flex flex-nowrap gap-[10px] absolute opacity-0 h-0 p-0 m-0 pointer-events-none"
+        style={{ visibility: 'hidden' }} aria-hidden >
+        {tags.map((tag, idx) => (<HashtagButton tag={tag} key={`measure-tag-${idx}`} />))}
       </div>
-    )
-  }
+      {/* Visible tag list */}
+      <div ref={containerRef} className="flex flex-row justify-between w-full">
+        <div className={`flex gap-[10px] transition-all duration-200 ` +
+          (showMore && !expanded ? 'overflow-hidden flex-wrap h-[27px] max-w-[calc(100%-35px)]' : 'flex-wrap max-w-full')} >
+          {tags.map((tag, idx) => (<HashtagButton tag={tag} key={`tag-${idx}`} />))}
+        </div>
+        {showMore && (<ExpandButton handleExpandClick={handleExpandClick} expanded={expanded} />)}
+      </div>
+    </div>
+  );
 }
 
-export function HashtagButton(props: { tag: string; }) {
+export function HashtagList({ tags }: { tags: string[] }) {
   return (
-    <Link className='hashtag-btn' href={`/tag?tag=${props.tag}&tab_id=0`}>
-      <div className='flex flex-row'>
-        <span className='pe-[2px]'>#</span><span>{props.tag}</span>
+    <div className="flex flex-row gap-[10px] flex-wrap">
+      {tags.map((tag, idx) => {
+        if (tag.length > 0) { return (<HashtagButton tag={tag} key={`tag-${idx}`} />) }
+      })}
+    </div>
+  )
+}
+
+export function HashtagButton({ tag }: { tag: string }) {
+  return (
+    <Link href={`/tag?tag=${tag}&tab_id=0`}>
+      <div className="whitespace-nowrap px-[4px] py-[2px] text-14 text-black bg-gray1 ring-[0.5px] ring-gray1 rounded-[2px]
+      hover:ring-gray3 hover:bg-white focus:ring-gray3 focus:bg-white active:ring-gray3 active:bg-gray3 active:text-white">
+        <span>{`# ${tag}`}</span>
       </div>
     </Link>
-  )
+  );
 }
