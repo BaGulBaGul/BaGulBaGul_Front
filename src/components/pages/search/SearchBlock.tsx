@@ -18,7 +18,7 @@ export function ResultBlock(props: { data: ListProps; opt: 0 | 1; }) {
             <img className='rounded-[4px] w-[92px] h-[116px] object-cover' src={props.data.post.headImageUrl ?? '/default_list_thumb3x.png'} />
           </div>
         </Link>
-        {props.opt === 1 ? <HashtagAccordion tag={props.data.post.tags} /> : <></>}
+        {props.opt === 1 ? <HashtagAccordion tags={props.data.post.tags} /> : <></>}
       </div>
     )
   } else {
@@ -33,7 +33,7 @@ export function ResultBlock(props: { data: ListProps; opt: 0 | 1; }) {
             </div>
           </div>
         </Link>
-        {props.opt === 1 ? <HashtagAccordion tag={props.data.post.tags} /> : <></>}
+        {props.opt === 1 ? <HashtagAccordion tags={props.data.post.tags} /> : <></>}
       </div>
     )
   }

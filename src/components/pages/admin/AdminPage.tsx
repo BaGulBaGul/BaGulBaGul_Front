@@ -1,32 +1,26 @@
 'use client';
 import React, { useEffect, useState } from "react";
-import useLoginInfo from "@/hooks/useLoginInfo";
 import Link from "next/link";
+import useLoginInfo from "@/hooks/useLoginInfo";
 import { useSignout } from "@/hooks/useInUser";
-import { SubTopHeader } from "@/components/layout/subHeader";
 import { useAlarmed } from "@/hooks/useInAlarm";
+import { SubTopHeader } from "@/components/layout/subHeader";
+import { UserProfileBlock, SetBlock } from "@/components/common/block";
+import { LogoutButton } from "@/components/common/button/LogoutButton";
 
 export function AdminPage() {
 	let userinfo = useLoginInfo()
 	let userdata = userinfo?.data
 
-	const mutateSignout = useSignout();
-	const handleSignout = () => { mutateSignout.mutate() }
+	// const mutateSignout = useSignout();
+	// const handleSignout = () => { mutateSignout.mutate() }
 	if (userinfo.isPending || userinfo.isLoading) { return (<></>) }
 	return (
 		<>
 			<SubTopHeader name='관리자페이지' child={<AlarmButton />} />
 			<div className="flex flex-col mb-[11px] pt-[60px]">
 				<div className="flex flex-col gap-[8px]">
-					<div className="flex flex-row px-[16px] py-[18px] gap-[16px] items-center bg-p-white" id='mypage-profile'>
-						<div className="relative w-[77px] h-[70px] rounded-full">
-							<img src="/profile_admin.svg" className="w-[70px] h-[70px] rounded-full object-cover" />
-						</div>
-						<div className="flex flex-col">
-							<span className="font-semibold text-18 text-black">{userdata?.nickname ?? 'Admin'}</span>
-							<span className="text-14 text-gray3">{userdata?.email ?? 'admin@gmail.com'}</span>
-						</div>
-					</div>
+					<UserProfileBlock profileImageUrl="/profile_admin.svg" username={userdata?.nickname ?? 'Admin'} email={userdata?.email ?? 'admin@gmail.com'} />
 					<div className="flex flex-col bg-p-white" id='mypage-set1'>
 						<div className="p-[16px] text-14 font-semibold text-black">메인화면</div>
 						<SetBlock title='배너 설정' desc='메인화면 추천 배너를 제작할 수 있어요.' url='/admin/banner' />
@@ -45,27 +39,13 @@ export function AdminPage() {
 						<SetBlock title='유저 관리' desc='유저 정보를 확인하고 삭제 및 정지할 수 있어요.' url='/admin/user' />
 					</div>
 				</div>
-				<div className="p-[24px]">
+				{/* <div className="p-[24px]">
 					<button className="w-full bg-p-white text-gray3 text-16 p-[16px]" onClick={handleSignout}>로그아웃</button>
-				</div>
+				</div> */}
+				{/* // * need to test if works */}
+				<LogoutButton />
 			</div>
 		</>
-	)
-}
-
-function SetBlock(props: { title: string; desc: string; count?: number; url: string; }) {
-	return (
-		<Link href={props.url}
-			className="flex flex-row justify-between p-[16px]">
-			<div className="flex flex-col">
-				<span className="text-14 text-black">{props.title}</span>
-				<span className="text-12 text-gray3">{props.desc}</span>
-			</div>
-			<div className="flex flex-row items-center gap-[8px]">
-				{props.count ? <span className="text-14 text-black">{props.count >= 0 ? props.count : '-'}개</span> : <></>}
-				<img src='/arrow_next.svg' className="p-[4px] w-[24px] h-[24px]" />
-			</div>
-		</Link>
 	)
 }
 

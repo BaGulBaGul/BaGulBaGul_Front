@@ -1,71 +1,50 @@
 'use client';
 import React, { useEffect, useState } from "react";
+import Link from "next/link";
 import { CalIcn, LikeIcn, PostEditIcn } from "@/components/common/styles/Icon";
 import useLoginInfo from "@/hooks/useLoginInfo";
-import Link from "next/link";
 import { useSignout } from "@/hooks/useInUser";
-import { SubTopHeader } from "@/components/layout/subHeader";
 import { useAlarmed } from "@/hooks/useInAlarm";
+import { SubTopHeader } from "@/components/layout/subHeader";
+import { UserProfileBlock, SetBlock } from "@/components/common/block";
+import { LogoutButton } from "@/components/common/button/LogoutButton";
 
 export function MyPage() {
   let userinfo = useLoginInfo()
   let userdata = userinfo?.data
 
-  const mutateSignout = useSignout();
-  const handleSignout = () => { mutateSignout.mutate() }
+  // const mutateSignout = useSignout();
+  // const handleSignout = () => { mutateSignout.mutate() }
   if (userinfo.isPending || userinfo.isLoading) { return (<></>) }
   return (
     <>
       <SubTopHeader name='마이페이지' child={<AlarmButton />} />
       <div className="flex flex-col mb-[11px] pt-[60px]">
         <div className="flex flex-col gap-[8px]">
-          <div className="flex flex-row px-[16px] py-[18px] gap-[16px] bg-p-white" id='mypage-profile'>
-            <div className="relative w-[77px] h-[70px] rounded-full">
-              <img src={userdata?.imageURI ?? "/default_icon.svg"} className="w-[70px] h-[70px] rounded-full object-cover" />
-            </div>
-            <div className="flex flex-col">
-              <span className="font-semibold text-18 text-black">{userdata?.nickname ?? '-'}</span>
-              <span className="text-14 text-gray3">{userdata?.email ?? '등록된 이메일이 없습니다.'}</span>
-              <span className="text-14 text-gray3">{userdata?.profileMessage ?? '바글이의 한마디를 적어주세요.'}</span>
-            </div>
-          </div>
+          <UserProfileBlock profileImageUrl={userdata?.imageURI} username={userdata?.nickname} email={userdata?.email} message={userdata?.profileMessage ?? '바글이의 한마디를 적어주세요.'} />
           <div className="flex flex-col bg-p-white" id='mypage-set1'>
             <div className="p-[16px] text-14 font-semibold text-black">나의 바글바글</div>
-            <SetBlock opt={0} icon={<LikeIcn color='#6C6C6C' />} title='좋아요' count={userdata?.postLikeCount} url='/mypage/liked' />
-            <SetBlock opt={0} icon={<PostEditIcn />} title='작성글' count={userdata?.writingCount} url='/mypage/post' />
-            <SetBlock opt={0} icon={<CalIcn val={false} color='#6C6C6C' />} title='캘린더' count={userdata?.calendarCount} url='/mypage/calendar' />
+            <SetBlock icon={<LikeIcn color='#6C6C6C' />} title='좋아요' count={userdata?.postLikeCount} url='/mypage/liked' />
+            <SetBlock icon={<PostEditIcn />} title='작성글' count={userdata?.writingCount} url='/mypage/post' />
+            <SetBlock icon={<CalIcn val={false} color='#6C6C6C' />} title='캘린더' count={userdata?.calendarCount} url='/mypage/calendar' />
           </div>
           <div className="flex flex-col bg-p-white" id='mypage-set2'>
             <div className="p-[16px] text-14 font-semibold text-black">계정 관리</div>
-            <SetBlock opt={1} icon={<SmileIcn />} title='프로필 수정' url='/mypage/edit' />
+            <SetBlock icon={<SmileIcn />} title='프로필 수정' url='/mypage/edit' />
           </div>
           <div className="flex flex-col bg-p-white" id='mypage-set3'>
             <div className="p-[16px] text-14 font-semibold text-black">이용 정보</div>
-            <SetBlock opt={1} title='약관 및 정책' url='/' />
-            <SetBlock opt={1} title='회원 탈퇴히기' url='/' />
+            <SetBlock title='약관 및 정책' url='/' />
+            <SetBlock title='회원 탈퇴히기' url='/' />
           </div>
         </div>
-        <div className="p-[24px]">
+        {/* <div className="p-[24px]">
           <button className="w-full bg-p-white text-gray3 text-16 p-[16px]" onClick={handleSignout}>로그아웃</button>
-        </div>
+        </div> */}
+        {/* // * need to test if works */}
+        <LogoutButton />
       </div>
     </>
-  )
-}
-
-function SetBlock(props: { opt: 0 | 1; icon?: any; title: string; count?: number; url: string; }) {
-  return (
-    <Link href={props.url}
-      className="flex flex-row justify-between p-[16px] text-14 text-black">
-      <div className="flex flex-row items-center gap-[8px]">
-        {props.icon ? <div className="w-[24px] h-[24px]">{props.icon}</div> : <></>}
-        <span>{props.title}</span>
-      </div>
-      <div className="flex flex-row items-center gap-[8px]">
-        {props.opt === 1 ? <></> : <span>{props.count || props.count === 0 ? props.count : '-'}개</span>}
-        <img src='/arrow_next.svg' className="p-[4px] w-[24px] h-[24px]" />
-      </div>
-    </Link>
   )
 }
 

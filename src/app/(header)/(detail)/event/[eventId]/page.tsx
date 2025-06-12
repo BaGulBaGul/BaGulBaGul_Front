@@ -1,8 +1,8 @@
 'use client';
 import { useParams } from 'next/navigation';
-import { DetailPage } from '@/components/pages/detail/DetailPage';
+import { DetailPageE } from '@/components/pages/detail/_DetailPageE';
 
 export default function Page() {
   const params = useParams()
-  return (<DetailPage origin='event' postId={params.eventId} />)
+  return (<DetailPageE postId={params.eventId} />)
 }

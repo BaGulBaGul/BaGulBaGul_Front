@@ -1,7 +1,7 @@
 "use client";
 import React, { Fragment } from "react";
 import { ThemeProvider, Dialog, AppBar, Toolbar, createTheme } from "@mui/material";
-import { Divider } from "@/components/common";
+import { Divider, FooterButton } from "@/components/common";
 import { HeaderBackIcn } from "@/components/common/styles/Icon";
 
 interface FullscreenDialogProps {
@@ -23,7 +23,7 @@ export const FullscreenDialog = (props: FullscreenDialogProps) => {
           </AppBar>
           <Divider />
           {props.child}
-          <button className='footer-btn' onClick={props.handleDone}>{props.headerText}</button>
+          <FooterButton text={props.headerText} handleClick={props.handleDone} />
         </Dialog>
       </Fragment>
     </ThemeProvider>

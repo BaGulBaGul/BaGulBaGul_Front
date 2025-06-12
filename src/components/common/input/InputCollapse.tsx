@@ -6,7 +6,10 @@ import { InputContainer } from ".";
 
 export function CollapseButton({ handleOpen, type, value, valueText }: { handleOpen: () => void; type: 'CAL' | 'NUM'; value?: boolean; valueText?: string }) {
   return (
-    <button onClick={handleOpen} className={`filter-btn px-[8px] gap-[8px] ${!!value && 'border-primary-blue'}`}>
+    <button onClick={handleOpen}
+      className={`flex flex-row items-center gap-[8px] 
+      ${type === 'CAL' ? 'px-[8px] py-[4px]' : 'p-[4px] pe-[6px]'} border border-gray2 rounded-[8px] 
+      ${!!value && 'border-primary-blue'} text-14 text-black`}>
       <span className={!!value ? "text-primary-blue" : ''}>{type === 'CAL' ? <CalIcn val={!!value} /> : <CmtLikeIcn val={!!value} />}</span>
       <span>{valueText}</span>
     </button>

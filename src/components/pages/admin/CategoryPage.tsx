@@ -4,6 +4,7 @@ import { categories } from "@/components/common/input/CategoryButtons"
 import { SubTopHeader } from "@/components/layout/subHeader";
 import { AlertDialog, EditButton } from "@/components/common";
 import CategoryList from "./CategoryList";
+import { SearchInput } from "@/components/common/input";
 
 
 //  * ====== 250522 : AlertDialog UI 추가 수정 필요
@@ -50,7 +51,7 @@ export function CategoryPage() {
 				</button>
 				<CategoryList items={data} updateItems={(newData: string[]) => setData(newData)} editing={editing} selectedItems={selectedItems} handleCategory={handleCategory} />
 				<AlertDialog open={open} setOpen={setOpen} headerText='카테고리 만들기' buttonText1='닫기' buttonText2='추가하기' buttonAction={addCategory} >
-					<div className='w-full px-[8px] py-[4px] bg-gray1 rounded-[2px]'><input className='search-input' placeholder='카테고리명을 입력하세요.' ref={inputRef} required /></div>
+					<SearchInput inputRef={inputRef} placeholder="카테고리명을 입력하세요." required={true} divStyle="rounded-[2px]" />
 				</AlertDialog>
 			</div>
 		</>

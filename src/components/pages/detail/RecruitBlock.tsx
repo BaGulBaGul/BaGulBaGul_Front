@@ -16,7 +16,7 @@ export function RecruitBlock(props: { data: RListProps }) {
           </div>
         </div>
       </Link>
-      {props.data.post.tags ? <HashtagAccordion tag={props.data.post.tags} /> : <></>}
+      {props.data.post.tags ? <HashtagAccordion tags={props.data.post.tags} /> : <></>}
     </div>
   )
 }

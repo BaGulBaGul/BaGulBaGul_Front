@@ -1,9 +1,10 @@
 "use client";
+import { FooterButton } from "@/components/common";
 
 export function JoinFooter(props: { opt: 'nnm' | 'eml'; handleNext: any; handleJoin: any; btnActive: boolean }) {
   return (
     props.opt === 'nnm'
-      ? <button className='footer-btn' onClick={props.handleNext} disabled={props.btnActive}>다음</button>
+      ? <FooterButton text='다음' handleClick={props.handleNext} disabled={props.btnActive} />
       : <div className='fixed bottom-0 right-0 left-0 flex flex-row justify-center gap-[16px] px-[16px] py-[24px]'>
         <button className='join-btn join-skip' onClick={(e) => { props.handleJoin(0, e) }}>건너뛰기</button>
         <button className='join-btn join-email' onClick={(e) => { props.handleJoin(1, e) }} disabled={props.btnActive}>회원가입 완료</button>

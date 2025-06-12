@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { useEditProfile } from "@/hooks/useInUser";
 import useLoginInfo from "@/hooks/useLoginInfo";
 import { ImageUploader, InfoInput } from "@/components/common/input";
+import { FooterButton } from "@/components/common";
 
 export function EditProfilePage() {
   let userinfo = useLoginInfo()
@@ -66,7 +67,7 @@ export function EditProfilePage() {
           <input className='join-input' ref={descRef} placeholder='바글이의 한마디를 적어주세요.(최대 50자)' defaultValue={userdata.profileMessage ?? undefined} />
         </div>
       </div>
-      <button className="footer-btn" onClick={handleDoneEditing}>완료</button>
+      <FooterButton text='완료' handleClick={handleDoneEditing} />
     </>
   )
 }
