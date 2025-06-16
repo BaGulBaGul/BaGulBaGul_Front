@@ -26,7 +26,7 @@ export function DetailTools({ origin, postId, userinfo, commentCount, likeCount 
       <div className="flex flex-row justify-between p-[16px]">
         <div className="flex flex-row gap-[10px] text-14 text-gray3">
           <button className="flex flex-row items-center gap-[4px]" onClick={handleLike}>
-            <LikeIcn val={liked} /><p>{likeCount}</p>
+            <LikeIcn val={!!liked} /><p>{likeCount}</p>
           </button>
           <Link className="flex flex-row items-center gap-[4px]" href={commentURL}>
             <CmtIcn /><p>{commentCount}</p>

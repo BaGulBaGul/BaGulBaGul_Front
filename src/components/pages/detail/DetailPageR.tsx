@@ -2,9 +2,10 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import useLoginInfo from '@/hooks/useLoginInfo';
 import { useAddLike, useAddSave, useDeletePost, useDetailInfo, useDetailLike, useDetailSave } from '@/hooks/useInDetail';
-import { BottomDrawer, Divider, FooterButton, ImageSlide, SkeletonDetail } from '@/components/common';
+import { Divider, ImageSlide, SkeletonDetail } from '@/components/common';
 import { HashtagList } from '@/components/common/block';
 import { DetailInfoLine, DetailTitle, DetailTools, DetailWrapper } from '.';
+import { BottomDrawer } from '@/components/common/display/_BottomDrawer';
 
 export function DetailPageR({ postId }: { postId: any; }) {
   const userinfo = useLoginInfo().data
@@ -40,7 +41,7 @@ export function DetailPageR({ postId }: { postId: any; }) {
         </div>}
       </DetailWrapper>
       <DetailTools origin={'event'} postId={postId} commentCount={data.post.commentCount ?? 0} likeCount={data.post.likeCount ?? 0} />
-      <BottomDrawer open={openD} toggleDrawer={toggleDrawer} opt='RCT' target={data.recruitment.recruitmentId}
+      <BottomDrawer open={openD} toggleDrawer={toggleDrawer} type='recruitment' target={data.recruitment.recruitmentId}
         me={!!userinfo && userinfo.id === data.post.writer.userId} handleDelete={handleDelete}
         handleEdit={() => router.push(`/write?w=p&edit=${data.recruitment.recruitmentId}`)} />
     </>
