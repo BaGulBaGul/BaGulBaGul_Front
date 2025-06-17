@@ -58,6 +58,8 @@ export interface ParamProps {
   totalHeadCountMax?: string | undefined; totalHeadCountMin?: string | undefined;
 }
 
+export interface WriterProps { userId: number, userName: string, userProfileImageUrl: string };
+
 export interface ListProps {
   event: {
     eventId: number; type: string; abstractLocation: string; currentHeadCount: number; maxHeadCount: number;

@@ -30,7 +30,7 @@ export function HashtagAccordion({ tags }: { tags: string[] }) {
   if (!tags.length) return null;
 
   return (
-    <div className="pt-[10px]">
+    <div className={"pt-[10px] ps-[16px] pe-[14px]"}>
       {/* Hidden measuring div */}
       <div ref={measureRef} className="flex flex-nowrap gap-[10px] absolute opacity-0 h-0 p-0 m-0 pointer-events-none"
         style={{ visibility: 'hidden' }} aria-hidden >

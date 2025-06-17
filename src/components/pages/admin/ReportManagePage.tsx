@@ -4,7 +4,7 @@ import { Collapse } from '@mui/material';
 import { FormatDateRange } from "@/service/Functions"
 import { ReportedPosts,ReportedComments } from './_TmpData';
 import { TrashIcn } from "@/components/common/styles/Icon"
-import { UserProfile } from '@/components/common/block';
+import { TypeChip, UserProfile } from '@/components/common/block';
 import { ExpandButton } from '@/components/common';
 
 // * 다중 신고 시 UI 처리 추가 필요
@@ -46,7 +46,7 @@ export function ReportedBlock(props: { data: any }) {
     <div className="flex flex-col bg-p-white">
       <div className="flex flex-row justify-between p-[16px] pb-[10px]">
         <div className="flex flex-col gap-[4px]">
-          <div className="type-chip">{props.data.type}</div>
+          <TypeChip type={props.data.type} />
           <p className="text-16 font-semibold">{props.data.title}</p>
           <div className="flex flex-row gap-[8px]">
             <UserProfile userId={props.data.userId} userName={props.data.username} userProfileImageUrl={props.data.userProfileImageUrl} />

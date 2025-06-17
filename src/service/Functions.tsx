@@ -20,8 +20,7 @@ dayjs.tz.setDefault('Asia/Seoul');
 
 export const tabList:EventType[]  = ['FESTIVAL', 'LOCAL_EVENT', 'PARTY']
 
-type typeType = { [key: string]: string; }
-export const typeString: typeType = { 'FESTIVAL': '페스티벌', 'LOCAL_EVENT': '지역행사', 'PARTY': '파티' }
+export const typeString: { [key: string]: string; } = { 'FESTIVAL': '페스티벌', 'LOCAL_EVENT': '지역행사', 'PARTY': '파티' }
 
 export const FormatDateRange = (startDate: any, endDate: any) => {
   if (!!startDate && !!endDate) {

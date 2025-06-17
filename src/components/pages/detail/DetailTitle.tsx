@@ -2,10 +2,11 @@ import { Button, ThemeProvider } from "@mui/material";
 import { inputToggleTheme } from "@/components/common/styles/Themes";
 import { VerticalMoreIcn } from "@/components/common/styles/Icon";
 import { DateLine, UserProfile } from "@/components/common/block";
+import { WriterProps } from "@/components/common";
 
 interface Props {
   title: string; toggleDrawer: any; startDate: any; endDate: any; views: number;
-  writer: { userId: number, userName: string, userProfileImageUrl: string }; categories?: string[];
+  writer: WriterProps; categories?: string[];
 }
 export function DetailTitle({ title, toggleDrawer, startDate, endDate, views, writer, categories }: Props) {
   return (

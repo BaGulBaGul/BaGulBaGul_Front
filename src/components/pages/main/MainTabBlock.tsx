@@ -1,9 +1,10 @@
 import { handleMore } from "@/hooks/useInCommon"
 import { SkeletonList, LoadingCircle, MoreButton, WriteFab, Divider, ListProps, TabBlockProps } from "@/components/common"
-import { NoData } from "@/components/common/block"
-import { EventBlock } from "./EventBlock"
+import { BlockBodyAD, BlockContainer, BlockWrapper, NoData } from "@/components/common/block"
+import { detailDataP } from "@/components/common/Data"
 
 export const MainTabBlock = (props: TabBlockProps) => {
+  const data = detailDataP
   if (props.events.isPending || props.events.isLoading) { return <SkeletonList thumb={true} tag={true} /> }
   else if (props.events.status === 'success') {
     return (
@@ -14,7 +15,13 @@ export const MainTabBlock = (props: TabBlockProps) => {
               event.content.map((item: ListProps, idx: any) => (
                 <div key={`event-${idx}`}>
                   {idx === 0 ? <></> : <Divider />}
-                  <EventBlock data={item} />
+                  <BlockContainer tags={item.post.tags}>
+                    <BlockWrapper url={`/event/${item.event.eventId}`} wrapStyle='p-[16px] pb-[10px]'
+                      blockThumb={<img className='rounded-[4px] w-[92px] h-[116px] object-cover' src={item.post.headImageUrl ?? '/default_list_thumb3x.png'} />}>
+                      <BlockBodyAD title={item.post.title} startDate={item.event.startDate} endDate={item.event.endDate} address={item.event.abstractLocation}
+                        writer={item.post.writer} head={item.event.type === 'PARTY' ? { current: item.event.currentHeadCount, max: item.event.maxHeadCount } : undefined} />
+                    </BlockWrapper>
+                  </BlockContainer>
                 </div>
               ))
             ))}

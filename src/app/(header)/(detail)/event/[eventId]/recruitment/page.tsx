@@ -5,8 +5,7 @@ import dayjs from "dayjs";
 import { getParams } from "@/service/Functions";
 import { handleMore, useListWithPageE } from "@/hooks/useInCommon";
 import { LoadingCircle, MoreButton, RListProps, Divider, SkeletonList } from '@/components/common';
-import { NoData } from "@/components/common/block";
-import { RecruitBlock } from "@/components/pages/detail";
+import { BlockBodyD, BlockContainer, BlockWrapper, NoData } from "@/components/common/block";
 
 export default function Page() {
   const prms = useParams()
@@ -30,7 +29,12 @@ export default function Page() {
               recruit.content.map((item: RListProps, idx: any) => (
                 <div key={`recruit-${idx}`}>
                   {idx === 0 ? <></> : <Divider />}
-                  <RecruitBlock data={item} />
+                  <BlockContainer tags={item.post.tags}>
+                    <BlockWrapper url={`/recruitment/${item.recruitment.recruitmentId}`} wrapStyle='p-[16px] pb-[10px]'>
+                      <BlockBodyD title={item.post.title} startDate={item.recruitment.startDate} endDate={item.recruitment.endDate}
+                        writer={item.post.writer} head={{ current: item.recruitment.currentHeadCount, max: item.recruitment.maxHeadCount }} />
+                    </BlockWrapper>
+                  </BlockContainer>
                 </div>
               ))
             ))}
