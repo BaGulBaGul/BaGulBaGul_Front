@@ -8,7 +8,7 @@ import { LikedAccompanyBlock, LikedPostBlock } from './LikedBlock';
 import { ViewToggle } from "./UserButtons";
 import { UserPage } from "./UserPage";
 import { MyPostPage, UserPostPage } from "./UserPostPage";
-import { UserPostTabs, UserPostTab } from "./UserPostTabs";
+import { UserPostTab } from "./UserPostTabs";
 import { MyPostBlock, UserPostBlock } from "./UserPostBlock";
 import { EditProfilePage } from "./EditProfilePage";
 import { MyPage } from "./MyPage";
@@ -21,7 +21,7 @@ export {
   LikedAccompanyBlock, LikedPostBlock,
   MyPage, UserPage,
   MyPostPage, UserPostPage,
-  UserPostTabs, UserPostTab,
+  UserPostTab,
   MyPostBlock, UserPostBlock,
   EditProfilePage,
   ViewToggle,

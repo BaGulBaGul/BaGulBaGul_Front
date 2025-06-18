@@ -1,23 +1,8 @@
-import { Tab, Tabs, ThemeProvider } from '@mui/material';
 import { InfiniteData, UseInfiniteQueryResult } from '@tanstack/react-query';
 import { handleMore } from '@/hooks/useInCommon';
-import { tabTheme } from '@/components/common/styles/Themes';
 import { ListProps, LoadingCircle, MoreButton, RListProps, SkeletonList } from '@/components/common';
 import { NoData } from '@/components/common/block';
 import { MyPostBlock, UserPostBlock } from '.';
-
-export function UserPostTabs(props: { value: 0 | 1; handleChange: any; fixed: boolean }) {
-  return (
-    <div className={`${props.fixed ? 'fixed top-[60px]' : ''} w-full bg-p-white z-10`}>
-      <ThemeProvider theme={tabTheme}>
-        <Tabs value={props.value} onChange={props.handleChange} className='items-center min-h-0 px-[16px] py-[10px]'>
-          <Tab label="파티" />
-          <Tab label="모집글" />
-        </Tabs>
-      </ThemeProvider>
-    </div>
-  )
-}
 
 export function UserPostTab(props: { me: boolean; posts: UseInfiniteQueryResult<InfiniteData<any, unknown>, Error>; opt: 'EVT' | 'RCT' }) {
   if (props.posts.isPending || props.posts.isLoading) { return (<SkeletonList type='POST' opt={props.opt} />) }

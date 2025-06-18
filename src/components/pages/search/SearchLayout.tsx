@@ -2,16 +2,16 @@ import { FormatDateRange, getParams, headCountString, useEffectCntFilter } from 
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { ReadonlyURLSearchParams } from "next/navigation";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { PostTab } from "@/components/common";
 import dayjs from 'dayjs';
 import { SearchBar } from "./SearchBar";
+import { TypeTabs } from "@/components/common";
 import { FilterApplied, FilterDialog, closeFilter, FilterSortRadio, handleObjectValue, FilterCalendar } from "@/components/common/filter";
 import { CategoryButtons, InputCollapse, InputNumber, InputNumberRange } from "@/components/common/input";
 
 export const SearchLayout = (props: { opt: 'TTL' | 'TAG'; sp: ReadonlyURLSearchParams; router: AppRouterInstance; children: React.ReactNode; }) => {
   // type
   const [tab, setTab] = useState(Number(props.sp.get('tab_id')) ?? 0);
-  const handleChange = (e: React.SyntheticEvent, newValue: number) => { setTab(newValue); };
+  const handleChange = (value: any, e: Event | undefined) => { setTab(value); };
   // 카테고리 - 정렬기준, 날짜, 참여인원, 규모 - 제목 및 태그
   const [selectedCate, setSelectedCate] = useState<string[]>(props.sp.getAll('ct') ?? []);
   const [p, setP] = useState({
@@ -78,9 +78,7 @@ export const SearchLayout = (props: { opt: 'TTL' | 'TAG'; sp: ReadonlyURLSearchP
       }
       <div className='w-full p-0 pt-[66px]'>
         <div className='fixed top-[66px] w-full bg-p-white z-10'>
-          <div className='flex justify-between items-center px-[16px] py-[10px]'>
-            <PostTab value={tab} handleChange={handleChange} />
-          </div>
+          <TypeTabs val={tab} handleChange={handleChange} />
           <FilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters} opt="REDIRECT" p={p} setP={setP} handleRt={handleRt} />
           <CategoryButtons selectedCate={selectedCate} setSelectedCate={setSelectedCate} />
         </div>

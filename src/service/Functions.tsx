@@ -18,9 +18,11 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.tz.setDefault('Asia/Seoul');
 
-export const tabList:EventType[]  = ['FESTIVAL', 'LOCAL_EVENT', 'PARTY']
+export const tabList: EventType[] = ['FESTIVAL', 'LOCAL_EVENT', 'PARTY']
 
-export const typeString: { [key: string]: string; } = { 'FESTIVAL': '페스티벌', 'LOCAL_EVENT': '지역행사', 'PARTY': '파티' }
+export const typeString: { [key: string]: string; } = {
+  'FESTIVAL': '페스티벌', 'LOCAL_EVENT': '지역행사', 'PARTY': '파티', 'RCT': '모집글'
+}
 
 export const FormatDateRange = (startDate: any, endDate: any) => {
   if (!!startDate && !!endDate) {

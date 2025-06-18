@@ -29,6 +29,6 @@ export function DateLine({ startDate, endDate }: { startDate?: string; endDate?:
 export function TypeChip({ type }: { type: string }) {
   return (
     <span className="text-12 text-black bg-gray1 px-[4px] py-[2px] rounded-[2px] w-fit">
-      {type === 'RCT' ? '모집글' : typeString[type]}</span>
+      {typeString[type]}</span>
   );
 }

@@ -13,13 +13,13 @@ import { FullscreenDialog } from "./display/FullscreenDialog";
 import { ImageSlide } from "./display/ImageSlide";
 import { ReportDialog } from "./report/ReportDialog";
 import { ReportRadios } from "./report/ReportRadios";
-import { PostTab } from "./tabs/PostTab";
 import { TabPanel, TabPanels } from "./tabs/TabPanel";
 import { SkeletonCarousel } from "./loading/SkeletonCarousel";
 import { SkeletonComments, SkeletonReplies, SkeletonComment } from "./loading/SkeletonComments";
 import { SkeletonDetail } from "./loading/SkeletonDetail";
 import { SkeletonList } from "./loading/SkeletonList";
 import { SkeletonWrite } from "./loading/SkeletonWrite";
+import { TypeTabs } from "./tabs/_TypeTabs";
 
 export {
   // button
@@ -27,7 +27,7 @@ export {
   // display
   AlertDialog, BottomDrawer, FullscreenDialog, ImageSlide,
   // tabs
-  PostTab, TabPanel, TabPanels,
+  TypeTabs, TabPanel, TabPanels,
   // report
   ReportDialog, ReportRadios,
   // loading

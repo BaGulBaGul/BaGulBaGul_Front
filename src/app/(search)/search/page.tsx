@@ -2,19 +2,15 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import dayjs from 'dayjs';
-import { ThemeProvider, ToggleButtonGroup, ToggleButton } from '@mui/material';
 import { FormatDateRange, getParams, headCountString, useEffectFilterApplied } from '@/service/Functions';
-import { Divider } from '@/components/common';
-import { tabTheme } from '@/components/common/styles/Themes';
+import { Divider, TypeTabs } from '@/components/common';
 import { FilterApplied, FilterDialog, closeFilter, FilterSortRadio, handleObjectValue, FilterCalendar } from '@/components/common/filter';
 import { CategoryButtons, InputCollapse, InputNumber, InputNumberRange } from '@/components/common/input';
 import { SearchBar, FrequentSearches } from '@/components/pages/search';
 
 export default function Page() {
   const [tab, setTab] = useState(0);
-  const handleTab = (e: React.MouseEvent<HTMLElement>, newTab: number | null) => {
-    if (newTab !== null) { setTab(newTab); }
-  };
+  const handleTab = (value: any, e: Event | undefined) => { setTab(value); }
 
   const [selectedCate, setSelectedCate] = useState<string[]>([]);
   const [p, setP] = useState({
@@ -51,13 +47,7 @@ export default function Page() {
       <div className='w-full p-0 pt-[66px]'>
         <div className='fixed top-[66px] w-full bg-p-white z-10'>
           <FilterApplied filterCnt={filterCnt} filters={filters} opt="REDIRECT" p={p} setP={setP} setFilters={setFilters} />
-          <ThemeProvider theme={tabTheme}>
-            <ToggleButtonGroup value={tab} exclusive onChange={handleTab} >
-              <ToggleButton value={0}>페스티벌</ToggleButton>
-              <ToggleButton value={1}>지역행사</ToggleButton>
-              <ToggleButton value={2}>파티</ToggleButton>
-            </ToggleButtonGroup>
-          </ThemeProvider>
+          <TypeTabs val={tab} handleChange={handleTab} />
           <CategoryButtons selectedCate={selectedCate} setSelectedCate={setSelectedCate} />
           <Divider />
         </div>
