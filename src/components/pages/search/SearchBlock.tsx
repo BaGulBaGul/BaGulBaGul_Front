@@ -1,44 +1,8 @@
 import Link from "next/link"
 import { FormatDateRange } from "@/service/Functions"
 import { useRankEvents } from "@/hooks/useInRanking"
-import { EventType, ListProps, SkeletonList } from "../../common"
-import { BlockInfo, UserProfile, HashtagAccordion, HeadCount, HashtagButton } from "@/components/common/block";
-
-export function ResultBlock(props: { data: ListProps; opt: 0 | 1; }) {
-  let urlLink = `/event/${props.data.event.eventId}`
-  if (props.data.event.type !== 'PARTY') {
-    return (
-      <div className="flex flex-col justify-between py-[18px] px-[16px]">
-        <Link href={urlLink} passHref legacyBehavior>
-          <div className='flex flex-row justify-between items-center'>
-            <div className='flex flex-col justify-between w-[calc(100%-152px)] h-[116px]'>
-              <BlockInfo title={props.data.post.title} date={FormatDateRange(props.data.event.startDate, props.data.event.endDate)} address={props.data.event.abstractLocation} />
-              <UserProfile userId={props.data.post.writer.userId} userName={props.data.post.writer.userName} userProfileImageUrl={props.data.post.writer.userProfileImageUrl} />
-            </div>
-            <img className='rounded-[4px] w-[92px] h-[116px] object-cover' src={props.data.post.headImageUrl ?? '/default_list_thumb3x.png'} />
-          </div>
-        </Link>
-        {props.opt === 1 ? <HashtagAccordion tags={props.data.post.tags} /> : <></>}
-      </div>
-    )
-  } else {
-    return (
-      <div className="flex flex-col justify-between py-[18px] px-[16px]">
-        <Link href={urlLink} passHref legacyBehavior>
-          <div className='flex flex-col items-start gap-[4px]'>
-            <BlockInfo title={props.data.post.title} date={FormatDateRange(props.data.event.startDate, props.data.event.endDate)} />
-            <div className='flex flex-row items-center gap-[4px]'>
-              <UserProfile userId={props.data.post.writer.userId} userName={props.data.post.writer.userName} userProfileImageUrl={props.data.post.writer.userProfileImageUrl} />
-              <HeadCount currentHeadCount={props.data.event.currentHeadCount} maxHeadCount={props.data.event.maxHeadCount} />
-            </div>
-          </div>
-        </Link>
-        {props.opt === 1 ? <HashtagAccordion tags={props.data.post.tags} /> : <></>}
-      </div>
-    )
-  }
-
-}
+import { EventType, SkeletonList } from "../../common"
+import { HashtagButton } from "@/components/common/block";
 
 export function SuggestBlock(props: { type: EventType; eventRanking: boolean; }) {
   const rankedTags = ['피크페스티벌', '10cm', '서울재즈페스티벌', '펜타포트', '데이식스', '월디제', '넬', '터치드', '상상실현페스티벌']

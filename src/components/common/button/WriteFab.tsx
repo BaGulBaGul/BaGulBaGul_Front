@@ -1,10 +1,9 @@
 import { ThemeProvider, Fab, createTheme } from "@mui/material"
 
-export const WriteFab = (props: {opt: 'p' | 'r'; eventId?: number}) => {
-  const writeURL = props.opt === 'r' && !!props.eventId ? `/write?w=r&id=${props.eventId}` : `/write?w=${props.opt}`
+export function WriteFab ({url}: {url: string}) {
   return (
     <ThemeProvider theme={writeFabTheme}>
-      <Fab variant="extended" size="small" color="primary" className='fixed bottom-[19px] right-[16px]' href={writeURL}>
+      <Fab variant="extended" size="small" color="primary" className='fixed bottom-[19px] right-[16px]' href={url}>
         <div className='flex flex-row items-center'>
           <MainAddIcn />
           <span className='ps-[4px]'>글작성</span>

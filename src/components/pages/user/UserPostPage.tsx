@@ -3,7 +3,7 @@ import { useState } from 'react';
 import useLoginInfo from '@/hooks/useLoginInfo';
 import { useUserInfo } from '@/hooks/useInUser';
 import { useListWithPageE } from '@/hooks/useInCommon';
-import { TabPanel, TypeTabs } from '@/components/common';
+import { TypeTabs } from '@/components/common';
 import { UserPostTab } from '.';
 
 const apiURL = (value: 0 | 1, nickname: string) => {
@@ -19,8 +19,9 @@ export function MyPostPage() {
   return (
     <div className='flex flex-col w-full pb-[10px]'>
       <TypeTabs val={value} handleChange={handleChange} types={['PARTY', 'RCT']} wrapStyle='fixed top-[60px]' />
-      <TabPanel value={value} index={0} classn='mt-[108px]'><UserPostTab me={true} posts={posts} opt='EVT' /></TabPanel>
-      <TabPanel value={value} index={1} classn='mt-[108px]'><UserPostTab me={true} posts={posts} opt='RCT' /></TabPanel>
+      <div className='mt-[108px]'>
+        <UserPostTab me={true} posts={posts} opt={value === 0 ? 'EVT' : 'RCT'} />
+      </div>
     </div>
   )
 }
@@ -33,8 +34,7 @@ export function UserPostPage(props: { userId: number }) {
   return (
     <div className='flex flex-col w-full'>
       <TypeTabs val={value} handleChange={handleChange} types={['PARTY', 'RCT']} />
-      <TabPanel value={value} index={0}><UserPostTab me={false} posts={posts} opt='EVT' /></TabPanel>
-      <TabPanel value={value} index={1}><UserPostTab me={false} posts={posts} opt='RCT' /></TabPanel>
+      <UserPostTab me={false} posts={posts} opt={value === 0 ? 'EVT' : 'RCT'} />
     </div>
   )
 }
