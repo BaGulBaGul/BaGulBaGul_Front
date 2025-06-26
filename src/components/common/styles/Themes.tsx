@@ -22,47 +22,6 @@ export const menuTheme = createTheme({
   },
 });
 
-export const tabTheme = createTheme({
-  components: {
-    MuiButtonBase: { defaultProps: { disableRipple: true, }, },
-    MuiTabs: {
-      styleOverrides: {
-        root: { "& .MuiTabs-indicator": { height: '1px', backgroundColor: "#1E1E1E" } }
-      }
-    },
-    MuiTab: {
-      styleOverrides: {
-        root: {
-          fontWeight: 400, fontSize: "18px",
-          color: "#1E1E1E", lineHeight: '140%',
-          padding: 0, paddingBottom: '3px', marginRight: '16px',
-          minWidth: "min-content", minHeight: 'unset',
-          "&.Mui-selected": { color: "#1E1E1E", fontWeight: 600 }
-        }
-      }
-    },
-    MuiToggleButtonGroup: {
-      styleOverrides: {
-        root: { padding: '10px 16px', gap: '16px', borderRadius: '0px !important' }
-      }
-    },
-    MuiToggleButton: {
-      styleOverrides: {
-        root: {
-          border: 'none !important', fontSize: '18px', lineHeight: '140%',
-          padding: '0px', paddingBottom: '3px', fontWeight: 400, color: '#1E1E1E',
-          "&.Mui-selected": {
-            fontWeight: 600, backgroundColor: 'transparent !important',
-            borderBottom: '1px solid #1E1E1E !important', borderRadius: '0px !important',
-            paddingBottom: '2px !important',
-          },
-          "&:hover": { backgroundColor: 'transparent !important' }
-        }
-      }
-    }
-  },
-});
-
 const buttonStyle = {
   fontSize: '14px !important', fontWeight: '400', lineHeight: '160%', color: '#1E1E1E!important',
   padding: '2px 8px', minWidth: 'unset', border: '0.5px solid #ECECEC !important',

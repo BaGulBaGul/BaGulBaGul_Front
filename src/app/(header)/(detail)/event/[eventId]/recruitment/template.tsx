@@ -75,7 +75,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
       <div className={`flex flex-col w-full ${filterCnt > 0 ? 'pt-[140px]' : 'pt-[104px]'}`}>
         {children}
       </div>
-      <WriteFab opt='r' eventId={eventId} />
+      <WriteFab url={`/write?w=r&id=${eventId}`} />
     </>
   )
 }

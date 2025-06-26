@@ -9,7 +9,6 @@ import { AddressDialog, BodyInput, handleWrite, InputDateSelect, SearchBox, Tags
 
 
 export function WriteEPage(props: { edit?: number; }) {
-  // * ====== 250602 게시물 수정 시 기존 데이터 불러오기 테스트 필요
   const prev = !!props.edit ? useDetailInfo('event', props.edit) : undefined
 
   const [selectedCate, setSelectedCate] = useState<string[]>([]);

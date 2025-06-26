@@ -3,7 +3,7 @@ import { useState, useEffect, ChangeEvent } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import dayjs from 'dayjs';
 import { FormatDateRange, getParams, headCountString, useEffectCntFilter } from '@/service/Functions';
-import { PostTab } from '@/components/common';
+import { TypeTabs } from '@/components/common';
 import { FilterButton, FilterApplied, FilterDialog, closeFilter, handleObjectValue, FilterSortRadio, FilterCalendar } from '@/components/common/filter';
 import { CategoryButtons, InputCheck, InputCollapse, InputNumber, InputNumberRange } from '@/components/common/input';
 import { RecCarousel } from '@/components/pages/main';
@@ -12,7 +12,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
   const searchParams = useSearchParams()
   //type
   const [tab, setTab] = useState(Number(searchParams.get('tab_id')) ?? 0);
-  const handleChange = (e: React.SyntheticEvent, newValue: number) => { setTab(newValue); };
+  const handleChange = (value: any, e: Event | undefined) => { setTab(value); };
   // 카테고리 - 정렬기준, 날짜, 참여인원, 규모, 진행여부
   const [selectedCate, setSelectedCate] = useState<string[]>(searchParams.getAll('ct') ?? []);
   const [p, setP] = useState({
@@ -57,12 +57,9 @@ export default function Template({ children }: { children: React.ReactNode }) {
     <div className='flex flex-col w-full pt-[44px]'>
       <RecCarousel />
       <div className='w-full px-0'>
-        <div className='sticky top-[44px] relative px-[16px] pt-[20px] pb-[10px] bg-p-white z-10'>
-          <div className='flex justify-between items-center'>
-            <PostTab value={tab} handleChange={handleChange} />
-            <FilterButton handleOpen={handleOpen} cnt={filterCnt} fs={18} />
-          </div>
-        </div>
+        <TypeTabs val={tab} handleChange={handleChange} wrapStyle='sticky relative top-[44px] pt-[20px]'>
+          <FilterButton handleOpen={handleOpen} cnt={filterCnt} fs={18} />
+        </TypeTabs>
         <div className='sticky top-[102px] relative bg-p-white z-10'>
           <FilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters} opt="REDIRECT" p={p} setP={setP} handleRt={handleRt} />
           <CategoryButtons selectedCate={selectedCate} setSelectedCate={setSelectedCate} />

@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { handleMore, originText, useDelete, useListWithPage } from '@/hooks/useInCommon';
 import useLoginInfo from '@/hooks/useLoginInfo';
 import { SubHeaderCnt } from '@/components/layout/subHeader';
-import { CommentMProps, CommentProps, MoreButton, AlertDialog, LoadingCircle, SkeletonComments } from '@/components/common';
-import { CommentBlock, CommentDrawer, CommentFooter, ModifyInput } from '@/components/pages/comment';
+import { CommentMProps, CommentProps, MoreButton, BottomDrawer, AlertDialog, LoadingCircle, SkeletonComments } from '@/components/common';
+import { CommentBlock, CommentFooter, ModifyInput } from '@/components/pages/comment';
 
 export function CommentsPage(props: { origin: 'event' | 'event/recruitment'; postId: any; }) {
   // menu drawer
@@ -50,12 +50,12 @@ export function CommentsPage(props: { origin: 'event' | 'event/recruitment'; pos
         }
       </div>
       <CommentFooter url={`${props.origin}/${props.postId}`} qKey={qKey} isLogin={!!userinfo} setOpenA={setOpenA} />
-      <CommentDrawer open={openD} opt={!!userinfo && !!targetM && userinfo.id === targetM.userId ? 0 : 1} target={targetM}
-        toggleDrawer={toggleDrawer} setOpenM={setOpenM} handleDelete={handleDelete} />
+      <BottomDrawer open={openD} toggleDrawer={toggleDrawer} type='event' target={targetM?.commentId}
+        me={!!userinfo && !!targetM && userinfo.id === targetM.userId} handleDelete={handleDelete} handleEdit={() => setOpenM(true)} />
       <ModifyInput open={openM} setOpenM={setOpenM} target={targetM} setTarget={setTargetM} origin={props.origin} qKey={qKey} />
       <AlertDialog open={openA} setOpen={setOpenA} headerText='잠깐! 로그인이 필요해요' buttonText1='닫기' buttonText2='로그인 하러가기' buttonLink='/signin'>
-          <p>함께 소통하려면 로그인해 주세요.</p>
-          <p>금방 끝나요!</p>
+        <p>함께 소통하려면 로그인해 주세요.</p>
+        <p>금방 끝나요!</p>
       </AlertDialog>
     </>
   );

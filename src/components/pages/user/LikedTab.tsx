@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { InfiniteData, UseInfiniteQueryResult } from '@tanstack/react-query';
 import { tabList } from '@/service/Functions';
 import { handleMore, useListWithPage } from '@/hooks/useInCommon';
-import { MoreButton, TabPanels, PostTab, LikeProps, LikeRProps, Divider, LoadingCircle, SkeletonList } from '@/components/common';
+import { MoreButton, LikeProps, LikeRProps, Divider, LoadingCircle, SkeletonList, TypeTabs } from '@/components/common';
 import { NoData } from '@/components/common/block';
 import { ViewToggle, LikedAccompanyBlock, LikedPostBlock } from '.';
 
@@ -11,8 +11,8 @@ export function LikedTab() {
   const [value, setValue] = useState(0);
   const [view, setView] = useState<string>('EVT');
 
-  const handleChange = (e: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
+  const handleChange = (value: any, e: Event | undefined) => {
+    setValue(value);
     if (view !== 'EVT') { setView('EVT'); }
   };
 
@@ -21,13 +21,11 @@ export function LikedTab() {
   const events = useListWithPage(apiURL, ['liked-posts', value, view])
   return (
     <div className='flex flex-col w-full'>
-      <div className='fixed top-[60px] flex flex-row justify-between items-center w-full px-[16px] bg-p-white z-10'>
-        <PostTab value={value} handleChange={handleChange} cN='items-center min-h-0 py-[10px]' />
-        {value === 2 ? <></> : <ViewToggle view={view} setView={setView} />}
-      </div>
+      <TypeTabs val={value} handleChange={handleChange} wrapStyle='fixed top-[60px]'>
+        {value < 2 && <ViewToggle view={view} setView={setView} />}
+      </TypeTabs>
       <div className='mt-[108px]'>
-        <TabPanels value={value} child1={<TabBlock events={events} value={value} view={view} />}
-          child2={<TabBlock events={events} value={value} view={'EVT'} />} />
+        <TabBlock events={events} value={value} view={view} />
       </div>
     </div >
   )

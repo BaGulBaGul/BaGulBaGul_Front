@@ -13,13 +13,12 @@ import { FullscreenDialog } from "./display/FullscreenDialog";
 import { ImageSlide } from "./display/ImageSlide";
 import { ReportDialog } from "./report/ReportDialog";
 import { ReportRadios } from "./report/ReportRadios";
-import { PostTab } from "./tabs/PostTab";
-import { TabPanel, TabPanels } from "./tabs/TabPanel";
 import { SkeletonCarousel } from "./loading/SkeletonCarousel";
 import { SkeletonComments, SkeletonReplies, SkeletonComment } from "./loading/SkeletonComments";
 import { SkeletonDetail } from "./loading/SkeletonDetail";
 import { SkeletonList } from "./loading/SkeletonList";
 import { SkeletonWrite } from "./loading/SkeletonWrite";
+import { TypeTabs } from "./tabs/_TypeTabs";
 
 export {
   // button
@@ -27,15 +26,15 @@ export {
   // display
   AlertDialog, BottomDrawer, FullscreenDialog, ImageSlide,
   // tabs
-  PostTab, TabPanel, TabPanels,
+  TypeTabs,
   // report
   ReportDialog, ReportRadios,
   // loading
   SkeletonCarousel, SkeletonComments, SkeletonReplies, SkeletonComment, SkeletonDetail, SkeletonList, SkeletonWrite,
 }
 
-export const Divider = (props: { color?: string; }) => {
-  return (<hr className={`${props.color ? `border-${props.color}` : 'border-gray1'}`} />)
+export function Divider({ color }: { color?: string; }) {
+  return (<hr className={`${color ? `border-${color}` : 'border-gray1'}`} />)
 }
 
 export function LoadingCircle() {
@@ -52,11 +51,13 @@ export type EventType = 'FESTIVAL' | 'LOCAL_EVENT' | 'PARTY'
 
 export interface RangeProps { from: undefined | number, to: undefined | number }
 
-export interface ParamProps {
-  title?: string; page?: number; categories?: string[] | undefined; type?: string | undefined; sort?: string | undefined;
-  state?: string; tags?: string; startDate?: string | undefined; endDate?: string | undefined; leftHeadCount?: string | undefined;
-  totalHeadCountMax?: string | undefined; totalHeadCountMin?: string | undefined;
-}
+// export interface ParamProps {
+//   title?: string; page?: number; categories?: string[] | undefined; type?: string | undefined; sort?: string | undefined;
+//   state?: string; tags?: string; startDate?: string | undefined; endDate?: string | undefined; leftHeadCount?: string | undefined;
+//   totalHeadCountMax?: string | undefined; totalHeadCountMin?: string | undefined;
+// }
+
+export interface WriterProps { userId: number, userName: string, userProfileImageUrl: string };
 
 export interface ListProps {
   event: {
@@ -80,33 +81,29 @@ export interface RListProps {
   }
 }
 
-export interface TabBlockProps {
-  opt: 0 | 1; events: UseInfiniteQueryResult<InfiniteData<any, unknown>, Error>; tab?: number
-}
+// export interface DetailProps {
+//   event: {
+//     eventId: number; type: string; currentHeadCount: number; maxHeadCount: number; fullLocation: string; abstractLocation: string;
+//     latitudeLocation: number; longitudeLocation: number; ageLimit: boolean; startDate: any; endDate: any; categories: string[];
+//   };
+//   post: {
+//     postId: number; writer: { userId: number; userName: string; userProfileImageUrl: string; }; title: string; headImageUrl: string;
+//     content: string; tags: string[]; imageIds: any[]; imageUrls: string[]; likeCount: number; commentCount: number; views: number;
+//     createdAt: any; lastModifiedAt: any;
+//   }
+// }
 
-export interface DetailProps {
-  event: {
-    eventId: number; type: string; currentHeadCount: number; maxHeadCount: number; fullLocation: string; abstractLocation: string;
-    latitudeLocation: number; longitudeLocation: number; ageLimit: boolean; startDate: any; endDate: any; categories: string[];
-  };
-  post: {
-    postId: number; writer: { userId: number; userName: string; userProfileImageUrl: string; }; title: string; headImageUrl: string;
-    content: string; tags: string[]; imageIds: any[]; imageUrls: string[]; likeCount: number; commentCount: number; views: number;
-    createdAt: any; lastModifiedAt: any;
-  }
-}
-
-export interface RDetailProps {
-  recruitment: {
-    recruitmentId: number; eventId: number; state: string; currentHeadCount: number; maxHeadCount: number;
-    startDate: any; endDate: any;
-  };
-  post: {
-    postId: number; writer: { userId: number; userName: string; userProfileImageUrl: string; }; title: string; headImageUrl: string;
-    content: string; tags: string[]; imageIds: any[]; imageUrls: string[]; likeCount: number; commentCount: number; views: number;
-    createdAt: any; lastModifiedAt: any;
-  }
-}
+// export interface RDetailProps {
+//   recruitment: {
+//     recruitmentId: number; eventId: number; state: string; currentHeadCount: number; maxHeadCount: number;
+//     startDate: any; endDate: any;
+//   };
+//   post: {
+//     postId: number; writer: { userId: number; userName: string; userProfileImageUrl: string; }; title: string; headImageUrl: string;
+//     content: string; tags: string[]; imageIds: any[]; imageUrls: string[]; likeCount: number; commentCount: number; views: number;
+//     createdAt: any; lastModifiedAt: any;
+//   }
+// }
 
 export interface CommentProps {
   commentChildCount?: number; commentId?: number; commentChildId?: number; content: string; createdAt: string;

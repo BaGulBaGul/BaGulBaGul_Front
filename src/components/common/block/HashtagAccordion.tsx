@@ -3,7 +3,6 @@ import { useState, useLayoutEffect, useRef } from 'react';
 import Link from 'next/link';
 import { ExpandButton } from '..';
 
-// * 리스트 내 블록들에서도 적용 잘되는지 확인
 export function HashtagAccordion({ tags }: { tags: string[] }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const measureRef = useRef<HTMLDivElement>(null);
@@ -30,7 +29,7 @@ export function HashtagAccordion({ tags }: { tags: string[] }) {
   if (!tags.length) return null;
 
   return (
-    <div className="pt-[10px]">
+    <div className={"pt-[10px] p-[16px] pe-[14px]"}>
       {/* Hidden measuring div */}
       <div ref={measureRef} className="flex flex-nowrap gap-[10px] absolute opacity-0 h-0 p-0 m-0 pointer-events-none"
         style={{ visibility: 'hidden' }} aria-hidden >

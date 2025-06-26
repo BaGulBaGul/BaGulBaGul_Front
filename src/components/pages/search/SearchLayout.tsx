@@ -1,40 +1,43 @@
-import { FormatDateRange, getParams, headCountString, useEffectCntFilter } from "@/service/Functions";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { ChangeEvent, PropsWithChildren, useEffect, useRef, useState } from "react";
 import { ReadonlyURLSearchParams } from "next/navigation";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { PostTab } from "@/components/common";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import dayjs from 'dayjs';
-import { SearchBar } from "./SearchBar";
+import { FormatDateRange, getParams, headCountString, useEffectCntFilter } from "@/service/Functions";
+import { TypeTabs } from "@/components/common";
 import { FilterApplied, FilterDialog, closeFilter, FilterSortRadio, handleObjectValue, FilterCalendar } from "@/components/common/filter";
 import { CategoryButtons, InputCollapse, InputNumber, InputNumberRange } from "@/components/common/input";
+import { SearchBar } from "./SearchBar";
 
-export const SearchLayout = (props: { opt: 'TTL' | 'TAG'; sp: ReadonlyURLSearchParams; router: AppRouterInstance; children: React.ReactNode; }) => {
+interface Props extends PropsWithChildren {
+  opt: 'TTL' | 'TAG'; sp: ReadonlyURLSearchParams; router: AppRouterInstance;
+}
+export function SearchLayout({ opt, sp, router, children }: Props) {
   // type
-  const [tab, setTab] = useState(Number(props.sp.get('tab_id')) ?? 0);
-  const handleChange = (e: React.SyntheticEvent, newValue: number) => { setTab(newValue); };
+  const [tab, setTab] = useState(Number(sp.get('tab_id')) ?? 0);
+  const handleChange = (value: any, e: Event | undefined) => { setTab(value); };
   // 카테고리 - 정렬기준, 날짜, 참여인원, 규모 - 제목 및 태그
-  const [selectedCate, setSelectedCate] = useState<string[]>(props.sp.getAll('ct') ?? []);
+  const [selectedCate, setSelectedCate] = useState<string[]>(sp.getAll('ct') ?? []);
   const [p, setP] = useState({
-    sort: props.sp.get('sort') ?? 'createdAt,desc',
+    sort: sp.get('sort') ?? 'createdAt,desc',
     dateRange: [
-      !!props.sp.get('sD') ? dayjs(props.sp.get('sD'), "YYYYMMDD").toDate() : undefined,
-      !!props.sp.get('eD') ? dayjs(props.sp.get('eD'), "YYYYMMDD").toDate() : undefined
+      !!sp.get('sD') ? dayjs(sp.get('sD'), "YYYYMMDD").toDate() : undefined,
+      !!sp.get('eD') ? dayjs(sp.get('eD'), "YYYYMMDD").toDate() : undefined
     ],
-    participants: Number(props.sp.get('ptcp')) ?? 0,
-    headCount: { from: !!props.sp.get('hcMin') ? Number(props.sp.get('hcMin')) : undefined, to: !!props.sp.get('hcMin') ? Number(props.sp.get('hcMax')) : undefined },
+    participants: Number(sp.get('ptcp')) ?? 0,
+    headCount: { from: !!sp.get('hcMin') ? Number(sp.get('hcMin')) : undefined, to: !!sp.get('hcMin') ? Number(sp.get('hcMax')) : undefined },
   })
-  const [title, setTitle] = useState(decodeURIComponent(decodeURIComponent(props.sp.get('query') ?? '')))
-  const tag = decodeURIComponent(decodeURIComponent(props.sp.get('tag') ?? ''))
+  const [title, setTitle] = useState(decodeURIComponent(decodeURIComponent(sp.get('query') ?? '')))
+  const tag = decodeURIComponent(decodeURIComponent(sp.get('tag') ?? ''))
 
   // 적용된 필터들, 적용된 필터 개수
   const [filters, setFilters] = useState(['sort'])
   const [filterCnt, setFilterCnt] = useState(0)
   // searchParams로 넘어온 필터 count
-  useEffectCntFilter(props.sp, setFilters, setFilterCnt, p.sort)
+  useEffectCntFilter(sp, setFilters, setFilterCnt, p.sort)
 
   const [startDate, endDate] = p.dateRange ?? [null, null];
   const routeToFilter = () => {
-    if (props.opt === 'TTL') {
+    if (opt === 'TTL') {
       let params = {
         sort: p.sort ?? '', ct: selectedCate ?? '',
         sD: !!startDate ? dayjs(startDate).format('YYYYMMDD') : '',
@@ -44,9 +47,9 @@ export const SearchLayout = (props: { opt: 'TTL' | 'TAG'; sp: ReadonlyURLSearchP
         hcMax: !!p.headCount.to ? p.headCount.to : '',
       }
       if (title.length > 0) {
-        props.router.push(Object.keys(params).length > 0 ? `/searched?query=${title}&${getParams(params)}&tab_id=${tab}` : `/searched?query=${title}&tab_id=${tab}`)
+        router.push(Object.keys(params).length > 0 ? `/searched?query=${title}&${getParams(params)}&tab_id=${tab}` : `/searched?query=${title}&tab_id=${tab}`)
       }
-    } else if (props.opt === 'TAG') {
+    } else if (opt === 'TAG') {
       let params = {
         tag: tag, sort: p.sort ?? '', ct: selectedCate ?? '',
         sD: !!startDate ? dayjs(startDate).format('YYYYMMDD') : '',
@@ -56,7 +59,7 @@ export const SearchLayout = (props: { opt: 'TTL' | 'TAG'; sp: ReadonlyURLSearchP
         hcMax: !!p.headCount.to ? p.headCount.to : '',
       }
       if (tag.length > 0) {
-        props.router.push(`/tag?${getParams(params)}&tab_id=${tab}`)
+        router.push(`/tag?${getParams(params)}&tab_id=${tab}`)
       }
     }
   }
@@ -72,15 +75,13 @@ export const SearchLayout = (props: { opt: 'TTL' | 'TAG'; sp: ReadonlyURLSearchP
   const [open, setOpen] = useState(false);
   return (
     <div className='flex flex-col w-full h-screen pb-[10px]'>
-      {props.opt === 'TTL'
-        ? <SearchBar opt={1} title={title ?? ''} setOpen={setOpen} filterCnt={filterCnt} setTitle={setTitle} handleRt={handleRt} router={props.router} />
-        : <SearchBar tag={tag ?? ''} setOpen={setOpen} filterCnt={filterCnt} handleRt={handleRt} router={props.router} />
+      {opt === 'TTL'
+        ? <SearchBar opt={1} title={title ?? ''} setOpen={setOpen} filterCnt={filterCnt} setTitle={setTitle} handleRt={handleRt} router={router} />
+        : <SearchBar tag={tag ?? ''} setOpen={setOpen} filterCnt={filterCnt} handleRt={handleRt} router={router} />
       }
       <div className='w-full p-0 pt-[66px]'>
         <div className='fixed top-[66px] w-full bg-p-white z-10'>
-          <div className='flex justify-between items-center px-[16px] py-[10px]'>
-            <PostTab value={tab} handleChange={handleChange} />
-          </div>
+          <TypeTabs val={tab} handleChange={handleChange} />
           <FilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters} opt="REDIRECT" p={p} setP={setP} handleRt={handleRt} />
           <CategoryButtons selectedCate={selectedCate} setSelectedCate={setSelectedCate} />
         </div>
@@ -102,7 +103,7 @@ export const SearchLayout = (props: { opt: 'TTL' | 'TAG'; sp: ReadonlyURLSearchP
           </InputCollapse>
         </FilterDialog>
         {<div className={filterCnt > 0 ? 'mt-[120px]' : 'mt-[94px]'}>
-          {props.children}
+          {children}
         </div>}
       </div>
     </div>

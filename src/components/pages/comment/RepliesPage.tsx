@@ -6,8 +6,8 @@ import { fetchFromURL } from '@/service/ApiService';
 import useLoginInfo from '@/hooks/useLoginInfo';
 import { originText, useDelete } from '@/hooks/useInCommon';
 import { SubHeaderCnt } from '@/components/layout/subHeader';
-import { CommentMProps, CommentProps, Divider, SkeletonComment } from '@/components/common';
-import { RepliedComment, Replies, MemoizedReplyFooter, CommentDrawer, ModifyInputR } from '@/components/pages/comment';
+import { CommentMProps, CommentProps, Divider, BottomDrawer, SkeletonComment } from '@/components/common';
+import { RepliedComment, Replies, MemoizedReplyFooter, ModifyInputR } from '@/components/pages/comment';
 
 export function RepliesPage(props: { origin: 'event' | 'event/recruitment'; commentId: any; postId: any; }) {
   // 댓글
@@ -85,8 +85,8 @@ export function RepliesPage(props: { origin: 'event' | 'event/recruitment'; comm
       </div>
       <MemoizedReplyFooter url={`${apiURL}/children`} qKey={rKey} mentioning={mentioning} setMentioning={setMentioning}
         target={mentionTarget} setMentionTarget={setMentionTarget} mentionRef={mentionRef} replyRef={replyRef} />
-      <CommentDrawer open={openD} opt={!!userinfo && !!targetM && userinfo.id === targetM.userId ? 0 : 1} target={targetM}
-        toggleDrawer={toggleDrawer} setOpenM={setOpenM} handleDelete={handleDelete} />
+      <BottomDrawer open={openD} toggleDrawer={toggleDrawer} type='event' target={targetM?.commentId}
+        me={!!userinfo && !!targetM && userinfo.id === targetM.userId} handleDelete={handleDelete} handleEdit={() => setOpenM(true)} />
       <ModifyInputR open={openM} setOpenM={setOpenM} target={targetM} setTarget={setTargetM} origin={props.origin} qKey={rKey} />
     </>
   );

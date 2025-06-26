@@ -1,6 +1,6 @@
 'use client';
 import { useParams } from 'next/navigation';
-import { DetailPageR } from '@/components/pages/detail/_DetailPageR';
+import { DetailPageR } from '@/components/pages/detail/DetailPageR';
 
 export default function Page() {
   const params = useParams()

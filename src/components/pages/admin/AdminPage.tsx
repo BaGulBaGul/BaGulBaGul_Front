@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import useLoginInfo from "@/hooks/useLoginInfo";
-import { useSignout } from "@/hooks/useInUser";
 import { useAlarmed } from "@/hooks/useInAlarm";
 import { SubTopHeader } from "@/components/layout/subHeader";
 import { UserProfileBlock, SetBlock } from "@/components/common/block";
@@ -12,8 +11,6 @@ export function AdminPage() {
 	let userinfo = useLoginInfo()
 	let userdata = userinfo?.data
 
-	// const mutateSignout = useSignout();
-	// const handleSignout = () => { mutateSignout.mutate() }
 	if (userinfo.isPending || userinfo.isLoading) { return (<></>) }
 	return (
 		<>
@@ -39,10 +36,6 @@ export function AdminPage() {
 						<SetBlock title='유저 관리' desc='유저 정보를 확인하고 삭제 및 정지할 수 있어요.' url='/admin/user' />
 					</div>
 				</div>
-				{/* <div className="p-[24px]">
-					<button className="w-full bg-p-white text-gray3 text-16 p-[16px]" onClick={handleSignout}>로그아웃</button>
-				</div> */}
-				{/* // * need to test if works */}
 				<LogoutButton />
 			</div>
 		</>
