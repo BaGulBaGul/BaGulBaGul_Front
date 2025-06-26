@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { CalIcn, LikeIcn, PostEditIcn } from "@/components/common/styles/Icon";
 import useLoginInfo from "@/hooks/useLoginInfo";
-import { useSignout } from "@/hooks/useInUser";
 import { useAlarmed } from "@/hooks/useInAlarm";
 import { SubTopHeader } from "@/components/layout/subHeader";
 import { UserProfileBlock, SetBlock } from "@/components/common/block";
@@ -13,8 +12,6 @@ export function MyPage() {
   let userinfo = useLoginInfo()
   let userdata = userinfo?.data
 
-  // const mutateSignout = useSignout();
-  // const handleSignout = () => { mutateSignout.mutate() }
   if (userinfo.isPending || userinfo.isLoading) { return (<></>) }
   return (
     <>
@@ -38,10 +35,6 @@ export function MyPage() {
             <SetBlock title='회원 탈퇴히기' url='/' />
           </div>
         </div>
-        {/* <div className="p-[24px]">
-          <button className="w-full bg-p-white text-gray3 text-16 p-[16px]" onClick={handleSignout}>로그아웃</button>
-        </div> */}
-        {/* // * need to test if works */}
         <LogoutButton />
       </div>
     </>

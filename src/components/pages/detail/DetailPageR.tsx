@@ -1,19 +1,16 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import useLoginInfo from '@/hooks/useLoginInfo';
-import { useAddLike, useAddSave, useDeletePost, useDetailInfo, useDetailLike, useDetailSave } from '@/hooks/useInDetail';
-import { Divider, ImageSlide, SkeletonDetail } from '@/components/common';
+import { useDeletePost, useDetailInfo } from '@/hooks/useInDetail';
+import { Divider, BottomDrawer, ImageSlide, SkeletonDetail } from '@/components/common';
 import { HashtagList } from '@/components/common/block';
 import { DetailInfoLine, DetailTitle, DetailTools, DetailWrapper } from '.';
-import { BottomDrawer } from '@/components/common/display/_BottomDrawer';
 
 export function DetailPageR({ postId }: { postId: any; }) {
   const userinfo = useLoginInfo().data
   const router = useRouter();
 
   const { data: data, isLoading: isLoadingD, isError: isErrorD } = useDetailInfo('event/recruitment', postId)
-  // const { data: liked } = useDetailLike(props.origin, props.postId, userinfo)
-  // const { data: saved } = useDetailSave(props.origin, props.postId, userinfo)
 
   const mutateDelete = useDeletePost('event/recruitment', postId)
   const handleDelete = () => { mutateDelete.mutate() }
@@ -40,7 +37,7 @@ export function DetailPageR({ postId }: { postId: any; }) {
           <HashtagList tags={data.post.tags} />
         </div>}
       </DetailWrapper>
-      <DetailTools origin={'event'} postId={postId} commentCount={data.post.commentCount ?? 0} likeCount={data.post.likeCount ?? 0} />
+      <DetailTools origin={'event'} postId={postId} userinfo={userinfo} commentCount={data.post.commentCount ?? 0} likeCount={data.post.likeCount ?? 0} />
       <BottomDrawer open={openD} toggleDrawer={toggleDrawer} type='recruitment' target={data.recruitment.recruitmentId}
         me={!!userinfo && userinfo.id === data.post.writer.userId} handleDelete={handleDelete}
         handleEdit={() => router.push(`/write?w=p&edit=${data.recruitment.recruitmentId}`)} />

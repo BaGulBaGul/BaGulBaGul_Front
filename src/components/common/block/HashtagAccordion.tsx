@@ -3,7 +3,6 @@ import { useState, useLayoutEffect, useRef } from 'react';
 import Link from 'next/link';
 import { ExpandButton } from '..';
 
-// * 리스트 내 블록들에서도 적용 잘되는지 확인
 export function HashtagAccordion({ tags }: { tags: string[] }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const measureRef = useRef<HTMLDivElement>(null);

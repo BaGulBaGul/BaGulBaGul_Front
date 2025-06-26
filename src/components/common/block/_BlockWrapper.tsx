@@ -11,7 +11,7 @@ export function BlockWrapper({ url, blockAction, wrapStyle, blockThumb, children
     <div className={"flex flex-row w-full " + wrapStyle}>
       {blockAction}
       <Link href={url} passHref legacyBehavior>
-        <div className="flex flex-row w-full justify-between">
+        <div className="flex flex-row w-full justify-between cursor-pointer">
           {children}
           {blockThumb}
         </div>

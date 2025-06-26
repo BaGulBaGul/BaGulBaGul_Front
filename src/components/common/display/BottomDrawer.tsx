@@ -1,50 +1,59 @@
 import { useState } from "react";
-import { Divider, Drawer, List, ListItem, ListItemButton, ListItemText, ThemeProvider } from "@mui/material";
-import { ReportDialog } from "@/components/common/report/ReportDialog";
-import { menuTheme } from "../styles/Themes";
-import { CommentMProps } from "..";
+import { createTheme, Divider, Drawer, List, ListItem, ListItemButton, ListItemText, ThemeProvider } from "@mui/material";
+import { ReportDialog } from "@/components/common";
 
-interface BottomDrawerProps {
-  open: boolean; toggleDrawer: any; opt: 'EVT' | 'RCT' | 'CMT'; target: number | CommentMProps; me: boolean;
-  handleEdit?: any; handleDelete?: any;
-}
-export function BottomDrawer(props: BottomDrawerProps) {
+type Props = {
+  open: boolean; toggleDrawer: (open: boolean) => () => void; type: 'comment' | 'comment-child' | 'event' | 'recruitment'; target: number | undefined;
+} & ({ me: true; handleEdit: any; handleDelete: any; } | { me: false; });
+
+export function BottomDrawer(props: Props) {
   const [openR, setOpenR] = useState(false);
-  const handleReport = () => { setOpenR(true); }
+  if (props.target === undefined) { return <></> }
   return (
     <>
       <ThemeProvider theme={menuTheme}>
         <Drawer open={props.open} onClose={props.toggleDrawer(false)} anchor='bottom'>
           <div onClick={props.toggleDrawer(false)}>
-            {props.me
-              ? <>
-                <List>
-                  <ListItem disablePadding>
-                    <ListItemButton onClick={props.handleEdit} disableRipple><ListItemText primary="수정하기" /></ListItemButton>
-                  </ListItem>
+            <List>
+              {!!props.me
+                ? <>
+                  <DrawerBlock title='수정하기' handleClick={props.handleEdit} />
                   <Divider />
-                  <ListItem disablePadding>
-                    <ListItemButton onClick={props.handleDelete} disableRipple><ListItemText primary="삭제하기" className='text-[#FF0000]' /></ListItemButton>
-                  </ListItem>
-                </List>
-              </>
-              : <List>
-                <ListItem disablePadding>
-                  <ListItemButton onClick={handleReport} disableRipple><ListItemText primary="신고하기" /></ListItemButton>
-                </ListItem>
-              </List>
-            }
-
+                  <DrawerBlock title='삭제하기' handleClick={props.handleDelete} itemStyle="text-[#FF0000]" />
+                </>
+                : <DrawerBlock title='신고하기' handleClick={() => setOpenR(true)} />
+              }
+            </List>
           </div>
         </Drawer>
       </ThemeProvider>
-      {!!props.target
-        ? props.opt !== 'CMT'
-          ? <ReportDialog open={openR} setOpen={setOpenR} type={props.opt === 'EVT' ? 'event' : 'recruitment'} target={props.target as number} />
-          : <ReportDialog open={openR} setOpen={setOpenR} type={(props.target as CommentMProps).opt === 'CMT' ? "comment" : "comment-child"} target={(props.target as CommentMProps).commentId} />
-        : <></>
-      }
-
+      <ReportDialog open={openR} setOpen={setOpenR} type={props.type} target={props.target} />
     </>
+  )
+}
+
+const menuTheme = createTheme({
+  components: {
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          borderTopLeftRadius: '8px !important', borderTopRightRadius: '8px !important',
+          paddingBottom: '40px !important',
+        },
+      }
+    },
+    MuiList: { styleOverrides: { root: { padding: '0px' } } },
+    MuiListItemButton: { styleOverrides: { root: { padding: '20px 16px' } } },
+    MuiListItemText: {
+      styleOverrides: { root: { margin: '0px' }, primary: { fontSize: '14px', }, }
+    },
+  },
+});
+
+function DrawerBlock({ title, handleClick, itemStyle }: { title: string; handleClick: () => void; itemStyle?: string }) {
+  return (
+    <ListItem disablePadding>
+      <ListItemButton onClick={handleClick} disableRipple><ListItemText primary={title} className={itemStyle} /></ListItemButton>
+    </ListItem>
   )
 }

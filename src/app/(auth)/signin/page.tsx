@@ -7,7 +7,7 @@ export default function Page() {
       <SubXHeader />
       <div className="flex flex-col items-center h-full py-[91.42px] gap-[20px] pointer-events-none">
         <img src="/logo_s.svg" width='135.07' />
-        <div className="flex flex-col items-center gap-[2px]">
+        <div className="flex flex-col items-center gap-[2px]" key="signin-text">
           <p className="text-18 font-semibold">내가 찾던 페스티벌</p>
           <p className="text-14">간편하게 로그인하고 찾으러 떠나볼까요?</p>
         </div>

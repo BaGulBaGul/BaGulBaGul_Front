@@ -13,7 +13,7 @@ export function DetailTools({ origin, postId, userinfo, commentCount, likeCount 
   const [popopen, setPopopen] = useState(false);
   const pathname = usePathname();
   let commentURL = `${pathname}/comments`;
-  // * mutation component 안에 둬도 되는지 확인
+  
   const { data: liked } = useDetailLike(origin, postId, userinfo)
   const { data: saved } = useDetailSave(origin, postId, userinfo)
   const mutateLike = useAddLike(origin, postId, liked)
