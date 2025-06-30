@@ -1,17 +1,15 @@
-import { AlarmTab } from "./AlarmTab";
-import { AlarmBlock, AlarmIcn } from "./AlarmBlock";
-import { CalendarPage } from "./CalendarPage";
-import { CalendarTab } from "./CalendarTab";
+import { AlarmTab } from "./mypage/AlarmTab";
+import { AlarmBlock, AlarmIcn } from "./mypage/AlarmBlock";
+import { CalendarPage } from "./mypage/CalendarPage";
+import { CalendarTab } from "./mypage/CalendarTab";
 
-import { LikedTab } from "./LikedTab";
-import { LikedAccompanyBlock, LikedPostBlock } from './LikedBlock';
-import { ViewToggle } from "./UserButtons";
-import { UserPage } from "./UserPage";
+import { LikedTab } from "./mypage/LikedTab";
+import { LikedAccompanyBlock, LikedPostBlock } from './mypage/LikedBlock';
 import { MyPostPage, UserPostPage } from "./UserPostPage";
-import { UserPostTab } from "./UserPostTabs";
-import { MyPostBlock, UserPostBlock } from "./UserPostBlock";
-import { EditProfilePage } from "./EditProfilePage";
-import { MyPage } from "./MyPage";
+import { EditProfilePage } from "./mypage/EditProfilePage";
+import { MyPage } from "./mypage/MyPage";
+import { UserPostList } from "./UserPostList";
+import { UserPostWrapper } from "./UserPostWrapper";
 
 export {
   AlarmTab,
@@ -19,10 +17,8 @@ export {
   CalendarPage, CalendarTab,
   LikedTab,
   LikedAccompanyBlock, LikedPostBlock,
-  MyPage, UserPage,
+  UserPostList, UserPostWrapper,
+  MyPage, 
   MyPostPage, UserPostPage,
-  UserPostTab,
-  MyPostBlock, UserPostBlock,
   EditProfilePage,
-  ViewToggle,
 }

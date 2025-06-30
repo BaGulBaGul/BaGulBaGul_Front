@@ -3,18 +3,22 @@ import { useState } from 'react';
 import { InfiniteData, UseInfiniteQueryResult } from '@tanstack/react-query';
 import { tabList } from '@/service/Functions';
 import { handleMore, useListWithPage } from '@/hooks/useInCommon';
-import { MoreButton, LikeProps, LikeRProps, Divider, LoadingCircle, SkeletonList, TypeTabs } from '@/components/common';
+import { MoreButton, LikeProps, LikeRProps, Divider, LoadingCircle, SkeletonList, TypeTabs, TypeSwitch } from '@/components/common';
 import { NoData } from '@/components/common/block';
-import { ViewToggle, LikedAccompanyBlock, LikedPostBlock } from '.';
+import { LikedAccompanyBlock, LikedPostBlock } from '..';
 
 export function LikedTab() {
   const [value, setValue] = useState(0);
-  const [view, setView] = useState<string>('EVT');
+  const [view, setView] = useState<'EVT' | 'RCT'>('EVT');
 
   const handleChange = (value: any, e: Event | undefined) => {
     setValue(value);
     if (view !== 'EVT') { setView('EVT'); }
   };
+  const handleView = (groupValue: any[], event: Event) => {
+    if (groupValue.length === 0 || groupValue[0] === view) { return; }
+    setView(groupValue[0]);
+  }
 
   const apiURL = view === 'EVT' ? `/api/event/mylike?type=${tabList[value]}&size=10`
     : `/api/event/recruitment/mylike?type=${tabList[value]}&size=10`
@@ -22,7 +26,7 @@ export function LikedTab() {
   return (
     <div className='flex flex-col w-full'>
       <TypeTabs val={value} handleChange={handleChange} wrapStyle='fixed top-[60px]'>
-        {value < 2 && <ViewToggle view={view} setView={setView} />}
+        {value < 2 && <TypeSwitch type={view} handleChange={handleView} />}
       </TypeTabs>
       <div className='mt-[108px]'>
         <TabBlock events={events} value={value} view={view} />

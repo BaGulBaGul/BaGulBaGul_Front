@@ -2,10 +2,10 @@
 import { useState, useEffect, useRef } from 'react';
 import dayjs from 'dayjs';
 import { SubTopHeader } from '@/components/layout/subHeader';
-import { CalendarTab } from '.';
 import { Calendar } from './Calendar';
 import { useCalendarData } from '@/hooks/useInCalendar';
 import { EditButton, SkeletonList } from '@/components/common';
+import { CalendarTab } from '..';
 
 export function CalendarPage() {
   const [focusDay, setFocusDay] = useState<Date>(new Date());

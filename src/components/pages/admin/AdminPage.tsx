@@ -5,7 +5,7 @@ import useLoginInfo from "@/hooks/useLoginInfo";
 import { useAlarmed } from "@/hooks/useInAlarm";
 import { SubTopHeader } from "@/components/layout/subHeader";
 import { UserProfileBlock, SetBlock } from "@/components/common/block";
-import { LogoutButton } from "@/components/common/button/LogoutButton";
+import { LogoutButton } from "@/components/common";
 
 export function AdminPage() {
 	let userinfo = useLoginInfo()

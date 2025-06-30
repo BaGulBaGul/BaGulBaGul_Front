@@ -5,7 +5,7 @@ import { useDeleteAlarm } from "@/hooks/useInAlarm";
 import { handleMore, useDelete, useListWithPage } from "@/hooks/useInCommon";
 import { AlarmProps, MoreButton } from "@/components/common";
 import { NoData } from "@/components/common/block";
-import { AlarmBlock } from ".";
+import { AlarmBlock } from "..";
 
 export function AlarmTab() {
   const { data: alarms, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage, status, } = useListWithPage('/api/user/alarm/?', ['alarms'])

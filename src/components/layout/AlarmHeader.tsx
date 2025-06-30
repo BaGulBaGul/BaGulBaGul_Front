@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import { createTheme, Snackbar, ThemeProvider, Alert } from "@mui/material";
 import useLoginInfo from '@/hooks/useLoginInfo';
 import { AlarmIcn } from "../pages/user";
-import { alarmSSE } from "../pages/user/AlarmSSE";
+import { alarmSSE } from "../pages/user/mypage/AlarmSSE";
 
 interface SnackbarMessage { alarmId: number; type: string; title: string; message: string; subject: string; time: string; }
 export default function AlarmHeader() {
