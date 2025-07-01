@@ -2,8 +2,8 @@
 import { useState } from 'react';
 import { InfiniteData, UseInfiniteQueryResult } from '@tanstack/react-query';
 import { tabList } from '@/service/Functions';
-import { handleMore, useListWithPage } from '@/hooks/useInCommon';
-import { MoreButton, LikeProps, LikeRProps, Divider, LoadingCircle, SkeletonList, TypeTabs, TypeSwitch } from '@/components/common';
+import { useListWithPage } from '@/hooks/useInCommon';
+import { LikeProps, LikeRProps, Divider, SkeletonList, TypeTabs, TypeSwitch, ListWrapper } from '@/components/common';
 import { NoData } from '@/components/common/block';
 import { LikedAccompanyBlock, LikedPostBlock } from '..';
 
@@ -37,12 +37,12 @@ export function LikedTab() {
 
 interface LikedTabBlockProps { events: UseInfiniteQueryResult<InfiniteData<any, unknown>, Error>; value: number; view: string; }
 function TabBlock(props: LikedTabBlockProps) {
-  if (props.events.isPending || props.events.isLoading) { return <SkeletonList type='LIKE' /> }
-  if (props.events.status === 'success') {
-    return (
+  return (
+    <ListWrapper res={props.events} skeleton={<SkeletonList type='LIKE' />}
+      nodata={<NoData text1="좋아요 누른 게시물이 없어요." text2="인기 게시물에 좋아요를 눌러보세요!" buttonText="페스티벌 인기순 보러가기" buttonLink="/?sort=likeCount%2Cdesc" />}>
       <div className='bg-p-white'>
         {props.view === 'EVT'
-          ? <>{props.events.data.pages.map((event, index) => (
+          ? <>{props.events.data?.pages.map((event, index) => (
             event.content.map((item: LikeProps, idx: any) => (
               <div key={`like-${index}-${idx}`}>
                 {idx === 0 ? <></> : <Divider />}
@@ -50,7 +50,7 @@ function TabBlock(props: LikedTabBlockProps) {
               </div>
             ))
           ))}</>
-          : <>{props.events.data.pages.map((event, index) => (
+          : <>{props.events.data?.pages.map((event, index) => (
             event.content.map((item: LikeRProps, idx: any) => (
               <div key={`like-${index}-${idx}`}>
                 {idx === 0 ? <></> : <Divider />}
@@ -59,13 +59,7 @@ function TabBlock(props: LikedTabBlockProps) {
             ))
           ))}</>
         }
-        {props.events.hasNextPage ? <MoreButton onClick={() => handleMore(props.events.hasNextPage, props.events.fetchNextPage)} /> : <></>}
-        {props.events.isFetchingNextPage ? <LoadingCircle /> : <></>}
       </div>
-    )
-  } else {
-    return (
-      <NoData text1="좋아요 누른 게시물이 없어요." text2="인기 게시물에 좋아요를 눌러보세요!" buttonText="페스티벌 인기순 보러가기" buttonLink="/?sort=likeCount%2Cdesc" />
-    )
-  }
+    </ListWrapper>
+  )
 }

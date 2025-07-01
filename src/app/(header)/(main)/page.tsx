@@ -2,8 +2,8 @@
 import { useSearchParams } from "next/navigation";
 import dayjs from 'dayjs';
 import { getParams, tabList } from '@/service/Functions';
-import { handleMore, useListWithPageE } from "@/hooks/useInCommon";
-import { Divider, ListProps, LoadingCircle, MoreButton, SkeletonList, WriteFab } from '@/components/common';
+import { useListWithPageE } from "@/hooks/useInCommon";
+import { Divider, ListProps, SkeletonList, WriteFab, ListWrapper } from '@/components/common';
 import { BlockBodyAD, BlockContainer, BlockWrapper, NoData } from "@/components/common/block";
 
 export default function Page() {
@@ -33,29 +33,26 @@ export default function Page() {
   let apiURL = !!params && Object.keys(params).length > 0 ? `/api/event?size=10&${getParams(params)}` : '/api/event?size=10&type=FESTIVAL'
   const events = useListWithPageE(apiURL, ['events', params], !!params)
 
-  if (events.isPending || events.isLoading) { return <SkeletonList thumb={true} tag={true} /> }
-  else if (events.status !== 'success' || !events.data || !!events.data.pages[0].empty) {
-    return <NoData text1="찾는 행사가 없어요." text2="지금 인기 있는 페스티벌을 만나보세요." buttonText="페스티벌 인기순 보러가기" buttonLink="/?sort=likeCount%2Cdesc" />
-  }
   return (
-    <div className='bg-p-white'>
-      {events.data.pages.map((event) => (
-        event.content.map((item: ListProps, idx: any) => (
-          <div key={`event-${idx}`}>
-            {idx === 0 ? <></> : <Divider />}
-            <BlockContainer tags={item.post.tags}>
-              <BlockWrapper url={`/event/${item.event.eventId}`} wrapStyle='p-[16px] pb-[10px]'
-                blockThumb={<img className='rounded-[4px] w-[92px] h-[116px] object-cover' src={item.post.headImageUrl ?? '/default_list_thumb3x.png'} />}>
-                <BlockBodyAD title={item.post.title} startDate={item.event.startDate} endDate={item.event.endDate} address={item.event.abstractLocation}
-                  writer={item.post.writer} head={item.event.type === 'PARTY' ? { current: item.event.currentHeadCount, max: item.event.maxHeadCount } : undefined} />
-              </BlockWrapper>
-            </BlockContainer>
-          </div>
-        ))
-      ))}
-      {events.hasNextPage ? <MoreButton onClick={() => handleMore(events.hasNextPage, events.fetchNextPage)} /> : <></>}
-      {events.isFetchingNextPage ? <LoadingCircle /> : <></>}
-      {tab === 2 && <WriteFab url="/write?w=p" />}
-    </div>
+    <ListWrapper res={events} skeleton={<SkeletonList thumb={true} tag={true} />}
+      nodata={<NoData text1="찾는 행사가 없어요." text2="지금 인기 있는 페스티벌을 만나보세요." buttonText="페스티벌 인기순 보러가기" buttonLink="/?sort=likeCount%2Cdesc" />}>
+      <div className='bg-p-white'>
+        {events.data?.pages.map((event) => (
+          event.content.map((item: ListProps, idx: any) => (
+            <div key={`event-${idx}`}>
+              {idx === 0 ? <></> : <Divider />}
+              <BlockContainer tags={item.post.tags}>
+                <BlockWrapper url={`/event/${item.event.eventId}`} wrapStyle='p-[16px] pb-[10px]'
+                  blockThumb={<img className='rounded-[4px] w-[92px] h-[116px] object-cover' src={item.post.headImageUrl ?? '/default_list_thumb3x.png'} />}>
+                  <BlockBodyAD title={item.post.title} startDate={item.event.startDate} endDate={item.event.endDate} address={item.event.abstractLocation}
+                    writer={item.post.writer} head={item.event.type === 'PARTY' ? { current: item.event.currentHeadCount, max: item.event.maxHeadCount } : undefined} />
+                </BlockWrapper>
+              </BlockContainer>
+            </div>
+          ))
+        ))}
+        {tab === 2 && <WriteFab url="/write?w=p" />}
+      </div>
+    </ListWrapper>
   )
 }

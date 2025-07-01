@@ -10,7 +10,7 @@ export function DetailPageR({ postId }: { postId: any; }) {
   const userinfo = useLoginInfo().data
   const router = useRouter();
 
-  const { data: data, isLoading: isLoadingD, isError: isErrorD } = useDetailInfo('event/recruitment', postId)
+  const { data, isLoading, isError, status } = useDetailInfo('event/recruitment', postId)
 
   const mutateDelete = useDeletePost('event/recruitment', postId)
   const handleDelete = () => { mutateDelete.mutate() }
@@ -18,8 +18,8 @@ export function DetailPageR({ postId }: { postId: any; }) {
   const [openD, setOpenD] = useState(false);
   const toggleDrawer = (newOpen: boolean) => () => { setOpenD(newOpen); };
 
-  if (isLoadingD) { return (<SkeletonDetail map={false} />) }
-  if (!data) { return (<></>) }
+  if (isLoading) { return (<SkeletonDetail map={false} />) }
+  if (status !== 'success' || !data) { return (<></>) }
   return (
     <>
       <DetailWrapper title='모집글'>

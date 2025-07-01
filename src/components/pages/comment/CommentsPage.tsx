@@ -1,9 +1,9 @@
 "use client";
 import { useState } from 'react';
-import { handleMore, originText, useDelete, useListWithPage } from '@/hooks/useInCommon';
+import { originText, useDelete, useListWithPage } from '@/hooks/useInCommon';
 import useLoginInfo from '@/hooks/useLoginInfo';
 import { SubHeaderCnt } from '@/components/layout/subHeader';
-import { CommentMProps, CommentProps, MoreButton, BottomDrawer, AlertDialog, LoadingCircle, SkeletonComments } from '@/components/common';
+import { CommentMProps, CommentProps, BottomDrawer, AlertDialog, SkeletonComments, ListWrapper } from '@/components/common';
 import { CommentBlock, CommentFooter, ModifyInput } from '@/components/pages/comment';
 
 export function CommentsPage(props: { origin: 'event' | 'event/recruitment'; postId: any; }) {
@@ -20,7 +20,7 @@ export function CommentsPage(props: { origin: 'event' | 'event/recruitment'; pos
 
   let apiURL = `/api/${props.origin}/${props.postId}/comment?sort=createdAt,desc&size=10`
   let qKey = [originText(props.origin), props.postId, 'comments']
-  const { data: comments, fetchNextPage, hasNextPage, status, isLoading, isFetchingNextPage } = useListWithPage(apiURL, qKey)
+  const comments = useListWithPage(apiURL, qKey)
 
   const mutateDelete = useDelete(`/api/${props.origin}/comment/${targetM?.commentId}`, qKey, '댓글')
   const handleDelete = () => {
@@ -31,23 +31,18 @@ export function CommentsPage(props: { origin: 'event' | 'event/recruitment'; pos
   let postUrl = `/${originText(props.origin)}/${props.postId}`
   return (
     <>
-      <SubHeaderCnt name='글 댓글' cnt={!!comments ? comments.pages[0].totalElements : ''} url={postUrl} />
+      <SubHeaderCnt name='글 댓글' cnt={!!comments.data ? comments.data.pages[0].totalElements : ''} url={postUrl} />
       <div className='flex flex-col w-full min-h-[calc(100vh-104px)] pb-[88px] bg-gray1'>
-        {isLoading
-          ? <SkeletonComments />
-          : <>{status === "success" && !!comments && !comments.pages[0].empty
-            ? <>{comments.pages.map((comment, i) => (
-              comment.content.map((item: CommentProps, idx: number) => (
-                <div key={`cmt-${idx}`} className={idx % 2 == 0 ? 'bg-p-white px-[16px] py-[12px]' : 'bg-gray1 px-[16px] py-[12px]'}>
-                  <CommentBlock opt='CMT' data={item} setOpenD={setOpenD} setTargetM={setTargetM} origin={props.origin} />
-                </div>
-              ))
-            ))}
-              {hasNextPage ? <MoreButton onClick={() => handleMore(hasNextPage, fetchNextPage)} /> : <></>}
-              {isFetchingNextPage ? <LoadingCircle /> : <></>}
-            </>
-            : <></>}</>
-        }
+        <ListWrapper res={comments} skeleton={<SkeletonComments />}
+          nodata={<></>}>
+          {comments.data?.pages.map((comment, i) => (
+            comment.content.map((item: CommentProps, idx: number) => (
+              <div key={`cmt-${idx}`} className={idx % 2 == 0 ? 'bg-p-white px-[16px] py-[12px]' : 'bg-gray1 px-[16px] py-[12px]'}>
+                <CommentBlock opt='CMT' data={item} setOpenD={setOpenD} setTargetM={setTargetM} origin={props.origin} />
+              </div>
+            ))
+          ))}
+        </ListWrapper>
       </div>
       <CommentFooter url={`${props.origin}/${props.postId}`} qKey={qKey} isLogin={!!userinfo} setOpenA={setOpenA} />
       <BottomDrawer open={openD} toggleDrawer={toggleDrawer} type='event' target={targetM?.commentId}

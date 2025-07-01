@@ -12,7 +12,7 @@ export function DetailPageE({ postId }: { postId: any; }) {
   const userinfo = useLoginInfo().data
   const router = useRouter();
 
-  const { data: data, isLoading: isLoadingD, isError: isErrorD } = useDetailInfo('event', postId)
+  const { data, isLoading, isError, status } = useDetailInfo('event', postId)
 
   const mutateDelete = useDeletePost('event', postId)
   const handleDelete = () => { mutateDelete.mutate() }
@@ -20,8 +20,8 @@ export function DetailPageE({ postId }: { postId: any; }) {
   const [openD, setOpenD] = useState(false);
   const toggleDrawer = (newOpen: boolean) => () => { setOpenD(newOpen); };
 
-  if (isLoadingD) { return (<SkeletonDetail map={true} />) }
-  if (!data) { return (<></>) }
+  if (isLoading) { return (<SkeletonDetail map={true} />) }
+  if (status !== 'success' || !data) { return (<></>) }
   else {
     const isParty = data.event.type === 'PARTY'
     return (

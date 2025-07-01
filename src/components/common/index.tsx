@@ -21,6 +21,7 @@ import { SkeletonList } from "./loading/SkeletonList";
 import { SkeletonWrite } from "./loading/SkeletonWrite";
 import { TypeTabs } from "./nav/TypeTabs";
 import { TypeSwitch } from "./nav/TypeSwitch";
+import { ListWrapper } from "./ListWrapper";
 
 export {
   // button
@@ -33,6 +34,7 @@ export {
   ReportDialog, ReportRadios,
   // loading
   SkeletonCarousel, SkeletonComments, SkeletonReplies, SkeletonComment, SkeletonDetail, SkeletonList, SkeletonWrite,
+  ListWrapper,
 }
 
 export function Divider({ color }: { color?: string; }) {
