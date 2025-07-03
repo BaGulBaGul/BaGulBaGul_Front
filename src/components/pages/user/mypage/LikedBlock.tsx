@@ -1,47 +1,38 @@
 "use client";
 import { useState } from 'react';
-import Link from 'next/link';
-import { FormatDateRange, applyLike } from '@/service/Functions';
+import { applyLike } from '@/service/Functions';
 import { LikeIcn } from '@/components/common/styles/Icon';
 import { LikeProps, LikeRProps } from '@/components/common';
-import { BlockInfo, UserProfile, BlockInfoDT } from '@/components/common/block';
+import { UserProfile, BlockWrapper, BlockBodyAD, BlockBodyN } from '@/components/common/block';
 
-export function LikedPostBlock(props: { data: LikeProps }) {
+export function LikedBlockE({ data }: { data: LikeProps }) {
   const [liked, setLiked] = useState(true);
   const handleLike = (e: any) => {
     e.preventDefault();
-    applyLike(true, liked, `/api/event/${props.data.eventId}/like`, setLiked)
+    applyLike(true, liked, `/api/event/${data.eventId}/like`, setLiked)
   }
   return (
-    <Link href={`/event/${props.data.eventId}`} className='flex flex-row justify-between px-[16px] py-[18px]'>
-      <div className='flex flex-row gap-[8px]'>
-        <button className="h-[24px] w-[24px]" onClick={handleLike}><LikeIcn val={liked} /></button>
-        <div className='flex flex-col w-full justify-between'>
-          <BlockInfo title={props.data.title} date={FormatDateRange(props.data.startDate, props.data.endDate)} address={props.data.abstractLocation} />
-          <div className='flex flex-row items-center gap-[4px] text-14'>
-            <UserProfile userId={props.data.eventWriterId} userName={props.data.userName} />
-            {/* {props.data.type === 'PARTY' ? <HeadCount currentHeadCount={props.data.currentHeadCount} maxHeadCount={props.data.maxHeadCount} state={props.data.state} /> : <></>} */}
-          </div>
-        </div>
-      </div>
-      <img className='rounded-[4px] h-[116px] w-[92px] min-w-[92px] object-cover' src={props.data.eventWriterProfileImageUrl ?? '/default_list_thumb3x.png'} />
-    </Link>
+    <BlockWrapper url={`/event/${data.eventId}`} wrapStyle='gap-[8px] p-[16px]'
+      blockAction={<button className="h-[24px] w-[24px]" onClick={handleLike}><LikeIcn val={liked} /></button>}
+      blockThumb={<img className='rounded-[4px] w-[92px] h-[116px] object-cover' src={data.eventWriterProfileImageUrl ?? '/default_list_thumb3x.png'} />}>
+      <BlockBodyAD title={data.title} startDate={data.startDate} endDate={data.endDate} address={data.abstractLocation}
+        head={undefined} writer={undefined}
+      // head={data.type === 'PARTY' ? <HeadCount currentHeadCount={data.currentHeadCount} maxHeadCount={data.maxHeadCount} state={data.state} /> : <></>}
+      />
+    </BlockWrapper>
   )
 }
 
-export function LikedAccompanyBlock(props: { data: LikeRProps }) {
+export function LikedBlockR({ data }: { data: LikeRProps }) {
   const [liked, setLiked] = useState(true);
   const handleLike = (e: any) => {
     e.preventDefault();
-    applyLike(true, liked, `/api/event/recruitment/${props.data.recruitmentId}/like`, setLiked)
+    applyLike(true, liked, `/api/event/recruitment/${data.recruitmentId}/like`, setLiked)
   }
   return (
-    <Link href={`/recruitment/${props.data.recruitmentId}`} className='flex flex-row px-[16px] py-[18px] gap-[8px]'>
-      <button className="h-[24px] w-[24px]" onClick={handleLike}><LikeIcn val={liked} /></button>
-      <div className='flex flex-col gap-[4px]'>
-        <BlockInfoDT title={props.data.title} date={FormatDateRange(props.data.startDate, undefined)} />
-        <span className='text-14 text-gray3'>{props.data.eventTitle ?? '-'}</span>
-      </div>
-    </Link>
+    <BlockWrapper url={`/recruitment/${data.recruitmentId}`} wrapStyle='gap-[8px] px-[16px] py-[18px]'
+      blockAction={<button className="h-[24px] w-[24px]" onClick={handleLike}><LikeIcn val={liked} /></button>}>
+      <BlockBodyN title={data.title} startDate={data.startDate} endDate={data.endDate} name={'tmp name for event'} />
+    </BlockWrapper>
   )
 }

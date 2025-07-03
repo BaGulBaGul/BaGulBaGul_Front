@@ -267,15 +267,6 @@ input[type="file"] {
   line-height: 160%;
   cursor: pointer;
 }
-.type-chip {
-  border-radius: 2px;
-  font-size: 12px;
-  line-height: 160%;
-  color: #1E1E1E;
-  background-color: #ECECEC;
-  padding: 2px 4px;
-  width: fit-content;
-}
 
 .tags-input {
   flex-grow: 1;

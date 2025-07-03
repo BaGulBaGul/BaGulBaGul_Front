@@ -1,23 +1,21 @@
 import { FormatDateRange, typeString } from "@/service/Functions";
 
-import { BlockInfo, BlockInfoDT } from "./BlockInfo";
 import { HashtagAccordion, HashtagList, HashtagButton } from "./HashtagAccordion";
 import { HeadCount } from "./HeadCount";
 import { NoData } from "./NoEvent";
 import { SetBlock } from "./SetBlock";
 import { UserProfile } from "./UserProfile";
 import { UserProfileBlock } from "./UserProfileBlock";
-import { BlockBodyAD, BlockBodyD, BlockBodyN } from "./_BlockBody";
-import { BlockWrapper, BlockContainer } from "./_BlockWrapper";
+import { BlockBodyAD, BlockBodyD, BlockBodyCal, BlockBodyN } from "./BlockBody";
+import { BlockWrapper, BlockContainer } from "./BlockWrapper";
 
 
 export {
-  BlockInfo, BlockInfoDT,
   HashtagAccordion, HashtagList, HashtagButton, HeadCount,
   NoData, UserProfile, UserProfileBlock,
   SetBlock,
   BlockWrapper, BlockContainer,
-  BlockBodyAD, BlockBodyD, BlockBodyN,
+  BlockBodyAD, BlockBodyD, BlockBodyCal, BlockBodyN,
 }
 
 export function DateLine({ startDate, endDate }: { startDate?: string; endDate?: string }) {
