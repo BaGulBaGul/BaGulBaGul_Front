@@ -52,10 +52,10 @@ export default function Template({ children }: { children: React.ReactNode }) {
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => { setOpen(true) }
-
+  const defaultTitle = "SUMMER\n페스티벌 추천"
   return (
     <div className='flex flex-col w-full pt-[44px]'>
-      <RecCarousel />
+      <RecCarousel title={defaultTitle} />
       <div className='w-full px-0'>
         <TypeTabs val={tab} handleChange={handleChange} wrapStyle='sticky relative top-[44px] pt-[20px]'>
           <FilterButton handleOpen={handleOpen} cnt={filterCnt} fs={18} />
