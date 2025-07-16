@@ -12,6 +12,7 @@ import { AlertDialog } from "./display/AlertDialog";
 import { BottomDrawer } from "./display/BottomDrawer";
 import { FullscreenDialog } from "./display/FullscreenDialog";
 import { ImageSlide } from "./display/ImageSlide";
+import { DialogFull } from "./display/_DialogFull";
 import { ReportDialog } from "./report/ReportDialog";
 import { ReportRadios } from "./report/ReportRadios";
 import { SkeletonCarousel } from "./loading/SkeletonCarousel";
@@ -27,7 +28,7 @@ export {
   // button
   AlarmButton, ArrowPrev, ArrowNext, EditButton, ExpandButton, FooterButton, LogoutButton, MoreButton, WriteFab,
   // display
-  AlertDialog, BottomDrawer, FullscreenDialog, ImageSlide,
+  AlertDialog, BottomDrawer, FullscreenDialog, ImageSlide, DialogFull,
   // nav
   TypeTabs, TypeSwitch,
   // report

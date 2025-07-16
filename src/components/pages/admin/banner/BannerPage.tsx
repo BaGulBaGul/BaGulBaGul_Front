@@ -3,7 +3,7 @@ import { Divider, FooterButton, ImageSlide } from "@/components/common";
 import { ImageUploader } from "@/components/common/input";
 import { useState } from "react";
 import { RecCarousel } from "../../main";
-import { BannerCardList, BannerTitleInput, DndWrapper } from "..";
+import { BannerTitleInput, BannerCardItem, DndWrapper } from "..";
 
 export interface BannerData {
 	id: string;
@@ -19,8 +19,8 @@ export function BannerPage() {
 	const handleTitle = (e: React.ChangeEvent<HTMLTextAreaElement>) => { setTitle(e.target.value) }
 
 	let evt1 = { "title": "이벤트1", "startDate": "2023-07-01", "endDate": "2023-07-31", "headImageUrl": "/banner1.png", "headImageKey": 1, "linkedEventUrl": "/event/1" };
-	const [cardData, setCardData] = useState<BannerData[]>([{id: '1', data: undefined}, {id: '2', data: evt1}, {id: '3', data: undefined}, {id: '4', data: undefined}, {id: '5', data: undefined}]);
-	
+	const [cardData, setCardData] = useState<BannerData[]>([{ id: '1', data: undefined }, { id: '2', data: evt1 }, { id: '3', data: undefined }, { id: '4', data: undefined }, { id: '5', data: undefined }]);
+
 	const handleSubmit = () => { }
 
 	//   if (!!props.edit && (!!prev && !prev.isSuccess)) { return (<SkeletonWrite opt='r' />) }
@@ -34,7 +34,9 @@ export function BannerPage() {
 			<BannerTitleInput handleChange={handleTitle} title={title} />
 			<Divider color='gray2' />
 			<DndWrapper id="banner-card-list" items={cardData} updateItems={(newData: BannerData[]) => setCardData(newData)}>
-				<BannerCardList items={cardData} />
+				{cardData.map(item => (
+					<BannerCardItem key={`banner-${item.id}`} item={item} />
+				))}
 			</DndWrapper>
 			<Divider color='gray2' />
 			<div className="flex flex-col pt-[10px] pb-[20px] gap-[20px] bg-p-white">

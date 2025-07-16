@@ -3,11 +3,11 @@ import { PropsWithChildren } from 'react';
 import { FooterButton } from '@/components/common/button/FooterButton';
 
 // * ====== 250602 alert dialog 추가 적용 필요
-interface Props extends PropsWithChildren { handleSubmit: () => void; }
-export function Write({ handleSubmit, children }: Props) {
+interface Props extends PropsWithChildren { handleSubmit: () => void; wrapStyle?: string }
+export function Write({ handleSubmit, wrapStyle, children }: Props) {
   return (
     <>
-      <div className='w-full mt-[104px] mb-[77px]'>
+      <div className={'w-full mb-[77px] ' + (wrapStyle ?? 'mt-[104px]')}>
         {children}
       </div>
       <FooterButton text="작성하기" handleClick={handleSubmit} />

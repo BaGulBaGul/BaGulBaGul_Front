@@ -1,17 +1,16 @@
 "use client";
 import React from 'react'
 import { useRouter } from 'next/navigation';
-import { DeleteIcn, HeaderBackIcn } from '../common/styles/Icon';
 import Link from 'next/link';
+import { DeleteIcn, HeaderBackIcn } from '../common/styles/Icon';
 
-const headerStyle = "left-0 right-0 flex flex-row justify-between place-items-center w-full h-[60px] px-[17px] py-[10px] bg-p-white z-30"
 export default function SubHeader({ name }: any) {
   const router = useRouter();
   return (
-    <div className={"fixed top-[44px] " + headerStyle}>
+    <div className={"header-nav fixed top-[44px]"}>
       <button onClick={() => router.back()}><HeaderBackIcn /></button>
       <div className='text-18'>{name}</div>
-      <div className='w-[24px]'></div>
+      <div className='w-[24px]'/>
     </div>
   )
 }
@@ -19,10 +18,10 @@ export default function SubHeader({ name }: any) {
 export function SubTopHeader(props: { name: any; child?: React.ReactNode }) {
   const router = useRouter();
   return (
-    <header className={"fixed top-0 " + headerStyle}>
+    <header className={"header-nav fixed top-0"}>
       <button onClick={() => router.back()}><HeaderBackIcn /></button>
       <div className='text-18'>{props.name}</div>
-      {props.child ?? <div className='w-[24px]'></div>}
+      {props.child ?? <div className='w-[24px]'/>}
     </header>
   )
 }
@@ -30,7 +29,7 @@ export function SubTopHeader(props: { name: any; child?: React.ReactNode }) {
 export function SubHeaderCnt({ name, cnt, url }: any) {
   const router = useRouter();
   return (
-    <div className={"relative sticky top-0 " + headerStyle}>
+    <div className={"header-nav relative sticky top-0"}>
       <button className='me-[29px]' onClick={() => router.back()}><HeaderBackIcn /></button>
       <div className='flex flex-row text-18'>
         <div>{name}</div>

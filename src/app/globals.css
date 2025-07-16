@@ -36,6 +36,19 @@ em {
   -webkit-transform: translateX(-50%);
 }
 
+.header-nav {
+  inset-inline: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  place-items: center;
+  width: 100%;
+  height: 60px;
+  padding: 10px 17px;
+  background-color: #FFFFFF;
+  z-index: 30;
+}
+
 .join-btn {
   display: flex;
   flex-direction: row;
