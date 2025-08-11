@@ -1,25 +1,33 @@
 'use client';
+import { ReactNode } from 'react';
+import { Dialog } from '@base-ui-components/react';
 import { useSortable } from '@dnd-kit/sortable';
-import { BannerData } from './BannerPage';
-import { BannerCardPage, DndHandler, DndItem } from '..';
+import { DndHandler, DndItem,BannerInfo, BannerData  } from '..';
 import { DialogFull } from '@/components/common';
+import { DialogHeader } from '@/components/common/display/_DialogFull';
 
-export function BannerCardItem({ item }: { item: BannerData }) {
+export function BannerCardItem({ item, children }: {item: BannerInfo; children: ReactNode}) {
   const sortable = useSortable({ id: item.id });
   return (
     <DndItem sortable={sortable}>
       <div className="flex flex-row justify-between gap-[8px] w-screen text-14 p-[16px] bg-p-white">
         <DndHandler sortable={sortable} />
-        <DialogFull headerText='카드 추가하기' footerText='저장하기' triggerStyle='flex flex-row justify-between w-full gap-[8px]'
-          dialogBody={<BannerCardPage handleBanner={() => { console.log() }} />}>
-          <>
-            <p className={"w-full text-left " + (!!item.data ? "text-black" : "text-gray2")}>
-              {item.data ? item.data.title : '카드 추가하기'}
-            </p>
-            <img src='/arrow_next.svg' className="p-[4px] w-[24px] h-[24px]" />
-          </>
+        <DialogFull footerText='저장하기' trigger={<BannerCardTrigger data={item.data} />}>
+          <DialogHeader headerText='카드 추가하기' />
+          {children}
         </DialogFull>
       </div>
     </DndItem>
   );
 };
+
+function BannerCardTrigger({ data }: { data?: BannerData }) {
+  return (
+    <Dialog.Trigger className="flex flex-row justify-between w-full gap-[8px]">
+      <p className={"w-full text-left " + (!!data ? "text-black" : "text-gray2")}>
+        {data ? data.title : '카드 추가하기'}
+      </p>
+      <img src='/arrow_next.svg' className="p-[4px] w-[24px] h-[24px]" />
+    </Dialog.Trigger>
+  )
+}

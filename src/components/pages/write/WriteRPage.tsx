@@ -39,7 +39,8 @@ export function WriteRPage(props: { eventId?: number; edit?: number; }) {
   return (
     <Write handleSubmit={handleSubmit}>
       <div className='relative h-[280px] bg-gray1'>
-        <ImageSlide images={images} setImages={setImages} default={<></>} />
+        <ImageSlide editable={true} images={images} updateImages={(imgs) => { setImages(imgs) }}
+          imageKey={imageKey} updateImageKey={(keys) => { setImageKey(keys) }} default={<></>} />
         <ImageUploader setImage={setImages} setImageKey={setImageKey} multiple={true} />
       </div>
       <TitleInput titleRef={titleRef} prev={!!prev ? prev.data.post.title : undefined} />

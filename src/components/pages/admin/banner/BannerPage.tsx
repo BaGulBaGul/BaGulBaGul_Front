@@ -1,47 +1,47 @@
 "use client";
-import { Divider, FooterButton, ImageSlide } from "@/components/common";
-import { ImageUploader } from "@/components/common/input";
 import { useState } from "react";
+import { Divider, FooterButton, ImagePreview } from "@/components/common";
+import { ImageUploader } from "@/components/common/input";
 import { RecCarousel } from "../../main";
-import { BannerTitleInput, BannerCardItem, DndWrapper } from "..";
-
-export interface BannerData {
-	id: string;
-	data: undefined | {
-		title: string; startDate: any; endDate: any; headImageUrl: string; headImageKey: Number; linkedEventUrl: string;
-	}
-}
+import { BannerTitleInput, BannerCardItem, DndWrapper, BannerCardPage, BannerInfo } from "..";
 
 export function BannerPage() {
-	const [backImage, setBackImage] = useState<string[]>([])
-	const [backImageKey, setBackImageKey] = useState<Number[]>([])
+	const [backImage, setBackImage] = useState<string | undefined>(undefined)
+	const [backImageKey, setBackImageKey] = useState<Number | undefined>(undefined)
 	const [title, setTitle] = useState<string | undefined>(undefined)
 	const handleTitle = (e: React.ChangeEvent<HTMLTextAreaElement>) => { setTitle(e.target.value) }
 
-	let evt1 = { "title": "이벤트1", "startDate": "2023-07-01", "endDate": "2023-07-31", "headImageUrl": "/banner1.png", "headImageKey": 1, "linkedEventUrl": "/event/1" };
-	const [cardData, setCardData] = useState<BannerData[]>([{ id: '1', data: undefined }, { id: '2', data: evt1 }, { id: '3', data: undefined }, { id: '4', data: undefined }, { id: '5', data: undefined }]);
-
+	let evt1 = {
+		"title": "이벤트1", "headImageUrl": "/banner1.png", "headImageKey": 1,
+		"linkedEvent": { "url": "/event/1", "eventId": 1, "headImageUrl": null, "title": "이벤트1", "startDate": "2023-07-01", "endDate": "2023-07-31" }
+	};
+	const [cardData, setCardData] = useState<BannerInfo[]>([{ id: '1', data: undefined }, { id: '2', data: evt1 }, { id: '3', data: undefined }, { id: '4', data: undefined }, { id: '5', data: undefined }]);
+	const updateItemValue = (targetId: string, newValue: any) => {
+		setCardData(cardData.map((item) => item.id === targetId ? { ...item, data: newValue } : item));
+	};
+	// * 배너 등록 API 추가 적용 필요
 	const handleSubmit = () => { }
 
 	//   if (!!props.edit && (!!prev && !prev.isSuccess)) { return (<SkeletonWrite opt='r' />) }
 	return (
-		<div className="w-full mt-[104px] mb-[77px]">
+		<div className="w-full mt-[60px] mb-[77px]">
 			<div className='relative h-[430px] bg-gray1'>
-				{/* // * 이미지 1개만 업로드,표시되도록 수정 */}
-				<ImageSlide images={backImage} setImages={setBackImage} default={<></>} />
-				<ImageUploader setImage={setBackImage} setImageKey={setBackImageKey} multiple={true} />
+				<ImagePreview image={backImage} deleteImage={() => { setBackImage(undefined) }} deleteImageKey={() => { setBackImageKey(undefined) }} height={430} />
+				<ImageUploader setImage={setBackImage} setImageKey={setBackImageKey} multiple={false} />
 			</div>
 			<BannerTitleInput handleChange={handleTitle} title={title} />
 			<Divider color='gray2' />
-			<DndWrapper id="banner-card-list" items={cardData} updateItems={(newData: BannerData[]) => setCardData(newData)}>
+			<DndWrapper id="banner-card-list" items={cardData} updateItems={(newData: BannerInfo[]) => setCardData(newData)}>
 				{cardData.map(item => (
-					<BannerCardItem key={`banner-${item.id}`} item={item} />
+					<BannerCardItem key={`banner-${item.id}`} item={item}>
+						<BannerCardPage cardData={item} updateCard={updateItemValue} />
+					</BannerCardItem>
 				))}
 			</DndWrapper>
 			<Divider color='gray2' />
 			<div className="flex flex-col pt-[10px] pb-[20px] gap-[20px] bg-p-white">
 				<p className="px-[16px] text-14 font-semibold">미리보기</p>
-				<RecCarousel title={title} />
+				<RecCarousel title={title} data={cardData.map(item => item.data)} />
 			</div>
 			<FooterButton text="배너 제작하기" handleClick={handleSubmit} />
 		</div>

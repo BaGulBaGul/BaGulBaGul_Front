@@ -1,23 +1,22 @@
 "use client";
-import { Dispatch, ReactNode, SetStateAction, useState } from "react";
+import { ReactNode, useState } from "react";
 import Slider from "react-slick";
 import { TrashIcn } from "../styles/Icon";
 import { ArrowNext, ArrowPrev } from "..";
 
-interface ImageSlideProps {
-  images: string[]; setImages?: Dispatch<SetStateAction<string[]>>;
-  imageKey?: Number[]; setImageKey?: Dispatch<SetStateAction<Number[]>>;
-  default?: ReactNode;
-}
+// editable : default false
+type ImageSlideProps = { images: string[]; default?: ReactNode; } & ({
+  editable: true; updateImages: (images: string[]) => void; imageKey: Number[]; updateImageKey: (imageKey: Number[]) => void;
+} | { editable?: false; })
 export function ImageSlide(props: ImageSlideProps) {
   const [index, setIndex] = useState(0);
   const handleDelete = () => {
-    if (!!props.setImages && !!props.imageKey && !!props.setImageKey) {
-      if (props.images.length > 0 && props.imageKey.length > 0 && props.images.length === props.imageKey.length) {
+    if (!!props.editable) {
+      if (props.images.length > 0 && props.images.length === props.imageKey.length) {
         let tmpImgs = (props.images).filter((value, i) => i !== index)
-        props.setImages(tmpImgs)
         let tmpKeys = (props.imageKey).filter((value, i) => i !== index)
-        props.setImageKey(tmpKeys)
+        props.updateImages(tmpImgs)
+        props.updateImageKey(tmpKeys)
       }
     }
   }
@@ -31,10 +30,9 @@ export function ImageSlide(props: ImageSlideProps) {
   }
   return (
     <div className='relative'>
-      {/* * check if works */}
       <div className="absolute top-[16px] left-[16px] right-[16px] z-10 flex flex-row justify-between">
         <span className="slide-chip">{`${index + 1}/${props.images.length}`}</span>
-        {!!props.setImages ? <button onClick={handleDelete}><TrashIcn btn={true} /></button> : <></>}
+        {!!props.editable && <button onClick={handleDelete}><TrashIcn btn={true} /></button>}
       </div>
       <Slider {...settings} className='h-[280px] bg-gray1 slider-detail'>
         {props.images.map((image, idx) => (

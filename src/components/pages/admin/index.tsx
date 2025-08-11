@@ -20,3 +20,9 @@ export {
   UserManagePage,
   DndItem, DndHandler, DndWrapper,
 }
+
+// 연결 이벤트 기존 데이터
+export interface BannerLinkedEventData { url: string; eventId: number; headImageUrl: string | null; title: string; startDate: any; endDate: any; }
+// 관리자 입력 내용 + 연결 이벤트 기존 데이터
+export interface BannerData { title: string; headImageUrl: string; headImageKey: Number; linkedEvent: BannerLinkedEventData }
+export interface BannerInfo { id: string; data: undefined | BannerData }

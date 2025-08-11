@@ -49,10 +49,10 @@ export const handleWrite = (
         body['longitudeLocation'] = coords.Ma
       }
       console.log(body)
-      // mutateWrite.mutate({ apiURL: apiURL, body: body })
+      mutateWrite.mutate({ apiURL: apiURL, body: body })
     })
   } else {
     console.log(body);
-    // mutateWrite.mutate({ apiURL: apiURL, body: body })
+    mutateWrite.mutate({ apiURL: apiURL, body: body })
   }
 }

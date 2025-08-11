@@ -12,6 +12,7 @@ import { AlertDialog } from "./display/AlertDialog";
 import { BottomDrawer } from "./display/BottomDrawer";
 import { FullscreenDialog } from "./display/FullscreenDialog";
 import { ImageSlide } from "./display/ImageSlide";
+import { ImagePreview } from "./display/ImagePreview";
 import { DialogFull } from "./display/_DialogFull";
 import { ReportDialog } from "./report/ReportDialog";
 import { ReportRadios } from "./report/ReportRadios";
@@ -28,7 +29,7 @@ export {
   // button
   AlarmButton, ArrowPrev, ArrowNext, EditButton, ExpandButton, FooterButton, LogoutButton, MoreButton, WriteFab,
   // display
-  AlertDialog, BottomDrawer, FullscreenDialog, ImageSlide, DialogFull,
+  AlertDialog, BottomDrawer, FullscreenDialog, ImageSlide, ImagePreview, DialogFull,
   // nav
   TypeTabs, TypeSwitch,
   // report
@@ -56,12 +57,6 @@ export type EventType = 'FESTIVAL' | 'LOCAL_EVENT' | 'PARTY'
 
 export interface RangeProps { from: undefined | number, to: undefined | number }
 
-// export interface ParamProps {
-//   title?: string; page?: number; categories?: string[] | undefined; type?: string | undefined; sort?: string | undefined;
-//   state?: string; tags?: string; startDate?: string | undefined; endDate?: string | undefined; leftHeadCount?: string | undefined;
-//   totalHeadCountMax?: string | undefined; totalHeadCountMin?: string | undefined;
-// }
-
 export interface WriterProps { userId: number, userName: string, userProfileImageUrl: string };
 
 export interface ListProps {
@@ -86,30 +81,6 @@ export interface RListProps {
   }
 }
 
-// export interface DetailProps {
-//   event: {
-//     eventId: number; type: string; currentHeadCount: number; maxHeadCount: number; fullLocation: string; abstractLocation: string;
-//     latitudeLocation: number; longitudeLocation: number; ageLimit: boolean; startDate: any; endDate: any; categories: string[];
-//   };
-//   post: {
-//     postId: number; writer: { userId: number; userName: string; userProfileImageUrl: string; }; title: string; headImageUrl: string;
-//     content: string; tags: string[]; imageIds: any[]; imageUrls: string[]; likeCount: number; commentCount: number; views: number;
-//     createdAt: any; lastModifiedAt: any;
-//   }
-// }
-
-// export interface RDetailProps {
-//   recruitment: {
-//     recruitmentId: number; eventId: number; state: string; currentHeadCount: number; maxHeadCount: number;
-//     startDate: any; endDate: any;
-//   };
-//   post: {
-//     postId: number; writer: { userId: number; userName: string; userProfileImageUrl: string; }; title: string; headImageUrl: string;
-//     content: string; tags: string[]; imageIds: any[]; imageUrls: string[]; likeCount: number; commentCount: number; views: number;
-//     createdAt: any; lastModifiedAt: any;
-//   }
-// }
-
 export interface CommentProps {
   commentChildCount?: number; commentId?: number; commentChildId?: number; content: string; createdAt: string;
   likeCount: number; myLike: boolean; userId: number; username?: string; userName?: string; userProfileImageUrl?: string;
@@ -125,11 +96,6 @@ export interface CalProps {
   userId?: number; userProfileImageUrl?: string; userName?: string;
   currentHeadCount?: number; maxHeadCount?: number;
 }
-
-// export interface UserInfoProps {
-//   id: number; nickname: string; email: string; profileMessage: string; imageURI: string;
-//   writingCount: number; postLikeCount?: number; calendarCount?: number;
-// }
 
 export interface LikeProps {
   eventId: number; startDate: string; endDate: string; title: string; abstractLocation: string;
