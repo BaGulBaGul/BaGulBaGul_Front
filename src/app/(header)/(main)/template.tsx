@@ -3,10 +3,9 @@ import { useState, useEffect, ChangeEvent } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import dayjs from 'dayjs';
 import { FormatDateRange, getParams, headCountString, useEffectCntFilter } from '@/service/Functions';
-import { TypeTabs } from '@/components/common';
+import { RecCarousel, TypeTabs } from '@/components/common';
 import { FilterButton, FilterApplied, FilterDialog, closeFilter, handleObjectValue, FilterSortRadio, FilterCalendar } from '@/components/common/filter';
 import { CategoryButtons, InputCheck, InputCollapse, InputNumber, InputNumberRange } from '@/components/common/input';
-import { RecCarousel } from '@/components/pages/main';
 
 export default function Template({ children }: { children: React.ReactNode }) {
   const searchParams = useSearchParams()

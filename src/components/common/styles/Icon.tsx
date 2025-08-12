@@ -145,3 +145,37 @@ export const TrashIcn = (props: { btn?: boolean }) => (
     <path d="M12.5015 18.8857C12.7139 18.8857 12.8872 18.7123 12.8872 18.5V10.4999C12.8872 10.2876 12.7139 10.1142 12.5015 10.1142C12.2892 10.1142 12.1158 10.2876 12.1158 10.4999V18.5C12.1158 18.7123 12.2892 18.8857 12.5015 18.8857Z" fill="black" stroke="black" stroke-width="0.2" />
   </svg>
 )
+
+export const RadioIcn = (props: { val: boolean }) => {
+  if (!props.val) {
+    return (
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="9" cy="9" r="8.5" stroke="#C1C1C1" />
+      </svg>
+    )
+  } else {
+    return (
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="9" cy="9" r="8.5" stroke="#C1C1C1" />
+        <circle cx="9" cy="9" r="5" fill="#4A6AFE" />
+      </svg>
+    )
+  }
+}
+
+export const CheckIcn = (props: { val: boolean }) => {
+  if (!props.val) {
+    return (
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="9" cy="9" r="8.5" stroke="#C1C1C1" />
+      </svg>
+    )
+  } else {
+    return (
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="9" cy="9" r="9" fill="#4A6AFE" />
+        <path d="M5 8.72414L8.0377 11.25L13 6.75" stroke="#FCFCFC" strokeWidth="1.5" strokeLinecap="round" />
+      </svg>
+    )
+  }
+}

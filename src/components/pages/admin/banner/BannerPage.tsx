@@ -1,8 +1,7 @@
 "use client";
 import { useState } from "react";
-import { Divider, FooterButton, ImagePreview } from "@/components/common";
+import { Divider, FooterButton, ImagePreview, RecCarousel } from "@/components/common";
 import { ImageUploader } from "@/components/common/input";
-import { RecCarousel } from "../../main";
 import { BannerTitleInput, BannerCardItem, DndWrapper, BannerCardPage, BannerInfo } from "..";
 
 export function BannerPage() {
@@ -41,7 +40,7 @@ export function BannerPage() {
 			<Divider color='gray2' />
 			<div className="flex flex-col pt-[10px] pb-[20px] gap-[20px] bg-p-white">
 				<p className="px-[16px] text-14 font-semibold">미리보기</p>
-				<RecCarousel title={title} data={cardData.map(item => item.data)} />
+				<RecCarousel title={title} data={cardData.map(item => item.data)} bgImage={backImage} />
 			</div>
 			<FooterButton text="배너 제작하기" handleClick={handleSubmit} />
 		</div>

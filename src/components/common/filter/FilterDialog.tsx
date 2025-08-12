@@ -1,6 +1,7 @@
 "use client";
 import { PropsWithChildren } from "react";
 import { ThemeProvider, Dialog, DialogTitle, DialogContent, createTheme } from "@mui/material";
+import { RadioIcn } from "../styles/Icon";
 
 interface Props extends PropsWithChildren { open: boolean; handleClose: any; title?: string }
 export function FilterDialog({ open, handleClose, title, children }: Props) {
@@ -14,23 +15,6 @@ export function FilterDialog({ open, handleClose, title, children }: Props) {
       </Dialog>
     </ThemeProvider >
   );
-}
-
-const RadioIcn = (props: { val: boolean }) => {
-  if (!props.val) {
-    return (
-      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="9" cy="9" r="8.75" stroke="#C1C1C1" strokeWidth="0.5" />
-      </svg>
-    )
-  } else {
-    return (
-      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="9" cy="9" r="8.75" stroke="#C1C1C1" strokeWidth="0.5" />
-        <circle cx="9" cy="9" r="5" fill="#6C6C6C" />
-      </svg>
-    )
-  }
 }
 
 export const filterTheme = createTheme({

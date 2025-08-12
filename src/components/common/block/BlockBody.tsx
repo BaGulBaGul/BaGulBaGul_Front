@@ -37,12 +37,14 @@ export function BlockBodyD({ title, startDate, endDate, writer, head }: Props) {
 
 export function BlockBodyCal({ title, startDate, endDate, writer, head, type, address }: Props & { type: string; address?: string; }) {
   return (
-    <div className="flex flex-col gap-[4px]">
-      <TypeChip type={type} />
-      <p className='text-16 font-semibold truncate'>{title}</p>
-      <div className='flex flex-row items-center gap-[4px]'>
-        {!!address && <p className="text-14 text-gray3">{address}</p>}
-        <DateLine startDate={startDate} endDate={endDate} />
+    <div className="flex flex-col justify-between">
+      <div className="flex flex-col gap-[4px]">
+        <TypeChip type={type} />
+        <p className='text-16 font-semibold truncate'>{title}</p>
+        <div className='flex flex-row items-center gap-[4px]'>
+          {!!address && <p className="text-14 text-gray3">{address}</p>}
+          <DateLine startDate={startDate} endDate={endDate} />
+        </div>
       </div>
       <div className='flex flex-row items-center gap-[4px]'>
         {!!writer && <UserProfile userId={writer.userId} userName={writer.userName} userProfileImageUrl={writer.userProfileImageUrl} color="gray3" />}

@@ -2,7 +2,7 @@
 import React, { useRef, useState } from "react";
 import { categories } from "@/components/common/input/CategoryButtons"
 import { SubTopHeader } from "@/components/layout/subHeader";
-import { AlertDialog, EditButton } from "@/components/common";
+import { AlertDialog, EditButton, FooterButton } from "@/components/common";
 import { SearchInput } from "@/components/common/input";
 import { CategoryList, DndWrapper } from "..";
 
@@ -45,6 +45,7 @@ export function CategoryPage() {
           <SearchInput inputRef={inputRef} placeholder="카테고리명을 입력하세요." required={true} divStyle="rounded-[2px]" />
         </AlertDialog>
       </div>
+      <FooterButton text='삭제하기' />
     </>
   )
 }

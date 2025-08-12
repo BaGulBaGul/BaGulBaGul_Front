@@ -3,15 +3,15 @@ import Link from 'next/link';
 import { HashtagAccordion } from ".";
 
 interface Props extends PropsWithChildren {
-  url: string; blockAction?: ReactNode; wrapStyle?: string; blockThumb?: ReactNode;
+  url: string; blockAction?: ReactNode; wrapStyle?: string; blockStyle?: string; blockThumb?: ReactNode;
 }
 
-export function BlockWrapper({ url, blockAction, wrapStyle, blockThumb, children }: Props) {
+export function BlockWrapper({ url, blockAction, wrapStyle, blockStyle, blockThumb, children }: Props) {
   return (
     <div className={"flex flex-row w-full " + wrapStyle}>
       {blockAction}
       <Link href={url} passHref legacyBehavior>
-        <div className="flex flex-row w-full justify-between cursor-pointer">
+        <div className={"flex flex-row w-full justify-between " + (blockStyle ?? 'cursor-pointer')}>
           {children}
           {blockThumb}
         </div>
