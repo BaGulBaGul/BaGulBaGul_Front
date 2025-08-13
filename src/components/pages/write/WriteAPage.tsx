@@ -1,11 +1,12 @@
 'use client';
 import { useRef, useState } from 'react';
 import dayjs from 'dayjs';
+import { Dialog } from '@base-ui-components/react';
 import { useWrite } from '@/hooks/useInWrite';
 import { useDetailInfo } from '@/hooks/useInDetail';
-import { Divider, EventType, ImageSlide, SkeletonWrite } from '@/components/common';
+import { DialogFull, Divider, EventType, ImageSlide, SkeletonWrite } from '@/components/common';
 import { ImageUploader, InputContainer, CategoryButtons, InputCollapse, InputNumber, InputCheck } from '@/components/common/input';
-import { AddressDialog, BodyInput, handleWrite, InputDateSelect, SearchBox, TagsInput, TitleInput, TypeToggle, Write } from '.';
+import { AddressDialog, BodyInput, handleWrite, InputDateSelect, SearchBox, SearchBoxTrigger, TagsInput, TitleInput, TypeToggle, Write } from '.';
 
 export function WriteAPage(props: { edit?: number; }) {
   const prev = !!props.edit ? useDetailInfo('event', props.edit) : undefined
@@ -24,9 +25,6 @@ export function WriteAPage(props: { edit?: number; }) {
   const contentRef = useRef<any>(null);
 
   const handleAdult = (e: React.ChangeEvent<HTMLInputElement>) => { if (!!setForAdult) { setForAdult(e.target.checked); } }
-
-  const [openAddr, setOpenAddr] = useState(false);
-  const handleOpenAddr = () => { setOpenAddr(true) }
 
   // 게시물 등록
   const [open, setOpen] = useState(false);
@@ -63,7 +61,12 @@ export function WriteAPage(props: { edit?: number; }) {
         <TypeToggle type={type} handleType={(e, newType) => setType(newType as EventType)} />
       </InputContainer>
       <Divider color='gray2' />
-      <SearchBox title={'주최기관'} defaultText={'주최기관 검색'} value={undefined} handleClick={handleOpenAddr} />
+      {/* <SearchBox title={'주최기관'} defaultText={'주최기관 검색'} value={undefined} handleClick={handleOpenAddr} /> */}
+      <SearchBox title={'주최기관'} >
+        <Dialog.Root>
+          <SearchBoxTrigger defaultText={'주최기관 검색'} value={undefined} />
+        </Dialog.Root>
+      </SearchBox>
       <Divider color='gray2' />
       <InputContainer title="카테고리" desc="카테고리는 최대 2개까지 선택가능합니다." p={true}>
         <CategoryButtons selectedCate={selectedCate} setSelectedCate={setSelectedCate} max={2} setForAdult={setForAdult} />
@@ -78,10 +81,11 @@ export function WriteAPage(props: { edit?: number; }) {
         <InputCheck title='19세 미만 참여불가 파티' checked={forAdult} handleChange={handleAdult} />
       </div>
       <Divider color='gray2' />
-      <SearchBox title={'위치'} defaultText={'위치 검색'} value={!!addr ? addr.full : undefined} handleClick={handleOpenAddr} />
+      <SearchBox title={'위치'}>
+        <AddressDialog addr={addr} updateAddr={(addr) => setAddr(addr)} />
+      </SearchBox>
       <Divider color='gray2' />
       <BodyInput bodyRef={contentRef} value={!!prev ? prev.data.post.content : undefined} />
-      <AddressDialog open={openAddr} onClose={setOpenAddr} addr={!!addr ? addr.full : ''} setAddr={setAddr} />
       <TagsInput tags={tags} setTags={setTags} />
     </Write>
   )

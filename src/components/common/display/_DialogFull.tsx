@@ -19,7 +19,7 @@ export function DialogFull({ trigger, footerText, handleDialogChange, children }
   )
 }
 
-export function DialogHeader({headerText, headerAction}:{headerText?: string; headerAction?: ReactNode;}) {
+export function DialogHeader({ headerText, headerAction }: { headerText?: string; headerAction?: ReactNode; }) {
   return (
     <div className="header-nav fixed">
       <Dialog.Close><HeaderBackIcn /></Dialog.Close>

@@ -5,8 +5,7 @@ import { useWrite } from '@/hooks/useInWrite';
 import { useDetailInfo } from '@/hooks/useInDetail';
 import { Divider, ImageSlide, SkeletonWrite } from '@/components/common';
 import { ImageUploader, InputContainer, CategoryButtons, InputCollapse, InputNumber, InputCheck } from '@/components/common/input';
-import { AddressDialog, BodyInput, handleWrite, InputDateSelect, SearchBox, TagsInput, TitleInput, Write } from '.';
-
+import { AddressDialog, BodyInput, handleWrite, InputDateSelect, TagsInput, TitleInput, Write, SearchBox } from '.';
 
 export function WriteEPage(props: { edit?: number; }) {
   const prev = !!props.edit ? useDetailInfo('event', props.edit) : undefined
@@ -25,9 +24,6 @@ export function WriteEPage(props: { edit?: number; }) {
   const contentRef = useRef<any>(null);
 
   const handleAdult = (e: React.ChangeEvent<HTMLInputElement>) => { if (!!setForAdult) { setForAdult(e.target.checked); } }
-
-  const [openAddr, setOpenAddr] = useState(false);
-  const handleOpenAddr = () => { setOpenAddr(true) }
 
   // 게시물 등록
   const [open, setOpen] = useState(false);
@@ -75,10 +71,11 @@ export function WriteEPage(props: { edit?: number; }) {
         <InputCheck title='19세 미만 참여불가 파티' checked={forAdult} handleChange={handleAdult} />
       </div>
       <Divider color='gray2' />
-      <SearchBox title={'위치'} defaultText={'위치 검색'} value={!!addr ? addr.full : undefined} handleClick={handleOpenAddr} />
+      <SearchBox title={'위치'}>
+        <AddressDialog addr={addr} updateAddr={(addr) => setAddr(addr)} />
+      </SearchBox>
       <Divider color='gray2' />
       <BodyInput bodyRef={contentRef} value={!!prev ? prev.data.post.content : undefined} />
-      <AddressDialog open={openAddr} onClose={setOpenAddr} addr={!!addr ? addr.full : ''} setAddr={setAddr} />
       <TagsInput tags={tags} setTags={setTags} />
     </Write>
   )

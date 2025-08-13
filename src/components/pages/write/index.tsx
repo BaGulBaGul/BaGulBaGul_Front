@@ -5,14 +5,14 @@ import { TitleInput } from "./TitleInput";
 import { TagsInput } from "./TagInput";
 import { TypeToggle } from "./TypeToggle";
 import { InputDateSelect } from "./InputDateSelect";
-import { SearchBox } from "./SearchBox";
+import { SearchBox, SearchBoxTrigger } from "./SearchBox";
 import { Write } from "./Write";
 
 export {
   BodyInput, TitleInput, TagsInput, 
   TypeToggle, 
   InputDateSelect, 
-  SearchBox, AddressDialog,
+  SearchBox, SearchBoxTrigger, AddressDialog,
   Write,
 }
 

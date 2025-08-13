@@ -1,10 +1,9 @@
 'use client';
 import { useRef, useState } from "react";
-import { TitleInput, Write } from "../../write";
+import { SearchBox, SearchBoxTrigger, TitleInput, Write } from "../../write";
 import { DialogFull, Divider, ImagePreview } from "@/components/common";
 import { ImageUploader } from "@/components/common/input";
 import { RecPost } from "../../../common/display/RecCarousel";
-import { SearchBox, SearchBoxTrigger } from "../../write/_SearchBox";
 import { LinkedEventPage } from "./_LinkedEventPage";
 import { BannerInfo, BannerLinkedEventData } from "..";
 

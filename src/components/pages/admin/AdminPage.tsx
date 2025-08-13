@@ -21,7 +21,6 @@ export function AdminPage() {
 					<div className="flex flex-col bg-p-white" id='mypage-set1'>
 						<div className="p-[16px] text-14 font-semibold text-black">메인화면</div>
 						<SetBlock title='배너 설정' desc='메인화면 추천 배너를 제작할 수 있어요.' url='/admin/banner' />
-						<SetBlock title='카테고리 관리' desc='카테고리를 추가하거나 제거할 수 있어요.' url='/admin/category' />
 					</div>
 					<div className="flex flex-col bg-p-white" id='mypage-set2'>
 						<div className="p-[16px] text-14 font-semibold text-black">게시글 및 댓글</div>
@@ -34,6 +33,11 @@ export function AdminPage() {
 					<div className="flex flex-col bg-p-white" id='mypage-set3'>
 						<div className="p-[16px] text-14 font-semibold text-black">유저 관리</div>
 						<SetBlock title='유저 관리' desc='유저 정보를 확인하고 삭제 및 정지할 수 있어요.' url='/admin/user' />
+					</div>
+					<div className="flex flex-col bg-p-white" id='mypage-set4'>
+						<div className="p-[16px] text-14 font-semibold text-black">이벤트 관리</div>
+						<SetBlock title='카테고리 관리' desc='카테고리를 추가하거나 제거할 수 있어요.' url='/admin/category' />
+						<SetBlock title='주최자 관리' desc='주최자 정보를 등록하고 관리할 수 있어요.' url='/admin/organizer' />
 					</div>
 				</div>
 				<LogoutButton />
