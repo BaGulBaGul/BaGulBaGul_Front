@@ -4,8 +4,8 @@ import { Dialog } from "@base-ui-components/react";
 import { useListWithPageE } from "@/hooks/useInCommon";
 import { SearchInput } from "@/components/common/input";
 import { HeaderBackIcn, MagnifyingIcn } from "@/components/common/styles/Icon";
-import { EventPostList } from "../EventPostList";
 import { BannerData } from "..";
+import { BannerEventList } from "./BannerEventList";
 
 export function LinkedEventPage({ updateEvent }: { updateEvent: (arg: any) => void }) {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -37,7 +37,7 @@ export function LinkedEventPage({ updateEvent }: { updateEvent: (arg: any) => vo
         </div>
       </div>
       <div className="mt-[126px]">
-        <EventPostList events={events} editing={true} selectedId={selected?.linkedEvent.eventId} handleSelected={(newEvent) => setSelected(newEvent)} />
+        <BannerEventList events={events} editing={true} selectedId={selected?.linkedEvent.eventId} handleSelected={(newEvent) => setSelected(newEvent)} />
       </div>
     </>
   )

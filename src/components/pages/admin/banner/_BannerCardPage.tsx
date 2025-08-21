@@ -4,8 +4,7 @@ import { SearchBox, SearchBoxTrigger, TitleInput, Write } from "../../write";
 import { DialogFull, Divider, ImagePreview } from "@/components/common";
 import { ImageUploader } from "@/components/common/input";
 import { RecPost } from "../../../common/display/RecCarousel";
-import { LinkedEventPage } from "./_LinkedEventPage";
-import { BannerInfo, BannerLinkedEventData } from "..";
+import { BannerInfo, BannerLinkedEventData, LinkedEventPage } from "..";
 
 export function BannerCardPage({ cardData, updateCard }: { cardData: BannerInfo; updateCard: (targetId: string, newValue: any) => void }) {
 	const [image, setImage] = useState<string | undefined>(cardData.data?.headImageUrl)

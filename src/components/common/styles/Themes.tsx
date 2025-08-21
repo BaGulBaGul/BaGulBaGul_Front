@@ -1,27 +1,6 @@
 "use client";
 import { createTheme } from '@mui/material';
 
-export const menuTheme = createTheme({
-  components: {
-    MuiPaper: {
-      styleOverrides: {
-        root: {
-          borderTopLeftRadius: '8px !important', borderTopRightRadius: '8px !important',
-          paddingBottom: '40px !important',
-        },
-      }
-    },
-    MuiList: { styleOverrides: { root: { padding: '0px' } } },
-    MuiListItemButton: { styleOverrides: { root: { padding: '20px 16px' } } },
-    MuiListItemText: {
-      styleOverrides: {
-        root: { margin: '0px' },
-        primary: { fontSize: '14px', },
-      }
-    },
-  },
-});
-
 const buttonStyle = {
   fontSize: '14px !important', fontWeight: '400', lineHeight: '160%', color: '#1E1E1E!important',
   padding: '2px 8px', minWidth: 'unset', border: '0.5px solid #ECECEC !important',

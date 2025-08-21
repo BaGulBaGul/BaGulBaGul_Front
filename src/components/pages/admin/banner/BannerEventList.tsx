@@ -7,7 +7,7 @@ interface Props {
   events: UseInfiniteQueryResult<InfiniteData<any, unknown>, Error>; editing?: boolean;
   selectedId?: number; handleSelected: (arg: any) => void;
 }
-export function EventPostList({ events, editing, selectedId, handleSelected }: Props) {
+export function BannerEventList({ events, editing, selectedId, handleSelected }: Props) {
   const updateSelected = (item: ListProps) => {
     handleSelected({
       title: item.post.title, headImageUrl: item.post.headImageUrl, headImageKey: undefined,

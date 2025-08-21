@@ -3,8 +3,7 @@ import { ReactNode } from 'react';
 import { Dialog } from '@base-ui-components/react';
 import { useSortable } from '@dnd-kit/sortable';
 import { DndHandler, DndItem,BannerInfo, BannerData  } from '..';
-import { DialogFull } from '@/components/common';
-import { DialogHeader } from '@/components/common/display/_DialogFull';
+import { DialogFull, DialogHeader } from '@/components/common';
 
 export function BannerCardItem({ item, children }: {item: BannerInfo; children: ReactNode}) {
   const sortable = useSortable({ id: item.id });

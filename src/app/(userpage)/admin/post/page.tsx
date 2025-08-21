@@ -11,7 +11,7 @@ export default function Page() {
   return (
     <>
       <SubTopHeader name='게시글 관리' />
-      <PostManagePage />
+      <PostManagePage opt='post' />
     </>
   );
 }

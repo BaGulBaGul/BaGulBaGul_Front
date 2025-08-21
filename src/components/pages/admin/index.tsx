@@ -4,18 +4,20 @@ import { AdminPage } from "./AdminPage";
 import { BannerCardItem } from "./banner/BannerCardItem";
 import { BannerPage } from "./banner/BannerPage";
 import { BannerTitleInput } from "./banner/BannerTitleInput";
+import { LinkedEventPage } from "./banner/_LinkedEventPage";
 import { CategoryList } from "./category/CategoryList";
 import { CategoryPage } from "./category/CategoryPage";
-import { PostManagePage } from "./PostManagePage";
+import { PostManagePage } from "./post/PostManagePage";
+import { PostList } from "./post/PostList";
 import { ReportManagePage } from "./ReportManagePage";
 import { UserManagePage } from "./UserManagePage";
 import { BannerCardPage } from "./banner/_BannerCardPage";
 
 export {
   AdminPage, 
-  BannerPage, BannerCardPage, BannerCardItem, BannerTitleInput,
+  BannerPage, BannerCardPage, BannerCardItem, BannerTitleInput, LinkedEventPage,
   CategoryPage, CategoryList,
-  PostManagePage, 
+  PostManagePage, PostList,
   ReportManagePage, 
   UserManagePage,
   DndItem, DndHandler, DndWrapper,
