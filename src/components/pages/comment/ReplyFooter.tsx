@@ -2,8 +2,7 @@
 import { Dispatch, SetStateAction, useEffect, useState, FocusEvent, memo } from 'react';
 import { ThemeProvider, TextField, Button } from '@mui/material';
 import { useNewReply } from '@/hooks/useInComment';
-import { commentTheme } from '.';
-import ScrollToTop from './ScrollToTop';
+import { commentTheme, ScrollToTop } from '.';
 
 function ReplyFooter(props: {
   url: string; qKey: any; mentioning: boolean; setMentioning: Dispatch<SetStateAction<boolean>>; 

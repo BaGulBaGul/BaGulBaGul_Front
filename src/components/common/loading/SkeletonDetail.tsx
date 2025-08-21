@@ -13,7 +13,7 @@ export function SkeletonDetail(props: { map: boolean }) {
           <Skeleton variant="circular" width={24} height={24} />
         </div>
         <div className="flex flex-col gap-[8px] w-full items-end">
-          <VerticalMoreIcn opt='DTL' color='#E4E6EB' />
+          <VerticalMoreIcn color='#E4E6EB' />
           <Skeleton variant="rounded" height={14} width={40} />
           <Skeleton variant="rounded" height={24} width={60} className="rounded-[99px]" />
         </div>

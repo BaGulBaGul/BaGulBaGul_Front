@@ -28,7 +28,7 @@ export function SkeletonComment(props: { color: string; }) {
         <Skeleton variant="rounded" height={14} width={40} />
       </div>
       <div className="flex flex-col justify-between items-end">
-        <VerticalMoreIcn opt='DTL' color='#E4E6EB' />
+        <VerticalMoreIcn color='#E4E6EB' />
         <Skeleton variant="circular" width={24} height={24} />
       </div>
     </div>
@@ -44,7 +44,7 @@ function SkeletonReply(props: { color: string; }) {
         <Skeleton variant="rounded" height={14} width={191} />
       </div>
       <div className="flex flex-col justify-between items-end">
-        <VerticalMoreIcn opt='DTL' color='#E4E6EB' />
+        <VerticalMoreIcn color='#E4E6EB' />
         <Skeleton variant="circular" width={24} height={24} />
       </div>
     </div>

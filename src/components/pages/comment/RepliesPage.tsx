@@ -6,16 +6,16 @@ import { fetchFromURL } from '@/service/ApiService';
 import useLoginInfo from '@/hooks/useLoginInfo';
 import { originText, useDelete } from '@/hooks/useInCommon';
 import { SubHeaderCnt } from '@/components/layout/subHeader';
-import { CommentMProps, CommentProps, Divider, BottomDrawer, SkeletonComment } from '@/components/common';
+import { CommentMProps, CommentProps, Divider, ReportDialog, SkeletonComment, BottomDrawer, BottomDrawerBody } from '@/components/common';
 import { RepliedComment, Replies, MemoizedReplyFooter, ModifyInputR } from '@/components/pages/comment';
 
-export function RepliesPage(props: { origin: 'event' | 'event/recruitment'; commentId: any; postId: any; }) {
+export function RepliesPage({origin, commentId, postId}: { origin: 'event' | 'event/recruitment'; commentId: any; postId: any; }) {
   // 댓글
   const userinfo = useLoginInfo().data
-  let cKey = ['comment', props.commentId];
-  let rKey = ['comment', props.commentId, 'replies'];
-  let lKey = ['comment', props.commentId, 'liked']
-  let apiURL = `/api/${props.origin}/comment/${props.commentId}`
+  let cKey = ['comment', commentId];
+  let rKey = ['comment', commentId, 'replies'];
+  let lKey = ['comment', commentId, 'liked']
+  let apiURL = `/api/${origin}/comment/${commentId}`
   const comment = useQuery({
     queryKey: cKey,
     queryFn: () => fetchFromURL(apiURL, false, true),
@@ -24,22 +24,31 @@ export function RepliesPage(props: { origin: 'event' | 'event/recruitment'; comm
 
   const router = useRouter()
   if (comment.isError) {
-    router.replace(`/${originText(props.origin)}/${props.postId}/comments`)
+    router.replace(`/${originText(origin)}/${postId}/comments`)
   }
   const [rCnt, setRCnt] = useState<number>();
 
-  // menu drawer
+  // flag for bottom drawer, report dialog
   const [openD, setOpenD] = useState(false);
-  const toggleDrawer = (newOpen: boolean) => () => { setOpenD(newOpen); };
+  const [openR, setOpenR] = useState(false);
   // for modifying
   const [openM, setOpenM] = useState(false);
   const [targetM, setTargetM] = useState<CommentMProps | undefined>();
-  let deleteURL = !targetM ? '' : targetM.opt === 'CMT' ? `/api/${props.origin}/comment/${targetM?.commentId}` : `/api/${props.origin}/comment/children/${targetM?.commentId}`
+  let deleteURL = !targetM ? '' : targetM.opt === 'CMT' ? `/api/${origin}/comment/${targetM?.commentId}` : `/api/${origin}/comment/children/${targetM?.commentId}`
   let dKey = !targetM ? '' : targetM.opt === 'CMT' ? cKey : rKey
   const mutateDelete = useDelete(deleteURL, dKey, '댓글')
   const handleDelete = () => {
     let confirmDelete = confirm("댓글을 삭제하시겠습니까?");
-    if (targetM && confirmDelete) { mutateDelete.mutate(); }
+    if (targetM && confirmDelete) { setOpenD(false); mutateDelete.mutate(); }
+  }
+
+  const handleToggle = (e: React.MouseEvent<HTMLButtonElement>, value: any, opt: 'CMT' | 'RPL') => {
+    e.stopPropagation();
+    setOpenD(true)
+    setTargetM({
+      commentId: value.commentId ?? value.commentChildId, content: value.content, userId: value.userId,
+      replyTargetUserName: value.replyTargetUserName, opt: opt
+    })
   }
 
   // 멘션 관련 처리
@@ -71,23 +80,28 @@ export function RepliesPage(props: { origin: 'event' | 'event/recruitment'; comm
     if (mentioning && mentionRef && mentionRef.current) { mentionRef.current.focus() }
   }, [mentionTarget])
 
-  let postUrl = `/${originText(props.origin)}/${props.postId}`
+  let postUrl = `/${originText(origin)}/${postId}`
   return (
     <>
       <SubHeaderCnt name='답글' cnt={rCnt ?? ''} url={postUrl} />
       <div className='flex flex-col w-full min-h-[calc(100vh-104px)] pb-[88px] bg-gray1'>
         {comment.isPending || comment.isLoading ? <SkeletonComment color={'bg-p-white'} />
           : !comment.data || comment.isError ? <></>
-            : <RepliedComment origin={props.origin} comment={comment} userinfo={userinfo} lKey={lKey} apiURL={apiURL} setOpenD={setOpenD} setTargetM={setTargetM} />}
+            : <RepliedComment origin={origin} comment={comment} userinfo={userinfo} lKey={lKey} apiURL={apiURL} handleToggle={handleToggle} />}
         <Divider />
         {!comment.data || comment.isError ? <></>
-          : <Replies origin={props.origin} rKey={rKey} apiURL={apiURL} setOpenD={setOpenD} setTargetM={setTargetM} setRCnt={setRCnt} handleMention={handleMention} />}
+          : <Replies origin={origin} rKey={rKey} apiURL={apiURL} updateRCnt={(cnt: number) => setRCnt(cnt)} handleMention={handleMention} handleToggle={handleToggle} />}
       </div>
       <MemoizedReplyFooter url={`${apiURL}/children`} qKey={rKey} mentioning={mentioning} setMentioning={setMentioning}
         target={mentionTarget} setMentionTarget={setMentionTarget} mentionRef={mentionRef} replyRef={replyRef} />
-      <BottomDrawer open={openD} toggleDrawer={toggleDrawer} type='event' target={targetM?.commentId}
-        me={!!userinfo && !!targetM && userinfo.id === targetM.userId} handleDelete={handleDelete} handleEdit={() => setOpenM(true)} />
-      <ModifyInputR open={openM} setOpenM={setOpenM} target={targetM} setTarget={setTargetM} origin={props.origin} qKey={rKey} />
+      <BottomDrawer open={openD} toggleOpen={(open) => { setOpenD(open) }}>
+        {!!userinfo && !!targetM && userinfo.id === targetM.userId
+          ? <BottomDrawerBody me={true} handleDelete={handleDelete} handleEdit={() => { setOpenM(true); setOpenD(false); }} />
+          : <BottomDrawerBody me={false} handleReport={() => { setOpenR(true); setOpenD(false); }} />
+        }
+      </BottomDrawer>
+      <ReportDialog open={openR} toggleOpen={(open) => { setOpenR(open); }} type={'comment-child'} target={targetM?.commentId} />
+      <ModifyInputR open={openM} setOpenM={setOpenM} target={targetM} setTarget={setTargetM} origin={origin} qKey={rKey} />
     </>
   );
 }

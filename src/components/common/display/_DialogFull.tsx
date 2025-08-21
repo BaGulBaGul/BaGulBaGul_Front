@@ -4,15 +4,17 @@ import { Dialog } from "@base-ui-components/react";
 import { HeaderBackIcn } from "@/components/common/styles/Icon";
 import { FooterButton } from "@/components/common";
 
-interface Props extends PropsWithChildren {trigger: ReactNode; footerText?: string; handleDialogChange?: () => void}
-export function DialogFull({ trigger, footerText, handleDialogChange, children }: Props) {
+interface Props extends PropsWithChildren {
+  trigger?: ReactNode; footerText?: string; handleFooter?: () => void; handleDialogChange?: any; open?: boolean;
+}
+export function DialogFull({ trigger, footerText, handleFooter, handleDialogChange, open, children }: Props) {
   return (
-    <Dialog.Root onOpenChange={handleDialogChange}>
+    <Dialog.Root open={open} onOpenChange={handleDialogChange}>
       {trigger}
       <Dialog.Portal>
         <Dialog.Popup className="fixed w-screen h-screen top-0 left-0 bg-p-white overflow-y-scroll z-paper">
           {children}
-          {footerText && <FooterButton text={footerText} />}
+          {footerText && <FooterButton text={footerText} handleClick={handleFooter} />}
         </Dialog.Popup>
       </Dialog.Portal>
     </Dialog.Root>

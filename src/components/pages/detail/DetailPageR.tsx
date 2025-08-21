@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { Button, ThemeProvider } from '@mui/material';
 import useLoginInfo from '@/hooks/useLoginInfo';
 import { useDeletePost, useDetailInfo } from '@/hooks/useInDetail';
-import { Divider, BottomDrawer, ImageSlide, SkeletonDetail } from '@/components/common';
-import { HashtagList } from '@/components/common/block';
-import { DetailInfoLine, DetailTitle, DetailTools, DetailWrapper } from '.';
+import { Divider, ImageSlide, ReportDialog, SkeletonDetail, BottomDrawer, BottomDrawerBody} from '@/components/common';
+import { DateLine, HashtagList, UserProfile } from '@/components/common/block';
+import { DetailInfoLine, DetailTools, DetailWrapper } from '.';
+import { VerticalMoreIcn, ViewIcn } from '@/components/common/styles/Icon';
+import { inputToggleTheme } from '@/components/common/styles/Themes';
 
 export function DetailPageR({ postId }: { postId: any; }) {
   const userinfo = useLoginInfo().data
@@ -16,7 +19,7 @@ export function DetailPageR({ postId }: { postId: any; }) {
   const handleDelete = () => { mutateDelete.mutate() }
 
   const [openD, setOpenD] = useState(false);
-  const toggleDrawer = (newOpen: boolean) => () => { setOpenD(newOpen); };
+  const [openR, setOpenR] = useState(false);
 
   if (isLoading) { return (<SkeletonDetail map={false} />) }
   if (status !== 'success' || !data) { return (<></>) }
@@ -24,10 +27,31 @@ export function DetailPageR({ postId }: { postId: any; }) {
     <>
       <DetailWrapper title='모집글'>
         <ImageSlide images={data.post.imageUrls} />
-        <DetailTitle title={data.post.title} toggleDrawer={toggleDrawer} startDate={data.recruitment.startDate} endDate={data.recruitment.endDate}
-          views={data.post.views} writer={data.post.writer} />
+        <div id="detail-title" className="flex flex-col gap-[4px] px-[16px] pt-[30px] pb-[20px]">
+          <div className="flex flex-row justify-between items-center">
+            <span className="text-18">{data.post.title}</span>
+            <button onClick={(e) => {setOpenD(true)}}><VerticalMoreIcn /></button>
+          </div>
+          <div className="flex flex-row gap-[8px] items-center">
+            <DateLine startDate={data.recruitment.startDate} endDate={data.recruitment.endDate} />
+            <div className='flex flex-row text-14 text-gray3 items-center'>
+              <ViewIcn /><span className='ps-[4px]'>{data.post.views.toLocaleString("en-US")}</span>
+            </div>
+          </div>
+          <div className="flex flex-row justify-between items-center">
+            <UserProfile userId={data.post.writer.userId} userName={data.post.writer.userName} userProfileImageUrl={data.post.writer.userProfileImageUrl} color='gray3' />
+            {!!data.recruitment.categories &&
+              <div className='flex flex-row gap-[8px]'>
+                {data.recruitment.categories.map((cate: any, idx: number) => (
+                  <ThemeProvider theme={inputToggleTheme}>
+                    <Button key={`cate-${idx}`}>{cate}</Button>
+                  </ThemeProvider>
+                ))}
+              </div>}
+          </div>
+        </div>
         <Divider />
-        <div className='flex flex-col pt-[30px] gap-[6px]' id='detail-info'>
+        <div id='detail-info' className='flex flex-col pt-[30px] gap-[6px]'>
           <DetailInfoLine title='모집인원' value={`${data.recruitment.maxHeadCount ?? '-'}명`}>
             <span className='ms-[6px] px-[4px] py-[2px] rounded-[2px] bg-primary-blue text-12 text-white'>{`${data.recruitment.currentHeadCount ?? 0}명 참여 중`}</span>
           </DetailInfoLine>
@@ -36,11 +60,15 @@ export function DetailPageR({ postId }: { postId: any; }) {
         {!!data.post.tags && data.post.tags.length > 0 && <div className='px-[16px] py-[30px]'>
           <HashtagList tags={data.post.tags} />
         </div>}
+        <DetailTools origin={'event/recruitment'} postId={postId} userinfo={userinfo} commentCount={data.post.commentCount ?? 0} likeCount={data.post.likeCount ?? 0} />
       </DetailWrapper>
-      <DetailTools origin={'event'} postId={postId} userinfo={userinfo} commentCount={data.post.commentCount ?? 0} likeCount={data.post.likeCount ?? 0} />
-      <BottomDrawer open={openD} toggleDrawer={toggleDrawer} type='recruitment' target={data.recruitment.recruitmentId}
-        me={!!userinfo && userinfo.id === data.post.writer.userId} handleDelete={handleDelete}
-        handleEdit={() => router.push(`/write?w=p&edit=${data.recruitment.recruitmentId}`)} />
+      <BottomDrawer open={openD} toggleOpen={(open) => { setOpenD(open) }}>
+        {!!userinfo && userinfo.id === data.post.writer.userId
+          ? <BottomDrawerBody me={true} handleDelete={handleDelete} handleEdit={() => router.push(`/write?w=r&edit=${data.recruitment.recruitmentId}`)} />
+          : <BottomDrawerBody me={false} handleReport={() => { setOpenR(true); setOpenD(false); }} />
+        }
+      </BottomDrawer>
+      <ReportDialog open={openR} toggleOpen={(open) => { setOpenR(open) }} type={'recruitment'} target={data.recruitment.recruitmentId} />
     </>
   );
 }

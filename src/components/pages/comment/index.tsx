@@ -1,16 +1,18 @@
+import { createTheme } from "@mui/material";
 import { CommentBlock } from "./CommentBlock";
-import { CommentDrawer } from "./CommentDrawer";
+import { ReplyBlock } from "./ReplyBlock";
 import { RepliedComment } from './RepliedComment';
 import { Replies } from './Replies';
+import { CommentLikeButton } from "./CommentLikeButton";
 import { ModifyInput, ModifyInputR } from "./ModifyInput";
 import { CommentFooter } from "./CommentFooter";
 import { MemoizedReplyFooter } from "./ReplyFooter";
 import ScrollToTop from "./ScrollToTop";
-import { createTheme } from "@mui/material";
 
 export {
-  CommentBlock, CommentDrawer, 
+  CommentBlock, ReplyBlock,
   RepliedComment, Replies, 
+  CommentLikeButton,
   CommentFooter, MemoizedReplyFooter,
   ModifyInput, ModifyInputR,
   ScrollToTop,

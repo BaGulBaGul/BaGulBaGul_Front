@@ -3,13 +3,13 @@ import { useState } from 'react';
 import { originText, useDelete, useListWithPage } from '@/hooks/useInCommon';
 import useLoginInfo from '@/hooks/useLoginInfo';
 import { SubHeaderCnt } from '@/components/layout/subHeader';
-import { CommentMProps, CommentProps, BottomDrawer, AlertDialog, SkeletonComments, ListWrapper } from '@/components/common';
-import { CommentBlock, CommentFooter, ModifyInput } from '@/components/pages/comment';
+import { CommentMProps, CommentProps, AlertDialog, SkeletonComments, ListWrapper, ReportDialog, BottomDrawer, BottomDrawerBody } from '@/components/common';
+import { CommentBlock, CommentFooter, ModifyInput, CommentLikeButton } from '@/components/pages/comment';
 
-export function CommentsPage(props: { origin: 'event' | 'event/recruitment'; postId: any; }) {
-  // menu drawer
+export function CommentsPage({origin, postId}: { origin: 'event' | 'event/recruitment'; postId: any; }) {
+  // flag for bottom drawer, report dialog
   const [openD, setOpenD] = useState(false);
-  const toggleDrawer = (newOpen: boolean) => () => { setOpenD(newOpen); };
+  const [openR, setOpenR] = useState(false);
   // 수정창
   const [openM, setOpenM] = useState(false);
   const [targetM, setTargetM] = useState<CommentMProps | undefined>();
@@ -18,17 +18,26 @@ export function CommentsPage(props: { origin: 'event' | 'event/recruitment'; pos
 
   const userinfo = useLoginInfo().data
 
-  let apiURL = `/api/${props.origin}/${props.postId}/comment?sort=createdAt,desc&size=10`
-  let qKey = [originText(props.origin), props.postId, 'comments']
+  let apiURL = `/api/${origin}/${postId}/comment?sort=createdAt,desc&size=10`
+  let qKey = [originText(origin), postId, 'comments']
   const comments = useListWithPage(apiURL, qKey)
 
-  const mutateDelete = useDelete(`/api/${props.origin}/comment/${targetM?.commentId}`, qKey, '댓글')
+  const mutateDelete = useDelete(`/api/${origin}/comment/${targetM?.commentId}`, qKey, '댓글')
   const handleDelete = () => {
     let confirmDelete = confirm("댓글을 삭제하시겠습니까?");
-    if (targetM && confirmDelete) { mutateDelete.mutate() }
+    if (targetM && confirmDelete) { setOpenD(false); mutateDelete.mutate() }
   }
 
-  let postUrl = `/${originText(props.origin)}/${props.postId}`
+  const handleToggle = (e: React.MouseEvent<HTMLButtonElement>, value: any) => {
+    e.stopPropagation();
+    setOpenD(true)
+    setTargetM({
+      commentId: value.commentId ?? value.commentChildId, content: value.content, userId: value.userId,
+      replyTargetUserName: value.replyTargetUserName, opt: 'CMT'
+    })
+  }
+
+  let postUrl = `/${originText(origin)}/${postId}`
   return (
     <>
       <SubHeaderCnt name='글 댓글' cnt={!!comments.data ? comments.data.pages[0].totalElements : ''} url={postUrl} />
@@ -38,16 +47,22 @@ export function CommentsPage(props: { origin: 'event' | 'event/recruitment'; pos
           {comments.data?.pages.map((comment, i) => (
             comment.content.map((item: CommentProps, idx: number) => (
               <div key={`cmt-${idx}`} className={idx % 2 == 0 ? 'bg-p-white px-[16px] py-[12px]' : 'bg-gray1 px-[16px] py-[12px]'}>
-                <CommentBlock opt='CMT' data={item} setOpenD={setOpenD} setTargetM={setTargetM} origin={props.origin} />
+                <CommentBlock data={item} handleToggle={handleToggle}
+                  likeBtn={<CommentLikeButton data={item} apiURL={`/api/${origin}/comment/${item.commentId}/like`} />} />
               </div>
             ))
           ))}
         </ListWrapper>
       </div>
-      <CommentFooter url={`${props.origin}/${props.postId}`} qKey={qKey} isLogin={!!userinfo} setOpenA={setOpenA} />
-      <BottomDrawer open={openD} toggleDrawer={toggleDrawer} type='event' target={targetM?.commentId}
-        me={!!userinfo && !!targetM && userinfo.id === targetM.userId} handleDelete={handleDelete} handleEdit={() => setOpenM(true)} />
-      <ModifyInput open={openM} setOpenM={setOpenM} target={targetM} setTarget={setTargetM} origin={props.origin} qKey={qKey} />
+      <CommentFooter url={`${origin}/${postId}`} qKey={qKey} isLogin={!!userinfo} setOpenA={setOpenA} />
+      <BottomDrawer open={openD} toggleOpen={(open) => { setOpenD(open) }}>
+        {!!userinfo && !!targetM && userinfo.id === targetM.userId
+          ? <BottomDrawerBody me={true} handleDelete={handleDelete} handleEdit={() => { setOpenM(true); setOpenD(false); }} />
+          : <BottomDrawerBody me={false} handleReport={() => { setOpenR(true); setOpenD(false); }} />
+        }
+      </BottomDrawer>
+      <ReportDialog open={openR} toggleOpen={(open) => { setOpenR(open); }} type={'comment'} target={targetM?.commentId} />
+      <ModifyInput open={openM} setOpenM={setOpenM} target={targetM} setTarget={setTargetM} origin={origin} qKey={qKey} />
       <AlertDialog open={openA} setOpen={setOpenA} headerText='잠깐! 로그인이 필요해요' buttonText1='닫기' buttonText2='로그인 하러가기' buttonLink='/signin'>
         <p>함께 소통하려면 로그인해 주세요.</p>
         <p>금방 끝나요!</p>

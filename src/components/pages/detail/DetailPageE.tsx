@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import dayjs from 'dayjs';
+import { Button, ThemeProvider } from '@mui/material';
 import { typeString } from '@/service/Functions';
 import useLoginInfo from '@/hooks/useLoginInfo';
 import { useDeletePost, useDetailInfo } from '@/hooks/useInDetail';
-import { Divider, BottomDrawer, FooterButton, ImageSlide, SkeletonDetail } from '@/components/common';
-import { HashtagList } from '@/components/common/block';
-import { DetailInfoLine, DetailMap, DetailTitle, DetailTools, DetailWrapper } from '.';
+import { Divider, FooterButton, ImageSlide, ReportDialog, SkeletonDetail, BottomDrawer, BottomDrawerBody } from '@/components/common';
+import { DateLine, HashtagList, UserProfile } from '@/components/common/block';
+import { DetailInfoLine, DetailMap, DetailTools, DetailWrapper } from '.';
+import { VerticalMoreIcn, ViewIcn } from '@/components/common/styles/Icon';
+import { inputToggleTheme } from '@/components/common/styles/Themes';
 
 export function DetailPageE({ postId }: { postId: any; }) {
   const userinfo = useLoginInfo().data
@@ -17,8 +20,9 @@ export function DetailPageE({ postId }: { postId: any; }) {
   const mutateDelete = useDeletePost('event', postId)
   const handleDelete = () => { mutateDelete.mutate() }
 
+  // flag for bottom drawer, report dialog
   const [openD, setOpenD] = useState(false);
-  const toggleDrawer = (newOpen: boolean) => () => { setOpenD(newOpen); };
+  const [openR, setOpenR] = useState(false);
 
   if (isLoading) { return (<SkeletonDetail map={true} />) }
   if (status !== 'success' || !data) { return (<></>) }
@@ -28,10 +32,31 @@ export function DetailPageE({ postId }: { postId: any; }) {
       <>
         <DetailWrapper title={typeString[data.event.type as string]} wrapStyle={!isParty ? 'pb-[77px]' : ''}>
           <ImageSlide images={data.post.imageUrls} />
-          <DetailTitle title={data.post.title} toggleDrawer={toggleDrawer} startDate={data.event.startDate} endDate={data.event.endDate}
-            views={data.post.views} writer={data.post.writer} categories={data.event.categories} />
+          <div id="detail-title" className="flex flex-col gap-[4px] px-[16px] pt-[30px] pb-[20px]">
+            <div className="flex flex-row justify-between items-center">
+              <span className="text-18">{data.post.title}</span>
+              <button onClick={(e) => {setOpenD(true)}}><VerticalMoreIcn /></button>
+            </div>
+            <div className="flex flex-row justify-between items-center">
+              <DateLine startDate={data.event.startDate} endDate={data.event.endDate} />
+              <div className='flex flex-row text-14 text-gray3 items-center'>
+                <ViewIcn /><span className='ps-[4px]'>{data.post.views.toLocaleString("en-US")}</span>
+              </div>
+            </div>
+            <div className="flex flex-row justify-between items-center">
+              <UserProfile userId={data.post.writer.userId} userName={data.post.writer.userName} userProfileImageUrl={data.post.writer.userProfileImageUrl} color='gray3' />
+              {!!data.event.categories &&
+                <div className='flex flex-row gap-[8px]'>
+                  {data.event.categories.map((cate: any, idx: number) => (
+                    <ThemeProvider theme={inputToggleTheme}>
+                      <Button key={`cate-${idx}`}>{cate}</Button>
+                    </ThemeProvider>
+                  ))}
+                </div>}
+            </div>
+          </div>
           <Divider />
-          <div className='flex flex-col pt-[30px] gap-[6px]' id='detail-info'>
+          <div id='detail-info' className='flex flex-col pt-[30px] gap-[6px]'>
             <DetailInfoLine title='시작일시' value={!!data.event.startDate ? dayjs(data.event.startDate).format('YY.MM.DD(dd)   HH:mm') : '-'} />
             <DetailInfoLine title='종료일시' value={!!data.event.endDate ? dayjs(data.event.endDate).format('YY.MM.DD(dd)   HH:mm') : '-'} />
             <DetailInfoLine title='참여인원' value={`${data.event.maxHeadCount ?? '-'}명`}>
@@ -49,10 +74,14 @@ export function DetailPageE({ postId }: { postId: any; }) {
           </div>}
           <DetailTools origin={'event'} postId={postId} userinfo={userinfo} commentCount={data.post.commentCount ?? 0} likeCount={data.post.likeCount ?? 0} />
         </DetailWrapper>
+        <BottomDrawer open={openD} toggleOpen={(open) => { setOpenD(open) }}>
+          {isParty && !!userinfo && userinfo.id === data.post.writer.userId
+            ? <BottomDrawerBody me={true} handleDelete={handleDelete} handleEdit={!isParty ? undefined : () => router.push(`/write?w=p&edit=${data.event.eventId}`)} />
+            : <BottomDrawerBody me={false} handleReport={() => { setOpenR(true); setOpenD(false); }} />
+          }
+        </BottomDrawer>
+        <ReportDialog open={openR} toggleOpen={(open) => { setOpenR(open) }} type={'event'} target={data.event.eventId} />
         {!isParty && <FooterButton text={"모집글 보러가기"} path={`/event/${data.event.eventId}/recruitment`} />}
-        <BottomDrawer open={openD} toggleDrawer={toggleDrawer} type='event' target={data.event.eventId}
-          me={isParty && !!userinfo && userinfo.id === data.post.writer.userId} handleDelete={handleDelete}
-          handleEdit={!isParty ? undefined : () => router.push(`/write?w=p&edit=${data.event.eventId}`)} />
       </>
     );
   }

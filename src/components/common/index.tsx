@@ -9,11 +9,11 @@ import { LogoutButton } from "./button/LogoutButton";
 import MoreButton from "./button/MoreButton";
 import { WriteFab } from "./button/WriteFab";
 import { AlertDialog } from "./display/AlertDialog";
-import { BottomDrawer } from "./display/BottomDrawer";
+import { BottomDrawer, BottomDrawerBody } from "./display/BottomDrawer";
 import { FullscreenDialog } from "./display/FullscreenDialog";
 import { ImageSlide } from "./display/ImageSlide";
 import { ImagePreview } from "./display/ImagePreview";
-import { DialogFull } from "./display/_DialogFull";
+import { DialogFull, DialogHeader } from "./display/_DialogFull";
 import { RecCarousel } from "./display/RecCarousel";
 import { ReportDialog } from "./report/ReportDialog";
 import { ReportRadios } from "./report/ReportRadios";
@@ -30,7 +30,7 @@ export {
   // button
   AlarmButton, ArrowPrev, ArrowNext, EditButton, ExpandButton, FooterButton, LogoutButton, MoreButton, WriteFab,
   // display
-  AlertDialog, BottomDrawer, FullscreenDialog, ImageSlide, ImagePreview, DialogFull, RecCarousel,
+  AlertDialog, BottomDrawer, BottomDrawerBody, FullscreenDialog, ImageSlide, ImagePreview, DialogFull, DialogHeader, RecCarousel,
   // nav
   TypeTabs, TypeSwitch,
   // report

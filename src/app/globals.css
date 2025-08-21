@@ -36,6 +36,15 @@ em {
   -webkit-transform: translateX(-50%);
 }
 
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1300;
+  background-color: #1E1E1E;
+  opacity: 0.8;
+  transition: opacity 150ms cubic-bezier(0.45, 1.005, 0, 1.005);
+}
+
 .header-nav {
   inset-inline: 0;
   display: flex;
