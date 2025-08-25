@@ -29,20 +29,28 @@ export function PostManagePage({ opt }: { opt: 'post' | 'deleted-post' }) {
 	const [value, setValue] = useState(0);
 	const [view, setView] = useState<'EVT' | 'RCT'>('EVT');
 	const [selectedCate, setSelectedCate] = useState<string[]>([]);
+	const [selectedItems, setSelectedItems] = useState<string[]>([]);
+	const handleSelected = (value: any[], e: Event) => { setSelectedItems(value); }
 
 	const handleChange = (value: any, e: Event | undefined) => {
 		setValue(value);
 		if (view !== 'EVT') { setView('EVT'); }
+		if (!!selecting) {
+			setSelectedItems([])
+			setSelecting(false)
+		}
 	};
 	const handleView = (groupValue: any[], event: Event) => {
 		if (groupValue.length === 0 || groupValue[0] === view) { return; }
 		setView(groupValue[0]);
+		if (!!selecting) {
+			setSelectedItems([])
+			setSelecting(false)
+		}
 	}
 
-	let apiURL = `/api/event${view === 'EVT' ? '' : '/recruitment'}?size=10&categories=${selectedCate}&type=${tabList[value]}${title.length === 0 ? '' : '&title=' + title}`
-	console.log(apiURL)
+	let apiURL = `/api/event${view === 'EVT' ? (`?&categories=${selectedCate}&type=${tabList[value]}`) : '/recruitment?'}${title.length === 0 ? '' : '&title=' + decodeURIComponent(decodeURIComponent(title))}&size=10`
 	const events = useListWithPageE(apiURL, ['events', { 'title': title, categories: selectedCate, type: tabList[value] }, view], true)
-
 	return (
 		<>
 			<SubTopHeader name={optString.title[opt]} child={<EditButton editing={selecting} handleEdit={() => setSelecting(!selecting)} text1="선택" text2="완료" />} />
@@ -55,10 +63,10 @@ export function PostManagePage({ opt }: { opt: 'post' | 'deleted-post' }) {
 				<TypeTabs val={value} handleChange={handleChange}>
 					{value < 2 && <TypeSwitch type={view} handleChange={handleView} />}
 				</TypeTabs>
-				<CategoryButtons selectedCate={selectedCate} setSelectedCate={setSelectedCate} />
+				{opt ==='post' && view === 'EVT' && <CategoryButtons selectedCate={selectedCate} setSelectedCate={setSelectedCate} />}
 			</div>
-			<div className="mt-[220px]">
-				<PostList opt={view} events={events} editing={selecting} handleSelected={() => { }} />
+			<div className={(opt ==='post' && view === 'EVT' ? "mt-[220px]" : "mt-[174px]") + (selecting ? ' mb-[77px]' : '')}>
+				<PostList opt={view} events={events} editing={selecting} selectedItems={selectedItems} handleSelected={handleSelected} />
 			</div>
 			{selecting && <FooterButton text={optString.action[opt]} />}
 		</>

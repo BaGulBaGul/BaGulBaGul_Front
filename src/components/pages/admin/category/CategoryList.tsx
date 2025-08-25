@@ -25,7 +25,7 @@ function Item({ name, editing, selected }: ItemProps) {
     <DndItem sortable={sortable}>
       <Toggle value={name} className="flex flex-row justify-between w-screen text-14 p-[16px] bg-p-white">
         <div className="flex flex-row gap-[16px] items-center">
-          {!editing? <></> : <span className="p-[3px]"><CheckIcn val={selected} /></span>}
+          {!!editing && <span className="p-[3px]"><CheckIcn val={selected} /></span>}
           {name}
         </div>
         <DndHandler sortable={sortable} />

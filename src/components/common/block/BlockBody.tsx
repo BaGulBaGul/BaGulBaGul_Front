@@ -9,7 +9,7 @@ interface Props {
 export function BlockBodyAD({ title, startDate, endDate, writer, head, address }: Props & { address: string; }) {
   return (
     <div className="flex flex-col justify-between">
-      <div className="flex flex-col gap-[4px] max-w-[calc(100vw-32px)]">
+      <div className="flex flex-col gap-[4px] max-w-[calc(100vw-32px)] items-start">
         <p className='text-16 font-semibold truncate'>{title}</p>
         <p className="text-14 text-gray3">{address}</p>
         <DateLine startDate={startDate} endDate={endDate} />
@@ -38,7 +38,7 @@ export function BlockBodyD({ title, startDate, endDate, writer, head }: Props) {
 export function BlockBodyCal({ title, startDate, endDate, writer, head, type, address }: Props & { type: string; address?: string; }) {
   return (
     <div className="flex flex-col justify-between">
-      <div className="flex flex-col gap-[4px]">
+      <div className="flex flex-col gap-[4px] items-start">
         <TypeChip type={type} />
         <p className='text-16 font-semibold truncate'>{title}</p>
         <div className='flex flex-row items-center gap-[4px]'>
@@ -56,7 +56,7 @@ export function BlockBodyCal({ title, startDate, endDate, writer, head, type, ad
 
 export function BlockBodyN({ title, startDate, endDate, name }: Props & { name: string; }) {
   return (
-    <div className="flex flex-col gap-[4px]">
+    <div className="flex flex-col gap-[4px] items-start">
       <DateLine startDate={startDate} endDate={endDate} />
       <p className='text-16 font-semibold truncate'>{title}</p>
       <p className="text-14 text-gray3">{name}</p>
