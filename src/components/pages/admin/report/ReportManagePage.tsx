@@ -1,11 +1,12 @@
 "use client";
 import { useState } from 'react';
-import { Collapse } from '@mui/material';
 import { FormatDateRange } from "@/service/Functions"
-import { ReportedPosts,ReportedComments } from './_TmpData';
-import { TrashIcn } from "@/components/common/styles/Icon"
+import { ReportedPosts, ReportedComments } from '../_TmpData';
 import { TypeChip, UserProfile } from '@/components/common/block';
 import { ExpandButton } from '@/components/common';
+import { ReportCard } from './ReportCard';
+import { ReportTool } from './ReportTool';
+import { Collapse } from '@mui/material';
 
 // * 다중 신고 시 UI 처리 추가 필요
 export function ReportManagePage(props: { opt: 'POST' | 'CMT' }) {
@@ -41,7 +42,6 @@ const handleDelete = () => {
 export function ReportedBlock(props: { data: any }) {
   const [expanded, setExpanded] = useState(false);
   const handleExpandClick = () => { setExpanded(!expanded); }
-  console.log('expanded', expanded)
   return (
     <div className="flex flex-col bg-p-white">
       <div className="flex flex-row justify-between p-[16px] pb-[10px]">
@@ -50,36 +50,16 @@ export function ReportedBlock(props: { data: any }) {
           <p className="text-16 font-semibold">{props.data.title}</p>
           <div className="flex flex-row gap-[8px]">
             <UserProfile userId={props.data.userId} userName={props.data.username} userProfileImageUrl={props.data.userProfileImageUrl} />
+            {/* 신고일 */}
             <p className="text-14 text-gray3">{FormatDateRange(props.data.startDate, props.data.endDate)}</p>
           </div>
         </div>
-        <div className="flex flex-col justify-between">
-          <button onClick={handleDelete}><TrashIcn btn={true} /></button>
-          <ExpandButton handleExpandClick={handleExpandClick} expanded={expanded} />
-        </div>
+        <ExpandButton handleExpandClick={handleExpandClick} expanded={expanded} />
       </div>
-      <ReportCard expanded={expanded} data={props.data} />
-    </div>
-  )
-}
-
-function ReportCard(props: { expanded: boolean; data: any }) {
-  return (
-    <Collapse in={props.expanded} timeout="auto">
-        <div className='flex flex-col mx-[16px] my-[10px] bg-gray1 rounded-[8px] p-[8px] gap-[4px]'>
-          <div className='flex flex-row gap-[8px] text-12'>
-            <p className='font-medium text-gray3'>신고한 회원</p>
-            <p className='text-black'>{props.data.reporter}</p>
-          </div>
-          <div className='flex flex-row gap-[8px] text-12'>
-            <p className='font-medium text-gray3'>신고 일시</p>
-            <p className='text-black'>{props.data.reportedAt}</p>
-          </div>
-          <div className='flex flex-row gap-[8px] text-12'>
-            <p className='font-medium text-gray3'>신고 내용</p>
-            <p className='text-black'>{props.data.reportedReason}</p>
-          </div>
-        </div>
+      <Collapse in={expanded} timeout="auto" className='px-[16px] py-[10px]'>
+        <ReportCard data={props.data} />
+        <ReportTool />
       </Collapse>
+    </div>
   )
 }

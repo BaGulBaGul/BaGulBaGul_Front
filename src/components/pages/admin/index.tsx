@@ -9,7 +9,7 @@ import { CategoryList } from "./category/CategoryList";
 import { CategoryPage } from "./category/CategoryPage";
 import { PostManagePage } from "./post/PostManagePage";
 import { PostList } from "./post/PostList";
-import { ReportManagePage } from "./ReportManagePage";
+import { ReportManagePage } from "./report/ReportManagePage";
 import { UserManagePage } from "./UserManagePage";
 import { BannerCardPage } from "./banner/_BannerCardPage";
 
