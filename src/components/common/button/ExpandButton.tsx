@@ -2,11 +2,9 @@
 
 export function ExpandButton({handleExpandClick, expanded}: { handleExpandClick: any; expanded: boolean; }) {
 	return (
-		<div className='content-start'>
-			<button onClick={handleExpandClick} className={`transition-transform ${expanded ? 'rotate-180' : ''}`}>
+			<button onClick={handleExpandClick} className={`transition-transform align-middle ${expanded ? 'rotate-180' : ''}`}>
 				<ArrowDownIcn />
 			</button>
-		</div>
 	)
 }
 

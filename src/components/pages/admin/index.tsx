@@ -10,8 +10,10 @@ import { CategoryPage } from "./category/CategoryPage";
 import { PostManagePage } from "./post/PostManagePage";
 import { PostList } from "./post/PostList";
 import { ReportManagePage } from "./report/ReportManagePage";
-import { UserManagePage } from "./UserManagePage";
 import { BannerCardPage } from "./banner/_BannerCardPage";
+import { UserManagePage } from "./user/UserManagePage";
+import { UserTable } from "./user/UserTable";
+import { UserTableExpanded } from "./user/UserTableExpanded";
 
 export {
   AdminPage, 
@@ -19,7 +21,7 @@ export {
   CategoryPage, CategoryList,
   PostManagePage, PostList,
   ReportManagePage, 
-  UserManagePage,
+  UserManagePage, UserTable, UserTableExpanded,
   DndItem, DndHandler, DndWrapper,
 }
 

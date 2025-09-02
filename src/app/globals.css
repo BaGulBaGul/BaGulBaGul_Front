@@ -590,3 +590,83 @@ h2.react-datepicker__current-month {
   user-select: none;
   background-color: white;
 }
+
+
+
+/* ---------------------- */
+/* ----tanstack table---- */
+/* ---------------------- */
+table,
+.divTable {
+  width: fit-content;
+  min-width: 100%;
+}
+
+.tr {
+  display: flex;
+}
+
+tr,
+.tr {
+  width: 100%;
+  font-size: 14px;
+  line-height: 160%;
+}
+
+.tbody .tr {
+  width: 100%;
+}
+
+.tr-expanded {
+  height: fit-content;
+  padding-bottom: 16px;
+}
+
+.td-expanded {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+th,
+.th {
+  position: relative;
+  height: 54px;
+  padding: 16px 2px;
+}
+
+td,
+.td {
+  height: 56px;
+  padding: 16px 2px 18px 2px;
+}
+
+th,
+.th,
+td,
+.td {
+  text-align: center;
+}
+
+.resizer {
+  position: absolute;
+  top: 28%;
+  right: -4px;
+  width: 9px;
+  user-select: none;
+  touch-action: none;
+}
+
+.resizer-pointer {
+  width: 1px;
+  height: 16px;
+  margin: 4px;
+  background: #C1C1C1;
+  opacity: 1;
+}
+
+.resizer-pointer:hover,
+.resizer-pointer.isResizing {
+  background: #6C6C6C;
+  opacity: 1;
+}
