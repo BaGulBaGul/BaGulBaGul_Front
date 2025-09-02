@@ -21,7 +21,7 @@ export function DndHandler({ sortable }: { sortable: any }) {
 }
 
 const DragHandlerIcn = () => (
-  <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M5.67773 8.07617H19.6777" stroke="#C1C1C1" stroke-linecap="round" />
     <path d="M5.67773 12.0762H19.6777" stroke="#C1C1C1" stroke-linecap="round" />
     <path d="M5.67773 16.0762H19.6777" stroke="#C1C1C1" stroke-linecap="round" />

@@ -2,16 +2,17 @@
 import { ReactNode } from 'react';
 import { Dialog } from '@base-ui-components/react';
 import { useSortable } from '@dnd-kit/sortable';
-import { DndHandler, DndItem,BannerInfo, BannerData  } from '..';
+import { DndHandler, DndItem, BannerInfo } from '..';
 import { DialogFull, DialogHeader } from '@/components/common';
+import { ArrowDownIcn, TrashIcn } from '@/components/common/styles/Icon';
 
-export function BannerCardItem({ item, children }: {item: BannerInfo; children: ReactNode}) {
+export function BannerCardItem({ item, children, handleDelete }: { item: BannerInfo; children: ReactNode, handleDelete: (e: any, id: string) => void }) {
   const sortable = useSortable({ id: item.id });
   return (
     <DndItem sortable={sortable}>
       <div className="flex flex-row justify-between gap-[8px] w-screen text-14 p-[16px] bg-p-white">
         <DndHandler sortable={sortable} />
-        <DialogFull footerText='저장하기' trigger={<BannerCardTrigger data={item.data} />}>
+        <DialogFull footerText='저장하기' trigger={<BannerCardTrigger item={item} handleDelete={handleDelete} />}>
           <DialogHeader headerText='카드 추가하기' />
           {children}
         </DialogFull>
@@ -20,13 +21,17 @@ export function BannerCardItem({ item, children }: {item: BannerInfo; children: 
   );
 };
 
-function BannerCardTrigger({ data }: { data?: BannerData }) {
+function BannerCardTrigger({ item, handleDelete }: { item: BannerInfo; handleDelete: (e: any, id: string) => void }) {
+  let data = item.data;
   return (
     <Dialog.Trigger className="flex flex-row justify-between w-full gap-[8px]">
       <p className={"w-full text-left " + (!!data ? "text-black" : "text-gray2")}>
         {data ? data.title : '카드 추가하기'}
       </p>
-      <img src='/arrow_next.svg' className="p-[4px] w-[24px] h-[24px]" />
+      <div className='flex flex-row gap-[4px]'>
+        {!!data && <button onClick={(e) => handleDelete(e, item.id)}><TrashIcn /></button>}
+        <span className='-rotate-90'><ArrowDownIcn /></span>
+      </div>
     </Dialog.Trigger>
   )
 }

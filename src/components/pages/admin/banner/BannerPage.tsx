@@ -21,6 +21,11 @@ export function BannerPage() {
 	// * 배너 등록 API 추가 적용 필요
 	const handleSubmit = () => { }
 
+	const handleDelete = (e: any, id: string) => {
+		e.stopPropagation();
+		setCardData(cardData.map((item) => item.id === id ? { ...item, data: undefined } : item));
+	}
+
 	//   if (!!props.edit && (!!prev && !prev.isSuccess)) { return (<SkeletonWrite opt='r' />) }
 	return (
 		<div className="w-full mt-[60px] mb-[77px]">
@@ -32,7 +37,7 @@ export function BannerPage() {
 			<Divider color='gray2' />
 			<DndWrapper id="banner-card-list" items={cardData} updateItems={(newData: BannerInfo[]) => setCardData(newData)}>
 				{cardData.map(item => (
-					<BannerCardItem key={`banner-${item.id}`} item={item}>
+					<BannerCardItem key={`banner-${item.id}`} item={item} handleDelete={handleDelete}>
 						<BannerCardPage cardData={item} updateCard={updateItemValue} />
 					</BannerCardItem>
 				))}
