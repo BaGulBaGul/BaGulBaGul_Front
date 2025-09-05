@@ -3,7 +3,7 @@ import { useState, useEffect, ChangeEvent } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import dayjs from 'dayjs';
 import { FormatDateRange, getParams, headCountString, useEffectCntFilter } from '@/service/Functions';
-import { RecCarousel, TypeTabs } from '@/components/common';
+import { TypeTabs, EventCarousel } from '@/components/common';
 import { FilterButton, FilterApplied, FilterDialog, closeFilter, handleObjectValue, FilterSortRadio, FilterCalendar } from '@/components/common/filter';
 import { CategoryButtons, InputCheck, InputCollapse, InputNumber, InputNumberRange } from '@/components/common/input';
 
@@ -54,7 +54,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
   const defaultTitle = "SUMMER\n페스티벌 추천"
   return (
     <div className='flex flex-col w-full pt-[44px]'>
-      <RecCarousel title={defaultTitle} />
+      <EventCarousel title={defaultTitle} />
       <div className='w-full px-0'>
         <TypeTabs val={tab} handleChange={handleChange} wrapStyle='sticky relative top-[44px] pt-[20px]'>
           <FilterButton handleOpen={handleOpen} cnt={filterCnt} fs={18} />

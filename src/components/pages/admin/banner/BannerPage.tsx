@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Divider, FooterButton, ImagePreview, RecCarousel } from "@/components/common";
+import { Divider, FooterButton, ImagePreview, EventCarousel } from "@/components/common";
 import { ImageUploader } from "@/components/common/input";
 import { BannerTitleInput, BannerCardItem, DndWrapper, BannerCardPage, BannerInfo } from "..";
 
@@ -12,7 +12,7 @@ export function BannerPage() {
 
 	let evt1 = {
 		"title": "이벤트1", "headImageUrl": "/banner1.png", "headImageKey": 1,
-		"linkedEvent": { "url": "/event/1", "eventId": 1, "headImageUrl": null, "title": "이벤트1", "startDate": "2023-07-01", "endDate": "2023-07-31" }
+		"linkedEvent": { "url": "/event/1", "eventId": 1, "headImageUrl": null, "headImageKey": undefined, "title": "이벤트1", "startDate": "2023-07-01", "endDate": "2023-07-31" }
 	};
 	const [cardData, setCardData] = useState<BannerInfo[]>([{ id: '1', data: undefined }, { id: '2', data: evt1 }, { id: '3', data: undefined }, { id: '4', data: undefined }, { id: '5', data: undefined }]);
 	const updateItemValue = (targetId: string, newValue: any) => {
@@ -45,7 +45,7 @@ export function BannerPage() {
 			<Divider color='gray2' />
 			<div className="flex flex-col pt-[10px] pb-[20px] gap-[20px] bg-p-white">
 				<p className="px-[16px] text-14 font-semibold">미리보기</p>
-				<RecCarousel title={title} data={cardData.map(item => item.data)} bgImage={backImage} />
+				<EventCarousel title={title} data={cardData.map(item => item.data)} bgImage={backImage} />
 			</div>
 			<FooterButton text="배너 제작하기" handleClick={handleSubmit} />
 		</div>

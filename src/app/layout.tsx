@@ -1,7 +1,5 @@
 import './globals.css'
 import './animation.css'
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import type { Viewport } from 'next'
 import ReactQueryProviders from '@/hooks/useReactQuery';
 

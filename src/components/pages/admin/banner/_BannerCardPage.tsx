@@ -1,9 +1,8 @@
 'use client';
 import { useRef, useState } from "react";
 import { SearchBox, SearchBoxTrigger, TitleInput, Write } from "../../write";
-import { DialogFull, Divider, ImagePreview } from "@/components/common";
+import { DialogFull, Divider, ImagePreview, CarouselBlock } from "@/components/common";
 import { ImageUploader } from "@/components/common/input";
-import { RecPost } from "../../../common/display/RecCarousel";
 import { BannerInfo, BannerLinkedEventData, LinkedEventPage } from "..";
 
 export function BannerCardPage({ cardData, updateCard }: { cardData: BannerInfo; updateCard: (targetId: string, newValue: any) => void }) {
@@ -18,7 +17,7 @@ export function BannerCardPage({ cardData, updateCard }: { cardData: BannerInfo;
 	const handleSubmit = () => {
 		if (!titleRef.current || titleRef.current.value.length <= 0) { alert('제목을 꼭 입력해주세요.') }
 		updateCard(cardData.id,
-			{ title: titleRef.current.value, headImageUrl: image, headImageKey: imageKey, linkedEvent: { ...targetEvent } }
+			{ title: titleRef.current.value, headImageUrl: image ?? targetEvent?.headImageUrl, headImageKey: imageKey ?? targetEvent?.headImageKey, linkedEvent: { ...targetEvent } }
 		)
 	}
 	return (
@@ -39,8 +38,9 @@ export function BannerCardPage({ cardData, updateCard }: { cardData: BannerInfo;
 			<div className="flex flex-col pt-[10px] pb-[20px] gap-[20px] bg-p-white">
 				<p className="px-[16px] text-14 font-semibold">미리보기</p>
 				<div className="flex flex-row justify-center">
-					<RecPost headImageUrl={image ?? (targetEvent?.headImageUrl ?? '/default_list_thumb3x.png')} title={titleRef.current ? titleRef.current.value : '-'}
-						startDate={targetEvent?.startDate} endDate={targetEvent?.endDate} />
+					<div className="w-[40%]">
+						<CarouselBlock post={{ title: titleRef.current?.value, headImageUrl: image ?? targetEvent?.headImageUrl, startDate: targetEvent?.startDate, endDate: targetEvent?.endDate }} />
+					</div>
 				</div>
 			</div>
 		</Write>

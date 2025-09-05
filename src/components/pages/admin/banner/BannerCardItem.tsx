@@ -12,7 +12,7 @@ export function BannerCardItem({ item, children, handleDelete }: { item: BannerI
     <DndItem sortable={sortable}>
       <div className="flex flex-row justify-between gap-[8px] w-screen text-14 p-[16px] bg-p-white">
         <DndHandler sortable={sortable} />
-        <DialogFull footerText='저장하기' trigger={<BannerCardTrigger item={item} handleDelete={handleDelete} />}>
+        <DialogFull trigger={<BannerCardTrigger item={item} handleDelete={handleDelete} />}>
           <DialogHeader headerText='카드 추가하기' />
           {children}
         </DialogFull>

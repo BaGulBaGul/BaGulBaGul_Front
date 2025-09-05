@@ -14,7 +14,7 @@ import { FullscreenDialog } from "./display/FullscreenDialog";
 import { ImageSlide } from "./display/ImageSlide";
 import { ImagePreview } from "./display/ImagePreview";
 import { DialogFull, DialogHeader } from "./display/_DialogFull";
-import { RecCarousel } from "./display/RecCarousel";
+import { EventCarousel, CarouselBlock } from "./display/EventCarousel";
 import { ReportDialog } from "./report/ReportDialog";
 import { ReportRadios } from "./report/ReportRadios";
 import { SkeletonCarousel } from "./loading/SkeletonCarousel";
@@ -30,7 +30,7 @@ export {
   // button
   AlarmButton, ArrowPrev, ArrowNext, EditButton, ExpandButton, FooterButton, LogoutButton, MoreButton, WriteFab,
   // display
-  AlertDialog, BottomDrawer, BottomDrawerBody, FullscreenDialog, ImageSlide, ImagePreview, DialogFull, DialogHeader, RecCarousel,
+  AlertDialog, BottomDrawer, BottomDrawerBody, FullscreenDialog, ImageSlide, ImagePreview, DialogFull, DialogHeader, EventCarousel, CarouselBlock,
   // nav
   TypeTabs, TypeSwitch,
   // report

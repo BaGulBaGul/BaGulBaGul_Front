@@ -1,6 +1,8 @@
 "use client";
 import { ReactNode, useState } from "react";
-import Slider from "react-slick";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation } from 'swiper/modules';
+import 'swiper/css';
 import { TrashIcn } from "../styles/Icon";
 import { ArrowNext, ArrowPrev } from "..";
 
@@ -20,10 +22,9 @@ export function ImageSlide(props: ImageSlideProps) {
       }
     }
   }
-  const settings = {
-    className: "center", infinite: true, slidesToShow: 1, slidesToScroll: 1,
-    nextArrow: <ArrowNext cN='slick-next-detail' />, prevArrow: <ArrowPrev cN='slick-prev-detail' />,
-    beforeChange: (current: any, next: any) => { setIndex(next); },
+  const swiperOptions = {
+    loop: true, navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+    onActiveIndexChange: (e: any) => setIndex(e.realIndex), modules: [Navigation]
   }
   if (props.images.length === 0) {
     return props.default ?? (<img className='h-[280px] object-cover' src='/default_detail_thumb3x.png' />)
@@ -34,11 +35,17 @@ export function ImageSlide(props: ImageSlideProps) {
         <span className="slide-chip">{`${index + 1}/${props.images.length}`}</span>
         {!!props.editable && <button onClick={handleDelete}><TrashIcn btn={true} /></button>}
       </div>
-      <Slider {...settings} className='h-[280px] bg-gray1 slider-detail'>
-        {props.images.map((image, idx) => (
-          <img key={`img-{idx}`} src={image} height="280" className='h-[280px] object-cover' />
-        ))}
-      </Slider>
+      <div className="h-[280px] w-full relative">
+        <Swiper  {...swiperOptions}>
+          {props.images.map((image: any, idx: number) =>
+            <SwiperSlide>
+              <img key={`img-{idx}`} src={image} height="280" className='h-[280px] object-cover' />
+            </SwiperSlide>
+          )}
+          <div className="swiper-button-prev"><ArrowPrev /></div>
+          <div className="swiper-button-next rotate-180"><ArrowNext /></div>
+        </Swiper>
+      </div>
     </div>
   )
 }
