@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import dayjs from "dayjs";
-import { VerticalMoreIcn } from "@/components/common/styles/Icon";
+import { IconMore } from "@/components/common/styles/Icon";
 import { CommentProps } from "@/components/common";
 import { UserProfile } from "@/components/common/block";
 
@@ -12,9 +12,9 @@ export function CommentBlock({ data, disabled, handleToggle, likeBtn }: Props) {
   const router = useRouter()
   return (
     <>
-      <div className='flex flex-row justify-between pb-[10px]' id='comment-head'>
+      <div className='flex flex-row justify-between pb-[10px] text-black' id='comment-head'>
         <UserProfile userId={data.userId} userName={data.username} userProfileImageUrl={data.userProfileImageUrl} gap='8px' />
-        <button onClick={(e) => handleToggle(e, data)}><VerticalMoreIcn /></button>
+        <button onClick={(e) => handleToggle(e, data)}><IconMore /></button>
       </div>
       <div className='text-14 text-gray3 pb-[6px]' id='comment-body'>{data.content}</div>
       <div className='flex flex-row text-12 text-gray3 pb-[8px]' id='comment-datetime'>

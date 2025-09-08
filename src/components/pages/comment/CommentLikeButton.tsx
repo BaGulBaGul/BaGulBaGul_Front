@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
-import { Checkbox } from "@mui/material";
 import { applyLike } from "@/service/Functions";
-import { CmtLikeIcn } from "@/components/common/styles/Icon";
+import { IconSmile } from "@/components/common/styles/Icon";
 import { CommentProps } from "@/components/common";
 
 export function CommentLikeButton({ data, apiURL }: { data: CommentProps; apiURL: string; }) {
@@ -14,9 +13,9 @@ export function CommentLikeButton({ data, apiURL }: { data: CommentProps; apiURL
 
   return (
     <div className='flex flex-row items-center gap-[2px]' id='comment-likes'>
-      <Checkbox icon={<CmtLikeIcn val={false} />} checkedIcon={<CmtLikeIcn val={true} />} checked={liked}
-        onChange={() => applyLike(true, liked, apiURL, setLiked, setLikeCount)}
-        disableRipple className='p-0' />
+      <button className="h-[24px] w-[24px]" onClick={() => applyLike(true, liked, apiURL, setLiked, setLikeCount)}>
+        <IconSmile checked={liked} />
+      </button>
       {likeCount > 0 ? <p className='text-12 text-gray3'>{likeCount}</p> : <></>}
     </div>
   )

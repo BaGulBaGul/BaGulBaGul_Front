@@ -1,8 +1,8 @@
 'use client';
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { closeFilter, FilterApplied, FilterButton, FilterCalendar, FilterDialog, FilterSortRadio } from "@/components/common/filter";
 import { InputCollapse, SearchInput } from "@/components/common/input";
-import { MagnifyingIcn } from "@/components/common/styles/Icon";
+import { IconSearchS } from "@/components/common/styles/Icon";
 import { FormatDateRange } from "@/service/Functions";
 import { UserTable } from "..";
 import { User } from "./UserTableConfig";
@@ -59,7 +59,7 @@ export function UserManagePage() {
       <div className='fixed w-full flex flex-col top-[60px] bg-p-white z-30'>
         <div className='flex flex-row items-center mx-[16px] my-[18px] gap-[16px]'>
           <SearchInput placeholder='검색' inputRef={inputRef}>
-            <button onClick={handleSearch}><MagnifyingIcn size={20} /></button>
+            <button onClick={handleSearch}><IconSearchS /></button>
           </SearchInput>
           <FilterButton handleOpen={handleOpen} cnt={filterCnt} fs={18} />
         </div>
@@ -69,7 +69,7 @@ export function UserManagePage() {
         <UserTable defaultData={defaultData}/>
       </div>
       <FilterDialog open={open} handleClose={() => { closeFilter(setOpen); }} title='유저관리 상세필터' >
-        <FilterSortRadio value={sort} handleChange={(e: ChangeEvent<HTMLInputElement>, newSort: string) => { setSort(newSort) }} />
+        <FilterSortRadio value={sort} handleChange={(newSort: string) => { setSort(newSort) }} />
         <InputCollapse title={'가입일자'} type='CAL' value={!joinedDate ? '' : FormatDateRange(joinedDate, null)}>
           <FilterCalendar startDate={joinedDate} endDate={undefined} onChange={(date: any) => { setJoinedDate(date) }} range={false} />
         </InputCollapse>

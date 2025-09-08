@@ -2,7 +2,7 @@
 import { useRef, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { call } from '@/service/ApiService';
-import { HeaderBackIcn } from '@/components/common/styles/Icon';
+import { IconArrowBack } from '@/components/common/styles/Icon';
 import { InfoInput } from '@/components/common/input';
 import { JoinFooter } from '@/components/pages/join'
 
@@ -62,7 +62,7 @@ export default function Page() {
   return (
     <>
       <header className="fixed top-0 left-0 right-0 flex flex-row w-full justify-between h-[60px] px-[17px] py-[15.5px] bg-p-white">
-        <button onClick={handlePrev}><HeaderBackIcn /></button>
+        <button onClick={handlePrev}><IconArrowBack /></button>
       </header>
       <div className='flex flex-col w-full mt-[60px]'>
         <div className='flex flex-col items-center pt-[41.42px] gap-[4px] pointer-events-none' id='join-head'>

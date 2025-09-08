@@ -2,7 +2,7 @@
 import React, { Fragment } from "react";
 import { ThemeProvider, Dialog, AppBar, Toolbar, createTheme } from "@mui/material";
 import { Divider, FooterButton } from "@/components/common";
-import { HeaderBackIcn } from "@/components/common/styles/Icon";
+import { IconArrowBack } from "../styles/Icon";
 
 interface FullscreenDialogProps {
   child: React.JSX.Element; open: boolean; handleClose: any; handleDone: any; headerText: string; footerText: string;
@@ -16,7 +16,7 @@ export const FullscreenDialog = (props: FullscreenDialogProps) => {
           PaperProps={props.bg ? { style: { backgroundColor: props.bg } } : undefined} >
           <AppBar>
             <Toolbar>
-              <button onClick={props.handleClose} ><HeaderBackIcn /></button>
+              <button onClick={props.handleClose} ><IconArrowBack /></button>
               <p>{props.headerText}</p>
               <p className='w-[24px] h-[24px]'></p>
             </Toolbar>

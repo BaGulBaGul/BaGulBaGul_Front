@@ -2,7 +2,7 @@
 import { CalProps, Divider, SkeletonList } from '@/components/common';
 import { NoData, BlockWrapper, BlockBodyCal } from '@/components/common/block';
 import { Toggle, ToggleGroup } from '@base-ui-components/react';
-import { CheckIcn } from '@/components/common/styles/Icon';
+import { IconCheck } from '@/components/common/styles/Icon';
 
 interface Props {
   eventsLoading: boolean, focusDay: Date; editing: boolean; focusEvents: any
@@ -39,7 +39,7 @@ function CalendarBlockE({ data, editing, selected }: { data: CalProps; editing: 
   return (
     <Toggle value={data.eventId?.toString()} className='w-full'>
       <BlockWrapper url={`/event/${data.eventId}`} wrapStyle='p-[16px] gap-[18px]'
-        blockAction={!!editing && <span className="p-[3px]"><CheckIcn val={selected} /></span>}
+        blockAction={!!editing && <span className="p-[3px]"><IconCheck checked={selected} /></span>}
         blockThumb={<img className='rounded-[4px] w-[92px] h-[116px] object-cover' src={data.headImageUrl ?? '/default_list_thumb3x.png'} />}>
         <BlockBodyCal title={data.title} startDate={data.startTime} endDate={data.endTime} writer={undefined}
           head={data.type === 'PARTY' ? { current: data.currentHeadCount, max: data.maxHeadCount } : undefined}
@@ -53,7 +53,7 @@ function CalendarBlockR({ data, editing, selected }: { data: CalProps; editing: 
   return (
     <Toggle value={data.recruitmentId?.toString()} className='w-full'>
       <BlockWrapper url={`/recruitment/${data.recruitmentId}`} wrapStyle='p-[16px] gap-[18px]'
-        blockAction={!!editing && <span className="p-[3px]"><CheckIcn val={selected} /></span>}>
+        blockAction={!!editing && <span className="p-[3px]"><IconCheck checked={selected} /></span>}>
         <BlockBodyCal title={data.title} startDate={data.startTime} endDate={data.endTime} writer={undefined}
           head={{ current: data.currentHeadCount, max: data.maxHeadCount }}
           type='RCT' />

@@ -23,8 +23,6 @@ export function WriteEPage(props: { edit?: number; }) {
   const titleRef = useRef<any>(null);
   const contentRef = useRef<any>(null);
 
-  const handleAdult = (e: React.ChangeEvent<HTMLInputElement>) => { if (!!setForAdult) { setForAdult(e.target.checked); } }
-
   // 게시물 등록
   const [open, setOpen] = useState(false);
   const handleSubmit = () => {
@@ -68,7 +66,7 @@ export function WriteEPage(props: { edit?: number; }) {
         <InputCollapse title={'현재인원'} type="NUM" value={headCurrent ?? 0} >
           <InputNumber value={headCurrent ?? 0} onChange={(newValue) => setHeadCurrent(newValue)} />
         </InputCollapse>
-        <InputCheck title='19세 미만 참여불가 파티' checked={forAdult} handleChange={handleAdult} />
+        <InputCheck title='19세 미만 참여불가 파티' checked={forAdult} handleChange={(checked: boolean) => setForAdult(checked)} />
       </div>
       <Divider color='gray2' />
       <SearchBox title={'위치'}>

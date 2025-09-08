@@ -1,7 +1,7 @@
 "use client";
 import React, { PropsWithChildren, ReactNode } from "react";
 import { Dialog } from "@base-ui-components/react";
-import { HeaderBackIcn } from "@/components/common/styles/Icon";
+import { IconArrowBack } from "../styles/Icon";
 import { FooterButton } from "@/components/common";
 
 interface Props extends PropsWithChildren {
@@ -24,7 +24,7 @@ export function DialogFull({ trigger, footerText, handleFooter, handleDialogChan
 export function DialogHeader({ headerText, headerAction }: { headerText?: string; headerAction?: ReactNode; }) {
   return (
     <div className="header-nav fixed">
-      <Dialog.Close><HeaderBackIcn /></Dialog.Close>
+      <Dialog.Close><IconArrowBack /></Dialog.Close>
       <Dialog.Title className='text-18'>{headerText}</Dialog.Title>
       {headerAction ?? <div className='w-[24px]' />}
     </div>

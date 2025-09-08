@@ -6,7 +6,7 @@ import { useDeletePost, useDetailInfo } from '@/hooks/useInDetail';
 import { Divider, ImageSlide, ReportDialog, SkeletonDetail, BottomDrawer, BottomDrawerBody} from '@/components/common';
 import { DateLine, HashtagList, UserProfile } from '@/components/common/block';
 import { DetailInfoLine, DetailTools, DetailWrapper } from '.';
-import { VerticalMoreIcn, ViewIcn } from '@/components/common/styles/Icon';
+import { IconEye, IconMore } from '@/components/common/styles/Icon';
 import { inputToggleTheme } from '@/components/common/styles/Themes';
 
 export function DetailPageR({ postId }: { postId: any; }) {
@@ -28,14 +28,14 @@ export function DetailPageR({ postId }: { postId: any; }) {
       <DetailWrapper title='모집글'>
         <ImageSlide images={data.post.imageUrls} />
         <div id="detail-title" className="flex flex-col gap-[4px] px-[16px] pt-[30px] pb-[20px]">
-          <div className="flex flex-row justify-between items-center">
+          <div className="flex flex-row justify-between items-center text-black">
             <span className="text-18">{data.post.title}</span>
-            <button onClick={(e) => {setOpenD(true)}}><VerticalMoreIcn /></button>
+            <button onClick={(e) => {setOpenD(true)}}><IconMore /></button>
           </div>
           <div className="flex flex-row gap-[8px] items-center">
             <DateLine startDate={data.recruitment.startDate} endDate={data.recruitment.endDate} />
             <div className='flex flex-row text-14 text-gray3 items-center'>
-              <ViewIcn /><span className='ps-[4px]'>{data.post.views.toLocaleString("en-US")}</span>
+              <IconEye /><span className='ps-[4px]'>{data.post.views.toLocaleString("en-US")}</span>
             </div>
           </div>
           <div className="flex flex-row justify-between items-center">

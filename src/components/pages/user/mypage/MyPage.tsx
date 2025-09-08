@@ -1,6 +1,6 @@
 'use client';
 import React from "react";
-import { CalIcn, LikeIcn, PostEditIcn } from "@/components/common/styles/Icon";
+import { IconCalendar, IconHeart, IconSmile, IconEdit } from "@/components/common/styles/Icon";
 import useLoginInfo from "@/hooks/useLoginInfo";
 import { SubTopHeader } from "@/components/layout/subHeader";
 import { UserProfileBlock, SetBlock } from "@/components/common/block";
@@ -19,13 +19,13 @@ export function MyPage() {
           <UserProfileBlock profileImageUrl={userdata?.imageURI} username={userdata?.nickname} email={userdata?.email} message={userdata?.profileMessage ?? '바글이의 한마디를 적어주세요.'} />
           <div className="flex flex-col bg-p-white" id='mypage-set1'>
             <div className="p-[16px] text-14 font-semibold text-black">나의 바글바글</div>
-            <SetBlock icon={<LikeIcn color='#6C6C6C' />} title='좋아요' count={userdata?.postLikeCount} url='/mypage/liked' />
-            <SetBlock icon={<PostEditIcn />} title='작성글' count={userdata?.writingCount} url='/mypage/post' />
-            <SetBlock icon={<CalIcn val={false} color='#6C6C6C' />} title='캘린더' count={userdata?.calendarCount} url='/mypage/calendar' />
+            <SetBlock icon={<IconHeart />} title='좋아요' count={userdata?.postLikeCount} url='/mypage/liked' />
+            <SetBlock icon={<IconEdit />} title='작성글' count={userdata?.writingCount} url='/mypage/post' />
+            <SetBlock icon={<IconCalendar />} title='캘린더' count={userdata?.calendarCount} url='/mypage/calendar' />
           </div>
           <div className="flex flex-col bg-p-white" id='mypage-set2'>
             <div className="p-[16px] text-14 font-semibold text-black">계정 관리</div>
-            <SetBlock icon={<SmileIcn />} title='프로필 수정' url='/mypage/edit' />
+            <SetBlock icon={<IconSmile />} title='프로필 수정' url='/mypage/edit' />
           </div>
           <div className="flex flex-col bg-p-white" id='mypage-set3'>
             <div className="p-[16px] text-14 font-semibold text-black">이용 정보</div>
@@ -38,9 +38,3 @@ export function MyPage() {
     </>
   )
 }
-
-const SmileIcn = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M12.4041 2.47168C6.88406 2.47168 2.41406 6.95168 2.41406 12.4717C2.41406 17.9917 6.88406 22.4717 12.4041 22.4717C17.9341 22.4717 22.4141 17.9917 22.4141 12.4717C22.4141 6.95168 17.9341 2.47168 12.4041 2.47168ZM12.4141 20.4717C7.99406 20.4717 4.41406 16.8917 4.41406 12.4717C4.41406 8.05168 7.99406 4.47168 12.4141 4.47168C16.8341 4.47168 20.4141 8.05168 20.4141 12.4717C20.4141 16.8917 16.8341 20.4717 12.4141 20.4717ZM15.9141 11.4717C16.7441 11.4717 17.4141 10.8017 17.4141 9.97168C17.4141 9.14168 16.7441 8.47168 15.9141 8.47168C15.0841 8.47168 14.4141 9.14168 14.4141 9.97168C14.4141 10.8017 15.0841 11.4717 15.9141 11.4717ZM8.91406 11.4717C9.74406 11.4717 10.4141 10.8017 10.4141 9.97168C10.4141 9.14168 9.74406 8.47168 8.91406 8.47168C8.08406 8.47168 7.41406 9.14168 7.41406 9.97168C7.41406 10.8017 8.08406 11.4717 8.91406 11.4717ZM12.4141 17.9717C14.4441 17.9717 16.2141 16.8617 17.1641 15.2217C17.3541 14.8917 17.1141 14.4717 16.7241 14.4717H8.10406C7.72406 14.4717 7.47406 14.8917 7.66406 15.2217C8.61406 16.8617 10.3841 17.9717 12.4141 17.9717Z" fill="#6C6C6C" />
-  </svg>
-)

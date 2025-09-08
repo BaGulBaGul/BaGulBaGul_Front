@@ -3,8 +3,7 @@ import { ReactNode, useState } from "react";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import 'swiper/css';
-import { TrashIcn } from "../styles/Icon";
-import { ArrowNext, ArrowPrev } from "..";
+import { IconArrowBack, IconTrashFilled } from "../styles/Icon";
 
 // editable : default false
 type ImageSlideProps = { images: string[]; default?: ReactNode; } & ({
@@ -23,7 +22,7 @@ export function ImageSlide(props: ImageSlideProps) {
     }
   }
   const swiperOptions = {
-    loop: true, navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+    loop: true, navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev'},
     onActiveIndexChange: (e: any) => setIndex(e.realIndex), modules: [Navigation]
   }
   if (props.images.length === 0) {
@@ -33,7 +32,7 @@ export function ImageSlide(props: ImageSlideProps) {
     <div className='relative'>
       <div className="absolute top-[16px] left-[16px] right-[16px] z-10 flex flex-row justify-between">
         <span className="slide-chip">{`${index + 1}/${props.images.length}`}</span>
-        {!!props.editable && <button onClick={handleDelete}><TrashIcn btn={true} /></button>}
+        {!!props.editable && <button onClick={handleDelete} className="h-[24px] w-[24px]"><IconTrashFilled /></button>}
       </div>
       <div className="h-[280px] w-full relative">
         <Swiper  {...swiperOptions}>
@@ -42,8 +41,8 @@ export function ImageSlide(props: ImageSlideProps) {
               <img key={`img-{idx}`} src={image} height="280" className='h-[280px] object-cover' />
             </SwiperSlide>
           )}
-          <div className="swiper-button-prev"><ArrowPrev /></div>
-          <div className="swiper-button-next rotate-180"><ArrowNext /></div>
+          <div className="swiper-button-prev"><IconArrowBack color='white' /></div>
+          <div className="swiper-button-next rotate-180"><IconArrowBack color='white' /></div>
         </Swiper>
       </div>
     </div>

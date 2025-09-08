@@ -3,9 +3,9 @@ import { useRef, useState } from "react";
 import { Dialog } from "@base-ui-components/react";
 import { useListWithPageE } from "@/hooks/useInCommon";
 import { SearchInput } from "@/components/common/input";
-import { HeaderBackIcn, MagnifyingIcn } from "@/components/common/styles/Icon";
 import { BannerData } from "..";
 import { BannerEventList } from "./BannerEventList";
+import { IconArrowBack, IconSearch } from "@/components/common/styles/Icon";
 
 export function LinkedEventPage({ updateEvent }: { updateEvent: (arg: any) => void }) {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -25,14 +25,14 @@ export function LinkedEventPage({ updateEvent }: { updateEvent: (arg: any) => vo
   return (
     <>
       <div className="header-nav fixed">
-        <Dialog.Close><HeaderBackIcn /></Dialog.Close>
+        <Dialog.Close><IconArrowBack /></Dialog.Close>
         <Dialog.Title className='text-18'>이벤트 검색</Dialog.Title>
         <button onClick={() => updateEvent(selected)} className='text-16 text-gray3'>완료</button>
       </div>
       <div className='fixed w-full top-[60px] bg-p-white z-paper'>
         <div className='flex flex-row items-center mx-[16px] my-[18px] gap-[16px]'>
           <SearchInput placeholder='연결할 이벤트 게시글 검색' inputRef={inputRef}>
-            <button onClick={handleSearch}><MagnifyingIcn size={20} /></button>
+            <button onClick={handleSearch}><IconSearch /></button>
           </SearchInput>
         </div>
       </div>

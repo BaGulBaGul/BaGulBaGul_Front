@@ -3,7 +3,7 @@ import { useState, useRef } from 'react';
 import { SubTopHeader } from '@/components/layout/subHeader';
 import { EditButton, FooterButton, TypeSwitch, TypeTabs } from '@/components/common';
 import { CategoryButtons, SearchInput } from '@/components/common/input';
-import { MagnifyingIcn } from '@/components/common/styles/Icon';
+import { IconSearchS } from '@/components/common/styles/Icon';
 import { useListWithPageE } from '@/hooks/useInCommon';
 import { tabList } from '@/service/Functions';
 import { PostList } from './PostList';
@@ -57,15 +57,15 @@ export function PostManagePage({ opt }: { opt: 'post' | 'deleted-post' }) {
 			<div className='fixed w-full flex flex-col top-[60px] bg-p-white z-paper'>
 				<div className='flex flex-row items-center mx-[16px] my-[18px] gap-[16px]'>
 					<SearchInput placeholder='검색' inputRef={inputRef}>
-						<button onClick={handleSearch}><MagnifyingIcn size={20} /></button>
+						<button onClick={handleSearch}><IconSearchS /></button>
 					</SearchInput>
 				</div>
 				<TypeTabs val={value} handleChange={handleChange}>
 					{value < 2 && <TypeSwitch type={view} handleChange={handleView} />}
 				</TypeTabs>
-				{opt ==='post' && view === 'EVT' && <CategoryButtons selectedCate={selectedCate} setSelectedCate={setSelectedCate} />}
+				{opt === 'post' && view === 'EVT' && <CategoryButtons selectedCate={selectedCate} setSelectedCate={setSelectedCate} />}
 			</div>
-			<div className={(opt ==='post' && view === 'EVT' ? "mt-[220px]" : "mt-[174px]") + (selecting ? ' mb-[77px]' : '')}>
+			<div className={(opt === 'post' && view === 'EVT' ? "mt-[220px]" : "mt-[174px]") + (selecting ? ' mb-[77px]' : '')}>
 				<PostList opt={view} events={events} editing={selecting} selectedItems={selectedItems} handleSelected={handleSelected} />
 			</div>
 			{selecting && <FooterButton text={optString.action[opt]} />}

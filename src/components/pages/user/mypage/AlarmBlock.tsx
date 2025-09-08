@@ -1,5 +1,4 @@
 import { AlarmProps } from "@/components/common";
-import { DeleteIcn } from "@/components/common/styles/Icon";
 import { handleClickAlarm } from "@/service/Functions";
 import dayjs from "dayjs";
 
@@ -29,7 +28,7 @@ export function AlarmBlock(props: { data: AlarmProps, handleDelete: any, router:
             </>
           }
         </div>
-        <button onClick={(e) => { props.handleDelete(e, props.data.alarmId) }}><DeleteIcn /></button>
+        {/* <button onClick={(e) => { props.handleDelete(e, props.data.alarmId) }}><DeleteIcn /></button> */}
       </div>
     </div >
   )

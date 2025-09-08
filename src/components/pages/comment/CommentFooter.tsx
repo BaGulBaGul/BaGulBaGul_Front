@@ -26,8 +26,8 @@ export function CommentFooter(props: { url: string; qKey: any; isLogin: boolean;
   return (
     <div className='comment-wrap'>
       <ThemeProvider theme={commentTheme}>
-        {!scrolled ? <></> :
-          <div className='flex justify-end pb-[16px] pe-[15px]'><ScrollToTop /></div>}
+        {scrolled && 
+           <div className='flex justify-end pb-[16px] pe-[16px]'><ScrollToTop /></div>}
         {props.isLogin
           ? <div className="comment-input flex flex-row">
             <TextField placeholder='댓글을 입력해주세요.' fullWidth multiline inputRef={cmtRef} maxRows={5} />

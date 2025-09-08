@@ -1,7 +1,7 @@
 import React from 'react'
-import { MagnifyingIcn } from '../common/styles/Icon';
-import useLoginInfo from '@/hooks/useLoginInfo';
 import Link from 'next/link';
+import { IconSearch } from '../common/styles/Icon';
+import useLoginInfo from '@/hooks/useLoginInfo';
 
 function Header(props: { opt?: 'NF' }) {
   const data = useLoginInfo().data
@@ -13,7 +13,7 @@ function Header(props: { opt?: 'NF' }) {
       </p>
       <div className='flex flex-row gap-[10px]'>
         <p className="flex w-6 h-6 relative">
-          <Link href="/search"><MagnifyingIcn size={24} /></Link>
+          <Link href="/search"><IconSearch /></Link>
         </p>
         <Link className="flex place-items-center" href="/mypage">
           <img className='w-[24px] h-[24px] rounded-full object-cover' src={!!data && !!data.imageURI ? data.imageURI : "/profile_main.svg"} alt="마이페이지 아이콘" />

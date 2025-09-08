@@ -51,7 +51,7 @@ export default function Page() {
             </div>
           ))
         ))}
-        {tab === 2 && <WriteFab url="/write?w=p" />}
+        {tab === 2 && <WriteFab url="/write?w=p"><span className='text-18 font-semibold tracking-tighter'>글작성</span></WriteFab>}
       </div>
     </ListWrapper>
   )

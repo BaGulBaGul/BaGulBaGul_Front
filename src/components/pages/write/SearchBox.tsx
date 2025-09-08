@@ -1,7 +1,7 @@
 "use client";
 import { ReactNode } from "react";
 import { Dialog } from "@base-ui-components/react";
-import { MagnifyingIcn } from "@/components/common/styles/Icon";
+import { IconSearch } from "@/components/common/styles/Icon";
 
 export function SearchBox({ title, children }: {title: string; children: ReactNode}) {
   return (
@@ -16,7 +16,7 @@ export function SearchBoxTrigger({ defaultText, value }: { defaultText: string; 
   return (
     <Dialog.Trigger className="flex flex-row items-center gap-[8px]">
       {!!value ? <span className='text-14'>{value}</span> : <span className='text-14 text-gray2'>{defaultText}</span>}
-      <MagnifyingIcn size={24} />
+      <IconSearch />
     </Dialog.Trigger>
   )
 }

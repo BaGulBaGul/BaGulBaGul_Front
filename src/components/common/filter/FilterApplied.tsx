@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import { FormatDateRange, sortLabel } from "@/service/Functions";
 import { FilterProps, handleObjectValue } from ".";
+import { IconDeleteChip } from "../styles/Icon";
 
 type FilterAppliedProps = { filterCnt: number; filters: string[]; setFilters: Dispatch<SetStateAction<string[]>>; } &
   ({ opt: 'REDIRECT'; p: FilterProps; setP: any; handleRt?: any; } |
@@ -62,16 +63,7 @@ const FilterChip = ({ text, filter, handleDelete }: { text: string; filter: stri
   return (
     <div className='filter-chip'>
       <span>{text}</span>
-      <button onClick={(e) => handleDelete(e, filter)}><FilterDeleteIcn /></button>
+      <button onClick={(e) => handleDelete(e, filter)}><IconDeleteChip /></button>
     </div>
-  )
-}
-
-const FilterDeleteIcn = () => {
-  return (
-    <svg width="16" height="23" viewBox="0 0 16 23" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect x="4.14062" y="8.3584" width="1" height="10" rx="0.5" transform="rotate(-44.4738 4.14062 8.3584)" fill="#6C6C6C" />
-      <rect width="1" height="10" rx="0.5" transform="matrix(-0.713571 -0.700582 -0.700582 0.713571 11.8594 8.3584)" fill="#6C6C6C" />
-    </svg>
   )
 }

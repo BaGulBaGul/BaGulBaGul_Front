@@ -1,17 +1,16 @@
 "use client";
 import { PropsWithChildren } from "react";
-import { ThemeProvider, FormControl, FormControlLabel, Checkbox, createTheme } from "@mui/material";
+import { Checkbox } from '@base-ui-components/react';
+import { IconCheckBoxS } from "../styles/IconCheck";
 
-export function InputCheck(props: { title: string; checked: boolean; handleChange: any; }) {
+export function InputCheck({title, checked, handleChange}: { title: string; checked: boolean; handleChange: any; }) {
   return (
-    <div className="flex flex-row justify-between">
-      <div className="text-14">{props.title}</div>
-      <ThemeProvider theme={inputCheckTheme}>
-        <FormControl>
-          <FormControlLabel control={<Checkbox checked={props.checked} onChange={props.handleChange} />} label="" />
-        </FormControl>
-      </ThemeProvider>
-    </div>
+    <label className={`flex flex-row justify-between items-center text-14 ${!!checked ? 'font-semibold text-primary-blue' : 'text-black'}`}>
+      {title}
+      <Checkbox.Root className='' checked={checked} onCheckedChange={handleChange}>
+        <IconCheckBoxS checked={checked} />
+      </Checkbox.Root>
+    </label>
   )
 }
 
@@ -33,31 +32,3 @@ export function InputContainer({ title, desc, btn, p, children }: InputContainer
     </div>
   )
 }
-
-const CheckboxIcn = (props: { val: boolean }) => {
-  if (!props.val) {
-    return (
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="0.5" y="0.575928" width="15" height="15" rx="3.5" stroke="#6C6C6C" />
-      </svg>
-    )
-  } else {
-    return (
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M3.5 7.18182L7 11L12.5 5" stroke="#4A6AFE" />
-        <rect x="0.5" y="0.5" width="15" height="15" rx="3.5" stroke="#6C6C6C" />
-      </svg>
-    )
-  }
-}
-
-export const inputCheckTheme = createTheme({
-  components: {
-    MuiFormControlLabel: {
-      defaultProps: { labelPlacement: 'start', },
-      styleOverrides: { root: { margin: 0, padding: '4px' }, label: { fontSize: '12px !important', color: '#6C6C6C' } }
-    },
-    MuiCheckbox: { defaultProps: { checkedIcon: <CheckboxIcn val={true} />, icon: <CheckboxIcn val={false} />, }, },
-    MuiButtonBase: { styleOverrides: { root: { padding: '0 !important' } } }
-  },
-});

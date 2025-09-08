@@ -2,7 +2,7 @@
 import { RefObject, useRef, useState } from "react";
 import Script from 'next/script'
 import { Dialog } from "@base-ui-components/react";
-import { DeleteIcn, HeaderBackIcn } from "@/components/common/styles/Icon";
+import { IconArrowBack, IconDelete } from "@/components/common/styles/Icon";
 import { SearchInput } from "@/components/common/input";
 import { DialogFull } from "@/components/common";
 import { SearchBoxTrigger } from ".";
@@ -27,9 +27,9 @@ export function AddressDialog({ addr, updateAddr }: {addr: { full: string, abs: 
       <Script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js" async
         onReady={() => { execDaumPost(inputRef, setAbs) }} />
       <div className='fixed w-full top-0 bg-p-white z-paper flex flex-row items-center ps-[16px] pe-[28px] py-[18px] gap-[16px]'>
-        <Dialog.Close><HeaderBackIcn /></Dialog.Close>
+        <Dialog.Close><IconArrowBack /></Dialog.Close>
         <SearchInput placeholder='징소, 주소 검색' inputRef={inputRef} defaultValue={addr?.full} readOnly={true}>
-          <button onClick={handleClearAddr}><DeleteIcn size='20' color='#1E1E1E' /></button>
+          <button onClick={handleClearAddr}><IconDelete /></button>
         </SearchInput>
       </div>
       <div id='addr-wrap' className="pt-[66px] w-full h-full"></div>

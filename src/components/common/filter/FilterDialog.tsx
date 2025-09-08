@@ -1,7 +1,6 @@
 "use client";
 import { PropsWithChildren } from "react";
 import { ThemeProvider, Dialog, DialogTitle, DialogContent, createTheme } from "@mui/material";
-import { RadioIcn } from "../styles/Icon";
 
 interface Props extends PropsWithChildren { open: boolean; handleClose: any; title?: string }
 export function FilterDialog({ open, handleClose, title, children }: Props) {
@@ -33,10 +32,6 @@ export const filterTheme = createTheme({
     MuiFormControlLabel: {
       defaultProps: { labelPlacement: 'end', },
       styleOverrides: { root: { margin: 0, marginRight: '8px !important', }, label: { fontSize: '14px !important' } }
-    },
-    MuiRadio: {
-      defaultProps: { checkedIcon: <RadioIcn val={true} />, icon: <RadioIcn val={false} />, },
-      styleOverrides: { root: { padding: 0, paddingRight: '4px !important' }, }
     },
   }
 })

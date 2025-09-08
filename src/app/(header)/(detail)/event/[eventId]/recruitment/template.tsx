@@ -1,10 +1,9 @@
 "use client";
-import { useState, useEffect, ChangeEvent } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import dayjs from 'dayjs';
 import { FormatDateRange, getParams, useEffectCntFilter } from '@/service/Functions';
 import { WriteFab } from '@/components/common';
-import { HeaderBackIcn } from '@/components/common/styles/Icon';
 import { closeFilter, FilterApplied, FilterButton, FilterCalendar, FilterDialog, FilterSortRadio, handleObjectValue } from '@/components/common/filter';
 import { InputCheck, InputCollapse, InputNumber } from '@/components/common/input';
 
@@ -63,8 +62,8 @@ export default function Template({ children }: { children: React.ReactNode }) {
         </div>
       }
       <FilterDialog open={open} handleClose={() => { closeFilter(setOpen, routeToFilter) }} >
-        <InputCheck title='모집 중만 보기' checked={p.recruiting} handleChange={(e: React.ChangeEvent<HTMLInputElement>) => { handleObjectValue(setP, 'recruiting', e.target.checked) }} />
-        <FilterSortRadio value={p.sort} handleChange={(e: ChangeEvent<HTMLInputElement>, newSort: string) => { handleObjectValue(setP, 'sort', newSort) }} />
+        <InputCheck title='모집 중만 보기' checked={p.recruiting} handleChange={(checked: boolean) => { handleObjectValue(setP, 'recruiting', checked) }} />
+        <FilterSortRadio value={p.sort} handleChange={(newSort: string) => { handleObjectValue(setP, 'sort', newSort) }} />
         <InputCollapse title={'날짜선택'} type='CAL' value={!startDate ? '' : FormatDateRange(startDate, endDate)}>
           <FilterCalendar startDate={startDate} endDate={endDate} onChange={(dates: [any, any]) => { setP((prev: any) => ({ ...prev, dateRange: dates })) }} />
         </InputCollapse>

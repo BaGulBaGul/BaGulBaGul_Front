@@ -3,7 +3,7 @@ import React from "react";
 import { useSortable } from '@dnd-kit/sortable';
 import { Toggle, ToggleGroup } from '@base-ui-components/react';
 import { DndHandler, DndItem } from "..";
-import { CheckIcn } from "@/components/common/styles/Icon";
+import { IconCheck } from "@/components/common/styles/Icon";
 
 interface ListProps {
   items: string[]; editing: boolean; selectedItems: string[]; handleCategory: (groupValue: any[], e: Event) => void;
@@ -25,7 +25,7 @@ function Item({ name, editing, selected }: ItemProps) {
     <DndItem sortable={sortable}>
       <Toggle value={name} className="flex flex-row justify-between w-screen text-14 p-[16px] bg-p-white">
         <div className="flex flex-row gap-[16px] items-center">
-          {!!editing && <span className="p-[3px]"><CheckIcn val={selected} /></span>}
+          {!!editing && <span className="p-[3px]"><IconCheck checked={selected} /></span>}
           {name}
         </div>
         <DndHandler sortable={sortable} />

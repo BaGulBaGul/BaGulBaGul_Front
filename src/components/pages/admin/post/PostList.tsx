@@ -1,7 +1,7 @@
 import { UseInfiniteQueryResult, InfiniteData } from "@tanstack/react-query";
 import { Divider, ListProps, ListWrapper, RListProps, SkeletonList } from "@/components/common";
 import { NoData, BlockWrapper, BlockBodyAD, BlockBodyN } from "@/components/common/block";
-import { CheckIcn } from "@/components/common/styles/Icon";
+import { IconCheck } from "@/components/common/styles/Icon";
 import { Toggle, ToggleGroup } from "@base-ui-components/react";
 
 interface Props {
@@ -34,7 +34,7 @@ function PostBlockE({ item, editing, selected }: { item: ListProps; editing: boo
   return (
     <Toggle value={item.event.eventId.toString()} className='w-full'>
       <BlockWrapper url={`/event/${item.event.eventId}`} wrapStyle='p-[16px] gap-[18px]'
-        blockAction={!!editing && <span className="p-[3px]"><CheckIcn val={selected} /></span>}
+        blockAction={!!editing && <span className="p-[3px]"><IconCheck checked={selected} /></span>}
         blockThumb={<img className='rounded-[4px] w-[92px] h-[116px] object-cover' src={item.post.headImageUrl ?? '/default_list_thumb3x.png'} />}>
         <BlockBodyAD title={item.post.title} startDate={item.event.startDate} endDate={item.event.endDate} address={item.event.abstractLocation}
           writer={item.post.writer} head={item.event.type === 'PARTY' ? { current: item.event.currentHeadCount, max: item.event.maxHeadCount } : undefined} />
@@ -47,7 +47,7 @@ function PostBlockR({ item, editing, selected }: { item: RListProps; editing: bo
   return (
     <Toggle value={item.recruitment.recruitmentId.toString()} className='w-full'>
       <BlockWrapper url={`/recruitment/${item.recruitment.recruitmentId}`} wrapStyle='p-[16px] gap-[18px]'
-        blockAction={!!editing && <span className="p-[3px]"><CheckIcn val={selected} /></span>}>
+        blockAction={!!editing && <span className="p-[3px]"><IconCheck checked={selected} /></span>}>
         <BlockBodyN title={item.post.title} startDate={item.recruitment.startDate} endDate={item.recruitment.endDate} name={'tmp name for event'} />
       </BlockWrapper>
     </Toggle>

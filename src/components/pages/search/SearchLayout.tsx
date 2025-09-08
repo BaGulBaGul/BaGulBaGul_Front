@@ -1,4 +1,4 @@
-import { ChangeEvent, PropsWithChildren, useEffect, useRef, useState } from "react";
+import { PropsWithChildren, useEffect, useRef, useState } from "react";
 import { ReadonlyURLSearchParams } from "next/navigation";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import dayjs from 'dayjs';
@@ -86,7 +86,7 @@ export function SearchLayout({ opt, sp, router, children }: Props) {
           <CategoryButtons selectedCate={selectedCate} setSelectedCate={setSelectedCate} />
         </div>
         <FilterDialog open={open} handleClose={() => { closeFilter(setOpen, routeToFilter) }} >
-          <FilterSortRadio value={p.sort} handleChange={(e: ChangeEvent<HTMLInputElement>, newSort: string) => { handleObjectValue(setP, 'sort', newSort) }} />
+          <FilterSortRadio value={p.sort} handleChange={(newSort: string) => { handleObjectValue(setP, 'sort', newSort) }} />
           <InputCollapse title={'날짜선택'} type='CAL' value={!startDate ? '' : FormatDateRange(startDate, endDate)}>
             <FilterCalendar startDate={startDate} endDate={endDate} onChange={(dates: [any, any]) => { setP((prev: any) => ({ ...prev, dateRange: dates })) }} />
           </InputCollapse>

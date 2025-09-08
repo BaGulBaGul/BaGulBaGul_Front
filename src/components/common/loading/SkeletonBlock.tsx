@@ -1,5 +1,5 @@
 import { Skeleton } from "@mui/material"
-import { LikeIcn } from "../styles/Icon";
+import { IconHeart } from "../styles/Icon";
 
 export function SkeletonBlock(props: { thumb?: boolean; tag: boolean; }) {
   return (
@@ -43,7 +43,7 @@ export function SkeletonBlockLike() {
     <div className="flex flex-col">
       <div className="flex flex-row justify-between gap-[16px] m-[16px] mb-[10px]">
         <div className="flex flex-row gap-[8px] w-full">
-          <div className="h-[24px] w-[24px]"><LikeIcn color='#E4E6EB' fill={true} /></div>
+          <div className="h-[24px] w-[24px]"><IconHeart fillColor='#E4E6EB' /></div>
           <div className="flex flex-col w-full justify-between">
             <SkeletonTitleAddDate />
             <Skeleton variant="circular" width={24} height={24} />

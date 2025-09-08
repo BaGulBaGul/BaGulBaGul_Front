@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, ChangeEvent } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import dayjs from 'dayjs';
 import { FormatDateRange, getParams, headCountString, useEffectCntFilter } from '@/service/Functions';
@@ -64,8 +64,8 @@ export default function Template({ children }: { children: React.ReactNode }) {
           <CategoryButtons selectedCate={selectedCate} setSelectedCate={setSelectedCate} />
         </div>
         <FilterDialog open={open} handleClose={() => { closeFilter(setOpen, routeToFilter) }} >
-          <InputCheck title='종료된 행사 제외하기' checked={p.proceeding} handleChange={(e: React.ChangeEvent<HTMLInputElement>) => { handleObjectValue(setP, 'proceeding', e.target.checked) }} />
-          <FilterSortRadio value={p.sort} handleChange={(e: ChangeEvent<HTMLInputElement>, newSort: string) => { handleObjectValue(setP, 'sort', newSort) }} />
+          <InputCheck title='종료된 행사 제외하기' checked={p.proceeding} handleChange={(checked: boolean) => { handleObjectValue(setP, 'proceeding', checked) }} />
+          <FilterSortRadio value={p.sort} handleChange={(newSort: string) => { handleObjectValue(setP, 'sort', newSort) }} />
           <InputCollapse title={'날짜선택'} type='CAL' value={!startDate ? '' : FormatDateRange(startDate, endDate)}>
             <FilterCalendar startDate={startDate} endDate={endDate} onChange={(dates: [any, any]) => { handleObjectValue(setP, 'dateRange', dates) }} />
           </InputCollapse>

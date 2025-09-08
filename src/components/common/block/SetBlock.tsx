@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { IconArrowDown } from "../styles/Icon";
 
 export function SetBlock(props: { title: string; icon?: any; desc?: string; count?: number; url: string; }) {
   return (
@@ -11,7 +12,7 @@ export function SetBlock(props: { title: string; icon?: any; desc?: string; coun
       </div>
       <div className="flex flex-row items-center gap-[8px]">
         {props.count && <span className="text-14 text-black">{props.count >= 0 ? props.count : '-'}개</span>}
-        <img src='/arrow_next.svg' className="p-[4px] w-[24px] h-[24px]" />
+        <span className='-rotate-90'><IconArrowDown /></span>
       </div>
     </Link>
   )

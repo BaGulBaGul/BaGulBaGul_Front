@@ -1,6 +1,6 @@
 import { Skeleton } from "@mui/material"
-import { VerticalMoreIcn } from "../styles/Icon";
 import { SkeletonTags } from "./SkeletonBlock";
+import { IconMore } from "../styles/Icon";
 
 export function SkeletonDetail(props: { map: boolean }) {
   return (
@@ -12,8 +12,8 @@ export function SkeletonDetail(props: { map: boolean }) {
           <Skeleton variant="rounded" height={14} />
           <Skeleton variant="circular" width={24} height={24} />
         </div>
-        <div className="flex flex-col gap-[8px] w-full items-end">
-          <VerticalMoreIcn color='#E4E6EB' />
+        <div className="flex flex-col gap-[8px] w-full items-end text-[#E4E6EB]">
+          <IconMore />
           <Skeleton variant="rounded" height={14} width={40} />
           <Skeleton variant="rounded" height={24} width={60} className="rounded-[99px]" />
         </div>

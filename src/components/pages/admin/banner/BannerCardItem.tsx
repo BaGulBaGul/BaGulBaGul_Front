@@ -4,7 +4,7 @@ import { Dialog } from '@base-ui-components/react';
 import { useSortable } from '@dnd-kit/sortable';
 import { DndHandler, DndItem, BannerInfo } from '..';
 import { DialogFull, DialogHeader } from '@/components/common';
-import { ArrowDownIcn, TrashIcn } from '@/components/common/styles/Icon';
+import { IconArrowDown, IconTrash } from '@/components/common/styles/Icon';
 
 export function BannerCardItem({ item, children, handleDelete }: { item: BannerInfo; children: ReactNode, handleDelete: (e: any, id: string) => void }) {
   const sortable = useSortable({ id: item.id });
@@ -29,8 +29,8 @@ function BannerCardTrigger({ item, handleDelete }: { item: BannerInfo; handleDel
         {data ? data.title : '카드 추가하기'}
       </p>
       <div className='flex flex-row gap-[4px]'>
-        {!!data && <button onClick={(e) => handleDelete(e, item.id)}><TrashIcn /></button>}
-        <span className='-rotate-90'><ArrowDownIcn /></span>
+        {!!data && <button onClick={(e) => handleDelete(e, item.id)}><IconTrash /></button>}
+        <span className='-rotate-90'><IconArrowDown /></span>
       </div>
     </Dialog.Trigger>
   )

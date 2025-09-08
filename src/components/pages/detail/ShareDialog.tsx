@@ -1,6 +1,6 @@
 'use client';
 import { ThemeProvider, Dialog, DialogTitle, DialogContent, createTheme } from '@mui/material';
-import { DeleteIcn } from '@/components/common/styles/Icon';
+import { IconDelete } from '@/components/common/styles/Icon';
 
 interface ShareDialogProps { handleClose: any, popopen: boolean, sharingURL: string; }
 export default function ShareDialog(props: ShareDialogProps) {
@@ -53,7 +53,7 @@ export default function ShareDialog(props: ShareDialogProps) {
         <DialogTitle className='flex flex-row justify-between'>
           <div className='w-[24px] h-[24px]' />
           <span>공유하기</span>
-          <button onClick={props.handleClose}><DeleteIcn /></button>
+          <button onClick={props.handleClose}><IconDelete /></button>
         </DialogTitle>
         <DialogContent className='flex flex-row justify-center gap-[48px]'>
           <div className='flex flex-col items-center cursor-pointer' onClick={handleKakao}>

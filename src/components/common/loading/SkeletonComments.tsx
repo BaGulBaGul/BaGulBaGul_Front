@@ -1,5 +1,5 @@
 import { Skeleton } from "@mui/material"
-import { VerticalMoreIcn } from "../styles/Icon";
+import { IconMore } from "../styles/Icon";
 
 export function SkeletonComments() {
   return (
@@ -27,8 +27,8 @@ export function SkeletonComment(props: { color: string; }) {
         <Skeleton variant="rounded" height={14} width={191} />
         <Skeleton variant="rounded" height={14} width={40} />
       </div>
-      <div className="flex flex-col justify-between items-end">
-        <VerticalMoreIcn color='#E4E6EB' />
+      <div className="flex flex-col justify-between items-end text-[#E4E6EB]">
+        <IconMore />
         <Skeleton variant="circular" width={24} height={24} />
       </div>
     </div>
@@ -43,8 +43,8 @@ function SkeletonReply(props: { color: string; }) {
         <Skeleton variant="rounded" height={16} width={191} />
         <Skeleton variant="rounded" height={14} width={191} />
       </div>
-      <div className="flex flex-col justify-between items-end">
-        <VerticalMoreIcn color='#E4E6EB' />
+      <div className="flex flex-col justify-between items-end text-[#E4E6EB]">
+        <IconMore />
         <Skeleton variant="circular" width={24} height={24} />
       </div>
     </div>

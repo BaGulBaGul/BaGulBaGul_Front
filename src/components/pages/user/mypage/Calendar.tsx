@@ -1,6 +1,6 @@
 import DatePicker, { registerLocale } from "react-datepicker";
-import { ChevronIcn } from '@/components/common/styles/Icon';
 import { ko } from "date-fns/locale/ko";
+import { IconArrowCalendar } from "@/components/common/styles/Icon";
 
 interface CalendarProps { focusDay: any; changeFocusDay: any; displayM: { y: number, m: number }; changeDisplayM: any; events: any; }
 export function Calendar(props: CalendarProps) {
@@ -38,10 +38,10 @@ function CalendarHeader(props: CalendarHeaderProps) {
       <h2>{props.date.getMonth() + 1}월, {props.date.getFullYear()}</h2>
       <div className='flex flex-row gap-[12px]'>
         <button onClick={handlePrev} disabled={props.prevMonthButtonDisabled}>
-          <ChevronIcn direction='left' />
+          <IconArrowCalendar direction='left' />
         </button>
         <button onClick={handleNext} disabled={props.nextMonthButtonDisabled}>
-          <ChevronIcn direction='right' />
+          <IconArrowCalendar direction='right' />
         </button>
       </div>
     </div>
