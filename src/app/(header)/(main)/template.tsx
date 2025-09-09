@@ -61,7 +61,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
         </TypeTabs>
         <div className='sticky top-[102px] relative bg-p-white z-10'>
           <FilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters} opt="REDIRECT" p={p} setP={setP} handleRt={handleRt} />
-          <CategoryButtons selectedCate={selectedCate} setSelectedCate={setSelectedCate} />
+          <CategoryButtons selectedCate={selectedCate} updateSelectedCate={(groupValue: string[]) => { setSelectedCate(groupValue) }} />
         </div>
         <FilterDialog open={open} handleClose={() => { closeFilter(setOpen, routeToFilter) }} >
           <InputCheck title='종료된 행사 제외하기' checked={p.proceeding} handleChange={(checked: boolean) => { handleObjectValue(setP, 'proceeding', checked) }} />

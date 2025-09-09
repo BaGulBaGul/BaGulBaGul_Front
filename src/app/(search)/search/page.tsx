@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import dayjs from 'dayjs';
 import { FormatDateRange, getParams, headCountString, useEffectFilterApplied } from '@/service/Functions';
 import { Divider, TypeTabs } from '@/components/common';
-import { FilterApplied, FilterDialog, closeFilter, FilterSortRadio, handleObjectValue, FilterCalendar } from '@/components/common/filter';
+import { FilterApplied, FilterDialog, closeFilter, FilterSortRadio, handleObjectValue, FilterCalendar, FilterButton } from '@/components/common/filter';
 import { CategoryButtons, InputCollapse, InputNumber, InputNumberRange } from '@/components/common/input';
 import { SearchBar, FrequentSearches } from '@/components/pages/search';
 
@@ -43,12 +43,14 @@ export default function Page() {
 
   return (
     <div className='flex flex-col w-full h-screen'>
-      <SearchBar opt={0} title={title} setOpen={setOpen} filterCnt={filterCnt} setTitle={setTitle} router={router} />
+      <SearchBar title={title} isSearched={false} updateTitle={(t: string) => setTitle(t)} handleBack={() => router.back()} >
+        <FilterButton handleOpen={() => { setOpen(true) }} cnt={filterCnt} fs={14} />
+      </SearchBar>
       <div className='w-full p-0 pt-[66px]'>
         <div className='fixed top-[66px] w-full bg-p-white z-10'>
-          <FilterApplied filterCnt={filterCnt} filters={filters} opt="REDIRECT" p={p} setP={setP} setFilters={setFilters} />
           <TypeTabs val={tab} handleChange={handleTab} />
-          <CategoryButtons selectedCate={selectedCate} setSelectedCate={setSelectedCate} />
+          <FilterApplied filterCnt={filterCnt} filters={filters} opt="REDIRECT" p={p} setP={setP} setFilters={setFilters} />
+          <CategoryButtons selectedCate={selectedCate} updateSelectedCate={(groupValue: string[]) => { setSelectedCate(groupValue) }} />
           <Divider />
         </div>
         <div className={filterCnt > 0 ? 'bg-p-white mt-[120px]' : 'bg-p-white mt-[94px]'}>

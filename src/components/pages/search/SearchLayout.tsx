@@ -4,9 +4,9 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 import dayjs from 'dayjs';
 import { FormatDateRange, getParams, headCountString, useEffectCntFilter } from "@/service/Functions";
 import { TypeTabs } from "@/components/common";
-import { FilterApplied, FilterDialog, closeFilter, FilterSortRadio, handleObjectValue, FilterCalendar } from "@/components/common/filter";
+import { FilterApplied, FilterDialog, closeFilter, FilterSortRadio, handleObjectValue, FilterCalendar, FilterButton } from "@/components/common/filter";
 import { CategoryButtons, InputCollapse, InputNumber, InputNumberRange } from "@/components/common/input";
-import { SearchBar } from "./SearchBar";
+import { SearchBar, SearchTagBar } from ".";
 
 interface Props extends PropsWithChildren {
   opt: 'TTL' | 'TAG'; sp: ReadonlyURLSearchParams; router: AppRouterInstance;
@@ -76,14 +76,18 @@ export function SearchLayout({ opt, sp, router, children }: Props) {
   return (
     <div className='flex flex-col w-full h-screen pb-[10px]'>
       {opt === 'TTL'
-        ? <SearchBar opt={1} title={title ?? ''} setOpen={setOpen} filterCnt={filterCnt} setTitle={setTitle} handleRt={handleRt} router={router} />
-        : <SearchBar tag={tag ?? ''} setOpen={setOpen} filterCnt={filterCnt} handleRt={handleRt} router={router} />
+        ? <SearchBar title={title} isSearched={true} updateTitle={(t: string) => setTitle(t)} handleBack={() => router.back()} >
+          <FilterButton handleOpen={() => { setOpen(true) }} cnt={filterCnt} fs={14} />
+        </SearchBar>
+        : <SearchTagBar tag={tag ?? ''} handleBack={() => router.back()} >
+          <FilterButton handleOpen={() => { setOpen(true) }} cnt={filterCnt} fs={14} />
+        </SearchTagBar>
       }
       <div className='w-full p-0 pt-[66px]'>
         <div className='fixed top-[66px] w-full bg-p-white z-10'>
           <TypeTabs val={tab} handleChange={handleChange} />
           <FilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters} opt="REDIRECT" p={p} setP={setP} handleRt={handleRt} />
-          <CategoryButtons selectedCate={selectedCate} setSelectedCate={setSelectedCate} />
+          <CategoryButtons selectedCate={selectedCate} updateSelectedCate={(groupValue: string[]) => { setSelectedCate(groupValue) }} />
         </div>
         <FilterDialog open={open} handleClose={() => { closeFilter(setOpen, routeToFilter) }} >
           <FilterSortRadio value={p.sort} handleChange={(newSort: string) => { handleObjectValue(setP, 'sort', newSort) }} />

@@ -56,7 +56,7 @@ export function WriteAPage(props: { edit?: number; }) {
       <TitleInput titleRef={titleRef} prev={!!prev ? prev.data.post.title : undefined} />
       <Divider color='gray2' />
       <InputContainer title="게시글" desc="1개만 선택가능합니다." p={true}>
-        <TypeToggle type={type} handleType={(e, newType) => setType(newType as EventType)} />
+        <TypeToggle type={type} handleType={(newType) => setType(newType[0] as EventType)} />
       </InputContainer>
       <Divider color='gray2' />
       {/* <SearchBox title={'주최기관'} defaultText={'주최기관 검색'} value={undefined} handleClick={handleOpenAddr} /> */}
@@ -67,7 +67,7 @@ export function WriteAPage(props: { edit?: number; }) {
       </SearchBox>
       <Divider color='gray2' />
       <InputContainer title="카테고리" desc="카테고리는 최대 2개까지 선택가능합니다." p={true}>
-        <CategoryButtons selectedCate={selectedCate} setSelectedCate={setSelectedCate} max={2} setForAdult={setForAdult} />
+        <CategoryButtons selectedCate={selectedCate} updateSelectedCate={(groupValue: string[]) => { setSelectedCate(groupValue) }} max={2} />
       </InputContainer>
       <Divider color='gray2' />
       <div className='flex flex-col px-[16px] py-[10px] gap-[8px]'>

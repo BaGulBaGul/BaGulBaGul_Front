@@ -6,6 +6,7 @@ import { FormatDateRange, getParams, useEffectCntFilter } from '@/service/Functi
 import { WriteFab } from '@/components/common';
 import { closeFilter, FilterApplied, FilterButton, FilterCalendar, FilterDialog, FilterSortRadio, handleObjectValue } from '@/components/common/filter';
 import { InputCheck, InputCollapse, InputNumber } from '@/components/common/input';
+import { IconArrowBack } from '@/components/common/styles/IconArrow';
 
 export default function Template({ children }: { children: React.ReactNode }) {
   const prms = useParams()
@@ -52,7 +53,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
   return (
     <>
       <div className="fixed top-[44px] left-0 right-0 flex flex-row justify-between place-items-center w-full h-[60px] px-[17px] py-[10px] bg-p-white z-30">
-        <button onClick={() => router.back()}><HeaderBackIcn /></button>
+        <button onClick={() => router.back()}><IconArrowBack /></button>
         <div className='text-18'>모집글</div>
         <FilterButton handleOpen={handleOpen} cnt={filterCnt} fs={18} />
       </div>

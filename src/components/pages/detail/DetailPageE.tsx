@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import dayjs from 'dayjs';
-import { Button, ThemeProvider } from '@mui/material';
 import { typeString } from '@/service/Functions';
 import useLoginInfo from '@/hooks/useLoginInfo';
 import { useDeletePost, useDetailInfo } from '@/hooks/useInDetail';
@@ -9,7 +8,6 @@ import { Divider, FooterButton, ImageSlide, ReportDialog, SkeletonDetail, Bottom
 import { DateLine, HashtagList, UserProfile } from '@/components/common/block';
 import { DetailInfoLine, DetailMap, DetailTools, DetailWrapper } from '.';
 import { IconEye, IconMore } from '@/components/common/styles/Icon';
-import { inputToggleTheme } from '@/components/common/styles/Themes';
 
 export function DetailPageE({ postId }: { postId: any; }) {
   const userinfo = useLoginInfo().data
@@ -48,9 +46,7 @@ export function DetailPageE({ postId }: { postId: any; }) {
               {!!data.event.categories &&
                 <div className='flex flex-row gap-[8px]'>
                   {data.event.categories.map((cate: any, idx: number) => (
-                    <ThemeProvider theme={inputToggleTheme}>
-                      <Button key={`cate-${idx}`}>{cate}</Button>
-                    </ThemeProvider>
+                    <span key={`cate-${idx}`} className='toggle-chip-btn pointer-events-none'>{cate}</span>
                   ))}
                 </div>}
             </div>

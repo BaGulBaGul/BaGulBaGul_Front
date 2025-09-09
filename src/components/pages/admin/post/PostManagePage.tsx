@@ -63,7 +63,7 @@ export function PostManagePage({ opt }: { opt: 'post' | 'deleted-post' }) {
 				<TypeTabs val={value} handleChange={handleChange}>
 					{value < 2 && <TypeSwitch type={view} handleChange={handleView} />}
 				</TypeTabs>
-				{opt === 'post' && view === 'EVT' && <CategoryButtons selectedCate={selectedCate} setSelectedCate={setSelectedCate} />}
+				{opt === 'post' && view === 'EVT' && <CategoryButtons selectedCate={selectedCate} updateSelectedCate={(groupValue: string[]) => { setSelectedCate(groupValue) }} />}
 			</div>
 			<div className={(opt === 'post' && view === 'EVT' ? "mt-[220px]" : "mt-[174px]") + (selecting ? ' mb-[77px]' : '')}>
 				<PostList opt={view} events={events} editing={selecting} selectedItems={selectedItems} handleSelected={handleSelected} />

@@ -54,7 +54,7 @@ export function WriteEPage(props: { edit?: number; }) {
       <TitleInput titleRef={titleRef} prev={!!prev ? prev.data.post.title : undefined} />
       <Divider color='gray2' />
       <InputContainer title="카테고리" desc="카테고리는 최대 2개까지 선택가능합니다." p={true}>
-        <CategoryButtons selectedCate={selectedCate} setSelectedCate={setSelectedCate} max={2} setForAdult={setForAdult} />
+        <CategoryButtons selectedCate={selectedCate} updateSelectedCate={(groupValue: string[]) => { setSelectedCate(groupValue) }} max={2} />
       </InputContainer>
       <Divider color='gray2' />
       <div className='flex flex-col px-[16px] py-[10px] gap-[16px]'>
