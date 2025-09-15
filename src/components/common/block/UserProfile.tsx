@@ -1,7 +1,7 @@
 'use client';
 import Link from "next/link";
-import { useState } from "react";
-import { AlertDialog } from "..";
+import { Dialog } from "@base-ui-components/react";
+import { DialogPopup, DialogPopupBody } from "..";
 
 export function UserProfile(props: { userId?: number; userName?: string; userProfileImageUrl?: string; color?: string; gap?: string }) {
   const blockstyle = `flex flex-row items-center gap-[${props.gap ?? '4px'}]`
@@ -20,19 +20,22 @@ export function UserProfile(props: { userId?: number; userName?: string; userPro
 }
 
 function NoUser() {
-  const [open, setOpen] = useState(false);
-  const handleOpen = (e: any) => { e.stopPropagation(); setOpen(true) }
-  return (
-    <>
+  const NoUserProfile = () => (
+    <Dialog.Trigger >
       <div className='flex flex-row items-center'>
-        <img className='w-[24px] h-[24px]' src="/profile_ghost.svg" onClick={handleOpen} />
+        <img className='w-[24px] h-[24px]' src="/profile_ghost.svg" />
         <p className="text-14 ps-[4px] text-gray3">Ghost</p>
       </div>
-      <AlertDialog open={open} setOpen={setOpen} headerText='삭제된 유저입니다' buttonText1='확인'>
-          <p>죄송합니다. 사용자를 찾을 수 없습니다.</p>
-          <p>삭제된 유저의 게시글은 확인할 수 있지만</p>
-          <p>사용자의 정보를 불러올 수 없습니다.</p>
-      </AlertDialog>
-    </>
+    </Dialog.Trigger>
+  )
+
+  return (
+    <DialogPopup headText="삭제된 유저입니다" trigger={<NoUserProfile />}>
+      <DialogPopupBody closeText="확인">
+        <p>죄송합니다. 사용자를 찾을 수 없습니다.</p>
+        <p>삭제된 유저의 게시글은 확인할 수 있지만</p>
+        <p>사용자의 정보를 불러올 수 없습니다.</p>
+      </DialogPopupBody>
+    </DialogPopup>
   )
 }

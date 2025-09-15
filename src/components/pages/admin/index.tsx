@@ -7,6 +7,7 @@ import { BannerTitleInput } from "./banner/BannerTitleInput";
 import { LinkedEventPage } from "./banner/_LinkedEventPage";
 import { CategoryList } from "./category/CategoryList";
 import { CategoryPage } from "./category/CategoryPage";
+import { CategoryAdd } from "./category/CategoryAdd";
 import { PostManagePage } from "./post/PostManagePage";
 import { PostList } from "./post/PostList";
 import { ReportManagePage } from "./report/ReportManagePage";
@@ -18,7 +19,7 @@ import { UserTableExpanded } from "./user/UserTableExpanded";
 export {
   AdminPage,
   BannerPage, BannerCardPage, BannerCardItem, BannerTitleInput, LinkedEventPage,
-  CategoryPage, CategoryList,
+  CategoryPage, CategoryList, CategoryAdd,
   PostManagePage, PostList,
   ReportManagePage,
   UserManagePage, UserTable, UserTableExpanded,

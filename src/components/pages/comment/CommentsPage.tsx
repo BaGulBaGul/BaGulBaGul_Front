@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { originText, useDelete, useListWithPage } from '@/hooks/useInCommon';
 import useLoginInfo from '@/hooks/useLoginInfo';
 import { SubHeaderCnt } from '@/components/layout/subHeader';
-import { CommentMProps, CommentProps, AlertDialog, SkeletonComments, ListWrapper, ReportDialog, BottomDrawer, BottomDrawerBody } from '@/components/common';
+import { CommentMProps, CommentProps, SkeletonComments, ListWrapper, ReportDialog, BottomDrawer, BottomDrawerBody } from '@/components/common';
 import { CommentBlock, CommentFooter, ModifyInput, CommentLikeButton } from '@/components/pages/comment';
 
 export function CommentsPage({origin, postId}: { origin: 'event' | 'event/recruitment'; postId: any; }) {
@@ -13,8 +13,6 @@ export function CommentsPage({origin, postId}: { origin: 'event' | 'event/recrui
   // 수정창
   const [openM, setOpenM] = useState(false);
   const [targetM, setTargetM] = useState<CommentMProps | undefined>();
-  // 로그인 안내창
-  const [openA, setOpenA] = useState(false);
 
   const userinfo = useLoginInfo().data
 
@@ -54,7 +52,7 @@ export function CommentsPage({origin, postId}: { origin: 'event' | 'event/recrui
           ))}
         </ListWrapper>
       </div>
-      <CommentFooter url={`${origin}/${postId}`} qKey={qKey} isLogin={!!userinfo} setOpenA={setOpenA} />
+      <CommentFooter url={`${origin}/${postId}`} qKey={qKey} isLogin={!!userinfo} />
       <BottomDrawer open={openD} toggleOpen={(open) => { setOpenD(open) }}>
         {!!userinfo && !!targetM && userinfo.id === targetM.userId
           ? <BottomDrawerBody me={true} handleDelete={handleDelete} handleEdit={() => { setOpenM(true); setOpenD(false); }} />
@@ -63,10 +61,6 @@ export function CommentsPage({origin, postId}: { origin: 'event' | 'event/recrui
       </BottomDrawer>
       <ReportDialog open={openR} toggleOpen={(open) => { setOpenR(open); }} type={'comment'} target={targetM?.commentId} />
       <ModifyInput open={openM} setOpenM={setOpenM} target={targetM} setTarget={setTargetM} origin={origin} qKey={qKey} />
-      <AlertDialog open={openA} setOpen={setOpenA} headerText='잠깐! 로그인이 필요해요' buttonText1='닫기' buttonText2='로그인 하러가기' buttonLink='/signin'>
-        <p>함께 소통하려면 로그인해 주세요.</p>
-        <p>금방 끝나요!</p>
-      </AlertDialog>
     </>
   );
 }

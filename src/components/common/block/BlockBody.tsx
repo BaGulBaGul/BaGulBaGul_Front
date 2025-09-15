@@ -14,7 +14,7 @@ export function BlockBodyAD({ title, startDate, endDate, writer, head, address }
         <p className="text-14 text-gray3">{address}</p>
         <DateLine startDate={startDate} endDate={endDate} />
       </div>
-      <div className='flex flex-row items-center gap-[4px]'>
+      <div className='flex flex-row items-center gap-[4px]' onClick={(e: any) => e.stopPropagation()} >
         {!!writer && <UserProfile userId={writer.userId} userName={writer.userName} userProfileImageUrl={writer.userProfileImageUrl} />}
         {!!head && <HeadCount currentHeadCount={head.current} maxHeadCount={head.max} />}
       </div>
@@ -27,7 +27,7 @@ export function BlockBodyD({ title, startDate, endDate, writer, head }: Props) {
     <div className="flex flex-col gap-[4px]">
       <p className='text-16 font-semibold truncate'>{title}</p>
       <DateLine startDate={startDate} endDate={endDate} />
-      <div className='flex flex-row items-center gap-[4px]'>
+      <div className='flex flex-row items-center gap-[4px]' onClick={(e: any) => e.stopPropagation()} >
         {!!writer && <UserProfile userId={writer.userId} userName={writer.userName} userProfileImageUrl={writer.userProfileImageUrl} color="gray3" />}
         {!!head && <HeadCount currentHeadCount={head.current} maxHeadCount={head.max} />}
       </div>
@@ -46,7 +46,7 @@ export function BlockBodyCal({ title, startDate, endDate, writer, head, type, ad
           <DateLine startDate={startDate} endDate={endDate} />
         </div>
       </div>
-      <div className='flex flex-row items-center gap-[4px]'>
+      <div className='flex flex-row items-center gap-[4px]' onClick={(e: any) => e.stopPropagation()} >
         {!!writer && <UserProfile userId={writer.userId} userName={writer.userName} userProfileImageUrl={writer.userProfileImageUrl} color="gray3" />}
         {!!head && <HeadCount currentHeadCount={head.current} maxHeadCount={head.max} />}
       </div>

@@ -7,9 +7,9 @@ import useLoginInfo from '@/hooks/useLoginInfo';
 import { originText, useDelete } from '@/hooks/useInCommon';
 import { SubHeaderCnt } from '@/components/layout/subHeader';
 import { CommentMProps, CommentProps, Divider, ReportDialog, SkeletonComment, BottomDrawer, BottomDrawerBody } from '@/components/common';
-import { RepliedComment, Replies, MemoizedReplyFooter, ModifyInputR } from '@/components/pages/comment';
+import { RepliedComment, Replies, ModifyInputR, MemoizedReplyFooter } from '@/components/pages/comment';
 
-export function RepliesPage({origin, commentId, postId}: { origin: 'event' | 'event/recruitment'; commentId: any; postId: any; }) {
+export function RepliesPage({ origin, commentId, postId }: { origin: 'event' | 'event/recruitment'; commentId: any; postId: any; }) {
   // 댓글
   const userinfo = useLoginInfo().data
   let cKey = ['comment', commentId];
@@ -55,7 +55,7 @@ export function RepliesPage({origin, commentId, postId}: { origin: 'event' | 'ev
   const [mentioning, setMentioning] = useState(false)
   const [mentionTarget, setMentionTarget] = useState<{ id?: number, name: string } | undefined>(undefined)
   const mentionRef = useRef<HTMLDivElement>(null);
-  const replyRef = useRef<HTMLInputElement>(null);
+  const replyRef = useRef<HTMLTextAreaElement>(null);
 
   // 멘션 대상 설정
   const switchMention = (data: { id?: number, name: string }) => {
@@ -92,8 +92,8 @@ export function RepliesPage({origin, commentId, postId}: { origin: 'event' | 'ev
         {!comment.data || comment.isError ? <></>
           : <Replies origin={origin} rKey={rKey} apiURL={apiURL} updateRCnt={(cnt: number) => setRCnt(cnt)} handleMention={handleMention} handleToggle={handleToggle} />}
       </div>
-      <MemoizedReplyFooter url={`${apiURL}/children`} qKey={rKey} mentioning={mentioning} setMentioning={setMentioning}
-        target={mentionTarget} setMentionTarget={setMentionTarget} mentionRef={mentionRef} replyRef={replyRef} />
+      <MemoizedReplyFooter url={`${apiURL}/children`} qKey={rKey} mentioning={mentioning} updateMentioning={(m: boolean) => setMentioning(m)}
+        target={mentionTarget} mentionRef={mentionRef} replyRef={replyRef} isLogin={!!userinfo} />
       <BottomDrawer open={openD} toggleOpen={(open) => { setOpenD(open) }}>
         {!!userinfo && !!targetM && userinfo.id === targetM.userId
           ? <BottomDrawerBody me={true} handleDelete={handleDelete} handleEdit={() => { setOpenM(true); setOpenD(false); }} />

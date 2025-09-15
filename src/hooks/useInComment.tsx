@@ -26,7 +26,7 @@ export const useModifyR = (url: string, qKey: any, mdfRef: React.RefObject<HTMLD
   })
 }
 
-export const useNewComment = (url: string, qKey: any, cmtRef: RefObject<HTMLInputElement>) => {
+export const useNewComment = (url: string, qKey: any, cmtRef: RefObject<HTMLTextAreaElement>) => {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: () => mutateForURL(url, 'POST', { 'content': cmtRef.current!.value }),
@@ -37,7 +37,7 @@ export const useNewComment = (url: string, qKey: any, cmtRef: RefObject<HTMLInpu
   })
 }
 
-export const useNewReply = (url: string, qKey: any, replyRef?: any, mentionRef?: any, target?: any, setMentioning?: Dispatch<SetStateAction<boolean>>) => {
+export const useNewReply = (url: string, qKey: any, replyRef?: any, mentionRef?: any, target?: any, updateMentioning?: (m: boolean) => void) => {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: () => {
@@ -52,7 +52,7 @@ export const useNewReply = (url: string, qKey: any, replyRef?: any, mentionRef?:
     onSuccess: () => {
       if (mentionRef.current) { mentionRef.current.innerText = '' }
       if (replyRef.current) { replyRef.current.value = '' }
-      if (!!setMentioning) { setMentioning(false) }
+      if (!!updateMentioning) { updateMentioning(false) }
       queryClient.invalidateQueries({ queryKey: qKey })
     }
   })

@@ -2,7 +2,7 @@
 import { useRef, useState } from "react";
 import { useReport } from "@/hooks/useInReport";
 import { ReportRadios } from "./ReportRadios";
-import { AlertDialog, DialogFull, DialogHeader } from "..";
+import { DialogFull, DialogHeader, DialogPopup, DialogPopupBody } from "..";
 
 interface Props { open: boolean; toggleOpen: (open: boolean) => void; type: 'comment' | 'comment-child' | 'event' | 'recruitment'; target?: number; }
 export function ReportDialog({ open, toggleOpen, type, target }: Props) {
@@ -41,10 +41,12 @@ export function ReportDialog({ open, toggleOpen, type, target }: Props) {
           <DialogHeader headerText='신고하기' />
           <ReportTab />
         </DialogFull>
-        <AlertDialog open={openA} setOpen={setOpenA} headerText='이미 신고한 게시글입니다' buttonText1='확인'>
-          <p>이 글은 이미 신고되었어요!</p>
-          <p>더 꺠끗한 바글바글, 함께 만들어요</p>
-        </AlertDialog>
+        <DialogPopup headText='이미 신고한 게시글입니다' open={openA} handleDialogChange={(open: boolean) => setOpenA(open)}>
+          <DialogPopupBody closeText='확인'>
+            <p>이 글은 이미 신고되었어요!</p>
+            <p>더 꺠끗한 바글바글, 함께 만들어요</p>
+          </DialogPopupBody>
+        </DialogPopup>
       </>
     )
   } else { return <></> }

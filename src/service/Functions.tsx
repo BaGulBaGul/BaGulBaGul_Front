@@ -1,5 +1,5 @@
 "use client"
-import { useEffect } from "react";
+import { RefObject, useEffect } from "react";
 import { createSearchParams } from 'react-router-dom'
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
@@ -164,3 +164,23 @@ export const handleClickAlarm = async (e: any, router: any, alarmId: number, che
     } else { router.push(await urlLink); }
   }
 }
+
+export const handleResizeHeight = (
+  inputRef: RefObject<HTMLTextAreaElement>, entered?: boolean, updateEntered?: (entered: boolean) => void,
+  e?: React.ChangeEvent<HTMLTextAreaElement>, updateTitle?: (e: any) => void
+) => {
+  if (inputRef.current) {
+    inputRef.current.style.height = 'auto'; //height 초기화
+    inputRef.current.style.height = inputRef.current.scrollHeight + 'px';
+    if (entered !== undefined && !!updateEntered) {
+      if (inputRef.current.value.length > 0) {
+        if (!entered) { updateEntered(true) }
+      } else {
+        if (!!entered) { updateEntered(false) }
+      }
+    }
+    if (!!e && !!updateTitle) {
+      updateTitle(e);
+    }
+  }
+};

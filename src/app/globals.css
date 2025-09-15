@@ -12,6 +12,10 @@ body,
   text-transform: unset
 }
 
+textarea {
+  resize: none;
+}
+
 em {
   font-style: unset;
 }
@@ -163,6 +167,10 @@ em {
   background-color: #FFFFFF;
   pointer-events: auto;
   padding-bottom: 40px;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
 }
 
 .reply-btn {

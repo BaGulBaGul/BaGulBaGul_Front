@@ -7,8 +7,8 @@ import { FooterButton } from "./button/FooterButton";
 import { LogoutButton } from "./button/LogoutButton";
 import MoreButton from "./button/MoreButton";
 import { WriteFab } from "./button/WriteFab";
-import { AlertDialog } from "./display/AlertDialog";
 import { BottomDrawer, BottomDrawerBody } from "./display/BottomDrawer";
+import { DialogPopup, DialogPopupBody } from "./display/DialogPopup";
 import { FullscreenDialog } from "./display/FullscreenDialog";
 import { ImageSlide } from "./display/ImageSlide";
 import { ImagePreview } from "./display/ImagePreview";
@@ -29,7 +29,7 @@ export {
   // button
   AlarmButton, EditButton, ExpandButton, FooterButton, LogoutButton, MoreButton, WriteFab,
   // display
-  AlertDialog, BottomDrawer, BottomDrawerBody, FullscreenDialog, ImageSlide, ImagePreview, DialogFull, DialogHeader, EventCarousel, CarouselBlock,
+  BottomDrawer, BottomDrawerBody, DialogPopup, DialogPopupBody, FullscreenDialog, ImageSlide, ImagePreview, DialogFull, DialogHeader, EventCarousel, CarouselBlock,
   // nav
   TypeTabs, TypeSwitch,
   // report

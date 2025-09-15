@@ -2,10 +2,8 @@
 import React, { useRef, useState } from "react";
 import { categories } from "@/components/common/input/CategoryButtons"
 import { SubTopHeader } from "@/components/layout/subHeader";
-import { AlertDialog, EditButton, FooterButton } from "@/components/common";
-import { SearchInput } from "@/components/common/input";
-import { CategoryList, DndWrapper } from "..";
-import { IconPlus } from "@/components/common/styles/Icon";
+import { EditButton, FooterButton } from "@/components/common";
+import { CategoryList, DndWrapper, CategoryAdd } from "..";
 
 //  * ====== 250522 : AlertDialog UI 추가 수정 필요
 export function CategoryPage() {
@@ -35,16 +33,10 @@ export function CategoryPage() {
     <>
       <SubTopHeader name='카테고리 관리' child={<EditButton editing={editing} handleEdit={handleEdit} />} />
       <div className="flex flex-col pt-[68px]">
-        <button onClick={() => { setOpen(true) }} className="flex flex-row p-[16px] gap-[16px] w-full bg-p-white text-14 font-semibold mb-[8px]">
-          <IconPlus />
-          <p>카테고리 만들기</p>
-        </button>
+        <CategoryAdd inputRef={inputRef} handleAdd={addCategory} />
         <DndWrapper id="category-list" items={data} updateItems={(newData: string[]) => setData(newData)}>
           <CategoryList items={data} editing={editing} selectedItems={selectedItems} handleCategory={handleSelected} />
         </DndWrapper>
-        <AlertDialog open={open} setOpen={setOpen} headerText='카테고리 만들기' buttonText1='닫기' buttonText2='추가하기' buttonAction={addCategory} >
-          <SearchInput inputRef={inputRef} placeholder="카테고리명을 입력하세요." required={true} divStyle="rounded-[2px]" />
-        </AlertDialog>
       </div>
       {editing && <FooterButton text='삭제하기' />}
     </>

@@ -1,8 +1,7 @@
-import { useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useAddLike, useAddSave, useDetailLike, useDetailSave } from '@/hooks/useInDetail';
-import { IconComment, IconShare, IconCalendar, IconHeart } from "@/components/common/styles/Icon";
+import { IconComment, IconCalendar, IconHeart } from "@/components/common/styles/Icon";
 import { ShareDialog } from ".";
 
 interface ToolProps {
@@ -10,7 +9,6 @@ interface ToolProps {
   commentCount: number; likeCount: number;
 }
 export function DetailTools({ origin, postId, userinfo, commentCount, likeCount }: ToolProps) {
-  const [popopen, setPopopen] = useState(false);
   const pathname = usePathname();
   let commentURL = `${pathname}/comments`;
 
@@ -35,10 +33,9 @@ export function DetailTools({ origin, postId, userinfo, commentCount, likeCount 
         </div>
         <div className="flex flex-row gap-[10px]">
           <button onClick={handleCalendar}><IconCalendar checked={saved} /></button>
-          <button onClick={() => setPopopen(true)} className="text-black active:text-primary-blue"><IconShare /></button>
+          <ShareDialog sharingURL={pathname} />
         </div>
       </div>
-      <ShareDialog handleClose={() => setPopopen(false)} popopen={popopen} sharingURL={pathname} />
     </>
   )
 }

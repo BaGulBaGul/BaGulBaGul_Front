@@ -8,7 +8,6 @@ export function BannerPage() {
 	const [backImage, setBackImage] = useState<string | undefined>(undefined)
 	const [backImageKey, setBackImageKey] = useState<Number | undefined>(undefined)
 	const [title, setTitle] = useState<string | undefined>(undefined)
-	const handleTitle = (e: React.ChangeEvent<HTMLTextAreaElement>) => { setTitle(e.target.value) }
 
 	let evt1 = {
 		"title": "이벤트1", "headImageUrl": "/banner1.png", "headImageKey": 1,
@@ -33,7 +32,7 @@ export function BannerPage() {
 				<ImagePreview image={backImage} deleteImage={() => { setBackImage(undefined) }} deleteImageKey={() => { setBackImageKey(undefined) }} height={430} />
 				<ImageUploader setImage={setBackImage} setImageKey={setBackImageKey} multiple={false} />
 			</div>
-			<BannerTitleInput handleChange={handleTitle} title={title} />
+			<BannerTitleInput updateTitle={(e: React.ChangeEvent<HTMLTextAreaElement>) => setTitle(e.target.value)} title={title} />
 			<Divider color='gray2' />
 			<DndWrapper id="banner-card-list" items={cardData} updateItems={(newData: BannerInfo[]) => setCardData(newData)}>
 				{cardData.map(item => (
