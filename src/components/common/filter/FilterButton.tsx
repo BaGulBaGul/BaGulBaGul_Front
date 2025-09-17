@@ -1,11 +1,10 @@
 import { IconFilter } from "../styles/IconSingleUse";
 
-interface Props { handleOpen: any; cnt: number; fs: 14 | 18; }
-export function FilterButton(props: Props) {
+export function FilterButton({ handleOpen, cnt }: { handleOpen: any; cnt: number; }) {
   return (
-    <button onClick={props.handleOpen} className={`inline-flex justify-between items-center max-w-[67px] break-keep text-gray3 ${props.fs === 14 ? 'text-14 min-w-[49px]' : 'text-18 pb-[3px] min-w-[55px]'}`} >
+    <button onClick={handleOpen} className='inline-flex justify-between items-center max-w-[67px] break-keep text-gray3 text-14 min-w-[49px]' >
       <div>필터</div>
-      {props.cnt > 0 ? <span>{props.cnt}</span> : <></>}
+      {cnt > 0 && <span>{cnt}</span>}
       <IconFilter />
     </button>
   )

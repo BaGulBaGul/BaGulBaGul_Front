@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { mutateForURL } from '@/service/ApiService';
-import { Dispatch, RefObject, SetStateAction } from 'react';
+import { RefObject } from 'react';
 
-export const useModify = (url: string, qKey: any, mdfRef: React.RefObject<HTMLInputElement>, setTarget: any, setOpenM: any) => {
+export const useModify = (url: string, qKey: any, mdfRef: React.RefObject<HTMLTextAreaElement>, setTarget: any, setOpenM: any) => {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: () => mutateForURL(url, 'PATCH', { 'content': mdfRef.current!.value }),

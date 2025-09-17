@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from "react";
-import { closeFilter, FilterApplied, FilterButton, FilterCalendar, FilterDialog, FilterSortRadio } from "@/components/common/filter";
+import { DialogFilter, closeFilter, FilterApplied, FilterButton, FilterCalendar, FilterSortRadio } from "@/components/common/filter";
 import { InputCollapse, SearchInput } from "@/components/common/input";
 import { IconSearchS } from "@/components/common/styles/Icon";
 import { FormatDateRange } from "@/service/Functions";
@@ -21,7 +21,6 @@ export function UserManagePage() {
   }
 
   const [open, setOpen] = useState(false);
-  const handleOpen = () => { setOpen(true) }
 
   const [filters, setFilters] = useState(['sort'])
   const [filterCnt, setFilterCnt] = useState(0)
@@ -61,19 +60,19 @@ export function UserManagePage() {
           <SearchInput placeholder='검색' inputRef={inputRef}>
             <button onClick={handleSearch}><IconSearchS /></button>
           </SearchInput>
-          <FilterButton handleOpen={handleOpen} cnt={filterCnt} fs={18} />
+          <FilterButton handleOpen={() => { setOpen(true) }} cnt={filterCnt} />
+          <DialogFilter isOpen={open} handleClose={() => { closeFilter(setOpen); }} title='유저관리 상세필터' >
+            <FilterSortRadio value={sort} handleChange={(newSort: string) => { setSort(newSort) }} />
+            <InputCollapse title={'가입일자'} type='CAL' value={!joinedDate ? '' : FormatDateRange(joinedDate, null)}>
+              <FilterCalendar startDate={joinedDate} endDate={undefined} onChange={(date: any) => { setJoinedDate(date) }} range={false} />
+            </InputCollapse>
+          </DialogFilter>
         </div>
         <FilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters} opt='UPDATE' sort={sort} joinedDate={joinedDate} handleDelete={handleDeleteFilter} />
       </div>
       <div className={filterCnt > 0 ? "h-[calc(100vh-152px)] mt-[152px]" : "h-[calc(100vh-126px)] mt-[126px]"}>
-        <UserTable defaultData={defaultData}/>
+        <UserTable defaultData={defaultData} />
       </div>
-      <FilterDialog open={open} handleClose={() => { closeFilter(setOpen); }} title='유저관리 상세필터' >
-        <FilterSortRadio value={sort} handleChange={(newSort: string) => { setSort(newSort) }} />
-        <InputCollapse title={'가입일자'} type='CAL' value={!joinedDate ? '' : FormatDateRange(joinedDate, null)}>
-          <FilterCalendar startDate={joinedDate} endDate={undefined} onChange={(date: any) => { setJoinedDate(date) }} range={false} />
-        </InputCollapse>
-      </FilterDialog>
     </>
   )
 }

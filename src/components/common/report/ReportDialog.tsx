@@ -7,13 +7,11 @@ import { DialogFull, DialogHeader, DialogPopup, DialogPopupBody } from "..";
 interface Props { open: boolean; toggleOpen: (open: boolean) => void; type: 'comment' | 'comment-child' | 'event' | 'recruitment'; target?: number; }
 export function ReportDialog({ open, toggleOpen, type, target }: Props) {
   const [value, setValue] = useState<string | undefined>(undefined)
-  const closeDialog = () => { toggleOpen(false) }
-  const etcRef = useRef<HTMLInputElement>(null);
+  const etcRef = useRef<HTMLTextAreaElement>(null);
   // 중복 신고 alert
   const [openA, setOpenA] = useState(false)
-  const openAlert = () => { setOpenA(true); }
 
-  const mutateReport = useReport(type, (newValue: any) => setValue(newValue), closeDialog, openAlert)
+  const mutateReport = useReport(type, (newValue: any) => setValue(newValue), () => { toggleOpen(false) }, () => { setOpenA(true) })
   const handleReport = () => {
     if (!value) { alert('신고하는 이유를 반드시 선택해주세요.') }
     else { mutateReport.mutate({ [targetKey(type)]: target, "reportType": value, "message": etcRef.current?.value ?? '' }) }

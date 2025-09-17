@@ -4,7 +4,7 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 import dayjs from 'dayjs';
 import { FormatDateRange, getParams, headCountString, useEffectCntFilter } from "@/service/Functions";
 import { TypeTabs } from "@/components/common";
-import { FilterApplied, FilterDialog, closeFilter, FilterSortRadio, handleObjectValue, FilterCalendar, FilterButton } from "@/components/common/filter";
+import { DialogFilter, FilterApplied, closeFilter, FilterSortRadio, handleObjectValue, FilterCalendar, FilterButton } from "@/components/common/filter";
 import { CategoryButtons, InputCollapse, InputNumber, InputNumberRange } from "@/components/common/input";
 import { SearchBar, SearchTagBar } from ".";
 
@@ -73,14 +73,15 @@ export function SearchLayout({ opt, sp, router, children }: Props) {
   }, [tab, selectedCate, rt])
 
   const [open, setOpen] = useState(false);
+
   return (
     <div className='flex flex-col w-full h-screen pb-[10px]'>
       {opt === 'TTL'
-        ? <SearchBar title={title} isSearched={true} updateTitle={(t: string) => setTitle(t)} handleBack={() => router.back()} >
-          <FilterButton handleOpen={() => { setOpen(true) }} cnt={filterCnt} fs={14} />
+        ? <SearchBar title={title} isSearched={true} updateTitle={(t: string) => setTitle(t)} handleBack={() => router.back()} handleRoute={handleRt} >
+          <FilterButton handleOpen={() => { setOpen(true) }} cnt={filterCnt} />
         </SearchBar>
         : <SearchTagBar tag={tag ?? ''} handleBack={() => router.back()} >
-          <FilterButton handleOpen={() => { setOpen(true) }} cnt={filterCnt} fs={14} />
+          <FilterButton handleOpen={() => { setOpen(true) }} cnt={filterCnt} />
         </SearchTagBar>
       }
       <div className='w-full p-0 pt-[66px]'>
@@ -89,7 +90,10 @@ export function SearchLayout({ opt, sp, router, children }: Props) {
           <FilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters} opt="REDIRECT" p={p} setP={setP} handleRt={handleRt} />
           <CategoryButtons selectedCate={selectedCate} updateSelectedCate={(groupValue: string[]) => { setSelectedCate(groupValue) }} />
         </div>
-        <FilterDialog open={open} handleClose={() => { closeFilter(setOpen, routeToFilter) }} >
+        {<div className={filterCnt > 0 ? 'mt-[120px]' : 'mt-[94px]'}>
+          {children}
+        </div>}
+        <DialogFilter isOpen={open} handleClose={() => { closeFilter(setOpen, routeToFilter) }} >
           <FilterSortRadio value={p.sort} handleChange={(newSort: string) => { handleObjectValue(setP, 'sort', newSort) }} />
           <InputCollapse title={'날짜선택'} type='CAL' value={!startDate ? '' : FormatDateRange(startDate, endDate)}>
             <FilterCalendar startDate={startDate} endDate={endDate} onChange={(dates: [any, any]) => { setP((prev: any) => ({ ...prev, dateRange: dates })) }} />
@@ -105,10 +109,7 @@ export function SearchLayout({ opt, sp, router, children }: Props) {
               <div className='self-end text-12 text-gray3'>*최대인원 제한 없을 경우 '0'명으로 표기</div>
             </div>
           </InputCollapse>
-        </FilterDialog>
-        {<div className={filterCnt > 0 ? 'mt-[120px]' : 'mt-[94px]'}>
-          {children}
-        </div>}
+        </DialogFilter>
       </div>
     </div>
   );

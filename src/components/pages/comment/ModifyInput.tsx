@@ -1,29 +1,31 @@
-import { TextField } from "@mui/material";
 import React, { useRef, FocusEvent } from "react";
-import { CommentMProps, FullscreenDialog } from "@/components/common";
+import { CommentMProps, DialogFull, DialogHeader } from "@/components/common";
 import { useModify, useModifyR } from "@/hooks/useInComment";
 
 
 interface ModifyProps {
   open: boolean; setOpenM: any; target?: CommentMProps; setTarget: any; origin: 'event' | 'event/recruitment'; qKey: any;
 }
-
 export function ModifyInput(props: ModifyProps) {
-  const mdfRef = useRef<HTMLInputElement>(null);
+  const mdfRef = useRef<HTMLTextAreaElement>(null);
   const mutateModify = useModify(`/api/${props.origin}/comment/${props.target?.commentId}`, props.qKey, mdfRef, props.setTarget, props.setOpenM)
 
   const handleModify = () => {
     if (mdfRef.current?.value.replace(/\n$/, '').replace(/ /g, '').length === 0) { alert('댓글 내용을 입력해주세요.') }
     else if (!!mdfRef.current && mdfRef.current.value.length > 0 && !!props.target) { mutateModify.mutate() }
   }
-  const handleClose = () => {
-    props.setTarget(undefined);
-    props.setOpenM(false);
-  };
 
   return (
-    <FullscreenDialog child={<TextField multiline defaultValue={props.target?.content} inputRef={mdfRef} />}
-      open={props.open} handleClose={handleClose} handleDone={handleModify} headerText='댓글 수정' footerText='수정 완료' />
+    <DialogFull open={props.open} footerText='수정 완료' handleFooter={handleModify}
+      handleDialogChange={(open: boolean) => {
+        if (!open) { props.setTarget(undefined); props.setOpenM(false); }
+      }}>
+      <DialogHeader headerText='댓글 수정' />
+      <div className="pt-[60px] pb-[77px]">
+        <textarea name='comment-modify' placeholder='댓글을 입력해주세요' rows={1} ref={mdfRef} defaultValue={props.target?.content}
+          className='w-full h-[calc(100vh-60px-77px-26px)] px-[24px] py-[13px] text-14 outline-none' />
+      </div>
+    </DialogFull>
   )
 }
 
@@ -101,12 +103,15 @@ export function ModifyInputR(props: ModifyProps) {
     )
   }
 
-  const handleClose = () => {
-    props.setTarget(undefined);
-    props.setOpenM(false);
-  };
-
   return (
-    <FullscreenDialog child={<ReplyField />} open={props.open} handleClose={handleClose} handleDone={handleModify} headerText='댓글 수정' footerText='수정 완료' />
+    <DialogFull open={props.open} footerText='수정 완료' handleFooter={handleModify}
+      handleDialogChange={(open: boolean) => {
+        if (!open) { props.setTarget(undefined); props.setOpenM(false); }
+      }}>
+      <DialogHeader headerText='댓글 수정' />
+      <div className="pt-[60px] pb-[77px]">
+        <ReplyField />
+      </div>
+    </DialogFull>
   )
 }

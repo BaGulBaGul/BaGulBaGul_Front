@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import dayjs from 'dayjs';
 import { FormatDateRange, getParams, headCountString, useEffectFilterApplied } from '@/service/Functions';
 import { Divider, TypeTabs } from '@/components/common';
-import { FilterApplied, FilterDialog, closeFilter, FilterSortRadio, handleObjectValue, FilterCalendar, FilterButton } from '@/components/common/filter';
+import { DialogFilter, FilterApplied, closeFilter, FilterSortRadio, handleObjectValue, FilterCalendar, FilterButton } from '@/components/common/filter';
 import { CategoryButtons, InputCollapse, InputNumber, InputNumberRange } from '@/components/common/input';
 import { SearchBar, FrequentSearches } from '@/components/pages/search';
 
@@ -44,7 +44,24 @@ export default function Page() {
   return (
     <div className='flex flex-col w-full h-screen'>
       <SearchBar title={title} isSearched={false} updateTitle={(t: string) => setTitle(t)} handleBack={() => router.back()} >
-        <FilterButton handleOpen={() => { setOpen(true) }} cnt={filterCnt} fs={14} />
+        <FilterButton handleOpen={() => { setOpen(true) }} cnt={filterCnt} />
+        <DialogFilter isOpen={open} handleClose={() => { closeFilter(setOpen) }} >
+          <FilterSortRadio value={p.sort} handleChange={(newSort: string) => { handleObjectValue(setP, 'sort', newSort) }} />
+          <InputCollapse title={'날짜선택'} type='CAL' value={!startDate ? '' : FormatDateRange(startDate, endDate)}>
+            <FilterCalendar startDate={startDate} endDate={endDate} onChange={(dates: [any, any]) => { setP((prev: any) => ({ ...prev, dateRange: dates })) }} />
+          </InputCollapse>
+          <InputCollapse title={'참여인원'} type="NUM" value={p.participants} >
+            <InputNumber value={p.participants} onChange={(newValue) => handleObjectValue(setP, 'participants', newValue)} />
+          </InputCollapse>
+          <InputCollapse title={'규모설정'} type="NUM" value={!!p.headCount.from || !!p.headCount.to ? headCountString(p.headCount.from, p.headCount.to) : 0}>
+            <div className='flex flex-col gap-[8px]'>
+              <InputNumberRange
+                minNumber={{ value: p.headCount.from, onChange: (newValue: any) => { handleObjectValue(setP, 'headCount', { from: newValue ?? undefined, to: p.headCount.to }) } }}
+                maxNumber={{ value: p.headCount.to, min: p.headCount.from, onChange: (newValue: any) => { handleObjectValue(setP, 'headCount', { from: p.headCount.from, to: newValue ?? undefined }) } }} />
+              <div className='self-end text-12 text-gray3'>*최대인원 제한 없을 경우 '0'명으로 표기</div>
+            </div>
+          </InputCollapse>
+        </DialogFilter>
       </SearchBar>
       <div className='w-full p-0 pt-[66px]'>
         <div className='fixed top-[66px] w-full bg-p-white z-10'>
@@ -57,23 +74,6 @@ export default function Page() {
           <FrequentSearches />
         </div>
       </div>
-      <FilterDialog open={open} handleClose={() => { closeFilter(setOpen) }} >
-        <FilterSortRadio value={p.sort} handleChange={(newSort: string) => { handleObjectValue(setP, 'sort', newSort) }} />
-        <InputCollapse title={'날짜선택'} type='CAL' value={!startDate ? '' : FormatDateRange(startDate, endDate)}>
-          <FilterCalendar startDate={startDate} endDate={endDate} onChange={(dates: [any, any]) => { setP((prev: any) => ({ ...prev, dateRange: dates })) }} />
-        </InputCollapse>
-        <InputCollapse title={'참여인원'} type="NUM" value={p.participants} >
-          <InputNumber value={p.participants} onChange={(newValue) => handleObjectValue(setP, 'participants', newValue)} />
-        </InputCollapse>
-        <InputCollapse title={'규모설정'} type="NUM" value={!!p.headCount.from || !!p.headCount.to ? headCountString(p.headCount.from, p.headCount.to) : 0}>
-          <div className='flex flex-col gap-[8px]'>
-            <InputNumberRange
-              minNumber={{ value: p.headCount.from, onChange: (newValue: any) => { handleObjectValue(setP, 'headCount', { from: newValue ?? undefined, to: p.headCount.to }) } }}
-              maxNumber={{ value: p.headCount.to, min: p.headCount.from, onChange: (newValue: any) => { handleObjectValue(setP, 'headCount', { from: p.headCount.from, to: newValue ?? undefined }) } }} />
-            <div className='self-end text-12 text-gray3'>*최대인원 제한 없을 경우 '0'명으로 표기</div>
-          </div>
-        </InputCollapse>
-      </FilterDialog>
     </div>
   );
 }

@@ -8,7 +8,7 @@ export function BottomDrawer({ open, toggleOpen, children }: { open: boolean; to
     <Dialog.Root open={open} onOpenChange={toggleOpen}>
       <Dialog.Portal >
         <Dialog.Backdrop className='backdrop' />
-        <Dialog.Popup className="fixed w-screen bottom-0 left-0 rounded-t-[8px] pb-[40px] bg-p-white overflow-y-scroll z-paper">
+        <Dialog.Popup className="fixed w-screen max-h-[calc(100vh-72px)] bottom-0 left-0 rounded-t-[8px] bg-p-white overflow-y-scroll z-paper">
           {children}
         </Dialog.Popup>
       </Dialog.Portal>
@@ -32,7 +32,7 @@ export function BottomDrawerBody(props: Props) {
   )
 }
 
-function DrawerBlock({ title, handleClick, itemStyle }: { title: string; handleClick: () => void; itemStyle?: string }) {
+export function DrawerBlock({ title, handleClick, itemStyle }: { title: string; handleClick: () => void; itemStyle?: string }) {
   return (
     <li>
       <button className={"w-full text-left px-[16px] py-[20px] text-14 " + itemStyle} onClick={handleClick}>{title}</button>

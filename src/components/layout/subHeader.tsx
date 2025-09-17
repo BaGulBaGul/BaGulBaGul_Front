@@ -4,13 +4,13 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { IconArrowBack, IconDelete } from '../common/styles/Icon';
 
-export default function SubHeader({ name }: any) {
+export default function SubHeader({ name, children }: { name: string; children?: React.ReactNode }) {
   const router = useRouter();
   return (
     <div className={"header-nav fixed top-[44px]"}>
       <button onClick={() => router.back()}><IconArrowBack /></button>
       <div className='text-18'>{name}</div>
-      <div className='w-[24px]'/>
+      {children ?? <div className='w-[24px]' />}
     </div>
   )
 }
@@ -21,7 +21,7 @@ export function SubTopHeader(props: { name: any; child?: React.ReactNode }) {
     <header className={"header-nav fixed top-0"}>
       <button onClick={() => router.back()}><IconArrowBack /></button>
       <div className='text-18'>{props.name}</div>
-      {props.child ?? <div className='w-[24px]'/>}
+      {props.child ?? <div className='w-[24px]' />}
     </header>
   )
 }

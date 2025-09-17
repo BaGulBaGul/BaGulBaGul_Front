@@ -14,7 +14,7 @@ export const InputDateSelect = (props: { title: string; date: dayjs.Dayjs | null
   return (
     <>
       <InputContainer title={props.title}
-        btn={<CollapseButton type={'CAL'} handleOpen={() => setOpen(!open)} value={!!props.date} valueText={valueText} />}>
+        btn={<CollapseButton type={'CAL'} value={!!props.date} valueText={valueText} />}>
         <ScrollPicker open={open} data={props.date} handleClose={handleClose} />
       </InputContainer>
     </>

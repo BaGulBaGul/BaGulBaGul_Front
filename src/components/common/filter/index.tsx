@@ -1,13 +1,13 @@
 import { RangeProps } from "..";
 import { FilterApplied } from "./FilterApplied";
 import { FilterButton } from "./FilterButton";
-import { FilterDialog } from "./FilterDialog";
+import { DialogFilter } from "./DialogFilter";
 import { FilterCalendar } from "./FilterCalendar";
 import { FilterSortRadio } from "./FilterSortRadio";
 
 export {
   FilterApplied, FilterButton,
-  FilterDialog, 
+  DialogFilter,
   FilterCalendar, FilterSortRadio,
 }
 

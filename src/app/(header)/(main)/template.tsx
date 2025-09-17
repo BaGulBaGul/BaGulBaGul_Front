@@ -4,7 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import dayjs from 'dayjs';
 import { FormatDateRange, getParams, headCountString, useEffectCntFilter } from '@/service/Functions';
 import { TypeTabs, EventCarousel } from '@/components/common';
-import { FilterButton, FilterApplied, FilterDialog, closeFilter, handleObjectValue, FilterSortRadio, FilterCalendar } from '@/components/common/filter';
+import { DialogFilter, FilterButton, FilterApplied, closeFilter, handleObjectValue, FilterSortRadio, FilterCalendar } from '@/components/common/filter';
 import { CategoryButtons, InputCheck, InputCollapse, InputNumber, InputNumberRange } from '@/components/common/input';
 
 export default function Template({ children }: { children: React.ReactNode }) {
@@ -51,36 +51,37 @@ export default function Template({ children }: { children: React.ReactNode }) {
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => { setOpen(true) }
+
   const defaultTitle = "SUMMER\n페스티벌 추천"
   return (
     <div className='flex flex-col w-full pt-[44px]'>
       <EventCarousel title={defaultTitle} />
       <div className='w-full px-0'>
         <TypeTabs val={tab} handleChange={handleChange} wrapStyle='sticky relative top-[44px] pt-[20px]'>
-          <FilterButton handleOpen={handleOpen} cnt={filterCnt} fs={18} />
+          <FilterButton handleOpen={handleOpen} cnt={filterCnt} />
+          <DialogFilter isOpen={open} handleClose={() => { closeFilter(setOpen, routeToFilter) }} >
+            <InputCheck title='종료된 행사 제외하기' checked={p.proceeding} handleChange={(checked: boolean) => { handleObjectValue(setP, 'proceeding', checked) }} />
+            <FilterSortRadio value={p.sort} handleChange={(newSort: string) => { handleObjectValue(setP, 'sort', newSort) }} />
+            <InputCollapse title={'날짜선택'} type='CAL' value={!startDate ? '' : FormatDateRange(startDate, endDate)}>
+              <FilterCalendar startDate={startDate} endDate={endDate} onChange={(dates: [any, any]) => { handleObjectValue(setP, 'dateRange', dates) }} />
+            </InputCollapse>
+            <InputCollapse title={'참여인원'} type="NUM" value={p.participants} >
+              <InputNumber value={p.participants} onChange={(newValue) => handleObjectValue(setP, 'participants', newValue)} />
+            </InputCollapse>
+            <InputCollapse title={'규모설정'} type="NUM" value={!!p.headCount.from || !!p.headCount.to ? headCountString(p.headCount.from, p.headCount.to) : 0}>
+              <div className='flex flex-col gap-[8px]'>
+                <InputNumberRange
+                  minNumber={{ value: p.headCount.from, onChange: (newValue: any) => { handleObjectValue(setP, 'headCount', { from: newValue ?? undefined, to: p.headCount.to }) } }}
+                  maxNumber={{ value: p.headCount.to, min: p.headCount.from, onChange: (newValue: any) => { handleObjectValue(setP, 'headCount', { from: p.headCount.from, to: newValue ?? undefined }) } }} />
+                <div className='self-end text-12 text-gray3'>*최대인원 제한 없을 경우 '0'명으로 표기</div>
+              </div>
+            </InputCollapse>
+          </DialogFilter>
         </TypeTabs>
         <div className='sticky top-[102px] relative bg-p-white z-10'>
           <FilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters} opt="REDIRECT" p={p} setP={setP} handleRt={handleRt} />
           <CategoryButtons selectedCate={selectedCate} updateSelectedCate={(groupValue: string[]) => { setSelectedCate(groupValue) }} />
         </div>
-        <FilterDialog open={open} handleClose={() => { closeFilter(setOpen, routeToFilter) }} >
-          <InputCheck title='종료된 행사 제외하기' checked={p.proceeding} handleChange={(checked: boolean) => { handleObjectValue(setP, 'proceeding', checked) }} />
-          <FilterSortRadio value={p.sort} handleChange={(newSort: string) => { handleObjectValue(setP, 'sort', newSort) }} />
-          <InputCollapse title={'날짜선택'} type='CAL' value={!startDate ? '' : FormatDateRange(startDate, endDate)}>
-            <FilterCalendar startDate={startDate} endDate={endDate} onChange={(dates: [any, any]) => { handleObjectValue(setP, 'dateRange', dates) }} />
-          </InputCollapse>
-          <InputCollapse title={'참여인원'} type="NUM" value={p.participants} >
-            <InputNumber value={p.participants} onChange={(newValue) => handleObjectValue(setP, 'participants', newValue)} />
-          </InputCollapse>
-          <InputCollapse title={'규모설정'} type="NUM" value={!!p.headCount.from || !!p.headCount.to ? headCountString(p.headCount.from, p.headCount.to) : 0}>
-            <div className='flex flex-col gap-[8px]'>
-              <InputNumberRange
-                minNumber={{ value: p.headCount.from, onChange: (newValue: any) => { handleObjectValue(setP, 'headCount', { from: newValue ?? undefined, to: p.headCount.to }) } }}
-                maxNumber={{ value: p.headCount.to, min: p.headCount.from, onChange: (newValue: any) => { handleObjectValue(setP, 'headCount', { from: p.headCount.from, to: newValue ?? undefined }) } }} />
-              <div className='self-end text-12 text-gray3'>*최대인원 제한 없을 경우 '0'명으로 표기</div>
-            </div>
-          </InputCollapse>
-        </FilterDialog>
         {children}
       </div>
     </div>

@@ -4,9 +4,9 @@ import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import dayjs from 'dayjs';
 import { FormatDateRange, getParams, useEffectCntFilter } from '@/service/Functions';
 import { WriteFab } from '@/components/common';
-import { closeFilter, FilterApplied, FilterButton, FilterCalendar, FilterDialog, FilterSortRadio, handleObjectValue } from '@/components/common/filter';
-import { InputCheck, InputCollapse, InputNumber } from '@/components/common/input';
-import { IconArrowBack } from '@/components/common/styles/IconArrow';
+import { DialogFilter, closeFilter, FilterApplied, FilterButton, FilterCalendar, FilterSortRadio, handleObjectValue } from '@/components/common/filter';
+import { InputCheck, InputNumber, InputCollapse } from '@/components/common/input';
+import SubHeader from '@/components/layout/subHeader';
 
 export default function Template({ children }: { children: React.ReactNode }) {
   const prms = useParams()
@@ -48,30 +48,27 @@ export default function Template({ children }: { children: React.ReactNode }) {
   }, [rt])
 
   const [open, setOpen] = useState(false);
-  const handleOpen = () => { setOpen(true) }
 
   return (
     <>
-      <div className="fixed top-[44px] left-0 right-0 flex flex-row justify-between place-items-center w-full h-[60px] px-[17px] py-[10px] bg-p-white z-30">
-        <button onClick={() => router.back()}><IconArrowBack /></button>
-        <div className='text-18'>모집글</div>
-        <FilterButton handleOpen={handleOpen} cnt={filterCnt} fs={18} />
-      </div>
+      <SubHeader name="모집글" >
+        <FilterButton handleOpen={() => { setOpen(true) }} cnt={filterCnt} />
+        <DialogFilter isOpen={open} handleClose={() => { closeFilter(setOpen, routeToFilter) }} >
+          <InputCheck title='모집 중만 보기' checked={p.recruiting} handleChange={(checked: boolean) => { handleObjectValue(setP, 'recruiting', checked) }} />
+          <FilterSortRadio value={p.sort} handleChange={(newSort: string) => { handleObjectValue(setP, 'sort', newSort) }} />
+          <InputCollapse title={'날짜선택'} type='CAL' value={!startDate ? '' : FormatDateRange(startDate, endDate)}>
+            <FilterCalendar startDate={startDate} endDate={endDate} onChange={(dates: [any, any]) => { setP((prev: any) => ({ ...prev, dateRange: dates })) }} />
+          </InputCollapse>
+          <InputCollapse title={'참여인원'} type="NUM" value={p.participants} >
+            <InputNumber value={p.participants} onChange={(newValue) => handleObjectValue(setP, 'participants', newValue)} />
+          </InputCollapse>
+        </DialogFilter>
+      </SubHeader>
       {filterCnt <= 0 ? <></>
         : <div className='fixed top-[104px] w-full h-[36px] bg-p-white z-10'>
           <FilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters} opt="REDIRECT" p={p} setP={setP} handleRt={handleRt} />
         </div>
       }
-      <FilterDialog open={open} handleClose={() => { closeFilter(setOpen, routeToFilter) }} >
-        <InputCheck title='모집 중만 보기' checked={p.recruiting} handleChange={(checked: boolean) => { handleObjectValue(setP, 'recruiting', checked) }} />
-        <FilterSortRadio value={p.sort} handleChange={(newSort: string) => { handleObjectValue(setP, 'sort', newSort) }} />
-        <InputCollapse title={'날짜선택'} type='CAL' value={!startDate ? '' : FormatDateRange(startDate, endDate)}>
-          <FilterCalendar startDate={startDate} endDate={endDate} onChange={(dates: [any, any]) => { setP((prev: any) => ({ ...prev, dateRange: dates })) }} />
-        </InputCollapse>
-        <InputCollapse title={'참여인원'} type="NUM" value={p.participants} >
-          <InputNumber value={p.participants} onChange={(newValue) => handleObjectValue(setP, 'participants', newValue)} />
-        </InputCollapse>
-      </FilterDialog>
       <div className={`flex flex-col w-full ${filterCnt > 0 ? 'pt-[140px]' : 'pt-[104px]'}`}>
         {children}
       </div>

@@ -20,7 +20,7 @@ export function ReportTool() {
     <div className='flex flex-col w-full gap-[10px] pt-[10px]'>
       <CheckboxGroup value={actions} onValueChange={setActions} className='flex flex-row gap-[8px]'>
         {reportActions.map((action) => (
-          <label className='flex flex-row gap-[4px] items-center text-14'>
+          <label className='flex flex-row gap-[4px] items-center text-14' key={action.value}>
             <Checkbox.Root value={action.value} className='' checked={actions.some(x => x === action.value)}>
               <IconCheckBox checked={actions.some(x => x === action.value)} />
             </Checkbox.Root>
