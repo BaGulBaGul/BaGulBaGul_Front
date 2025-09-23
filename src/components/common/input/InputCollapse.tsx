@@ -17,13 +17,14 @@ export function CollapseButton({ type, value, valueText }: { type: 'CAL' | 'NUM'
   )
 }
 
-interface CollapseProps extends PropsWithChildren { title: string; value?: string | Number; type: 'CAL' | 'NUM'; desc?: string; }
+// form에서 닫은 상태에서도 값 유지하기 위한 keepMounted 조건 추가
+interface CollapseProps extends PropsWithChildren { title: string; value?: string | Number; type: 'CAL' | 'NUM'; desc?: string; keepMounted?: boolean }
 export function InputCollapse(props: CollapseProps) {
   let defaultText = props.type === 'CAL' ? '날짜 선택하기1' : '0명';
   let valueText = !!props.value ? `${props.value}${props.type === 'CAL' ? '' : '명'}` : defaultText;
 
   return (
-    <Accordion.Root>
+    <Accordion.Root keepMounted={!!props.keepMounted}>
       <Accordion.Item>
         <InputContainer title={props.title} desc={props.desc}
           btn={<CollapseButton type={props.type} valueText={valueText} value={!!props.value} />}>

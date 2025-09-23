@@ -2,12 +2,14 @@
 import { NumberField } from '@base-ui-components/react/number-field';
 import { IconMinus, IconPlus } from '../styles/Icon';
 
-interface InputNumberProps { value: number; onChange: (value: number | null, event: Event | undefined) => void }
-export function InputNumber({ value, onChange }: InputNumberProps) {
+// interface InputNumberProps { value: number; onChange: (value: number | null, event: Event | undefined) => void }
+interface InputNumberProps { value?: number; name?: string }
+
+export function InputNumber({ value, name }: InputNumberProps) {
   return (
     <div className="flex flex-row justify-between pt-[8px]">
       <span className="text-14">인원 수</span>
-      <NumberField.Root defaultValue={100} value={value} onValueChange={onChange} min={0}>
+      <NumberField.Root defaultValue={value} min={1} name={name}>
         <NumberField.Group className='flex'>
           <NumberField.Decrement>
             <IconMinus />
@@ -22,7 +24,7 @@ export function InputNumber({ value, onChange }: InputNumberProps) {
   )
 }
 
-interface NumberInputProps { value?: number; onChange: any; min?: number; }
+interface NumberInputProps { name?: string; value: number | null; onChange?: any; min?: number | null; }
 interface InputNumberRangeProps { minNumber: NumberInputProps; maxNumber: NumberInputProps; }
 export function InputNumberRange({ minNumber, maxNumber }: InputNumberRangeProps) {
   return (
@@ -36,11 +38,11 @@ export function InputNumberRange({ minNumber, maxNumber }: InputNumberRangeProps
   )
 }
 
-function NumberInput({ title, value, onChange, min }: { title: string } & NumberInputProps) {
+function NumberInput({ name, title, value, onChange, min }: { title: string } & NumberInputProps) {
   return (
     <div className="flex flex-row justify-between border border-gray2 rounded-[8px] w-full px-[16px] py-[5px] gap-[8px]">
       <span className="text-14 w-[49px] text-wrap">{title}</span>
-      <NumberField.Root value={value} onValueChange={onChange} min={min}>
+      <NumberField.Root name={name} value={value} onValueChange={onChange} min={min ?? undefined}>
         <NumberField.Input placeholder="1명" className="w-full max-w-[85px] text-right text-14" />
       </NumberField.Root>
     </div>
