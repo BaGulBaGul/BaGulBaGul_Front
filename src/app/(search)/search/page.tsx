@@ -3,10 +3,9 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getParams, useEffectFilterApplied } from '@/service/Functions';
 import { Divider, TypeTabs } from '@/components/common';
-import { handleObjectValue, FilterButton } from '@/components/common/filter';
+import { handleObjectValue, FilterButton, FilterApplied } from '@/components/common/filter';
 import { CategoryButtons } from '@/components/common/input';
 import { SearchBar, FrequentSearches } from '@/components/pages/search';
-import { FilterApplied2 } from '@/components/common/filter/FilterApplied';
 import { Filter } from './filter';
 
 export default function Page() {
@@ -14,7 +13,7 @@ export default function Page() {
   // 적용된 필터들, 적용된 필터 개수
   const [filters, setFilters] = useState(['sort'])
   const [filterCnt, setFilterCnt] = useState(0)
-  useEffectFilterApplied(p, setFilters, setFilterCnt)
+  useEffectFilterApplied(p, (filters: string[]) => setFilters(filters), (cnt: number) => setFilterCnt(cnt))
 
   const [open, setOpen] = useState(false);
   // Searchbar
@@ -33,7 +32,7 @@ export default function Page() {
       <div className='w-full p-0 pt-[66px]'>
         <div className='fixed top-[66px] w-full bg-p-white z-10'>
           <TypeTabs val={p.tab_id ?? 0} handleChange={(value: any) => { handleObjectValue(setP, 'tab_id', value) }} />
-          {filterCnt > 0 && <FilterApplied2 filters={filters} opt="UPDATE" sp={p} updateSP={(value: Object) => setP(value)} />}
+          {filterCnt > 0 && <FilterApplied opt='UPDATE' filters={filters} sp={p} updateSP={(value: Object) => setP(value)} />}
           <CategoryButtons selectedCate={p.ct ?? []} updateSelectedCate={(groupValue: string[]) => { handleObjectValue(setP, 'ct', groupValue) }} />
           <Divider />
         </div>

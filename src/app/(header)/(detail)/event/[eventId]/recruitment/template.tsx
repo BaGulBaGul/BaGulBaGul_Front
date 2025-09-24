@@ -1,10 +1,9 @@
 "use client";
 import { useState } from 'react';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
-import { useEffectCntFilter } from '@/service/Functions';
-import { FilterButton } from '@/components/common/filter';
+import { useEffectFilterApplied } from '@/service/Functions';
+import { FilterButton, FilterApplied } from '@/components/common/filter';
 import SubHeader from '@/components/layout/subHeader';
-import { FilterApplied1 } from '@/components/common/filter/FilterApplied';
 import { Filter } from './filter';
 
 export default function Template({ children }: { children: React.ReactNode }) {
@@ -16,7 +15,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
   const [filters, setFilters] = useState(['sort'])
   const [filterCnt, setFilterCnt] = useState(0)
   // searchParams로 넘어온 필터 count
-  useEffectCntFilter(searchParams, setFilters, setFilterCnt, searchParams.get('sort') ?? 'createdAt,desc')
+  useEffectFilterApplied(searchParams, (filters: string[]) => setFilters(filters), (cnt: number) => setFilterCnt(cnt))
   const [open, setOpen] = useState(false);
   return (
     <>
@@ -24,7 +23,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
         <FilterButton handleOpen={() => { setOpen(true) }} cnt={filterCnt} />
       </SubHeader>
       {filterCnt > 0 && <div className='fixed top-[104px] w-full h-[36px] bg-p-white z-10'>
-        <FilterApplied1 filters={filters} opt="REDIRECT" sp={searchParams} router={router} state='r' url={`/event/${eventId}/recruitment`} />
+        <FilterApplied opt='REDIRECT' filters={filters} sp={searchParams} router={router} url={`/event/${eventId}/recruitment`} />
       </div>}
       <div className={`flex flex-col w-full ${filterCnt > 0 ? 'pt-[140px]' : 'pt-[104px]'}`}>
         {children}

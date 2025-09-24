@@ -1,12 +1,11 @@
 "use client";
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffectCntFilter } from '@/service/Functions';
+import { useEffectFilterApplied } from '@/service/Functions';
 import { TypeTabs, EventCarousel } from '@/components/common';
-import { FilterButton } from '@/components/common/filter';
+import { FilterButton, FilterApplied } from '@/components/common/filter';
 import { CategoryButtons } from '@/components/common/input';
 import { Filter } from './filter';
-import { FilterApplied1 } from '@/components/common/filter/FilterApplied';
 import { createSearchParams } from 'react-router-dom';
 
 export default function Template({ children }: { children: React.ReactNode }) {
@@ -21,7 +20,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
   const [filters, setFilters] = useState(['sort'])
   const [filterCnt, setFilterCnt] = useState(0)
   // searchParams로 넘어온 필터 count
-  useEffectCntFilter(searchParams, setFilters, setFilterCnt, searchParams.get('sort') ?? 'createdAt,desc')
+  useEffectFilterApplied(searchParams, (filters: string[]) => setFilters(filters), (cnt: number) => setFilterCnt(cnt))
 
   const currentSP = new URLSearchParams(Array.from(searchParams.entries()))
   const routeToFilter = () => {
@@ -42,7 +41,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
           <FilterButton handleOpen={() => { setOpen(true) }} cnt={filterCnt} />
         </TypeTabs>
         <div className='sticky top-[102px] relative bg-p-white z-10'>
-          {filterCnt > 0 && <FilterApplied1 filters={filters} opt="REDIRECT" sp={searchParams} router={router} state='p' url={``} />}
+          {filterCnt > 0 && <FilterApplied opt='REDIRECT' filters={filters} sp={searchParams} router={router} url={``} />}
           <CategoryButtons selectedCate={selectedCate} updateSelectedCate={(groupValue: string[]) => { setSelectedCate(groupValue) }} />
         </div>
         {children}

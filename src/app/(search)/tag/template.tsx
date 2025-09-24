@@ -2,13 +2,12 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation'
 import { createSearchParams } from 'react-router-dom';
-import { useEffectCntFilter } from '@/service/Functions';
+import { useEffectFilterApplied } from '@/service/Functions';
 import { TypeTabs } from '@/components/common';
-import { FilterButton } from '@/components/common/filter';
+import { FilterButton, FilterApplied } from '@/components/common/filter';
 import { CategoryButtons } from '@/components/common/input';
 import { SearchTagBar } from '@/components/pages/search';
 import { Filter } from './filter';
-import { FilterApplied1 } from '@/components/common/filter/FilterApplied';
 
 export default function Template({ children }: { children: React.ReactNode }) {
   const sp = useSearchParams()
@@ -23,7 +22,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
   const [filters, setFilters] = useState(['sort'])
   const [filterCnt, setFilterCnt] = useState(0)
   // searchParams로 넘어온 필터 count
-  useEffectCntFilter(sp, setFilters, setFilterCnt, sp.get('sort') ?? 'createdAt,desc')
+  useEffectFilterApplied(sp, (filters: string[]) => setFilters(filters), (cnt: number) => setFilterCnt(cnt))
 
   const currentSP = new URLSearchParams(Array.from(sp.entries()))
   const routeToFilter = () => {
@@ -47,7 +46,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
       <div className='w-full p-0 pt-[66px]'>
         <div className='fixed top-[66px] w-full bg-p-white z-10'>
           <TypeTabs val={tab} handleChange={(value: any) => { setTab(value); }} />
-          {filterCnt > 0 && <FilterApplied1 filters={filters} opt="REDIRECT" sp={sp} router={router} url={``} />}
+          {filterCnt > 0 && <FilterApplied opt='REDIRECT' filters={filters} sp={sp} router={router} url={``} />}
           <CategoryButtons selectedCate={selectedCate} updateSelectedCate={(groupValue: string[]) => { setSelectedCate(groupValue) }} />
         </div>
         {<div className={filterCnt > 0 ? 'mt-[120px]' : 'mt-[94px]'}>

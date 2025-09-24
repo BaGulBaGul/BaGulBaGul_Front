@@ -3,9 +3,8 @@ import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import dayjs from 'dayjs';
 import { FormatDateRange, getParams, headCountString } from '@/service/Functions';
-import { FilterCalendar, FilterSortRadio } from '@/components/common/filter';
+import { DialogFilter, FilterCalendar, FilterSortRadio } from '@/components/common/filter';
 import { InputNumber, InputCollapse, InputCheck, InputNumberRange } from '@/components/common/input';
-import { DialogFilter1 } from '@/components/common/filter/DialogFilter';
 
 export function Filter({ open, closeFilter }: { open: boolean; closeFilter: () => void }) {
   const searchParams = useSearchParams()
@@ -41,11 +40,11 @@ export function Filter({ open, closeFilter }: { open: boolean; closeFilter: () =
     closeFilter()
   }
   return (
-    <DialogFilter1 isOpen={open} handleSubmit={handleSubmit} >
+    <DialogFilter isOpen={open} handleSubmit={handleSubmit} >
       <InputCheck title='종료된 행사 제외하기' name="state" value="p" defaultChecked={searchParams.get('state') === 'p'} />
       <FilterSortRadio name='sort' defaultValue={searchParams.get('sort') ?? 'createdAt,desc'} />
       <InputCollapse title={'날짜선택'} type='CAL' value={(!dateRange[0] || !dateRange[1]) ? '' : FormatDateRange(dateRange[0], dateRange[1])}>
-        <FilterCalendar startDate={dateRange[0]} endDate={dateRange[1]} onChange={(dates: [any, any]) => { setDateRange(dates) }} form='filter-form' />
+        <FilterCalendar startDate={dateRange[0]} endDate={dateRange[1]} onChange={(dates: [any, any]) => { setDateRange(dates) }} />
       </InputCollapse>
       <InputCollapse title={'참여인원'} type="NUM" value={Number(searchParams.get('ptcp'))} keepMounted={true} >
         <InputNumber value={!!searchParams.get('ptcp') ? Number(searchParams.get('ptcp')) : undefined} name='ptcp' />
@@ -58,6 +57,6 @@ export function Filter({ open, closeFilter }: { open: boolean; closeFilter: () =
           <div className='self-end text-12 text-gray3'>*최대인원 제한 없을 경우 '0'명으로 표기</div>
         </div>
       </InputCollapse>
-    </DialogFilter1>
+    </DialogFilter>
   )
 }

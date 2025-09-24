@@ -9,7 +9,7 @@ import timezone from 'dayjs/plugin/timezone';
 import { call } from "./ApiService";
 
 import { EventType } from "@/components/common";
-import { FilterProps } from "@/components/common/filter";
+import { ReadonlyURLSearchParams } from "next/navigation";
 
 // dayjs 설정
 dayjs.extend(isSameOrBefore);
@@ -49,45 +49,26 @@ export const sortLabel = (sort: string) => {
   }
 }
 
-// update applied filters
-export const useEffectFilterApplied = (p: any, setFilters: any, setFilterCnt: any) => {
+export const useEffectFilterApplied = (p: any, updateFilters: (filters: string[]) => void, updateFilterCnt: (cnt: number) => void) => {
+  const sp = p instanceof ReadonlyURLSearchParams ? Object.fromEntries(p.entries()) : p;
   useEffect(() => {
     let paramFilter: string[] = ['sort']
-    if ((!!p.sD || !!p.eD) && !paramFilter.includes('dayRange')) {
+    if ((!!sp.sD || !!sp.eD) && !paramFilter.includes('dayRange')) {
       paramFilter.push('dayRange')
-    } if (!!p.ptcp && !paramFilter.includes('ptcp')) {
+    } if (!!sp.ptcp && !paramFilter.includes('ptcp')) {
       paramFilter.push('ptcp')
-    } if ((!!p.hcMin || !!p.hcMax) && !paramFilter.includes('headCount')) {
+    } if ((!!sp.hcMin || !!sp.hcMax) && !paramFilter.includes('headCount')) {
       paramFilter.push('headCount')
+    } if (!!sp.state && !paramFilter.includes('state')) {
+      paramFilter.push('state')
     }
 
     if (paramFilter.length > 0) {
-      setFilters(paramFilter)
-      if (paramFilter.length === 1 && p.sort === 'createdAt,desc') { setFilterCnt(0) }
-      else if (paramFilter.length > 0) { setFilterCnt(paramFilter.length) }
+      updateFilters(paramFilter)
+      if (paramFilter.length === 1 && (!sp.sort || sp.sort === 'createdAt,desc')) { updateFilterCnt(0) }
+      else { updateFilterCnt(paramFilter.length) }
     }
   }, [p])
-}
-
-export const useEffectCntFilter = (searchParams: any, setFilters: any, setFilterCnt: any, sort: string) => {
-  useEffect(() => {
-    let paramFilter: string[] = ['sort']
-    for (const key of searchParams.keys()) {
-      if ((key === 'sD' || key === 'eD') && !paramFilter.includes('dayRange')) {
-        paramFilter.push('dayRange')
-      } else if ((key === 'hcMin' || key === 'hcMax') && !paramFilter.includes('headCount')) {
-        paramFilter.push('headCount')
-      } else if ((key === 'sort' || key === 'ptcp' || key === 'state') && !paramFilter.includes(key)) {
-        paramFilter.push(key)
-      }
-    }
-
-    if (paramFilter.length > 0) {
-      setFilters(paramFilter)
-      if (paramFilter.length === 1 && sort === 'createdAt,desc') { setFilterCnt(0) }
-      else { setFilterCnt(paramFilter.length) }
-    }
-  }, [searchParams])
 }
 
 // call event list api with filters
@@ -96,7 +77,6 @@ export function getParams(params: any) {
   let target: any[] = [];
   sparams.forEach((val, key) => { if (val === '') { target.push(key); } })
   target.forEach(key => { sparams.delete(key); })
-  console.log('^^^^^ ', sparams.toString())
   return sparams.toString();
 }
 

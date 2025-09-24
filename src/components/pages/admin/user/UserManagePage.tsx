@@ -1,15 +1,13 @@
 'use client';
 import { useRef, useState } from "react";
 import dayjs from "dayjs";
-import { FilterButton, FilterCalendar, FilterSortRadio } from "@/components/common/filter";
+import { DialogFilter, FilterButton, FilterApplied, FilterCalendar, FilterSortRadio } from "@/components/common/filter";
 import { InputCollapse, SearchInput } from "@/components/common/input";
 import { IconSearchS } from "@/components/common/styles/Icon";
 import { FormatDateRange, getParams, useEffectFilterApplied } from "@/service/Functions";
 import { UserTable } from "..";
 import { User } from "./UserTableConfig";
 import { Users } from "../_TmpData";
-import { DialogFilter1 } from "@/components/common/filter/DialogFilter";
-import { FilterApplied2 } from "@/components/common/filter/FilterApplied";
 import { useListWithPageE } from "@/hooks/useInCommon";
 
 export function UserManagePage() {
@@ -17,7 +15,7 @@ export function UserManagePage() {
   // 적용된 필터들, 적용된 필터 개수
   const [filters, setFilters] = useState(['sort'])
   const [filterCnt, setFilterCnt] = useState(0)
-  useEffectFilterApplied(p, setFilters, setFilterCnt)
+  useEffectFilterApplied(p, (filters: string[]) => setFilters(filters), (cnt: number) => setFilterCnt(cnt))
 
   const [open, setOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -44,7 +42,7 @@ export function UserManagePage() {
           </SearchInput>
           <FilterButton handleOpen={() => { setOpen(true) }} cnt={filterCnt} />
         </div>
-        {filterCnt > 0 && <FilterApplied2 filters={filters} opt="UPDATE" sp={p} updateSP={(value: Object) => setP(value)} />}
+        {filterCnt > 0 && <FilterApplied opt='UPDATE' filters={filters} sp={p} updateSP={(value: Object) => setP(value)} />}
       </div>
       <div className={filterCnt > 0 ? "h-[calc(100vh-152px)] mt-[152px]" : "h-[calc(100vh-126px)] mt-[126px]"}>
         <UserTable defaultData={defaultData} />
@@ -72,11 +70,11 @@ function Filter({ open, closeFilter, p, updateP }: { open: boolean; closeFilter:
   }
 
   return (
-    <DialogFilter1 isOpen={open} handleSubmit={handleSubmit} >
+    <DialogFilter isOpen={open} handleSubmit={handleSubmit} >
       <FilterSortRadio name='sort' defaultValue={p.sort ?? 'createdAt,desc'} order={sortOrder} />
       <InputCollapse title={'가입일자'} type='CAL' value={(!dateRange[0] || !dateRange[1]) ? '' : FormatDateRange(dateRange[0], dateRange[1])}>
-        <FilterCalendar startDate={dateRange[0]} endDate={dateRange[1]} onChange={(dates: [any, any]) => { setDateRange(dates) }} form='filter-form' />
+        <FilterCalendar startDate={dateRange[0]} endDate={dateRange[1]} onChange={(dates: [any, any]) => { setDateRange(dates) }} />
       </InputCollapse>
-    </DialogFilter1>
+    </DialogFilter>
   )
 }

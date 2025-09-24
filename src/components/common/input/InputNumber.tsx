@@ -4,7 +4,6 @@ import { IconMinus, IconPlus } from '../styles/Icon';
 
 // interface InputNumberProps { value: number; onChange: (value: number | null, event: Event | undefined) => void }
 interface InputNumberProps { value?: number; name?: string }
-
 export function InputNumber({ value, name }: InputNumberProps) {
   return (
     <div className="flex flex-row justify-between pt-[8px]">

@@ -2,9 +2,8 @@
 import { useState } from 'react';
 import dayjs from 'dayjs';
 import { FormatDateRange, headCountString } from '@/service/Functions';
-import { FilterSortRadio, FilterCalendar } from '@/components/common/filter';
+import { DialogFilter, FilterSortRadio, FilterCalendar } from '@/components/common/filter';
 import { InputCollapse, InputNumber, InputNumberRange } from '@/components/common/input';
-import { DialogFilter1 } from '@/components/common/filter/DialogFilter';
 
 export function Filter({ open, closeFilter, p, updateP }: { open: boolean; closeFilter: () => void; p: any; updateP: (value: Object) => void; }) {
   const [dateRange, setDateRange] = useState<(Date | undefined)[]>([undefined, undefined])
@@ -25,10 +24,10 @@ export function Filter({ open, closeFilter, p, updateP }: { open: boolean; close
   }
 
   return (
-    <DialogFilter1 isOpen={open} handleSubmit={handleSubmit} >
+    <DialogFilter isOpen={open} handleSubmit={handleSubmit} >
       <FilterSortRadio name='sort' defaultValue={p.sort ?? 'createdAt,desc'} />
       <InputCollapse title={'날짜선택'} type='CAL' value={(!dateRange[0] || !dateRange[1]) ? '' : FormatDateRange(dateRange[0], dateRange[1])}>
-        <FilterCalendar startDate={dateRange[0]} endDate={dateRange[1]} onChange={(dates: [any, any]) => { setDateRange(dates) }} form='filter-form' />
+        <FilterCalendar startDate={dateRange[0]} endDate={dateRange[1]} onChange={(dates: [any, any]) => { setDateRange(dates) }} />
       </InputCollapse>
       <InputCollapse title={'참여인원'} type="NUM" value={Number(p.ptcp)} keepMounted={true} >
         <InputNumber value={!!p.ptcp ? Number(p.ptcp) : undefined} name='ptcp' />
@@ -41,6 +40,6 @@ export function Filter({ open, closeFilter, p, updateP }: { open: boolean; close
           <div className='self-end text-12 text-gray3'>*최대인원 제한 없을 경우 '0'명으로 표기</div>
         </div>
       </InputCollapse>
-    </DialogFilter1>
+    </DialogFilter>
   )
 }

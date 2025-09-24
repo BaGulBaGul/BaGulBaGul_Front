@@ -4,12 +4,12 @@ import { ko } from "date-fns/locale/ko";
 import { getMonth, getYear } from "date-fns";
 import { IconArrowBack } from "../styles/Icon";
 
-interface FilterCalendarProps { startDate: Date | undefined; endDate: Date | undefined; onChange: any; range?: boolean; form?: string }
-export function FilterCalendar({ startDate, endDate, onChange, range = true, form }: FilterCalendarProps) {
+interface FilterCalendarProps { startDate: Date | undefined; endDate: Date | undefined; onChange: any; }
+export function FilterCalendar({ startDate, endDate, onChange }: FilterCalendarProps) {
   registerLocale("ko", ko);
   return (
-    <DatePicker onChange={onChange} locale={ko} disabledKeyboardNavigation inline form={form}
-      {...range ? { startDate: startDate, endDate: endDate, selectsRange: true } : { selected: startDate }}
+    <DatePicker onChange={onChange} locale={ko} disabledKeyboardNavigation inline
+      {...{ startDate: startDate, endDate: endDate, selectsRange: true }}
       renderCustomHeader={({ date, decreaseMonth, increaseMonth, prevMonthButtonDisabled, nextMonthButtonDisabled }) => (
         <div className='react-datepicker__current-month flex flex-row justify-between'>
           <button onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
