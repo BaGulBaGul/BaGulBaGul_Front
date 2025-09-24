@@ -63,8 +63,7 @@ export const FilterApplied = (props: FilterAppliedProps) => {
 
 
 type FilterApplied1Props = { filters: string[]; } &
-  ({ opt: 'REDIRECT'; sp: ReadonlyURLSearchParams; router: AppRouterInstance; state?: 'p' | 'r'; url: string } |
-  { opt: 'UPDATE'; sort: string; joinedDate: Date | undefined; handleDelete: (value: string) => void; });
+{ opt: 'REDIRECT'; sp: ReadonlyURLSearchParams; router: AppRouterInstance; state?: 'p' | 'r'; url: string };
 export const FilterApplied1 = (props: FilterApplied1Props) => {
 
   const filterVal = (val: string) => {
@@ -77,24 +76,18 @@ export const FilterApplied1 = (props: FilterApplied1Props) => {
   }
   const handleDelete = (e: React.MouseEvent, value: string) => {
     e.preventDefault();
-    if (props.opt === 'REDIRECT') {
-      console.log(value)
-      const currentSP = new URLSearchParams(props.sp.toString());
-      filterVal(value).forEach((val) => currentSP.delete(val)) // Deletes the 'filter' parameter
-      props.router.replace(`${props.url}?${currentSP.toString()}`);
-    } else if (props.opt === 'UPDATE') {
-      props.handleDelete(value)
-    }
+    const currentSP = new URLSearchParams(props.sp.toString());
+    filterVal(value).forEach((val) => currentSP.delete(val)) // Deletes the 'filter' parameter
+    props.router.replace(`${props.url}?${currentSP.toString()}`);
   };
 
-  let dateText = props.opt === 'REDIRECT' ? FormatDateRange(props.sp.get('sD'), props.sp.get('eD'))
-    : props.opt === 'UPDATE' ? FormatDateRange(props.joinedDate, undefined) : ''
+  let dateText = FormatDateRange(props.sp.get('sD'), props.sp.get('eD'))
 
   return (
     <div className='overflow-hidden	h-[26px]'>
       <div className='x-scroll-wrap h-[56px] px-[16px]'>
         <div className='filter-chip'>
-          <span>{sortLabel(props.opt === 'REDIRECT' ? (props.sp.get('sort') ?? '') : props.sort)}</span>
+          <span>{sortLabel(props.sp.get('sort') ?? '')}</span>
         </div>
         {props.opt === 'REDIRECT'
           ? <>
@@ -102,12 +95,47 @@ export const FilterApplied1 = (props: FilterApplied1Props) => {
             {!(props.filters).includes('dayRange') ? <></> : <FilterChip text={dateText ?? ''} filter='dayRange' handleDelete={handleDelete} />}
             {!(props.filters).includes('ptcp') ? <></> : <FilterChip text={`참여 ${props.sp.get('ptcp')}명`} filter='ptcp' handleDelete={handleDelete} />}
             {!(props.filters).includes('headCount') ? <></> : <FilterChip text={`규모 ${props.sp.get('hcMin') ?? ''} - ${props.sp.get('hcMax') ?? ''}명`} filter='headCount' handleDelete={handleDelete} />}
-            {/* {!((props.filters).includes('headCount') && props.p.headCount !== undefined) ? <></> : <FilterChip text={`규모 ${props.p.headCount.from ?? ''} - ${props.p.headCount.to ?? ''}명`} filter='headCount' handleDelete={handleDelete} />} */}
           </>
           : <>
             {!(props.filters).includes('joinedDate') ? <></> : <FilterChip text={dateText ?? ''} filter='joinedDate' handleDelete={handleDelete} />}
           </>
         }
+      </div>
+    </div>
+  )
+}
+
+type FilterApplied2Props = { filters: string[]; } &
+  ({ opt: 'UPDATE'; sp: any; updateSP: (value: Object) => void; });
+export const FilterApplied2 = (props: FilterApplied2Props) => {
+  const filterVal = (val: string) => {
+    switch (val) {
+      case 'dayRange': return ['sD', 'eD']
+      case 'headCount': return ['hcMin', 'hcMax']
+      // case 'headCount': return { k: 'headCount', v: { from: undefined, to: undefined } };
+      default: return [val];
+    }
+  }
+  const handleDelete = (e: React.MouseEvent, value: string) => {
+    e.preventDefault();
+    const currentSP = new URLSearchParams(props.sp.toString());
+    filterVal(value).forEach((val) => currentSP.delete(val)) // Deletes the 'filter' parameter
+    props.updateSP(currentSP)
+  };
+
+  let dateText = FormatDateRange(props.sp.sD, props.sp.eD)
+
+  return (
+    <div className='overflow-hidden	h-[26px]'>
+      <div className='x-scroll-wrap h-[56px] px-[16px]'>
+        <div className='filter-chip'>
+          <span>{sortLabel(props.sp.sort ?? '')}</span>
+        </div>
+        <>
+          {!(props.filters).includes('dayRange') ? <></> : <FilterChip text={dateText ?? ''} filter='dayRange' handleDelete={handleDelete} />}
+          {!(props.filters).includes('ptcp') ? <></> : <FilterChip text={`참여 ${props.sp.ptcp}명`} filter='ptcp' handleDelete={handleDelete} />}
+          {!(props.filters).includes('headCount') ? <></> : <FilterChip text={`규모 ${props.sp.hcMin ?? ''} - ${props.sp.hcMax ?? ''}명`} filter='headCount' handleDelete={handleDelete} />}
+        </>
       </div>
     </div>
   )

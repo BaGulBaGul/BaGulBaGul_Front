@@ -1,58 +1,40 @@
 'use client';
-import { useEffect, useRef, useState } from "react";
-import { DialogFilter, closeFilter, FilterApplied, FilterButton, FilterCalendar, FilterSortRadio } from "@/components/common/filter";
+import { useRef, useState } from "react";
+import dayjs from "dayjs";
+import { FilterButton, FilterCalendar, FilterSortRadio } from "@/components/common/filter";
 import { InputCollapse, SearchInput } from "@/components/common/input";
 import { IconSearchS } from "@/components/common/styles/Icon";
-import { FormatDateRange } from "@/service/Functions";
+import { FormatDateRange, getParams, useEffectFilterApplied } from "@/service/Functions";
 import { UserTable } from "..";
 import { User } from "./UserTableConfig";
 import { Users } from "../_TmpData";
+import { DialogFilter1 } from "@/components/common/filter/DialogFilter";
+import { FilterApplied2 } from "@/components/common/filter/FilterApplied";
+import { useListWithPageE } from "@/hooks/useInCommon";
 
 export function UserManagePage() {
+  const [p, setP] = useState<any>({ sort: 'createdAt,desc' })
+  // 적용된 필터들, 적용된 필터 개수
+  const [filters, setFilters] = useState(['sort'])
+  const [filterCnt, setFilterCnt] = useState(0)
+  useEffectFilterApplied(p, setFilters, setFilterCnt)
+
+  const [open, setOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const [title, setTitle] = useState('')
+
   const handleSearch = (event: any) => {
     if ((event.type === 'keydown' && event.key === 'Enter') || event.type === 'click') {
       if (inputRef.current && inputRef.current.value !== '') {
         event.preventDefault();
-        setTitle(encodeURIComponent(encodeURIComponent(inputRef.current.value)))
+        setP({ ...p, query: encodeURIComponent(encodeURIComponent(inputRef.current.value)) })
       }
     }
   }
-
-  const [open, setOpen] = useState(false);
-
-  const [filters, setFilters] = useState(['sort'])
-  const [filterCnt, setFilterCnt] = useState(0)
-  const [sort, setSort] = useState('createdAt,desc')
-  const [joinedDate, setJoinedDate] = useState<Date | undefined>(undefined)
-
-  useEffect(() => {
-    if (!!joinedDate && !filters.includes('joinedDate')) {
-      filters.push('joinedDate')
-      setFilters(filters)
-    }
-    if (filters.length === 1 && sort === 'createdAt,desc') { setFilterCnt(0) }
-    else if (filters.length > 0 && filters.length !== filterCnt) { setFilterCnt(filters.length) }
-    console.log('filters', filters, 'filterCnt', filterCnt, 'sort', sort, 'joinedDate', joinedDate);
-  }, [sort, joinedDate])
-
-  const handleDeleteFilter = (value: string) => {
-    let newFilters = (filters).filter((f) => f !== value)
-    setFilters(newFilters)
-    setFilterCnt(newFilters.length)
-    switch (value) {
-      case 'sort':
-        setSort('createdAt,desc')
-        break;
-      case 'joinedDate':
-        setJoinedDate(undefined)
-        break;
-    }
-  }
-
+  // * 유저 정보 API 연결 필요
+  let apiURL = !!p && Object.keys(p).length > 0 ? `/api/event?size=10&type=FESTIVAL&${getParams(p)}` : '/api/event?size=10&type=FESTIVAL'
+  console.log(apiURL)
+  // const users = useListWithPageE(apiURL, ['users', p], true)
   const defaultData: User[] = Users
-
   return (
     <>
       <div className='fixed w-full flex flex-col top-[60px] bg-p-white z-30'>
@@ -61,18 +43,40 @@ export function UserManagePage() {
             <button onClick={handleSearch}><IconSearchS /></button>
           </SearchInput>
           <FilterButton handleOpen={() => { setOpen(true) }} cnt={filterCnt} />
-          <DialogFilter isOpen={open} handleClose={() => { closeFilter(setOpen); }} title='유저관리 상세필터' >
-            <FilterSortRadio value={sort} handleChange={(newSort: string) => { setSort(newSort) }} />
-            <InputCollapse title={'가입일자'} type='CAL' value={!joinedDate ? '' : FormatDateRange(joinedDate, null)}>
-              <FilterCalendar startDate={joinedDate} endDate={undefined} onChange={(date: any) => { setJoinedDate(date) }} range={false} />
-            </InputCollapse>
-          </DialogFilter>
         </div>
-        <FilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters} opt='UPDATE' sort={sort} joinedDate={joinedDate} handleDelete={handleDeleteFilter} />
+        {filterCnt > 0 && <FilterApplied2 filters={filters} opt="UPDATE" sp={p} updateSP={(value: Object) => setP(value)} />}
       </div>
       <div className={filterCnt > 0 ? "h-[calc(100vh-152px)] mt-[152px]" : "h-[calc(100vh-126px)] mt-[126px]"}>
         <UserTable defaultData={defaultData} />
       </div>
+      <Filter open={open} closeFilter={() => setOpen(false)} p={p} updateP={(value: Object) => setP(value)} />
     </>
+  )
+}
+
+function Filter({ open, closeFilter, p, updateP }: { open: boolean; closeFilter: () => void; p: any; updateP: (value: Object) => void; }) {
+  const [dateRange, setDateRange] = useState<(Date | undefined)[]>([undefined, undefined])
+  const sortOrder = [{ 'value': 'createdAt,desc', 'label': '최신순' }, { 'value': 'createdAt,asc', 'label': '오래된 순' }, { 'value': 'activatedAt,desc', 'label': '활성화 순' }, { 'value': 'activatedAt,asc', 'label': '비활성화 순' }]
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    let formData = new FormData(e.currentTarget);
+    let fd = Object.fromEntries(formData.entries())
+
+    let params = {
+      ...fd,
+      sD: !!dateRange[0] ? dayjs(dateRange[0]).format('YYYYMMDD') : '', eD: !!dateRange[1] ? dayjs(dateRange[1]).format('YYYYMMDD') : '',
+    }
+    updateP(params)
+    closeFilter()
+  }
+
+  return (
+    <DialogFilter1 isOpen={open} handleSubmit={handleSubmit} >
+      <FilterSortRadio name='sort' defaultValue={p.sort ?? 'createdAt,desc'} order={sortOrder} />
+      <InputCollapse title={'가입일자'} type='CAL' value={(!dateRange[0] || !dateRange[1]) ? '' : FormatDateRange(dateRange[0], dateRange[1])}>
+        <FilterCalendar startDate={dateRange[0]} endDate={dateRange[1]} onChange={(dates: [any, any]) => { setDateRange(dates) }} form='filter-form' />
+      </InputCollapse>
+    </DialogFilter1>
   )
 }

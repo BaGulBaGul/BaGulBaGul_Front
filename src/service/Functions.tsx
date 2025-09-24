@@ -42,18 +42,22 @@ export const sortLabel = (sort: string) => {
     case 'views,desc': return '조회수'
     case 'likeCount,desc': return '좋아요수'
     case 'commentCount,desc': return '댓글수'
+    // for UserManagePage
+    case 'createdAt,asc': return '오래된 순'
+    case 'activatedAt,desc': return '활성화 순'
+    case 'activatedAt,asc': return '비활성화 순'
   }
 }
 
 // update applied filters
-export const useEffectFilterApplied = (p: FilterProps, setFilters: any, setFilterCnt: any) => {
+export const useEffectFilterApplied = (p: any, setFilters: any, setFilterCnt: any) => {
   useEffect(() => {
     let paramFilter: string[] = ['sort']
-    if (JSON.stringify(p.dateRange) !== JSON.stringify([undefined, undefined]) && !paramFilter.includes('dayRange')) {
+    if ((!!p.sD || !!p.eD) && !paramFilter.includes('dayRange')) {
       paramFilter.push('dayRange')
-    } if (!!p.participants && !paramFilter.includes('ptcp')) {
+    } if (!!p.ptcp && !paramFilter.includes('ptcp')) {
       paramFilter.push('ptcp')
-    } if (JSON.stringify(p.headCount) !== JSON.stringify({ from: undefined, to: undefined }) && !paramFilter.includes('headCount')) {
+    } if ((!!p.hcMin || !!p.hcMax) && !paramFilter.includes('headCount')) {
       paramFilter.push('headCount')
     }
 
