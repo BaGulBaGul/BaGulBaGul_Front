@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useEffectFilterApplied } from '@/service/Functions';
-import { FilterButton, FilterApplied } from '@/components/common/filter';
+import { FilterButton, FilterApplied, useFilter } from '@/components/common/filter';
 import SubHeader from '@/components/layout/subHeader';
 import { Filter } from './filter';
 
@@ -10,13 +10,13 @@ export default function Template({ children }: { children: React.ReactNode }) {
   const eventId = Number(useParams().eventId)
   const searchParams = useSearchParams()
   const router = useRouter()
+  const [open, setOpen] = useState(false);
 
   // 적용된 필터들, 적용된 필터 개수
-  const [filters, setFilters] = useState(['sort'])
-  const [filterCnt, setFilterCnt] = useState(0)
+  const { filters, filterCnt, updateFilters, updateFilterCnt } = useFilter();
   // searchParams로 넘어온 필터 count
-  useEffectFilterApplied(searchParams, (filters: string[]) => setFilters(filters), (cnt: number) => setFilterCnt(cnt))
-  const [open, setOpen] = useState(false);
+  useEffectFilterApplied(searchParams, updateFilters, updateFilterCnt)
+
   return (
     <>
       <SubHeader name="모집글" >

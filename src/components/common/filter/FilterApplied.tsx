@@ -11,15 +11,15 @@ export const FilterApplied = (props: FilterAppliedProps) => {
   const sp = props.sp instanceof ReadonlyURLSearchParams ? Object.fromEntries(props.sp.entries()) : props.sp;
   const handleDelete = (e: React.MouseEvent, value: string) => {
     e.preventDefault();
-    const currentSP = new URLSearchParams(sp.toString());
+    const currentSP = new URLSearchParams(sp);
     filterVal(value).forEach((val) => currentSP.delete(val)) // Deletes the 'filter' parameter
     if (props.opt === 'REDIRECT') { props.router.replace(`${props.url}?${currentSP.toString()}`); }
-    else { props.updateSP(currentSP) }
+    else { props.updateSP(Object.fromEntries(currentSP.entries())) }
   };
   let dateText = FormatDateRange(sp.sD, sp.eD)
 
   return (
-    <div className='overflow-hidden	h-[26px]'>
+    <div className='overflow-hidden h-[26px]'>
       <div className='x-scroll-wrap h-[56px] px-[16px]'>
         <div className='filter-chip'><span>{sortLabel(sp.sort ?? '')}</span></div>
         {(props.filters).includes('state') && <FilterChip text={sp.state === 'p' ? '종료행사제외' : sp.state === 'r' ? '모집중' : ''} filter='state' handleDelete={handleDelete} />}

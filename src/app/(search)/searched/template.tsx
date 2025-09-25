@@ -4,7 +4,7 @@ import { createSearchParams } from 'react-router-dom';
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffectFilterApplied } from '@/service/Functions';
 import { TypeTabs } from '@/components/common';
-import { FilterButton, FilterApplied } from '@/components/common/filter';
+import { FilterButton, FilterApplied, useFilter } from '@/components/common/filter';
 import { CategoryButtons } from '@/components/common/input';
 import { SearchBar } from '@/components/pages/search';
 import { Filter } from './filter';
@@ -12,6 +12,7 @@ import { Filter } from './filter';
 export default function Template({ children }: { children: React.ReactNode }) {
   const searchParams = useSearchParams()
   const router = useRouter()
+  const [open, setOpen] = useState(false);
 
   //type, 카테고리, 제목
   const [tab, setTab] = useState(Number(searchParams.get('tab_id')) ?? 0);
@@ -19,10 +20,9 @@ export default function Template({ children }: { children: React.ReactNode }) {
   const [title, setTitle] = useState(decodeURIComponent(decodeURIComponent(searchParams.get('query') ?? '')))
 
   // 적용된 필터들, 적용된 필터 개수
-  const [filters, setFilters] = useState(['sort'])
-  const [filterCnt, setFilterCnt] = useState(0)
+  const { filters, filterCnt, updateFilters, updateFilterCnt } = useFilter();
   // searchParams로 넘어온 필터 count
-  useEffectFilterApplied(searchParams, (filters: string[]) => setFilters(filters), (cnt: number) => setFilterCnt(cnt))
+  useEffectFilterApplied(searchParams, updateFilters, updateFilterCnt)
 
   const currentSP = new URLSearchParams(Array.from(searchParams.entries()))
   const routeToFilter = () => {
@@ -36,7 +36,6 @@ export default function Template({ children }: { children: React.ReactNode }) {
   }
   useEffect(() => { routeToFilter() }, [tab, selectedCate])
 
-  const [open, setOpen] = useState(false);
 
   return (
     <div className='flex flex-col w-full h-screen pb-[10px]'>
@@ -52,7 +51,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
         {<div className={filterCnt > 0 ? 'mt-[120px]' : 'mt-[94px]'}>
           {children}
         </div>}
-        <Filter open={open} closeFilter={() => setOpen(false)} />
+        <Filter open={open} closeFilter={() => setOpen(false)} url={`?query=${title}`} />
       </div>
     </div>);
 }

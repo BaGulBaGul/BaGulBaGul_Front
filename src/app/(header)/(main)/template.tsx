@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffectFilterApplied } from '@/service/Functions';
 import { TypeTabs, EventCarousel } from '@/components/common';
-import { FilterButton, FilterApplied } from '@/components/common/filter';
+import { FilterButton, FilterApplied, useFilter } from '@/components/common/filter';
 import { CategoryButtons } from '@/components/common/input';
 import { Filter } from './filter';
 import { createSearchParams } from 'react-router-dom';
@@ -11,16 +11,16 @@ import { createSearchParams } from 'react-router-dom';
 export default function Template({ children }: { children: React.ReactNode }) {
   const searchParams = useSearchParams()
   const router = useRouter()
+  const [open, setOpen] = useState(false);
 
   //type, 카테고리
   const [tab, setTab] = useState(Number(searchParams.get('tab_id')) ?? 0);
   const [selectedCate, setSelectedCate] = useState<string[]>(searchParams.getAll('ct') ?? []);
 
   // 적용된 필터들, 적용된 필터 개수
-  const [filters, setFilters] = useState(['sort'])
-  const [filterCnt, setFilterCnt] = useState(0)
+  const { filters, filterCnt, updateFilters, updateFilterCnt } = useFilter();
   // searchParams로 넘어온 필터 count
-  useEffectFilterApplied(searchParams, (filters: string[]) => setFilters(filters), (cnt: number) => setFilterCnt(cnt))
+  useEffectFilterApplied(searchParams, updateFilters, updateFilterCnt)
 
   const currentSP = new URLSearchParams(Array.from(searchParams.entries()))
   const routeToFilter = () => {
@@ -30,7 +30,6 @@ export default function Template({ children }: { children: React.ReactNode }) {
   }
   useEffect(() => { routeToFilter() }, [tab, selectedCate])
 
-  const [open, setOpen] = useState(false);
 
   const defaultTitle = "SUMMER\n페스티벌 추천"
   return (

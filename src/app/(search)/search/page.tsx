@@ -3,19 +3,20 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getParams, useEffectFilterApplied } from '@/service/Functions';
 import { Divider, TypeTabs } from '@/components/common';
-import { handleObjectValue, FilterButton, FilterApplied } from '@/components/common/filter';
+import { handleObjectValue, FilterButton, FilterApplied, useFilter } from '@/components/common/filter';
 import { CategoryButtons } from '@/components/common/input';
 import { SearchBar, FrequentSearches } from '@/components/pages/search';
 import { Filter } from './filter';
 
 export default function Page() {
   const [p, setP] = useState<any>({ sort: 'createdAt,desc' })
-  // 적용된 필터들, 적용된 필터 개수
-  const [filters, setFilters] = useState(['sort'])
-  const [filterCnt, setFilterCnt] = useState(0)
-  useEffectFilterApplied(p, (filters: string[]) => setFilters(filters), (cnt: number) => setFilterCnt(cnt))
-
   const [open, setOpen] = useState(false);
+  
+  // 적용된 필터들, 적용된 필터 개수
+  const { filters, filterCnt, updateFilters, updateFilterCnt } = useFilter();
+  // searchParams로 넘어온 필터 count
+  useEffectFilterApplied(p, updateFilters, updateFilterCnt)
+
   // Searchbar
   const router = useRouter()
   const [title, setTitle] = useState('')
