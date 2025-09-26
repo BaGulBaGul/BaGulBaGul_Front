@@ -2,7 +2,8 @@
 import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { FormatDateRange, headCountString } from '@/service/Functions';
-import { DialogFilter, FilterCalendar, FilterSortRadio, submitFilter, useEffectUpdateRange } from '@/components/common/filter';
+import { useEffectUpdateRange, submitFilter } from '@/hooks/useInFilter';
+import { DialogFilter, FilterCalendar, FilterSortRadio } from '@/components/common/filter';
 import { InputNumber, InputCollapse, InputNumberRange } from '@/components/common/input';
 
 export function Filter({ open, closeFilter, url }: { open: boolean; closeFilter: () => void; url: string }) {

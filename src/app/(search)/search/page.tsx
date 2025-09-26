@@ -1,9 +1,10 @@
 "use client";
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { getParams, useEffectFilterApplied } from '@/service/Functions';
+import { getParams } from '@/service/Functions';
+import { useFilter, useEffectFilterApplied, handleObjectValue } from '@/hooks/useInFilter';
 import { Divider, TypeTabs } from '@/components/common';
-import { handleObjectValue, FilterButton, FilterApplied, useFilter } from '@/components/common/filter';
+import { FilterButton, FilterApplied } from '@/components/common/filter';
 import { CategoryButtons } from '@/components/common/input';
 import { SearchBar, FrequentSearches } from '@/components/pages/search';
 import { Filter } from './filter';

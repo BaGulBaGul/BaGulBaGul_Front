@@ -1,10 +1,9 @@
 "use client";
-import { useEffect, useState } from 'react';
-import { createSearchParams } from 'react-router-dom';
+import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useEffectFilterApplied } from '@/service/Functions';
 import { TypeTabs } from '@/components/common';
-import { FilterButton, FilterApplied, useFilter } from '@/components/common/filter';
+import { useFilter, useEffectFilterApplied, useEffectPushTabCt } from '@/hooks/useInFilter';
+import { FilterButton, FilterApplied } from '@/components/common/filter';
 import { CategoryButtons } from '@/components/common/input';
 import { SearchBar } from '@/components/pages/search';
 import { Filter } from './filter';
@@ -23,23 +22,13 @@ export default function Template({ children }: { children: React.ReactNode }) {
   const { filters, filterCnt, updateFilters, updateFilterCnt } = useFilter();
   // searchParams로 넘어온 필터 count
   useEffectFilterApplied(searchParams, updateFilters, updateFilterCnt)
-
-  const currentSP = new URLSearchParams(Array.from(searchParams.entries()))
-  const routeToFilter = () => {
-    currentSP.delete('query')
-    currentSP.delete('ct')
-    currentSP.set('tab_id', tab.toString())
-    // router.replace(`?${currentSP.toString()}${selectedCate.length > 0 ? `&${createSearchParams({ ct: selectedCate ?? '' })}` : ''}`)
-    if (title.length > 0) {
-      router.push(`/searched?query=${title}&${currentSP.toString()}${selectedCate.length > 0 ? `&${createSearchParams({ ct: selectedCate ?? '' })}` : ''}`)
-    }
-  }
-  useEffect(() => { routeToFilter() }, [tab, selectedCate])
+  // 탭, 카테고리, 제목 변경시 url 이동
+  useEffectPushTabCt(searchParams, tab, selectedCate, router, 'query', title)
 
 
   return (
     <div className='flex flex-col w-full h-screen pb-[10px]'>
-      <SearchBar title={title} isSearched={true} updateTitle={(t: string) => setTitle(t)} handleBack={() => router.back()} handleRoute={() => { routeToFilter() }} >
+      <SearchBar title={title} isSearched={true} updateTitle={(t: string) => setTitle(t)} handleBack={() => router.back()} >
         <FilterButton handleOpen={() => { setOpen(true) }} cnt={filterCnt} />
       </SearchBar>
       <div className='w-full p-0 pt-[66px]'>

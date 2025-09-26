@@ -1,8 +1,8 @@
 "use client";
 import { useState } from 'react';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
-import { useEffectFilterApplied } from '@/service/Functions';
-import { FilterButton, FilterApplied, useFilter } from '@/components/common/filter';
+import { useEffectFilterApplied, useFilter } from '@/hooks/useInFilter';
+import { FilterButton, FilterApplied } from '@/components/common/filter';
 import SubHeader from '@/components/layout/subHeader';
 import { Filter } from './filter';
 

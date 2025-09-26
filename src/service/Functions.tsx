@@ -1,5 +1,5 @@
 "use client"
-import { RefObject, useEffect } from "react";
+import { RefObject } from "react";
 import { createSearchParams } from 'react-router-dom'
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
@@ -9,7 +9,6 @@ import timezone from 'dayjs/plugin/timezone';
 import { call } from "./ApiService";
 
 import { EventType } from "@/components/common";
-import { ReadonlyURLSearchParams } from "next/navigation";
 
 // dayjs 설정
 dayjs.extend(isSameOrBefore);
@@ -47,28 +46,6 @@ export const sortLabel = (sort: string) => {
     case 'activatedAt,desc': return '활성화 순'
     case 'activatedAt,asc': return '비활성화 순'
   }
-}
-
-export const useEffectFilterApplied = (p: any, updateFilters: (filters: string[]) => void, updateFilterCnt: (cnt: number) => void) => {
-  const sp = p instanceof ReadonlyURLSearchParams ? Object.fromEntries(p.entries()) : p;
-  useEffect(() => {
-    let paramFilter: string[] = ['sort']
-    if ((!!sp.sD || !!sp.eD) && !paramFilter.includes('dayRange')) {
-      paramFilter.push('dayRange')
-    } if (!!sp.ptcp && !paramFilter.includes('ptcp')) {
-      paramFilter.push('ptcp')
-    } if ((!!sp.hcMin || !!sp.hcMax) && !paramFilter.includes('headCount')) {
-      paramFilter.push('headCount')
-    } if (!!sp.state && !paramFilter.includes('state')) {
-      paramFilter.push('state')
-    }
-
-    if (paramFilter.length > 0) {
-      updateFilters(paramFilter)
-      if (paramFilter.length === 1 && (!sp.sort || sp.sort === 'createdAt,desc')) { updateFilterCnt(0) }
-      else { updateFilterCnt(paramFilter.length) }
-    }
-  }, [p])
 }
 
 // call event list api with filters

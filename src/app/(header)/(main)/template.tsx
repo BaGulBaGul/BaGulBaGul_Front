@@ -1,12 +1,11 @@
 "use client";
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffectFilterApplied } from '@/service/Functions';
+import { useEffectFilterApplied, useEffectPushTabCt, useFilter } from '@/hooks/useInFilter';
 import { TypeTabs, EventCarousel } from '@/components/common';
-import { FilterButton, FilterApplied, useFilter } from '@/components/common/filter';
+import { FilterButton, FilterApplied } from '@/components/common/filter';
 import { CategoryButtons } from '@/components/common/input';
 import { Filter } from './filter';
-import { createSearchParams } from 'react-router-dom';
 
 export default function Template({ children }: { children: React.ReactNode }) {
   const searchParams = useSearchParams()
@@ -21,15 +20,8 @@ export default function Template({ children }: { children: React.ReactNode }) {
   const { filters, filterCnt, updateFilters, updateFilterCnt } = useFilter();
   // searchParams로 넘어온 필터 count
   useEffectFilterApplied(searchParams, updateFilters, updateFilterCnt)
-
-  const currentSP = new URLSearchParams(Array.from(searchParams.entries()))
-  const routeToFilter = () => {
-    currentSP.delete('ct')
-    currentSP.set('tab_id', tab.toString())
-    router.replace(`?${currentSP.toString()}${selectedCate.length > 0 ? `&${createSearchParams({ ct: selectedCate ?? '' })}` : ''}`)
-  }
-  useEffect(() => { routeToFilter() }, [tab, selectedCate])
-
+  // 탭, 카테고리 변경시 url 이동
+  useEffectPushTabCt(searchParams, tab, selectedCate, router)
 
   const defaultTitle = "SUMMER\n페스티벌 추천"
   return (
