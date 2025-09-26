@@ -69,8 +69,8 @@ export const applyLike = (loginfo: boolean, liked: boolean, url: string, setLike
 
 export const headCountString = (from?: number | null, to?: number | null) => {
   if (!!from || !!to) {
-    if (from === undefined) { return ` - ${to}` }
-    else if (to === undefined) { return `${from} - ` }
+    if (!from) { return ` - ${to}` }
+    else if (!to) { return `${from} - ` }
     return `${from} - ${to}`
   } else { return '0' }
 }

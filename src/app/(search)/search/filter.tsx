@@ -1,15 +1,14 @@
 "use client";
 import { useState } from 'react';
-import { FormatDateRange, headCountString } from '@/service/Functions';
-import { DialogFilter, FilterSortRadio, FilterCalendar, submitFilter, useEffectUpdateRange } from '@/components/common/filter';
-import { InputCollapse, InputNumber, InputNumberRange } from '@/components/common/input';
+import { useEffectUpdateRange, submitFilter } from '@/hooks/useInFilter';
+import { FormatDateRange } from '@/service/Functions';
+import { DialogFilter, FilterSortRadio, FilterCalendar } from '@/components/common/filter';
+import { InputCollapse } from '@/components/common/input';
+import { FilterNumber, FilterNumberRange } from '@/components/common/filter/FilterNumber';
 
 export function Filter({ open, closeFilter, p, updateP }: { open: boolean; closeFilter: () => void; p: any; updateP: (value: Object) => void; }) {
   const [dateRange, setDateRange] = useState<(Date | undefined)[]>([undefined, undefined])
   useEffectUpdateRange('DATE', p.sD, p.eD, (date: [any, any]) => setDateRange(date))
-
-  const [headCount, setHeadCount] = useState<(number | null)[]>([null, null])
-  useEffectUpdateRange('HEAD', p.hcMin ?? null, p.hcMax ?? null, (head: [any, any]) => setHeadCount(head))
 
   return (
     <DialogFilter isOpen={open} handleSubmit={(e: React.FormEvent<HTMLFormElement>) => { submitFilter(e, dateRange, p, updateP, undefined, undefined, true); closeFilter(); }} >
@@ -17,17 +16,8 @@ export function Filter({ open, closeFilter, p, updateP }: { open: boolean; close
       <InputCollapse title={'날짜선택'} type='CAL' value={(!dateRange[0] || !dateRange[1]) ? '' : FormatDateRange(dateRange[0], dateRange[1])}>
         <FilterCalendar startDate={dateRange[0]} endDate={dateRange[1]} onChange={(dates: [any, any]) => { setDateRange(dates) }} />
       </InputCollapse>
-      <InputCollapse title={'참여인원'} type="NUM" value={Number(p.ptcp)} keepMounted={true} >
-        <InputNumber value={!!p.ptcp ? Number(p.ptcp) : undefined} name='ptcp' />
-      </InputCollapse>
-      <InputCollapse title={'규모설정'} type="NUM" value={(!headCount[0] || !headCount[1]) ? 0 : headCountString(headCount[0], headCount[1])}>
-        <div className='flex flex-col gap-[8px]'>
-          <InputNumberRange
-            minNumber={{ name: 'hcMin', value: headCount[0], onChange: (value: any) => { setHeadCount([value, headCount[1]]) } }}
-            maxNumber={{ name: 'hcMax', value: headCount[1], min: headCount[0], onChange: (value: any) => { setHeadCount([headCount[0], value]) } }} />
-          <div className='self-end text-12 text-gray3'>*최대인원 제한 없을 경우 '0'명으로 표기</div>
-        </div>
-      </InputCollapse>
+      <FilterNumber prevVal={p.ptcp} />
+      <FilterNumberRange prevMin={p.hcMin ?? null} prevMax={p.hcMax ?? null} />
     </DialogFilter>
   )
 }

@@ -4,7 +4,8 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { FormatDateRange } from '@/service/Functions';
 import { useEffectUpdateRange, submitFilter } from '@/hooks/useInFilter';
 import { DialogFilter, FilterCalendar, FilterSortRadio } from '@/components/common/filter';
-import { InputNumber, InputCollapse, InputCheck } from '@/components/common/input';
+import { InputCollapse, InputCheck } from '@/components/common/input';
+import { FilterNumber } from '@/components/common/filter/FilterNumber';
 
 export function Filter({ eventId, open, closeFilter }: { eventId: number; open: boolean; closeFilter: () => void }) {
   const searchParams = useSearchParams()
@@ -21,9 +22,7 @@ export function Filter({ eventId, open, closeFilter }: { eventId: number; open: 
       <InputCollapse title={'날짜선택'} type='CAL' value={(!dateRange[0] || !dateRange[1]) ? '' : FormatDateRange(dateRange[0], dateRange[1])}>
         <FilterCalendar startDate={dateRange[0]} endDate={dateRange[1]} onChange={(dates: [any, any]) => { setDateRange(dates) }} />
       </InputCollapse>
-      <InputCollapse title={'참여인원'} type="NUM" value={Number(searchParams.get('ptcp'))} keepMounted={true} >
-        <InputNumber value={!!searchParams.get('ptcp') ? Number(searchParams.get('ptcp')) : undefined} name='ptcp' />
-      </InputCollapse>
+      <FilterNumber prevVal={searchParams.get('ptcp')} />
     </DialogFilter>
   )
 }
