@@ -14,7 +14,7 @@ export function FilterNumber({ prevVal }: { prevVal: any }) {
 }
 
 export function FilterNumberRange({ prevMin, prevMax }: { prevMin?: any; prevMax?: any }) {
-  const [headCount, setHeadCount] = useState<(number | null)[]>([Number(prevMin) ?? null, Number(prevMax) ?? null])
+  const [headCount, setHeadCount] = useState<(number | null)[]>([!!prevMin ? Number(prevMin) : null, !!prevMax ? Number(prevMax) : null])
 
   return (
     <InputCollapse title={'규모설정'} type="NUM" value={(!headCount[0] && !headCount[1]) ? 0 : headCountString(headCount[0], headCount[1])} keepMounted={true}>
