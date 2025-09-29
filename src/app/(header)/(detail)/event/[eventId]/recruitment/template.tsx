@@ -28,7 +28,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
       <div className={`flex flex-col w-full ${filterCnt > 0 ? 'pt-[140px]' : 'pt-[104px]'}`}>
         {children}
       </div>
-      <Filter eventId={eventId} open={open} closeFilter={() => setOpen(false)} />
+      <Filter open={open} closeFilter={() => setOpen(false)} url={`/event/${eventId}/recruitment?`} />
     </>
   )
 }

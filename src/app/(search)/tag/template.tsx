@@ -6,7 +6,7 @@ import { TypeTabs } from '@/components/common';
 import { FilterButton, FilterApplied } from '@/components/common/filter';
 import { CategoryButtons } from '@/components/common/input';
 import { SearchTagBar } from '@/components/pages/search';
-import { Filter } from './filter';
+import { Filter } from '../searched/filter';
 
 export default function Template({ children }: { children: React.ReactNode }) {
   const searchParams = useSearchParams()
