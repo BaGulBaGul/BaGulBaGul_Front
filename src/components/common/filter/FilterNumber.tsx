@@ -4,10 +4,10 @@ import { NumberField } from '@base-ui-components/react';
 import { InputCollapse, InputNumber } from '../input';
 import { headCountString } from '@/service/Functions';
 
-export function FilterNumber({ prevVal }: { prevVal: any }) {
+export function FilterNumber({ prevVal, title }: { prevVal: any; title?: string }) {
   const [ptcp, setPtcp] = useState<number | null>(!!prevVal ? Number(prevVal) : null);
   return (
-    <InputCollapse title={'참여인원'} type="NUM" value={Number(ptcp)} keepMounted={true} >
+    <InputCollapse title={title ?? '참여인원'} type="NUM" value={Number(ptcp)} keepMounted={true} >
       <InputNumber value={ptcp ?? undefined} name='ptcp' updateValue={(value) => setPtcp(value)} />
     </InputCollapse>
   )

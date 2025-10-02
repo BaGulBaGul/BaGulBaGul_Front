@@ -2,6 +2,7 @@ export function TagsInput(props: { tags: string[], setTags: any }) {
   function handleKeyDown(e: any) {
     const inputVal = e.target.value;
     if (e.key === "Enter" && !e.nativeEvent.isComposing && inputVal !== '' && !props.tags.includes(inputVal)) {
+      e.preventDefault();
       props.setTags([...props.tags, inputVal]);
       e.target.value = '';
     }
@@ -10,7 +11,6 @@ export function TagsInput(props: { tags: string[], setTags: any }) {
     }
   }
 
-  console.log(props.tags)
   return (
     <div className="tags-container">
       {props.tags.map((tag, index) => (
