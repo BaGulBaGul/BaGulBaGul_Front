@@ -11,17 +11,10 @@ export function WriteEPage(props: { edit?: number; }) {
   const prev = !!props.edit ? useDetailInfo('event', props.edit) : undefined
 
   const [selectedCate, setSelectedCate] = useState<string[]>([]);
-  const [headMax, setHeadMax] = useState<number | null>()
-  const [headCurrent, setHeadCurrent] = useState<number | null>()
-  const [startDate, setStartDate] = useState<dayjs.Dayjs | null>(null)
-  const [endDate, setEndDate] = useState<dayjs.Dayjs | null>(null)
-  const [forAdult, setForAdult] = useState(false);
   const [addr, setAddr] = useState<{ full: string, abs: string } | null>(null)
   const [images, setImages] = useState<string[]>([])
   const [imageKey, setImageKey] = useState<Number[]>([])
   const [tags, setTags] = useState<string[]>([])
-  const titleRef = useRef<any>(null);
-  const contentRef = useRef<any>(null);
 
   // 게시물 등록
   const [open, setOpen] = useState(false);
