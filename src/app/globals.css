@@ -755,3 +755,80 @@ button.swiper-pagination-bullet {
   right: var(--swiper-navigation-sides-offset, 16px);
   left: auto;
 }
+
+/* ------------------------ */
+/* --------skeleton-------- */
+/* ------------------------ */
+/* typeA */
+.skeleton {
+  background-color: #E4E6EB;
+  background-image: linear-gradient(90deg, #E4E6EB, #D6D8DD, #E4E6EB);
+  background-size: 200px 100%;
+  background-repeat: no-repeat;
+  display: inline-block;
+  line-height: 1;
+  width: 100%;
+  height: 50px;
+  animation: skeleton-animation 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-animation {
+  0% {
+    background-position: -200px 0;
+  }
+
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+.sk-thumb {
+  border-radius: 4px;
+  width: 92px;
+  height: 116px;
+}
+
+.sk-line {
+  border-radius: 4px;
+  height: 26px;
+}
+
+.sk-profile {
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+}
+
+/* typeB */
+@-webkit-keyframes skeleton-gradient {
+  0% {
+    background-color: rgba(165, 165, 165, 0.1);
+  }
+
+  50% {
+    background-color: rgba(165, 165, 165, 0.3);
+  }
+
+  100% {
+    background-color: rgba(165, 165, 165, 0.1);
+  }
+}
+
+@keyframes skeleton-gradient {
+  0% {
+    background-color: rgba(165, 165, 165, 0.1);
+  }
+
+  50% {
+    background-color: rgba(165, 165, 165, 0.3);
+  }
+
+  100% {
+    background-color: rgba(165, 165, 165, 0.1);
+  }
+}
+
+/* .skeleton {
+  -webkit-animation: skeleton-gradient 1.8s infinite ease-in-out;
+  animation: skeleton-gradient 1.8s infinite ease-in-out;
+} */
