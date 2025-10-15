@@ -1,5 +1,5 @@
 'use client';
-import { Backdrop, CircularProgress } from "@mui/material"
+import { FadeLoader } from "react-spinners";
 import { AlarmButton } from "./button/AlarmButton";
 import { EditButton } from "./button/EditButton";
 import { ExpandButton } from "./button/ExpandButton";
@@ -44,10 +44,8 @@ export function Divider({ color }: { color?: string; }) {
 
 export function LoadingCircle() {
   return (
-    <div>
-      <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={true} >
-        <CircularProgress color="inherit" />
-      </Backdrop>
+    <div className="backdrop">
+        <FadeLoader height={10} width={3} margin={0} radius={20} color="#FCFCFC" />
     </div>
   )
 }
