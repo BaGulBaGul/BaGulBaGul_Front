@@ -1,4 +1,4 @@
-import { SkeletonBlockCal, SkeletonBlockLike, SkeletonBlockPost, SkeletonBlock, SkeletonSuggestImage } from "./_SkeletonBlock";
+import { SkeletonBlockCal, SkeletonBlockLike, SkeletonBlockPost, SkeletonBlock, SkeletonSuggestImage } from "./SkeletonBlock";
 
 interface SkeletonListProps {
   num?: number; type?: 'CAL' | 'LIKE' | 'POST' | 'CMT' | 'SGST'; thumb?: boolean; tag?: boolean;

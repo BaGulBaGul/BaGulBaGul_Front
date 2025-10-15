@@ -1,4 +1,3 @@
-import { Skeleton } from "@mui/material"
 import { IconHeart } from "../styles/Icon";
 
 export function SkeletonBlock(props: { thumb?: boolean; tag: boolean; }) {
@@ -7,10 +6,10 @@ export function SkeletonBlock(props: { thumb?: boolean; tag: boolean; }) {
       <div className="flex flex-row justify-between gap-[16px] m-[16px] mb-[10px]">
         <div className="flex flex-col w-full justify-between">
           <SkeletonTitleAddDate />
-          <Skeleton variant="circular" width={24} height={24} />
+          <span className="skeleton sk-profile" />
         </div>
         {!!props.thumb ? <div className="w-[92px]">
-          <Skeleton variant="rounded" width={92} height={116} />
+          <span className="skeleton sk-thumb" />
         </div> : <></>}
       </div>
       {!props.tag ? <></> : <SkeletonTags />}
@@ -24,15 +23,13 @@ export function SkeletonBlockCal() {
       <div className="flex flex-row justify-between gap-[16px] m-[16px] mb-[10px]">
         <div className="flex flex-col w-full justify-between">
           <div className="flex flex-col gap-[8px] max-w-[191px]">
-            <Skeleton variant="rounded" height={20} width={60} />
-            <Skeleton variant="rounded" height={24} />
-            <Skeleton variant="rounded" height={14} />
+            <span className='skeleton sk-line h-[20px] w-[60px]' />
+            <span className='skeleton sk-line h-[24px]' />
+            <span className='skeleton sk-line h-[14px]' />
           </div>
-          <Skeleton variant="circular" width={24} height={24} />
+          <span className='skeleton sk-profile' />
         </div>
-        <div className="w-[92px]">
-          <Skeleton variant="rounded" width={92} height={116} />
-        </div>
+        <span className='skeleton sk-thumb' />
       </div>
     </div>
   )
@@ -43,15 +40,13 @@ export function SkeletonBlockLike() {
     <div className="flex flex-col">
       <div className="flex flex-row justify-between gap-[16px] m-[16px] mb-[10px]">
         <div className="flex flex-row gap-[8px] w-full">
-          <div className="h-[24px] w-[24px]"><IconHeart fillColor='#E4E6EB' /></div>
+          <div className="h-[24px] w-[24px]"><IconHeart checked fillColor='#E4E6EB' /></div>
           <div className="flex flex-col w-full justify-between">
             <SkeletonTitleAddDate />
-            <Skeleton variant="circular" width={24} height={24} />
+            <span className='skeleton sk-profile' />
           </div>
         </div>
-        <div className="w-[92px]">
-          <Skeleton variant="rounded" width={92} height={116} />
-        </div>
+        <span className='skeleton sk-thumb' />
       </div>
     </div>
   )
@@ -64,16 +59,14 @@ export function SkeletonBlockPost(props: { opt?: 'EVT' | 'RCT'; }) {
         ? <div className="flex flex-row justify-between gap-[16px] m-[16px] mb-[10px]">
           <div className="flex flex-col w-full justify-between">
             <SkeletonTitleAddDate />
-            <Skeleton variant="rounded" height={14} width={40} />
+            <span className='skeleton sk-line h-[14px] w-[40px]' />
           </div>
-          <div className="w-[92px]">
-            <Skeleton variant="rounded" width={92} height={116} />
-          </div>
+          <span className='skeleton sk-thumb' />
         </div>
         : <div className="flex flex-col w-full max-w-[191px] gap-[4px] m-[16px] mb-[10px]">
-          <Skeleton variant="rounded" height={14} />
-          <Skeleton variant="rounded" height={24} />
-          <Skeleton variant="rounded" height={14} />
+          <span className='skeleton sk-line h-[20px] w-[60px]' />
+          <span className='skeleton sk-line h-[24px]' />
+          <span className='skeleton sk-line h-[14px]' />
         </div>
       }
     </div>
@@ -83,31 +76,31 @@ export function SkeletonBlockPost(props: { opt?: 'EVT' | 'RCT'; }) {
 export function SkeletonTags() {
   return (
     <div className="flex flex-row gap-[10px] m-[16px] mt-[10px]">
-      <Skeleton variant="rounded" height={26} width={92} />
-      <Skeleton variant="rounded" height={26} width={53} />
-      <Skeleton variant="rounded" height={26} width={68} />
-      <Skeleton variant="rounded" height={26} width={92} />
+      <span className='skeleton sk-line w-[92px]' />
+      <span className='skeleton sk-line w-[53px]' />
+      <span className='skeleton sk-line w-[68px]' />
+      <span className='skeleton sk-line w-[92px]' />
     </div>
   )
 }
 
 function SkeletonTitleAddDate() {
   return (
-    <div className="flex flex-col gap-[8px] max-w-[191px]">
-      <Skeleton variant="rounded" height={24} />
-      <Skeleton variant="rounded" height={14} />
-      <Skeleton variant="rounded" height={14} className="me-[48px]" />
+    <div className="flex flex-col gap-[8px] max-w-[191px] leading-1">
+      <span className='skeleton sk-line h-[24px] w-[191px]' />
+      <span className='skeleton sk-line h-[14px] w-[191px]' />
+      <span className='skeleton sk-line h-[14px] w-[143px]' />
     </div>
   )
 }
 
 export function SkeletonSuggestImage() {
   return (
-    <div className="flex flex-col gap-[12px]">
-      <Skeleton variant="rounded" height={148} width={120} />
-      <div className="flex flex-col gap-[8px]">
-        <Skeleton variant="rounded" height={14} />
-        <Skeleton variant="rounded" height={12} className="mx-[10px]" />
+    <div className="flex flex-col gap-[12px] w-[120px]">
+      <span className='skeleton sk-thumb h-[148px] w-[120px]' />
+      <div className="flex flex-col gap-[8px] items-center">
+        <span className='skeleton sk-line h-[14px]' />
+        <span className='skeleton sk-line h-[12px] w-[100px]' />
       </div>
     </div>
   )
