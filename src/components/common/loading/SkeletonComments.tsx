@@ -1,4 +1,3 @@
-import { Skeleton } from "@mui/material"
 import { IconMore } from "../styles/Icon";
 
 export function SkeletonComments() {
@@ -22,14 +21,14 @@ export function SkeletonComment(props: { color: string; }) {
   return (
     <div className={`flex flex-row justify-between p-[16px] ${props.color}`}>
       <div className="flex flex-col gap-[8px]">
-        <Skeleton variant="circular" width={24} height={24} />
-        <Skeleton variant="rounded" height={16} width={191} />
-        <Skeleton variant="rounded" height={14} width={191} />
-        <Skeleton variant="rounded" height={14} width={40} />
+        <span className='skeleton sk-profile' />
+        <span className='skeleton sk-line h-[16px] w-[191px]' />
+        <span className='skeleton sk-line h-[14px] w-[191px]' />
+        <span className='skeleton sk-line h-[14px] w-[40px]' />
       </div>
       <div className="flex flex-col justify-between items-end text-[#E4E6EB]">
         <IconMore />
-        <Skeleton variant="circular" width={24} height={24} />
+        <span className='skeleton sk-profile' />
       </div>
     </div>
   )
@@ -39,13 +38,13 @@ function SkeletonReply(props: { color: string; }) {
   return (
     <div className={`flex flex-row justify-between p-[16px] ps-[50px] ${props.color}`}>
       <div className="flex flex-col gap-[8px]">
-        <Skeleton variant="circular" width={24} height={24} />
-        <Skeleton variant="rounded" height={16} width={191} />
-        <Skeleton variant="rounded" height={14} width={191} />
+        <span className='skeleton sk-profile' />
+        <span className='skeleton sk-line h-[16px] w-[191px]' />
+        <span className='skeleton sk-line h-[14px] w-[191px]' />
       </div>
       <div className="flex flex-col justify-between items-end text-[#E4E6EB]">
         <IconMore />
-        <Skeleton variant="circular" width={24} height={24} />
+        <span className='skeleton sk-profile' />
       </div>
     </div>
   )
