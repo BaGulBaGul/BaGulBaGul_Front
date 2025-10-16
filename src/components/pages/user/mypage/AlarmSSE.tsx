@@ -1,4 +1,6 @@
-export const alarmSSE = async (setOpen: any, setSnackPack: any) => {
+import { Toast } from "@base-ui-components/react";
+
+export const alarmSSE = async (toastManager: Toast.useToastManager.ReturnValue) => {
   let eventSource: EventSource;
   try {
     eventSource = new EventSource(`${process.env.NEXT_PUBLIC_ALARM_BASE_URL}/alarm/subscribe`, { withCredentials: true });
@@ -8,8 +10,7 @@ export const alarmSSE = async (setOpen: any, setSnackPack: any) => {
       const res = await e.data;
       if (res !== 'HB') {
         const alarmData = JSON.parse(res)
-        setOpen(true)
-        setSnackPack((prev: any) => [...prev, alarmData]);
+        toastManager.add({ data: alarmData })
       }
     })
   } catch (error) { }
