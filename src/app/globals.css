@@ -3,11 +3,7 @@
 @tailwind utilities;
 
 html,
-body,
-.MuiTypography-root,
-.MuiButtonBase-root,
-.MuiChip-root,
-.MuiInputBase-root {
+body {
   font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif !important;
   text-transform: unset
 }
@@ -18,10 +14,6 @@ textarea {
 
 em {
   font-style: unset;
-}
-
-.MuiButtonBase-root.MuiButton-root {
-  min-width: unset;
 }
 
 .x-scroll-wrap {
@@ -318,7 +310,7 @@ input[type="file"] {
 }
 
 /* ---------------------- */
-/* ----- tag input ----- */
+/* -------tag input------ */
 /* ---------------------- */
 .tags-container {
   display: flex;
@@ -521,9 +513,9 @@ h2.react-datepicker__current-month {
   white-space: nowrap;
 }
 
-/* ----------------------- */
-/* --react-mobile-picker-- */
-/* ----------------------- */
+/* ---------------------- */
+/* -react-mobile-picker-- */
+/* ---------------------- */
 .picker-item {
   color: #C1C1C1 !important;
   font-size: 16px !important;
@@ -759,9 +751,9 @@ button.swiper-pagination-bullet {
   left: auto;
 }
 
-/* ------------------------ */
-/* --------skeleton-------- */
-/* ------------------------ */
+/* ---------------------- */
+/* -------skeleton------- */
+/* ---------------------- */
 .skeleton {
   background-color: #E4E6EB;
   background-image: linear-gradient(90deg, #E4E6EB, #D6D8DD, #E4E6EB);
@@ -799,4 +791,89 @@ button.swiper-pagination-bullet {
   border-radius: 50%;
   width: 24px;
   height: 24px;
+}
+
+
+/* ---------------------- */
+/* ---------toast-------- */
+/* ---------------------- */
+.toast {
+  position: absolute;
+  margin: 0 auto;
+  box-sizing: border-box;
+  background: rgba(235, 238, 245, 0.8);
+  backdrop-filter: blur(50px);
+  padding: 16px;
+  width: 100%;
+  box-shadow: 0 2px 10px rgb(0 0 0 / 0.1);
+  border-radius: 8px;
+  transform-origin: top center;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin-right: auto;
+  margin-left: auto;
+  -webkit-user-select: none;
+  user-select: none;
+  transition:
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.5s,
+    height 0.15s;
+  transform: translateX(var(--toast-swipe-movement-x)) translateY(calc(var(--toast-swipe-movement-y) + (var(--toast-index) * var(--peek)) + (var(--shrink) * var(--height)))) scale(var(--scale));
+
+  &[data-expanded] {
+    transform: translateX(var(--toast-swipe-movement-x)) translateY(var(--offset-y));
+    height: var(--toast-height);
+  }
+
+  &[data-starting-style],
+  &[data-ending-style] {
+    transform: translateY(-150%);
+  }
+
+  &[data-limited] {
+    opacity: 0;
+  }
+
+  &[data-ending-style] {
+    opacity: 0;
+
+    &[data-swipe-direction='up'] {
+      transform: translateY(calc(var(--toast-swipe-movement-y) - 150%));
+    }
+
+    &[data-swipe-direction='left'] {
+      transform: translateX(calc(var(--toast-swipe-movement-x) - 150%)) translateY(var(--offset-y));
+    }
+
+    &[data-swipe-direction='right'] {
+      transform: translateX(calc(var(--toast-swipe-movement-x) + 150%)) translateY(var(--offset-y));
+    }
+
+    &[data-swipe-direction='down'] {
+      transform: translateY(calc(var(--toast-swipe-movement-y) + 150%));
+    }
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    bottom: 100%;
+    left: 0;
+    height: calc(var(--gap) + 1px);
+  }
+}
+
+.toast-content {
+  overflow: hidden;
+  transition: opacity 0.25s;
+
+  &[data-behind] {
+    opacity: 0;
+  }
+
+  &[data-expanded] {
+    opacity: 1;
+  }
 }
