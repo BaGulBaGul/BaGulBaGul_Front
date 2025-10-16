@@ -100,7 +100,8 @@ em {
 }
 
 .toggle-chip-btn:active,
-.toggle-chip-btn[data-pressed] {
+.toggle-chip-btn[data-pressed],
+.toggle-chip-btn[data-checked] {
   outline: 0.5px solid #4A6AFE;
   background-color: #4A6AFE;
   color: #ECECEC;

@@ -12,7 +12,6 @@ import { PostManagePage } from "./post/PostManagePage";
 import { PostList } from "./post/PostList";
 import { ReportManagePage } from "./report/ReportManagePage";
 import { BannerCardPage } from "./banner/_BannerCardPage";
-import { UserManagePage } from "./user/UserManagePage";
 import { UserTable } from "./user/UserTable";
 import { UserTableExpanded } from "./user/UserTableExpanded";
 
@@ -22,7 +21,7 @@ export {
   CategoryPage, CategoryList, CategoryAdd,
   PostManagePage, PostList,
   ReportManagePage,
-  UserManagePage, UserTable, UserTableExpanded,
+  UserTable, UserTableExpanded,
   DndItem, DndHandler, DndWrapper,
 }
 

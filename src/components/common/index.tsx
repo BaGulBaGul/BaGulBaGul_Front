@@ -11,7 +11,7 @@ import { BottomDrawer, BottomDrawerBody } from "./display/BottomDrawer";
 import { DialogPopup, DialogPopupBody } from "./display/DialogPopup";
 import { ImageSlide } from "./display/ImageSlide";
 import { ImagePreview } from "./display/ImagePreview";
-import { DialogFull, DialogHeader } from "./display/_DialogFull";
+import { DialogFull, DialogHeader } from "./display/DialogFull";
 import { EventCarousel, CarouselBlock } from "./display/EventCarousel";
 import { ReportDialog } from "./report/ReportDialog";
 import { ReportRadios } from "./report/ReportRadios";

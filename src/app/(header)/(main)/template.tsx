@@ -1,89 +1,43 @@
 "use client";
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import dayjs from 'dayjs';
-import { FormatDateRange, getParams, headCountString, useEffectCntFilter } from '@/service/Functions';
+import { useEffectFilterApplied, useEffectPushTabCt, useFilter } from '@/hooks/useInFilter';
 import { TypeTabs, EventCarousel } from '@/components/common';
-import { DialogFilter, FilterButton, FilterApplied, closeFilter, handleObjectValue, FilterSortRadio, FilterCalendar } from '@/components/common/filter';
-import { CategoryButtons, InputCheck, InputCollapse, InputNumber, InputNumberRange } from '@/components/common/input';
+import { FilterButton, FilterApplied } from '@/components/common/filter';
+import { CategoryButtons } from '@/components/common/input';
+import { Filter } from './filter';
 
 export default function Template({ children }: { children: React.ReactNode }) {
   const searchParams = useSearchParams()
-  //type
+  const router = useRouter()
+  const [open, setOpen] = useState(false);
+
+  //type, 카테고리
   const [tab, setTab] = useState(Number(searchParams.get('tab_id')) ?? 0);
-  const handleChange = (value: any, e: Event | undefined) => { setTab(value); };
-  // 카테고리 - 정렬기준, 날짜, 참여인원, 규모, 진행여부
   const [selectedCate, setSelectedCate] = useState<string[]>(searchParams.getAll('ct') ?? []);
-  const [p, setP] = useState({
-    sort: searchParams.get('sort') ?? 'createdAt,desc',
-    dateRange: [
-      !!searchParams.get('sD') ? dayjs(searchParams.get('sD'), "YYYYMMDD").toDate() : undefined,
-      !!searchParams.get('eD') ? dayjs(searchParams.get('eD'), "YYYYMMDD").toDate() : undefined
-    ], participants: Number(searchParams.get('ptcp')) ?? 0,
-    headCount: { from: !!searchParams.get('hcMin') ? Number(searchParams.get('hcMin')) : undefined, to: !!searchParams.get('hcMax') ? Number(searchParams.get('hcMax')) : undefined },
-    proceeding: searchParams.get('state') === 'p' ? true : false
-  })
 
   // 적용된 필터들, 적용된 필터 개수
-  const [filters, setFilters] = useState(['sort'])
-  const [filterCnt, setFilterCnt] = useState(0)
+  const { filters, filterCnt, updateFilters, updateFilterCnt } = useFilter();
   // searchParams로 넘어온 필터 count
-  useEffectCntFilter(searchParams, setFilters, setFilterCnt, p.sort)
-
-  const router = useRouter()
-  const [startDate, endDate] = p.dateRange ?? [null, null];
-  const routeToFilter = () => {
-    let params = {
-      sort: p.sort ?? '', ct: selectedCate ?? '', state: p.proceeding ? 'p' : '',
-      sD: !!startDate ? dayjs(startDate).format('YYYYMMDD') : '',
-      eD: !!endDate ? dayjs(endDate).format('YYYYMMDD') : '',
-      ptcp: p.participants > 0 ? p.participants : '',
-      hcMin: !!p.headCount.from ? p.headCount.from : '',
-      hcMax: !!p.headCount.to ? p.headCount.to : '',
-    }
-    router.replace(Object.keys(params).length > 0 ? `?${getParams(params)}&tab_id=${tab}` : ``)
-  }
-
-  const [rt, setRt] = useState(false)
-  // 필터 삭제 시 변경대로 redirect
-  const handleRt = () => { setRt(!rt) }
-  useEffect(() => { routeToFilter() }, [tab, selectedCate, rt])
-
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => { setOpen(true) }
+  useEffectFilterApplied(searchParams, updateFilters, updateFilterCnt)
+  // 탭, 카테고리 변경시 url 이동
+  useEffectPushTabCt(searchParams, tab, selectedCate, router)
 
   const defaultTitle = "SUMMER\n페스티벌 추천"
   return (
     <div className='flex flex-col w-full pt-[44px]'>
       <EventCarousel title={defaultTitle} />
       <div className='w-full px-0'>
-        <TypeTabs val={tab} handleChange={handleChange} wrapStyle='sticky relative top-[44px] pt-[20px]'>
-          <FilterButton handleOpen={handleOpen} cnt={filterCnt} />
-          <DialogFilter isOpen={open} handleClose={() => { closeFilter(setOpen, routeToFilter) }} >
-            <InputCheck title='종료된 행사 제외하기' checked={p.proceeding} handleChange={(checked: boolean) => { handleObjectValue(setP, 'proceeding', checked) }} />
-            <FilterSortRadio value={p.sort} handleChange={(newSort: string) => { handleObjectValue(setP, 'sort', newSort) }} />
-            <InputCollapse title={'날짜선택'} type='CAL' value={!startDate ? '' : FormatDateRange(startDate, endDate)}>
-              <FilterCalendar startDate={startDate} endDate={endDate} onChange={(dates: [any, any]) => { handleObjectValue(setP, 'dateRange', dates) }} />
-            </InputCollapse>
-            <InputCollapse title={'참여인원'} type="NUM" value={p.participants} >
-              <InputNumber value={p.participants} onChange={(newValue) => handleObjectValue(setP, 'participants', newValue)} />
-            </InputCollapse>
-            <InputCollapse title={'규모설정'} type="NUM" value={!!p.headCount.from || !!p.headCount.to ? headCountString(p.headCount.from, p.headCount.to) : 0}>
-              <div className='flex flex-col gap-[8px]'>
-                <InputNumberRange
-                  minNumber={{ value: p.headCount.from, onChange: (newValue: any) => { handleObjectValue(setP, 'headCount', { from: newValue ?? undefined, to: p.headCount.to }) } }}
-                  maxNumber={{ value: p.headCount.to, min: p.headCount.from, onChange: (newValue: any) => { handleObjectValue(setP, 'headCount', { from: p.headCount.from, to: newValue ?? undefined }) } }} />
-                <div className='self-end text-12 text-gray3'>*최대인원 제한 없을 경우 '0'명으로 표기</div>
-              </div>
-            </InputCollapse>
-          </DialogFilter>
+        <TypeTabs val={tab} handleChange={(value: any) => { setTab(value); }} wrapStyle='sticky relative top-[44px] pt-[20px]'>
+          <FilterButton handleOpen={() => { setOpen(true) }} cnt={filterCnt} />
         </TypeTabs>
         <div className='sticky top-[102px] relative bg-p-white z-10'>
-          <FilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters} opt="REDIRECT" p={p} setP={setP} handleRt={handleRt} />
+          {filterCnt > 0 && <FilterApplied opt='REDIRECT' filters={filters} sp={searchParams} router={router} url={``} />}
           <CategoryButtons selectedCate={selectedCate} updateSelectedCate={(groupValue: string[]) => { setSelectedCate(groupValue) }} />
         </div>
         {children}
       </div>
+      <Filter open={open} closeFilter={() => setOpen(false)} />
     </div>
   )
 }

@@ -3,13 +3,12 @@ import { PropsWithChildren } from "react";
 import { Checkbox } from '@base-ui-components/react';
 import { IconCheckBoxS } from "../styles/IconCheck";
 
-export function InputCheck({title, checked, handleChange}: { title: string; checked: boolean; handleChange: any; }) {
+export function InputCheck({ title, name, value, checked, defaultChecked, handleChange }: { title: string; name?: string; value?: string; checked?: boolean; defaultChecked?: boolean; handleChange?: any; }) {
   return (
     <label className={`flex flex-row justify-between items-center text-14 ${!!checked ? 'font-semibold text-primary-blue' : 'text-black'}`}>
       {title}
-      <Checkbox.Root className='' checked={checked} onCheckedChange={handleChange}>
-        <IconCheckBoxS checked={checked} />
-      </Checkbox.Root>
+      <Checkbox.Root checked={checked} defaultChecked={defaultChecked} onCheckedChange={handleChange} name={name} value={value}
+        render={((props, state) => (<IconCheckBoxS checked={state.checked} />))} />
     </label>
   )
 }

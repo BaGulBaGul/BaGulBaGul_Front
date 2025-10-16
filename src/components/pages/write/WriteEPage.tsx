@@ -1,46 +1,44 @@
 'use client';
-import { useRef, useState } from 'react';
-import dayjs from 'dayjs';
+import { useState } from 'react';
 import { useWrite } from '@/hooks/useInWrite';
 import { useDetailInfo } from '@/hooks/useInDetail';
 import { Divider, ImageSlide, SkeletonWrite } from '@/components/common';
-import { ImageUploader, InputContainer, CategoryButtons, InputCollapse, InputNumber, InputCheck } from '@/components/common/input';
+import { ImageUploader, InputContainer, CategoryButtons, InputCheck } from '@/components/common/input';
 import { AddressDialog, BodyInput, handleWrite, InputDateSelect, TagsInput, TitleInput, Write, SearchBox } from '.';
+import { FilterNumber } from '@/components/common/filter';
 
 export function WriteEPage(props: { edit?: number; }) {
   const prev = !!props.edit ? useDetailInfo('event', props.edit) : undefined
 
   const [selectedCate, setSelectedCate] = useState<string[]>([]);
-  const [headMax, setHeadMax] = useState<number | null>()
-  const [headCurrent, setHeadCurrent] = useState<number | null>()
-  const [startDate, setStartDate] = useState<dayjs.Dayjs | null>(null)
-  const [endDate, setEndDate] = useState<dayjs.Dayjs | null>(null)
-  const [forAdult, setForAdult] = useState(false);
   const [addr, setAddr] = useState<{ full: string, abs: string } | null>(null)
   const [images, setImages] = useState<string[]>([])
   const [imageKey, setImageKey] = useState<Number[]>([])
   const [tags, setTags] = useState<string[]>([])
-  const titleRef = useRef<any>(null);
-  const contentRef = useRef<any>(null);
 
   // 게시물 등록
   const [open, setOpen] = useState(false);
-  const handleSubmit = () => {
-    if (!titleRef.current || titleRef.current.value.length <= 0) { alert('제목을 꼭 입력해주세요.') }
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    let formData = new FormData(e.currentTarget);
+    if (!formData.get('title')) { alert('제목을 꼭 입력해주세요.') }
     else {
-      if (!!forAdult) { setOpen(true) }
-      else { handleConfirm() }
+      // if (formData.get('ageLimit') !== 'off') { setOpen(true) }
+      // else { handleConfirm(formData) }
+      handleConfirm(formData)
     }
   }
+
   const mutateWrite = !!props.edit ? useWrite('event', props.edit) : useWrite('event')
-  const handleConfirm = () => {
+  const handleConfirm = (formData: FormData) => {
     setOpen(false);
-    let body: any = {
-      'ageLimit': forAdult, 'categories': selectedCate, 'content': contentRef.current ? contentRef.current.value : null,
-      'currentHeadCount': headCurrent ?? null, 'endDate': !!endDate ? endDate.toISOString() : null, 'imageIds': imageKey, 'maxHeadCount': headMax ?? null,
-      'startDate': !!startDate ? startDate.toISOString() : null, 'tags': tags, 'title': titleRef.current.value, 'type': 'PARTY'
+    if (formData.get('ageLimit') === 'off') { formData.delete('ageLimit') }
+    let fd = Object.fromEntries(formData.entries())
+    let params = {
+      ...fd,
+      'categories': selectedCate, 'imageIds': imageKey, 'tags': tags
     }
-    handleWrite('/api/event', mutateWrite, body, addr, props.edit, prev);
+    handleWrite('/api/event', mutateWrite, params, addr, props.edit, prev);
   }
 
   if (!!props.edit && (!!prev && !prev.isSuccess)) { return (<SkeletonWrite opt='p' />) }
@@ -51,29 +49,25 @@ export function WriteEPage(props: { edit?: number; }) {
           imageKey={imageKey} updateImageKey={(keys) => { setImageKey(keys) }} default={<></>} />
         <ImageUploader setImage={setImages} setImageKey={setImageKey} multiple={true} />
       </div>
-      <TitleInput titleRef={titleRef} prev={!!prev ? prev.data.post.title : undefined} />
+      <TitleInput prev={!!prev ? prev.data.post.title : undefined} />
       <Divider color='gray2' />
       <InputContainer title="카테고리" desc="카테고리는 최대 2개까지 선택가능합니다." p={true}>
         <CategoryButtons selectedCate={selectedCate} updateSelectedCate={(groupValue: string[]) => { setSelectedCate(groupValue) }} max={2} />
       </InputContainer>
       <Divider color='gray2' />
       <div className='flex flex-col px-[16px] py-[10px] gap-[16px]'>
-        <InputDateSelect title={'시작일시'} date={startDate} setDate={setStartDate} />
-        <InputDateSelect title={'종료일시'} date={endDate} setDate={setEndDate} />
-        <InputCollapse title={'모집인원'} type="NUM" value={headMax ?? 0} >
-          <InputNumber value={headMax ?? 0} onChange={(newValue) => setHeadMax(newValue)} />
-        </InputCollapse>
-        <InputCollapse title={'현재인원'} type="NUM" value={headCurrent ?? 0} >
-          <InputNumber value={headCurrent ?? 0} onChange={(newValue) => setHeadCurrent(newValue)} />
-        </InputCollapse>
-        <InputCheck title='19세 미만 참여불가 파티' checked={forAdult} handleChange={(checked: boolean) => setForAdult(checked)} />
+        <InputDateSelect title={'시작일시'} date={!!prev ? prev.data.event.startDate : undefined} name='sD' />
+        <InputDateSelect title={'종료일시'} date={!!prev ? prev.data.event.endDate : undefined} name='eD' />
+        <FilterNumber prevVal={!!prev ? prev.data.post.maxHeadCount : undefined} title="모집인원" name='maxHeadCount' />
+        <FilterNumber prevVal={!!prev ? prev.data.post.currentHeadCount : undefined} title="현재인원" name='currentHeadCount' />
+        <InputCheck title='19세 미만 참여불가 파티' name="ageLimit" value="true" defaultChecked={!!prev ? prev.data.event.ageLimit : false} />
       </div>
       <Divider color='gray2' />
       <SearchBox title={'위치'}>
         <AddressDialog addr={addr} updateAddr={(addr) => setAddr(addr)} />
       </SearchBox>
       <Divider color='gray2' />
-      <BodyInput bodyRef={contentRef} value={!!prev ? prev.data.post.content : undefined} />
+      <BodyInput value={!!prev ? prev.data.post.content : undefined} />
       <TagsInput tags={tags} setTags={setTags} />
     </Write>
   )

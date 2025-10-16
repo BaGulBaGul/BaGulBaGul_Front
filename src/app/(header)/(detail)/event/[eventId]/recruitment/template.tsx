@@ -1,78 +1,34 @@
 "use client";
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
-import dayjs from 'dayjs';
-import { FormatDateRange, getParams, useEffectCntFilter } from '@/service/Functions';
-import { WriteFab } from '@/components/common';
-import { DialogFilter, closeFilter, FilterApplied, FilterButton, FilterCalendar, FilterSortRadio, handleObjectValue } from '@/components/common/filter';
-import { InputCheck, InputNumber, InputCollapse } from '@/components/common/input';
+import { useEffectFilterApplied, useFilter } from '@/hooks/useInFilter';
+import { FilterButton, FilterApplied } from '@/components/common/filter';
 import SubHeader from '@/components/layout/subHeader';
+import { Filter } from './filter';
 
 export default function Template({ children }: { children: React.ReactNode }) {
-  const prms = useParams()
-  const eventId = Number(prms.eventId)
+  const eventId = Number(useParams().eventId)
   const searchParams = useSearchParams()
-  // 정렬기준, 날짜, 참여인원, 진행여부
-  const [p, setP] = useState({
-    sort: searchParams.get('sort') ?? 'createdAt,desc',
-    dateRange: [
-      !!searchParams.get('sD') ? dayjs(searchParams.get('sD'), "YYYYMMDD").toDate() : undefined,
-      !!searchParams.get('eD') ? dayjs(searchParams.get('eD'), "YYYYMMDD").toDate() : undefined
-    ], participants: Number(searchParams.get('ptcp')) ?? 0,
-    recruiting: searchParams.get('state') === 'r' ? true : false
-  })
+  const router = useRouter()
+  const [open, setOpen] = useState(false);
 
   // 적용된 필터들, 적용된 필터 개수
-  const [filters, setFilters] = useState(['sort'])
-  const [filterCnt, setFilterCnt] = useState(0)
-  // // searchParams로 넘어온 필터 count
-  useEffectCntFilter(searchParams, setFilters, setFilterCnt, p.sort)
-
-  const router = useRouter()
-  const [startDate, endDate] = p.dateRange ?? [null, null];
-  const routeToFilter = () => {
-    let params = {
-      sort: p.sort ?? '', state: p.recruiting ? 'r' : '',
-      sD: !!startDate ? dayjs(startDate).format('YYYYMMDD') : '',
-      eD: !!endDate ? dayjs(endDate).format('YYYYMMDD') : '',
-      ptcp: p.participants > 0 ? p.participants : '',
-    }
-    router.replace(Object.keys(params).length > 0 ? `/event/${eventId}/recruitment?${getParams(params)}` : `/event/${eventId}/recruitment`)
-  }
-
-  const [rt, setRt] = useState(false)
-  // 필터 삭제 시 변경대로 redirect
-  const handleRt = () => { setRt(!rt) }
-  useEffect(() => {
-    routeToFilter()
-  }, [rt])
-
-  const [open, setOpen] = useState(false);
+  const { filters, filterCnt, updateFilters, updateFilterCnt } = useFilter();
+  // searchParams로 넘어온 필터 count
+  useEffectFilterApplied(searchParams, updateFilters, updateFilterCnt)
 
   return (
     <>
       <SubHeader name="모집글" >
         <FilterButton handleOpen={() => { setOpen(true) }} cnt={filterCnt} />
-        <DialogFilter isOpen={open} handleClose={() => { closeFilter(setOpen, routeToFilter) }} >
-          <InputCheck title='모집 중만 보기' checked={p.recruiting} handleChange={(checked: boolean) => { handleObjectValue(setP, 'recruiting', checked) }} />
-          <FilterSortRadio value={p.sort} handleChange={(newSort: string) => { handleObjectValue(setP, 'sort', newSort) }} />
-          <InputCollapse title={'날짜선택'} type='CAL' value={!startDate ? '' : FormatDateRange(startDate, endDate)}>
-            <FilterCalendar startDate={startDate} endDate={endDate} onChange={(dates: [any, any]) => { setP((prev: any) => ({ ...prev, dateRange: dates })) }} />
-          </InputCollapse>
-          <InputCollapse title={'참여인원'} type="NUM" value={p.participants} >
-            <InputNumber value={p.participants} onChange={(newValue) => handleObjectValue(setP, 'participants', newValue)} />
-          </InputCollapse>
-        </DialogFilter>
       </SubHeader>
-      {filterCnt <= 0 ? <></>
-        : <div className='fixed top-[104px] w-full h-[36px] bg-p-white z-10'>
-          <FilterApplied filterCnt={filterCnt} filters={filters} setFilters={setFilters} opt="REDIRECT" p={p} setP={setP} handleRt={handleRt} />
-        </div>
-      }
+      {filterCnt > 0 && <div className='fixed top-[104px] w-full h-[36px] bg-p-white z-10'>
+        <FilterApplied opt='REDIRECT' filters={filters} sp={searchParams} router={router} url={`/event/${eventId}/recruitment`} />
+      </div>}
       <div className={`flex flex-col w-full ${filterCnt > 0 ? 'pt-[140px]' : 'pt-[104px]'}`}>
         {children}
       </div>
-      <WriteFab url={`/write?w=r&id=${eventId}`} />
+      <Filter open={open} closeFilter={() => setOpen(false)} url={`/event/${eventId}/recruitment?`} />
     </>
   )
 }
