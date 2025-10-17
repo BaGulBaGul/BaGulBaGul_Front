@@ -51,9 +51,18 @@ export function PostManagePage({ opt }: { opt: 'post' | 'deleted-post' }) {
 
 	let apiURL = `/api/event${view === 'EVT' ? (`?&categories=${selectedCate}&type=${tabList[value]}`) : '/recruitment?'}${title.length === 0 ? '' : '&title=' + decodeURIComponent(decodeURIComponent(title))}&size=10`
 	const events = useListWithPageE(apiURL, ['events', { 'title': title, categories: selectedCate, type: tabList[value] }, view], true)
+
+	const handleEdit = () => {
+		if (!selecting && !(!events.isSuccess || (events.isSuccess && !events.data))) {
+			setSelecting(true)
+		} else if (!!selecting) {
+			setSelecting(false)
+		}
+	}
+
 	return (
 		<>
-			<SubTopHeader name={optString.title[opt]} child={<EditButton editing={selecting} handleEdit={() => setSelecting(!selecting)} text1="선택" text2="완료" />} />
+			<SubTopHeader name={optString.title[opt]} child={<EditButton editing={selecting} handleEdit={handleEdit} text1="선택" text2="완료" />} />
 			<div className='fixed w-full flex flex-col top-[60px] bg-p-white z-paper'>
 				<div className='flex flex-row items-center mx-[16px] my-[18px] gap-[16px]'>
 					<SearchInput placeholder='검색' inputRef={inputRef}>

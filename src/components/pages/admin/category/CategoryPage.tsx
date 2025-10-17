@@ -2,19 +2,20 @@
 import React, { useRef, useState } from "react";
 import { categories } from "@/components/common/input/CategoryButtons"
 import { SubTopHeader } from "@/components/layout/subHeader";
-import { EditButton, FooterButton } from "@/components/common";
+import { EditButton } from "@/components/common";
 import { CategoryList, DndWrapper, CategoryAdd } from "..";
+import { CategoryDelete } from "./CategoryAdd";
 
 export function CategoryPage() {
   const [data, setData] = useState(categories);
   const [editing, setEditing] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
-
   const handleEdit = () => {
     if (!!editing && selectedItems.length > 0) { setSelectedItems([]) }
     setEditing(!editing)
   }
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const handleSelected = (value: any[], e: Event) => { setSelectedItems(value); }
 
   const addCategory = () => {
     if (inputRef.current?.value) {
@@ -26,8 +27,14 @@ export function CategoryPage() {
       }
     }
   }
-
-  const handleSelected = (value: any[], e: Event) => { setSelectedItems(value); }
+  const deleteCategory = () => {
+    if (!!editing && !!selectedItems) {
+      setData(data.filter(item => !selectedItems.includes(item)));
+      alert('카테고리가 삭제되었습니다.')
+      setSelectedItems([]);
+      setEditing(false);
+    }
+  }
 
   //   if (!!props.edit && (!!prev && !prev.isSuccess)) { return (<SkeletonWrite opt='r' />) }
   return (
@@ -39,7 +46,7 @@ export function CategoryPage() {
           <CategoryList items={data} editing={editing} selectedItems={selectedItems} handleCategory={handleSelected} />
         </DndWrapper>
       </div>
-      {editing && <FooterButton text='삭제하기' />}
+      {editing && <CategoryDelete handleDelete={deleteCategory} />}
     </>
   )
 }
