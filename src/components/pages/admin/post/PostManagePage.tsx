@@ -30,7 +30,7 @@ export function PostManagePage({ opt }: { opt: 'post' | 'deleted-post' }) {
 	const [view, setView] = useState<'EVT' | 'RCT'>('EVT');
 	const [selectedCate, setSelectedCate] = useState<string[]>([]);
 	const [selectedItems, setSelectedItems] = useState<string[]>([]);
-	const handleSelected = (value: any[], e: Event) => { setSelectedItems(value); }
+	const handleSelected = (value: any[], eventDetails: any) => { setSelectedItems(value); }
 
 	const handleChange = (value: any, e: Event | undefined) => {
 		setValue(value);
@@ -40,7 +40,7 @@ export function PostManagePage({ opt }: { opt: 'post' | 'deleted-post' }) {
 			setSelecting(false)
 		}
 	};
-	const handleView = (groupValue: any[], event: Event) => {
+	const handleView = (groupValue: any[], eventDetails: any) => {
 		if (groupValue.length === 0 || groupValue[0] === view) { return; }
 		setView(groupValue[0]);
 		if (!!selecting) {

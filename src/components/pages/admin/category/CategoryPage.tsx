@@ -5,11 +5,9 @@ import { SubTopHeader } from "@/components/layout/subHeader";
 import { EditButton, FooterButton } from "@/components/common";
 import { CategoryList, DndWrapper, CategoryAdd } from "..";
 
-//  * ====== 250522 : AlertDialog UI 추가 수정 필요
 export function CategoryPage() {
   const [data, setData] = useState(categories);
   const [editing, setEditing] = useState(false);
-  const [open, setOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
@@ -20,10 +18,13 @@ export function CategoryPage() {
 
   const addCategory = () => {
     if (inputRef.current?.value) {
-      setData((prev: any) => [...prev, inputRef.current?.value]);
-      inputRef.current.value = '';
+      if (!data.includes(inputRef.current.value)) {
+        setData((prev: any) => [...prev, inputRef.current?.value]);
+        inputRef.current.value = '';
+      } else {
+        alert('이미 존재하는 카테고리입니다.')
+      }
     }
-    setOpen(false);
   }
 
   const handleSelected = (value: any[], e: Event) => { setSelectedItems(value); }
@@ -32,7 +33,7 @@ export function CategoryPage() {
   return (
     <>
       <SubTopHeader name='카테고리 관리' child={<EditButton editing={editing} handleEdit={handleEdit} />} />
-      <div className="flex flex-col pt-[68px]">
+      <div className={`flex flex-col pt-[68px] ${editing && ' pb-[77px]'}`}>
         <CategoryAdd inputRef={inputRef} handleAdd={addCategory} />
         <DndWrapper id="category-list" items={data} updateItems={(newData: string[]) => setData(newData)}>
           <CategoryList items={data} editing={editing} selectedItems={selectedItems} handleCategory={handleSelected} />

@@ -19,7 +19,7 @@ export function CategoryButtons({ selectedCate, updateSelectedCate, max }: Categ
   return (
     <div className='h-[46px] overflow-hidden'>
       <div className='x-scroll-wrap h-[76px] py-[10px] px-[16px]'>
-        <ToggleGroup value={selectedCate} onValueChange={handleCate} toggleMultiple className='flex gap-[4px]'>
+        <ToggleGroup value={selectedCate} onValueChange={handleCate} multiple className='flex gap-[4px]'>
           {categories.map((cate, idx) =>
             <Toggle value={cate} key={`cate-${cate}`} className='toggle-chip-btn'
               render={((props, state) => (

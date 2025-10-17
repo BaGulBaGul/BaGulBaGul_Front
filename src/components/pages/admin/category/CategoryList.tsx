@@ -6,11 +6,11 @@ import { DndHandler, DndItem } from "..";
 import { IconCheck } from "@/components/common/styles/Icon";
 
 interface ListProps {
-  items: string[]; editing: boolean; selectedItems: string[]; handleCategory: (groupValue: any[], e: Event) => void;
+  items: string[]; editing: boolean; selectedItems: string[]; handleCategory: (groupValue: any[], eventDetails: any) => void;
 }
 export function CategoryList({ items, editing, selectedItems, handleCategory }: ListProps) {
   return (
-    <ToggleGroup value={selectedItems} onValueChange={handleCategory} toggleMultiple={true} orientation="vertical">
+    <ToggleGroup value={selectedItems} onValueChange={handleCategory} multiple orientation="vertical">
       {items.map(item => (
         <Item key={item} name={item} editing={editing} selected={selectedItems.some(x => x === item)} />
       ))}

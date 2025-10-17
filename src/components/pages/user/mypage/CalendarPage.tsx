@@ -31,7 +31,7 @@ export function CalendarPage() {
 
   const [editing, setEditing] = useState<boolean>(false);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
-  const handleSelected = (value: any[], e: Event) => { setSelectedItems(value); }
+  const handleSelected = (value: any[], eventDetails: any) => { setSelectedItems(value); }
 
   const [focusEvents, setFocusEvents] = useState<any[] | undefined>(undefined)
   const changeFocusDay = (date: Date) => {

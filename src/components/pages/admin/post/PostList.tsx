@@ -6,14 +6,14 @@ import { Toggle, ToggleGroup } from "@base-ui-components/react";
 
 interface Props {
   opt: 'EVT' | 'RCT'; events: UseInfiniteQueryResult<InfiniteData<any, unknown>, Error>; editing?: boolean;
-  selectedItems: string[]; handleSelected: (groupValue: any[], e: Event) => void;
+  selectedItems: string[]; handleSelected: (groupValue: any[], eventDetails: any) => void;
 }
 export function PostList({ opt, events, editing, selectedItems, handleSelected }: Props) {
   return (
     <ListWrapper res={events} skeleton={<SkeletonList thumb={true} />}
       nodata={<NoData text1="찾는 행사가 없어요." />}>
       <div className='bg-p-white'>
-        <ToggleGroup value={selectedItems} onValueChange={handleSelected} toggleMultiple={true} orientation="vertical">
+        <ToggleGroup value={selectedItems} onValueChange={handleSelected} multiple orientation="vertical">
           {events.data?.pages.map((event) => (
             event.content.map((item: ListProps | RListProps, idx: number) => (
               <div key={`event-${idx}`}>

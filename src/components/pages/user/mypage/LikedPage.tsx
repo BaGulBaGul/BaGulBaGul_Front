@@ -14,7 +14,7 @@ export function LikedPage() {
     setValue(value);
     if (view !== 'EVT') { setView('EVT'); }
   };
-  const handleView = (groupValue: any[], event: Event) => {
+  const handleView = (groupValue: any[], eventDetails: any) => {
     if (groupValue.length === 0 || groupValue[0] === view) { return; }
     setView(groupValue[0]);
   }

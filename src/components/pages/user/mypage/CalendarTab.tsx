@@ -6,7 +6,7 @@ import { IconCheck } from '@/components/common/styles/Icon';
 
 interface Props {
   eventsLoading: boolean, focusDay: Date; editing: boolean; focusEvents: any
-  selectedItems: string[]; handleSelected: (value: any[], e: Event) => void;
+  selectedItems: string[]; handleSelected: (value: any[], eventDetails: any) => void;
 }
 export function CalendarTab({ eventsLoading, focusDay, editing, focusEvents, selectedItems, handleSelected }: Props) {
   // let qKey = ['calendar', `${focusDay.getFullYear()}-${focusDay.getMonth() + 1}`]
@@ -20,7 +20,7 @@ export function CalendarTab({ eventsLoading, focusDay, editing, focusEvents, sel
       {editing && <div className="flex justify-end items-center w-full px-[16px] py-[10px]">
         <button className="text-12 text-gray3" onClick={(e) => console.log(selectedItems)}>전체삭제</button>
       </div>}
-      <ToggleGroup value={selectedItems} onValueChange={handleSelected} toggleMultiple={true} orientation="vertical">
+      <ToggleGroup value={selectedItems} onValueChange={handleSelected} multiple orientation="vertical">
         {focusEvents.map((post: CalProps, idx: number) => (
           <div key={`event-${idx}`}>
             {idx === 0 ? <></> : <Divider />}
