@@ -5,20 +5,30 @@ import { IconCheckBox } from '@/components/common/styles/Icon';
 
 export function ReportTool() {
   const [actions, setActions] = useState<string[]>([]);
+  const handleActions = (value: string[]) => {
+    let newValue = value.filter(item => !actions.includes(item))[0];
+    if (newValue === 'cancel-report' && !!actions) {
+      setActions(['cancel-report'])
+    } else if (!!newValue && actions.includes('cancel-report')) {
+      setActions([newValue])
+    } else {
+      setActions(value)
+    }
+  }
   const reportActions = [
     { label: '게시글 삭제', value: 'delete-post' },
     { label: '계정 일시 정지', value: 'suspend-account' },
     { label: '해당없음(신고취소)', value: 'cancel-report' }
   ];
   const buttonValues = [
-    { text: '처리할 항목을 선택해주세요', style: 'bg-gray1 text-black' },
+    { text: '처리할 항목을 선택해주세요', style: 'bg-gray1 text-black', props: { disabled: true } },
     { text: reportActions.find(a => a.value === actions[0])?.label + '하기', style: 'bg-primary-blue text-gray1' },
     { text: '선택 항목 처리하기', style: 'bg-primary-blue text-gray1' }
   ]
 
   return (
     <div className='flex flex-col w-full gap-[10px] pt-[10px]'>
-      <CheckboxGroup value={actions} onValueChange={setActions} className='flex flex-row gap-[8px]'>
+      <CheckboxGroup value={actions} onValueChange={handleActions} className='flex flex-row gap-[8px]'>
         {reportActions.map((action) => (
           <label className='flex flex-row gap-[4px] items-center text-14' key={action.value}>
             <Checkbox.Root value={action.value} className='' checked={actions.some(x => x === action.value)}>
@@ -28,7 +38,9 @@ export function ReportTool() {
           </label>
         ))}
       </CheckboxGroup>
-      <button className={'w-full p-[4px] text-14 rounded-[4px] ' + buttonValues[actions.length].style}>{buttonValues[actions.length].text}</button>
+      <button {...buttonValues[actions.length].props} className={'w-full p-[4px] text-14 rounded-[4px] ' + buttonValues[actions.length].style}>
+        {buttonValues[actions.length].text}
+      </button>
     </div>
   )
 }
