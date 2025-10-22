@@ -4,11 +4,11 @@ import { Checkbox, CheckboxGroup } from '@base-ui-components/react';
 import { IconCheckBox } from '@/components/common/styles/Icon';
 import { ReportPopup } from './ReportPopup';
 import { postCmtString } from '@/service/Functions';
+import { ReportType } from '..';
 
-export type ReportType = 'delete-post' | 'suspend-account' | 'cancel-report'
 export function ReportTool({ opt }: { opt: 'POST' | 'CMT' }) {
   const [actions, setActions] = useState<string[]>([]);
-  const [open, setOpen] = useState(false);
+  const [openP, setOpenP] = useState(false);
 
   const handleActions = (value: string[]) => {
     let newValue = value.filter(item => !actions.includes(item))[0];
@@ -31,9 +31,9 @@ export function ReportTool({ opt }: { opt: 'POST' | 'CMT' }) {
     {
       text: reportActions.find(a => a.value === actions[0])?.label + '하기',
       style: 'bg-primary-blue text-gray1',
-      props: { onClick: () => setOpen(true) }
+      props: { onClick: () => setOpenP(true) }
     },
-    { text: '선택 항목 처리하기', style: 'bg-primary-blue text-gray1', props: { onClick: () => setOpen(true) } }
+    { text: '선택 항목 처리하기', style: 'bg-primary-blue text-gray1', props: { onClick: () => setOpenP(true) } }
   ]
 
   return (
@@ -51,7 +51,7 @@ export function ReportTool({ opt }: { opt: 'POST' | 'CMT' }) {
       <button {...buttonValues[actions.length].props} className={'w-full p-[4px] text-14 rounded-[4px] ' + buttonValues[actions.length].style}>
         {buttonValues[actions.length].text}
       </button>
-      <ReportPopup open={open} handleOpen={() => setOpen(false)} value={actions.length > 1 ? 'multiple' : reportActions.find(a => a.value === actions[0])?.value} opt={opt} />
+      <ReportPopup open={openP} handleOpen={() => setOpenP(false)} value={actions.length > 1 ? 'multiple' : reportActions.find(a => a.value === actions[0])?.value} opt={opt} />
     </div>
   )
 }

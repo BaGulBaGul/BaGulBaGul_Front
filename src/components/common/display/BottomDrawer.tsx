@@ -7,7 +7,7 @@ export function BottomDrawer({ open, toggleOpen, children }: { open: boolean; to
   return (
     <Dialog.Root open={open} onOpenChange={toggleOpen}>
       <Dialog.Portal >
-        <Dialog.Backdrop className='backdrop' />
+        <Dialog.Backdrop forceRender className='backdrop' />
         <Dialog.Popup className="fixed w-screen max-h-[calc(100vh-72px)] bottom-0 left-0 rounded-t-[8px] bg-p-white overflow-y-scroll z-paper">
           {children}
         </Dialog.Popup>
