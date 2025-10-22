@@ -1,4 +1,5 @@
-import { OrganizerManagePage } from '@/components/pages/admin/OrganizerManagePage';
+import { SubTopHeader } from '@/components/layout/subHeader';
+import { OrganizerManagePage } from '@/components/pages/admin/user/OrganizerManagePage';
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -7,5 +8,10 @@ export const metadata: Metadata = {
 }
 
 export default function Page() {
-  return (<OrganizerManagePage />);
+  return (
+    <>
+      <SubTopHeader name='주최자 관리' />
+      <OrganizerManagePage />
+    </>
+  );
 }

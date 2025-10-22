@@ -1,10 +1,9 @@
 "use client";
-import React, { useState } from 'react'
-import { useReactTable, getCoreRowModel, flexRender, getExpandedRowModel, Table } from '@tanstack/react-table';
-import { columns, User } from './UserTableConfig';
+import React, { ReactNode, useState } from 'react'
+import { useReactTable, getCoreRowModel, flexRender, getExpandedRowModel, Table, ColumnDef } from '@tanstack/react-table';
 import { UserTableExpanded } from '..';
 
-export function UserTable({defaultData}: {defaultData: User[]}) {
+export function ManagementTable({defaultData, columns, expanded}: {defaultData: any[], columns: ColumnDef<any>[], expanded: ReactNode}) {
   const [data, _setData] = useState(() => [...defaultData])
   const table = useReactTable({
     data, columns,
@@ -61,7 +60,7 @@ export function UserTable({defaultData}: {defaultData: User[]}) {
   )
 }
 
-function TableBody({ table }: { table: Table<User> }) {
+function TableBody({ table }: { table: Table<any> }) {
   return (
     <div {...{ className: 'tbody border-t-[8px] border-gray1 px-[16px]' }} >
       {table.getRowModel().rows.map((row) => (

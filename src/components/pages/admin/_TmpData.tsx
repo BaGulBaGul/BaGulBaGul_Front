@@ -251,3 +251,60 @@ export const Users = [
 		joinedAt: "2023-10-13",
 	},
 ]
+
+export const Organizers = [
+	{
+		id: 1,
+		name: "관리자 A",
+		email: "admin@kakao.co.kr",
+		addedAt: "2025-09-01",
+	},
+	{
+		id: 2,
+		name: "관리자 B",
+		email: "admin2@kakao.co.kr",
+		addedAt: "2025-09-02",
+	},
+	{
+		id: 3,
+		name: "관리자 C",
+		email: "admin3@kakao.co.kr",
+		addedAt: "2025-09-03",
+	},
+	{
+		id: 4,
+		name: "관리자 D",
+		email: "admin4@kakao.co.kr",
+		addedAt: "2025-09-04",
+	},
+	{
+		id: 5,
+		name: "관리자 E",
+		email: "admin5@kakao.co.kr",
+		addedAt: "2025-09-05",
+	},
+	{
+		id: 6,
+		name: "관리자 F",
+		email: "admin6@kakao.co.kr",
+		addedAt: "2025-09-06",
+	},
+	{
+		id: 7,
+		name: "관리자 G",
+		email: "admin7@kakao.co.kr",
+		addedAt: "2025-09-07",
+	},
+	{
+		id: 8,
+		name: "관리자 H",
+		email: "admin8@kakao.co.kr",
+		addedAt: "2025-09-08",
+	},
+	{
+		id: 9,
+		name: "관리자 I",
+		email: "admin9@kakao.co.kr",
+		addedAt: "2025-09-09",
+	},
+]

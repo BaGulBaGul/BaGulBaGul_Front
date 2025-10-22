@@ -13,7 +13,7 @@ import { PostList } from "./post/PostList";
 import { ReportManagePage } from "./report/ReportManagePage";
 import { BannerCardPage } from "./banner/_BannerCardPage";
 import { UserManagePage } from "./user/UserManagePage";
-import { UserTable } from "./user/UserTable";
+import { UserTable } from "./user/ManagementTable";
 import { UserTableExpanded } from "./user/UserTableExpanded";
 
 export {

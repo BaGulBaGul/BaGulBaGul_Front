@@ -4,11 +4,13 @@ import { DialogFilter, closeFilter, FilterApplied, FilterButton, FilterCalendar,
 import { InputCollapse, SearchInput } from "@/components/common/input";
 import { IconSearchS } from "@/components/common/styles/Icon";
 import { FormatDateRange } from "@/service/Functions";
-import { columns, User } from "./UserTableConfig";
-import { Users } from "../_TmpData";
+import { ColumnDef } from "@tanstack/react-table";
+import dayjs from "dayjs";
+import { ExpandButton } from "@/components/common";
+import { Organizers } from "../_TmpData";
 import { ManagementTable } from "./ManagementTable";
-
-export function UserManagePage() {
+import { columns, Organizer } from "./OrganizerTableConfig";
+export function OrganizerManagePage() {
   const inputRef = useRef<HTMLInputElement>(null);
   const [title, setTitle] = useState('')
   const handleSearch = (event: any) => {
@@ -51,7 +53,7 @@ export function UserManagePage() {
     }
   }
 
-  const defaultData: User[] = Users
+  const defaultData: Organizer[] = Organizers
 
   return (
     <>
