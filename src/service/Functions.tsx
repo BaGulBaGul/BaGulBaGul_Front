@@ -23,6 +23,11 @@ export const typeString: { [key: string]: string; } = {
   'FESTIVAL': '페스티벌', 'LOCAL_EVENT': '지역행사', 'PARTY': '파티', 'RCT': '모집글'
 }
 
+export const postCmtString: { [key: string]: string; } = {
+  'POST': '게시글', 'CMT': '댓글'
+}
+
+
 export const FormatDateRange = (startDate: any, endDate: any) => {
   if (!!startDate && !!endDate) {
     if (dayjs(startDate).year() === dayjs(endDate).year()) {

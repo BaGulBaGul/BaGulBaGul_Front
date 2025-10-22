@@ -3,15 +3,10 @@ import { useState } from 'react';
 import { Checkbox, CheckboxGroup } from '@base-ui-components/react';
 import { IconCheckBox } from '@/components/common/styles/Icon';
 import { ReportPopup } from './ReportPopup';
+import { postCmtString } from '@/service/Functions';
 
-type ReportType = 'delete-post' | 'suspend-account' | 'cancel-report'
-const reportActions: { label: string, value: ReportType }[] = [
-  { label: '게시글 삭제', value: 'delete-post' },
-  { label: '계정 일시 정지', value: 'suspend-account' },
-  { label: '해당없음(신고취소)', value: 'cancel-report' }
-];
-
-export function ReportTool() {
+export type ReportType = 'delete-post' | 'suspend-account' | 'cancel-report'
+export function ReportTool({ opt }: { opt: 'POST' | 'CMT' }) {
   const [actions, setActions] = useState<string[]>([]);
   const [open, setOpen] = useState(false);
 
@@ -25,6 +20,12 @@ export function ReportTool() {
       setActions(value)
     }
   }
+
+  const reportActions: { label: string, value: ReportType }[] = [
+    { label: `${postCmtString[opt]} 삭제`, value: 'delete-post' },
+    { label: '계정 일시 정지', value: 'suspend-account' },
+    { label: '해당없음(신고취소)', value: 'cancel-report' }
+  ];
   const buttonValues = [
     { text: '처리할 항목을 선택해주세요', style: 'bg-gray1 text-black', props: { disabled: true } },
     {
@@ -50,7 +51,7 @@ export function ReportTool() {
       <button {...buttonValues[actions.length].props} className={'w-full p-[4px] text-14 rounded-[4px] ' + buttonValues[actions.length].style}>
         {buttonValues[actions.length].text}
       </button>
-      <ReportPopup open={open} handleOpen={() => setOpen(false)} value={actions.length > 1 ? 'multiple' : reportActions.find(a => a.value === actions[0])?.value} />
+      <ReportPopup open={open} handleOpen={() => setOpen(false)} value={actions.length > 1 ? 'multiple' : reportActions.find(a => a.value === actions[0])?.value} opt={opt} />
     </div>
   )
 }
