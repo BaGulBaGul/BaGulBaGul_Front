@@ -16,7 +16,7 @@ export function LikedBlockE({ data }: { data: LikeProps }) {
       blockAction={<button className="h-[24px] w-[24px]" onClick={handleLike}><IconHeart checked={liked} /></button>}
       blockThumb={<img className='rounded-[4px] w-[92px] h-[116px] object-cover' src={data.eventWriterProfileImageUrl ?? '/default_list_thumb3x.png'} />}>
       <BlockBodyAD title={data.title} startDate={data.startDate} endDate={data.endDate} address={data.abstractLocation}
-        head={undefined} writer={undefined}
+        head={undefined} writer={{userId: data.eventWriterId, userName: data.eventWriterId?.toString(), userProfileImageUrl: data.eventWriterProfileImageUrl }}
       // head={data.type === 'PARTY' ? <HeadCount currentHeadCount={data.currentHeadCount} maxHeadCount={data.maxHeadCount} state={data.state} /> : <></>}
       />
     </BlockWrapper>

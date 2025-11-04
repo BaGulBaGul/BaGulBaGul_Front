@@ -23,7 +23,7 @@ export function CommentBlock({ data, disabled, handleToggle, likeBtn }: Props) {
       <div className='flex flex-row justify-between items-center' id='comment-foot'>
         <button onClick={() => { if (!disabled) { router.push(`comments/${data.commentId}`) } }}
           className={'reply-btn' + (!!data.commentChildCount ? ' border-primary-blue text-primary-blue' : '')}>
-          <p>답글</p><p>{!!data.commentChildCount && data.commentChildCount}</p>
+          <p>답글</p>{!!data.commentChildCount && <p>{data.commentChildCount}</p>}
         </button>
         {likeBtn}
       </div>

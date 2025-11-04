@@ -45,7 +45,7 @@ export function Divider({ color }: { color?: string; }) {
 export function LoadingCircle() {
   return (
     <div className="backdrop">
-        <FadeLoader height={10} width={3} margin={0} radius={20} color="#FCFCFC" />
+      <FadeLoader height={10} width={3} margin={0} radius={20} color="#FCFCFC" />
     </div>
   )
 }
@@ -54,7 +54,7 @@ export type EventType = 'FESTIVAL' | 'LOCAL_EVENT' | 'PARTY'
 
 export interface RangeProps { from: undefined | number, to: undefined | number }
 
-export interface WriterProps { userId: number, userName: string, userProfileImageUrl: string };
+export interface WriterProps { userId: number | undefined, userName: string | undefined, userProfileImageUrl: string | undefined };
 
 export interface ListProps {
   event: {
