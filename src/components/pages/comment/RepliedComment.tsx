@@ -17,7 +17,7 @@ export function RepliedComment({origin, comment, userinfo, lKey, apiURL, handleT
     <>{!!comment.data
       ? <div className='px-[16px] py-[12px] bg-p-white' id='head-cmt'>
         <CommentBlock data={{ ...comment.data, myLike: liked }} disabled={true} handleToggle={(e) => handleToggle(e, comment.data, 'CMT')}
-          likeBtn={<CommentLikeButton data={comment.data} apiURL={`/api/${origin}/comment/${comment.data.commentId}/like`} />}
+          likeBtn={<CommentLikeButton data={{ ...comment.data, myLike: liked }} apiURL={`/api/${origin}/comment/${comment.data.commentId}/like`} />}
         />
       </div>
       : <></>

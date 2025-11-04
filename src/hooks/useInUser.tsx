@@ -13,7 +13,7 @@ export const useSignout = () => {
   const queryClient = useQueryClient()
   const router = useRouter();
   return useMutation({
-    mutationFn: () => mutateForURL(`/api/user/logout`, 'GET'),
+    mutationFn: () => mutateForURL(`/api/auth/logout`, 'POST'),
     onSuccess: () => {
       queryClient.removeQueries({ queryKey: ['login-user'] })
       router.replace('/signin')

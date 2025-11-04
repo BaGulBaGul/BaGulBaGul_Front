@@ -10,10 +10,11 @@ export default async function middleware(request: NextRequest) {
   const DIFF_PAGES = ['/user']
 
   const token = cookies.get('Access_Token')?.value
+  const xtoken = cookies.get('XSRF-TOKEN')?.value
   // 로그인 필요한 페이지
   if (AUTH_PAGES.some((page) => pathname.startsWith(page))) {
-    if (token !== undefined) {
-      const res = await isSigned(token)
+    if (token !== undefined && xtoken !== undefined) {
+      const res = await isSigned(token, xtoken)
       if (res.errorCode === 'C00000') { return NextResponse.next(); }
       else { return NextResponse.redirect(origin + '/signin'); }
     } else {
@@ -22,8 +23,8 @@ export default async function middleware(request: NextRequest) {
   }
   // 로그인 없어야하는 페이지
   if (UNAUTH_PAGES.some((page) => pathname.startsWith(page))) {
-    if (token !== undefined) {
-      const res = await isSigned(token)
+    if (token !== undefined && xtoken !== undefined) {
+      const res = await isSigned(token, xtoken)
       if (res.errorCode === 'C00000') {
         console.log('이미 로그인 되어 있습니다.')
         return NextResponse.redirect(origin);
@@ -35,8 +36,8 @@ export default async function middleware(request: NextRequest) {
   }
   // 본인의 유저페이지 방문 시 마이페이지로 리다이렉트
   if (DIFF_PAGES.some((page) => pathname.startsWith(page))) {
-    if (token !== undefined) {
-      const res = await isSigned(token)
+    if (token !== undefined && xtoken !== undefined) {
+      const res = await isSigned(token, xtoken)
       if (res.errorCode === 'C00000' && String(res.data.id) === pathname.split('/')[2]) {
         return NextResponse.redirect(origin + '/mypage');
       }

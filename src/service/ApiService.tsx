@@ -1,9 +1,11 @@
+import Cookies from "js-cookie";
 import { API_BASE_URL } from "../api-config";
 
+let xtoken = Cookies.get('XSRF-TOKEN') ?? ''
 interface Options { headers?: Headers; url: string; method: string; body?: any; credentials: RequestCredentials }
 export async function call(api: string, method: string, request?: any, headers?: 'file') {
   let options: Options = {
-    headers: new Headers({ "Content-Type": "application/json", }),
+    headers: new Headers({ "Content-Type": "application/json", 'X-XSRF-TOKEN': xtoken }),
     url: API_BASE_URL + api, method: method,
     credentials: 'include',
   };
@@ -30,13 +32,13 @@ export const fetchFromURLWithPage = async (apiURL: string, { pageParam }: any) =
 }
 export const fetchFromURL = async (apiURL: string, cred: boolean, throwIfNull?: boolean) => {
   console.log('fetchFromURL-  ', apiURL)
-  const data = cred ? await fetch(`${API_BASE_URL}${apiURL}`, { credentials: 'include' }) : await fetch(`${API_BASE_URL}${apiURL}`)
+  const data = cred ? await fetch(`${API_BASE_URL}${apiURL}`, { credentials: 'include'}) : await fetch(`${API_BASE_URL}${apiURL}`)
   const json = await data.json();
   if (!!throwIfNull && json.data === null) { throw new Error }
   return json.data;
 }
 export const mutateForURL = async (apiURL: string, method: string, body?: any) => {
-  let options: Options = { url: `${API_BASE_URL}${apiURL}`, headers: new Headers({ "Content-Type": "application/json", }), method: method, credentials: 'include' }
+  let options: Options = { url: `${API_BASE_URL}${apiURL}`, headers: new Headers({ "Content-Type": "application/json", 'X-XSRF-TOKEN': xtoken }), method: method, credentials: 'include' }
   if (body) { options.body = JSON.stringify(body); }
   const data = await fetch(options.url, options)
   const json = await data.json()
@@ -52,11 +54,11 @@ export const mutateForURLJson = async (apiURL: string, method: string, body?: an
   return json;
 }
 
-export async function isSigned(cookies?: any) {
+export async function isSigned(token?: any, xtoken?: any) {
   try {
     const res = await fetch(
       API_BASE_URL + "/api/user/info/my", {
-      headers: new Headers({ "Content-Type": "application/json", "Cookie": `Access_Token=${cookies}` }),
+      headers: new Headers({ "Content-Type": "application/json", "Cookie": `Access_Token=${token}` }),
       method: "GET", credentials: 'include',
     });
     const json = await res.json();
