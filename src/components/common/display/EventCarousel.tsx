@@ -16,14 +16,14 @@ export function EventCarousel({ title, data, bgImage }: { title?: string; data?:
   return (
     // <SkeletonCarousel />
     <div className={'flex flex-col w-full h-[430px] bg-secondary-yellow bg-cover bg-center bg-no-repeat'}
-      style={{ backgroundImage: `url(${bgImage})` }} >
+      style={{ backgroundImage: !!bgImage ? `url(${bgImage})` : '' }} >
       <div className='flex flex-col pt-[22px] pb-[20px] px-[16px] text-[26px] leading-[140%]'>
         <p className='font-semibold whitespace-pre-line min-h-[72px]'>{title}</p>
       </div>
       <div className="h-[316px] w-full relative swiper-event">
         <Swiper slidesPerView='auto' {...swiperOptions}>
           {(data ?? postData).map((post: any, idx: number) =>
-            <SwiperSlide className='max-w-[40%]'>
+            <SwiperSlide className='max-w-[40%]' key={`slide-${idx}`}>
               <CarouselBlock post={post} />
             </SwiperSlide>
           )}

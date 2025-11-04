@@ -9,10 +9,10 @@ interface Props extends PropsWithChildren {
 export function TypeTabs({ val, handleChange, types, counts, wrapStyle, children }: Props) {
   let defaultTypes = tabList
   return (
-    <Tabs.Root defaultValue={val} onValueChange={(v, e) => handleChange(v, e)} className={'flex px-[16px] py-[10px] w-full justify-between bg-p-white z-10 ' + wrapStyle}>
+    <Tabs.Root defaultValue={val} onValueChange={(v, e) => handleChange(v, e.event)} className={'flex px-[16px] py-[10px] w-full justify-between bg-p-white z-10 ' + wrapStyle}>
       <Tabs.List className="flex relative z-0 gap-[16px] text-18">
         {(types ?? defaultTypes).map((type, idx) => (
-          <Tabs.Tab value={idx} className="data-[selected]:font-semibold pb-[3px]">
+          <Tabs.Tab value={idx} key={`tab-${idx}`} className="data-[selected]:font-semibold pb-[3px]">
             {typeString[type]}
             {counts && <span className='ps-[4px]'>{counts[idx]}</span>}
           </Tabs.Tab>))}

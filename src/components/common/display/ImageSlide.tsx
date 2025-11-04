@@ -25,7 +25,7 @@ export function ImageSlide(props: ImageSlideProps) {
     loop: true, navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev'},
     onActiveIndexChange: (e: any) => setIndex(e.realIndex), modules: [Navigation]
   }
-  if (props.images.length === 0) {
+  if (!props.images || props.images.length === 0) {
     return props.default ?? (<img className='h-[280px] object-cover' src='/default_detail_thumb3x.png' />)
   }
   return (

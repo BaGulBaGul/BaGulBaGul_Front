@@ -33,7 +33,7 @@ export function DetailPageE({ postId }: { postId: any; }) {
           <div id="detail-title" className="flex flex-col gap-[4px] px-[16px] pt-[30px] pb-[20px]">
             <div className="flex flex-row justify-between items-center text-black">
               <span className="text-18">{data.post.title}</span>
-              <button onClick={(e) => {setOpenD(true)}}><IconMore /></button>
+              <button onClick={(e) => { setOpenD(true) }}><IconMore /></button>
             </div>
             <div className="flex flex-row justify-between items-center">
               <DateLine startDate={data.event.startDate} endDate={data.event.endDate} />
@@ -72,7 +72,7 @@ export function DetailPageE({ postId }: { postId: any; }) {
         </DetailWrapper>
         <BottomDrawer open={openD} toggleOpen={(open) => { setOpenD(open) }}>
           {isParty && !!userinfo && userinfo.id === data.post.writer.userId
-            ? <BottomDrawerBody me={true} handleDelete={handleDelete} handleEdit={!isParty ? undefined : () => router.push(`/write?w=p&edit=${data.event.eventId}`)} />
+            ? <BottomDrawerBody me={true} handleDelete={handleDelete} handleEdit={!isParty ? () => { } : () => router.push(`/write?w=p&edit=${data.event.eventId}`)} />
             : <BottomDrawerBody me={false} handleReport={() => { setOpenR(true); setOpenD(false); }} />
           }
         </BottomDrawer>
