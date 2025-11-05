@@ -1,4 +1,5 @@
 import Cookies from "js-cookie";
+import base64 from 'base-64';
 import { API_BASE_URL } from "../api-config";
 
 let xtoken = Cookies.get('XSRF-TOKEN') ?? ''
@@ -23,7 +24,6 @@ export async function call(api: string, method: string, request?: any, headers?:
 
 export const fetchFromURLWithPage = async (apiURL: string, { pageParam }: any) => {
   console.log('fetchFromURLWithPage-  ', apiURL)
-  console.log('apiURL: ', apiURL);
   console.log('pageParam: ', pageParam);
   const data = await fetch(`${API_BASE_URL}${apiURL}&page=${pageParam}`, { credentials: 'include' })
   const json = await data.json();
@@ -32,7 +32,7 @@ export const fetchFromURLWithPage = async (apiURL: string, { pageParam }: any) =
 }
 export const fetchFromURL = async (apiURL: string, cred: boolean, throwIfNull?: boolean) => {
   console.log('fetchFromURL-  ', apiURL)
-  const data = cred ? await fetch(`${API_BASE_URL}${apiURL}`, { credentials: 'include'}) : await fetch(`${API_BASE_URL}${apiURL}`)
+  const data = cred ? await fetch(`${API_BASE_URL}${apiURL}`, { credentials: 'include' }) : await fetch(`${API_BASE_URL}${apiURL}`)
   const json = await data.json();
   if (!!throwIfNull && json.data === null) { throw new Error }
   return json.data;
@@ -56,13 +56,18 @@ export const mutateForURLJson = async (apiURL: string, method: string, body?: an
 
 export async function isSigned(token?: any, xtoken?: any) {
   try {
+    let payload = token.substring(token.indexOf('.') + 1, token.lastIndexOf('.'));
+    let dec = JSON.parse(base64.decode(payload))
+    let roles = JSON.parse(dec.sub).roles
+
     const res = await fetch(
       API_BASE_URL + "/api/user/info/my", {
       headers: new Headers({ "Content-Type": "application/json", "Cookie": `Access_Token=${token}` }),
       method: "GET", credentials: 'include',
     });
     const json = await res.json();
-    return json;
+    // 정상 로그인
+    if (json.errorCode === 'C00000') { return { json, roles }; }
   } catch (error) {
     console.log("catch error", error);
     return error;

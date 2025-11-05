@@ -8,6 +8,7 @@ export default async function middleware(request: NextRequest) {
   const AUTH_PAGES = ['/mypage', '/write'];
   const UNAUTH_PAGES = ['/signin', '/join']
   const DIFF_PAGES = ['/user']
+  const ADMIN_PAGES = ['/admin']
 
   const token = cookies.get('Access_Token')?.value
   const xtoken = cookies.get('XSRF-TOKEN')?.value
@@ -15,7 +16,7 @@ export default async function middleware(request: NextRequest) {
   if (AUTH_PAGES.some((page) => pathname.startsWith(page))) {
     if (token !== undefined && xtoken !== undefined) {
       const res = await isSigned(token, xtoken)
-      if (res.errorCode === 'C00000') { return NextResponse.next(); }
+      if (!!res && (res as any).json.errorCode === 'C00000') { return NextResponse.next(); }
       else { return NextResponse.redirect(origin + '/signin'); }
     } else {
       return NextResponse.redirect(origin + '/signin');
@@ -25,7 +26,7 @@ export default async function middleware(request: NextRequest) {
   if (UNAUTH_PAGES.some((page) => pathname.startsWith(page))) {
     if (token !== undefined && xtoken !== undefined) {
       const res = await isSigned(token, xtoken)
-      if (res.errorCode === 'C00000') {
+      if (!!res && (res as any).json.errorCode === 'C00000') {
         console.log('이미 로그인 되어 있습니다.')
         return NextResponse.redirect(origin);
       } else { return NextResponse.next(); }
@@ -38,11 +39,24 @@ export default async function middleware(request: NextRequest) {
   if (DIFF_PAGES.some((page) => pathname.startsWith(page))) {
     if (token !== undefined && xtoken !== undefined) {
       const res = await isSigned(token, xtoken)
-      if (res.errorCode === 'C00000' && String(res.data.id) === pathname.split('/')[2]) {
+      if (!!res && (res as any).json.errorCode === 'C00000' && String((res as any).json.data.id) === pathname.split('/')[2]) {
         return NextResponse.redirect(origin + '/mypage');
       }
     }
     return NextResponse.next();
+  }
+  // 로그인 필요한 페이지
+  if (ADMIN_PAGES.some((page) => pathname.startsWith(page))) {
+    if (token !== undefined && xtoken !== undefined) {
+      const res = await isSigned(token, xtoken)
+      if (!!res && (res as any).json.errorCode === 'C00000') {
+        if ((res as any).roles.includes('ADMIN')) { return NextResponse.next(); }
+        else { return NextResponse.redirect(origin + '/signin'); }
+      }
+      else { return NextResponse.redirect(origin + '/signin'); }
+    } else {
+      return NextResponse.redirect(origin + '/signin');
+    }
   }
 }
 
