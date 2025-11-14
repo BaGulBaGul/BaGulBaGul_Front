@@ -16,7 +16,7 @@ export const useSignout = () => {
     mutationFn: () => mutateForURL(`/api/auth/logout`, 'POST'),
     onSuccess: () => {
       queryClient.removeQueries({ queryKey: ['login-user'] })
-      router.replace('/signin')
+      router.replace('/')
     },
     onError: () => alert('로그아웃을 실패했습니다. 다시 시도해주세요.')
   })

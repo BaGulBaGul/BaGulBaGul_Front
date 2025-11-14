@@ -4,7 +4,7 @@ import { MutableRefObject, useState } from "react";
 
 interface InfoInputProps {
   opt: 'nnm' | 'eml'; placeholder: string; innerRef: MutableRefObject<any>; defaultValue?: string;
-  checked?: boolean; setChecked: any;
+  checked?: boolean; setChecked?: any;
 }
 
 export function InfoInput(props: InfoInputProps) {

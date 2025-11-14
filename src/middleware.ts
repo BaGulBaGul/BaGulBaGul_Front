@@ -9,6 +9,7 @@ export default async function middleware(request: NextRequest) {
   const UNAUTH_PAGES = ['/signin', '/join']
   const DIFF_PAGES = ['/user']
   const ADMIN_PAGES = ['/admin']
+  const UNADMIN_PAGES = ['/admin/signin']
 
   const token = cookies.get('Access_Token')?.value
   const xtoken = cookies.get('XSRF-TOKEN')?.value
@@ -45,17 +46,29 @@ export default async function middleware(request: NextRequest) {
     }
     return NextResponse.next();
   }
-  // 로그인 필요한 페이지
+  // 관리자 로그인 없어야하는 페이지
+  if (UNADMIN_PAGES.some((page) => pathname.startsWith(page))) {
+    if (token !== undefined && xtoken !== undefined) {
+      const res = await isSigned(token, xtoken)
+      if (!!res && (res as any).json.errorCode === 'C00000' && (res as any).roles.includes('ADMIN')) {
+        console.log('이미 로그인 되어 있습니다.')
+        return NextResponse.redirect(origin + '/admin');
+      } else { return NextResponse.next(); }
+    } else {
+      console.log('no cookies')
+      return NextResponse.next();
+    }
+  }
+  // 관리자 로그인 필요한 페이지
   if (ADMIN_PAGES.some((page) => pathname.startsWith(page))) {
     if (token !== undefined && xtoken !== undefined) {
       const res = await isSigned(token, xtoken)
       if (!!res && (res as any).json.errorCode === 'C00000') {
         if ((res as any).roles.includes('ADMIN')) { return NextResponse.next(); }
-        else { return NextResponse.redirect(origin + '/signin'); }
-      }
-      else { return NextResponse.redirect(origin + '/signin'); }
+        else { return NextResponse.redirect(origin + '/admin/signin'); }
+      } else { return NextResponse.redirect(origin + '/admin/signin'); }
     } else {
-      return NextResponse.redirect(origin + '/signin');
+      return NextResponse.redirect(origin + '/admin/signin');
     }
   }
 }
