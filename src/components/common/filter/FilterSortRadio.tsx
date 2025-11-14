@@ -9,7 +9,7 @@ export function FilterSortRadio({ name, defaultValue, order }: { name?: string; 
     <InputContainer title="정렬">
       <RadioGroup name={name} defaultValue={defaultValue} className='flex flex-row gap-[8px]' >
         {(order ?? defaultOrder).map((item: any) => (
-          <label className='flex flex-row gap-[4px] text-14' key={item.value}>
+          <label className='flex flex-row gap-[4px] items-center text-14' key={item.value}>
             <Radio.Root value={item.value} render={((props, state) => (<IconRadio checked={state.checked} />))} />
             {item.label}
           </label>

@@ -5,7 +5,7 @@ import { ReportType } from '..';
 import { useState } from 'react';
 import { SuspendDialog } from '../SuspendDialog';
 
-export function ReportPopup({ open, handleOpen, value, opt }: { open: boolean; handleOpen: () => void; value?: ReportType | 'multiple', opt: 'POST' | 'CMT' }) {
+export function ReportPopup({ open, handleOpen, value, opt }: { open: boolean; handleOpen: () => void; value?: ReportType | 'activate-account' | 'multiple', opt: 'POST' | 'CMT' }) {
   const [openS, setOpenS] = useState(false);
   const PopInfo = {
     'delete-post': {
@@ -15,6 +15,10 @@ export function ReportPopup({ open, handleOpen, value, opt }: { open: boolean; h
     'suspend-account': {
       title: '계정 일시 정지하기', body: ['이 계정을 일시 정지하시겠습니까?', '정지된 계정은 로그인 및 서비스 이용이', '제한되며 추후 다시 활성화할 수 있습니다.'],
       button: '정지하기', buttonAction: () => { setOpenS(true) }
+    },
+    'activate-account': {
+      title: '계정 활성화하기', body: ['해당 계정을 활성화하시겠습니까?', '활성화 후에는 서비스 이용이 가능합니다'],
+      button: '계정 활성화', buttonAction: () => { alert('활성화') }
     },
     'cancel-report': {
       title: '신고 취소하기', body: ['신고를 취소하면', `해당 ${postCmtString[opt]}이 다시 보이게 됩니다.`, '계속하시겠습니까?'],

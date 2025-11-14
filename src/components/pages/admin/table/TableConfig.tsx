@@ -12,7 +12,7 @@ export type User = {
   joinedAt: string;
 }
 
-export const columns: ColumnDef<User>[] = [
+export const userColumns: ColumnDef<User>[] = [
   { accessorKey: 'userid', header: '순번', maxSize: 35 },
   { accessorKey: 'username', header: '이름', minSize: 54, size: (window.innerWidth - 271) * 0.4 },
   { accessorKey: 'email', header: '이메일', minSize: 84, size: (window.innerWidth - 271) * 0.6 },
@@ -25,3 +25,23 @@ export const columns: ColumnDef<User>[] = [
     }, size: 26, enableResizing: false
   }
 ]
+
+export type Organizer = {
+  userid: number;
+  username: string;
+  email: string;
+  joinedAt: string;
+}
+
+export const organizerColumns: ColumnDef<Organizer>[] = [
+  { accessorKey: 'userid', header: '순번', maxSize: 35 },
+  { accessorKey: 'username', header: '이름', minSize: 54, size: (window.innerWidth - 155) * 0.4 },
+  { accessorKey: 'email', header: '이메일', minSize: 84, size: (window.innerWidth - 155) * 0.6 },
+  { accessorKey: 'joinedAt', header: '등록일자', cell: info => dayjs(info.getValue() as string).format('YY.MM.DD'), size: 78, enableResizing: false },
+  {
+    id: 'expander', header: () => null, cell: ({ row }) => {
+      return row.getCanExpand() && (<ExpandButton handleExpandClick={row.getToggleExpandedHandler()} expanded={row.getIsExpanded()} />)
+    }, size: 26, enableResizing: false
+  }
+]
+

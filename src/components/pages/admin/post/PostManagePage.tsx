@@ -4,7 +4,7 @@ import { SubTopHeader } from '@/components/layout/subHeader';
 import { EditButton, FooterButton, TypeSwitch, TypeTabs } from '@/components/common';
 import { CategoryButtons, SearchInput } from '@/components/common/input';
 import { IconSearchS } from '@/components/common/styles/Icon';
-import { useListWithPageE } from '@/hooks/useInCommon';
+import { useListWithPage } from '@/hooks/useInCommon';
 import { tabList } from '@/service/Functions';
 import { PostList } from './PostList';
 
@@ -49,8 +49,8 @@ export function PostManagePage({ opt }: { opt: 'post' | 'deleted-post' }) {
 		}
 	}
 
-	let apiURL = `/api/event${view === 'EVT' ? (`?&categories=${selectedCate}&type=${tabList[value]}`) : '/recruitment?'}${title.length === 0 ? '' : '&title=' + decodeURIComponent(decodeURIComponent(title))}&size=10`
-	const events = useListWithPageE(apiURL, ['events', { 'title': title, categories: selectedCate, type: tabList[value] }, view], true)
+	let apiURL = `/api/admin/event${view === 'EVT' ? (`/search?&categories=${selectedCate}&type=${tabList[value]}`) : '/recruitment/search?'}${title.length === 0 ? '' : '&title=' + decodeURIComponent(decodeURIComponent(title))}&deleted=${opt==='deleted-post'}&size=10`
+	const events = useListWithPage(apiURL, ['events', { 'title': title, categories: selectedCate, type: tabList[value] }, view])
 
 	const handleEdit = () => {
 		if (!selecting && !(!events.isSuccess || (events.isSuccess && !events.data))) {

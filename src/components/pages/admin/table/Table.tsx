@@ -1,13 +1,13 @@
 "use client";
 import React, { useState } from 'react'
-import { useReactTable, getCoreRowModel, flexRender, getExpandedRowModel, Table } from '@tanstack/react-table';
-import { columns, User } from './UserTableConfig';
-import { UserTableExpanded } from '..';
+import { useReactTable, getCoreRowModel, flexRender, getExpandedRowModel } from '@tanstack/react-table';
+import { userColumns, organizerColumns } from '../table/TableConfig';
+import { MemoizedTableBody, TableBody } from '../table/TableBody';
 
-export function UserTable({defaultData}: {defaultData: User[]}) {
+export function Table({ type, defaultData }: { type: 'USR' | 'ORG'; defaultData: any[] }) {
   const [data, _setData] = useState(() => [...defaultData])
   const table = useReactTable({
-    data, columns,
+    data, columns: type === 'USR' ? userColumns : organizerColumns,
     columnResizeMode: 'onChange',
     getRowCanExpand: () => true,
     getCoreRowModel: getCoreRowModel(),
@@ -31,10 +31,10 @@ export function UserTable({defaultData}: {defaultData: User[]}) {
       <div {...{ className: 'divTable', style: { ...columnSizeVars, width: table.getTotalSize() } }}>
         <div className="thead sticky top-0 bg-p-white z-10 px-[16px]">
           {table.getHeaderGroups().map((headerGroup) => (
-            <div {...{ key: headerGroup.id, className: 'tr' }}>
+            <div key={headerGroup.id} {...{ className: 'tr' }}>
               {headerGroup.headers.map((header) => (
-                <div {...{
-                  key: header.id, className: 'th',
+                <div key={header.id} {...{
+                  className: 'th',
                   style: { width: `calc(var(--header-${header?.id}-size) * 1px)` },
                 }}
                 >
@@ -53,45 +53,10 @@ export function UserTable({defaultData}: {defaultData: User[]}) {
           ))}
         </div>
         {table.getState().columnSizingInfo.isResizingColumn ? (
-          <MemoizedTableBody table={table} />) : (
-          <TableBody table={table} />
+          <MemoizedTableBody type={type} table={table} />) : (
+          <TableBody type={type} table={table} />
         )}
       </div>
     </div>
   )
 }
-
-function TableBody({ table }: { table: Table<User> }) {
-  return (
-    <div {...{ className: 'tbody border-t-[8px] border-gray1 px-[16px]' }} >
-      {table.getRowModel().rows.map((row) => (
-        <>
-          <div {...{ key: row.id, className: 'tr' }} >
-            {row.getVisibleCells().map((cell) => (
-              <div {...{
-                key: cell.id, className: `td truncate${cell.column.id !== 'activated' ? '' : !!cell.getValue() ? ' text-primary-blue' : ' text-danger-red'}`,
-                style: { width: `calc(var(--col-${cell.column.id}-size) * 1px)` },
-              }}>
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </div>
-            )
-            )}
-          </div>
-          {row.getIsExpanded() && (
-            <div {...{ key: `${row.id}-expanded`, className: `tr-expanded`, style: { width: window.innerWidth - 32 } }} >
-              <div {...{ className: `td-expanded` }}>
-                <UserTableExpanded row={row} />
-              </div>
-            </div>
-          )}
-        </>
-      ))}
-    </div>
-  );
-}
-
-// 리사이징 중에는 memoized 테이블 바디 사용 -> 불필요 렌더링 방지
-export const MemoizedTableBody = React.memo(
-  TableBody,
-  (prev, next) => prev.table.options.data === next.table.options.data
-) as typeof TableBody;

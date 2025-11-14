@@ -3,12 +3,11 @@ import { useState, useRef } from 'react';
 import { FilterButton, FilterApplied } from '@/components/common/filter';
 import { SearchInput } from '@/components/common/input';
 import { IconSearchS } from '@/components/common/styles/Icon';
-import { UserTable } from '@/components/pages/admin';
 import { Users } from '@/components/pages/admin/_TmpData';
-import { User } from '@/components/pages/admin/user/UserTableConfig';
 import { useFilter, useEffectFilterApplied } from '@/hooks/useInFilter';
-import { getParams } from '@/service/Functions';
 import { Filter } from './filter';
+import { User } from '@/components/pages/admin/table/TableConfig';
+import { Table } from '@/components/pages/admin/table/Table';
 
 export default function Page() {
   const [p, setP] = useState<any>({ sort: 'createdAt,desc' })
@@ -30,9 +29,7 @@ export default function Page() {
     }
   }
   // * 유저 정보 API 연결 필요
-  let apiURL = !!p && Object.keys(p).length > 0 ? `/api/event?size=10&type=FESTIVAL&${getParams(p)}` : '/api/event?size=10&type=FESTIVAL'
-  console.log(apiURL)
-  // const users = useListWithPageE(apiURL, ['users', p], true)
+  // const users = useListWithPage('/api/admin/user/?', ['users', p])
   const defaultData: User[] = Users
   return (
     <>
@@ -46,7 +43,7 @@ export default function Page() {
         {filterCnt > 0 && <FilterApplied opt='UPDATE' filters={filters} sp={p} updateSP={(value: Object) => setP(value)} />}
       </div>
       <div className={filterCnt > 0 ? "h-[calc(100vh-152px)] mt-[152px]" : "h-[calc(100vh-126px)] mt-[126px]"}>
-        <UserTable defaultData={defaultData} />
+        <Table type='USR' defaultData={defaultData} />
       </div>
       <Filter open={open} closeFilter={() => setOpen(false)} p={p} updateP={(value: Object) => setP(value)} />
     </>

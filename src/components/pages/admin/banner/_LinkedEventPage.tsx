@@ -1,7 +1,7 @@
 'use client';
 import { useRef, useState } from "react";
 import { Dialog } from "@base-ui-components/react";
-import { useListWithPageE } from "@/hooks/useInCommon";
+import { useListWithPage } from "@/hooks/useInCommon";
 import { SearchInput } from "@/components/common/input";
 import { BannerData } from "..";
 import { BannerEventList } from "./BannerEventList";
@@ -21,7 +21,7 @@ export function LinkedEventPage({ updateEvent }: { updateEvent: (arg: any) => vo
 
   const [selected, setSelected] = useState<BannerData | undefined>(undefined)
   let apiURL = `/api/event?size=10${title.length === 0 ? '' : '&title=' + title}`
-  const events = useListWithPageE(apiURL, ['events', { 'title': title }], true)
+  const events = useListWithPage(apiURL, ['events', { 'title': title }])
   return (
     <>
       <div className="header-nav fixed">
