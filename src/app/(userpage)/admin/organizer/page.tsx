@@ -9,10 +9,12 @@ import { Filter } from '@/app/(userpage)/admin/user/filter';
 import { WriteFab } from '@/components/common';
 import { User } from '@/components/pages/admin/table/TableConfig';
 import { Table } from '@/components/pages/admin/table/Table';
+import { OrganizerProfileDialog } from '@/components/pages/admin/table/OrganizerProfileDialog';
 
 export default function Page() {
   const [p, setP] = useState<any>({ sort: 'createdAt,desc' })
-  const [open, setOpen] = useState(false);
+  const [openF, setOpenF] = useState(false);
+  const [openD, setOpenD] = useState(false);
 
   // 적용된 필터들, 적용된 필터 개수
   const { filters, filterCnt, updateFilters, updateFilterCnt } = useFilter();
@@ -39,15 +41,16 @@ export default function Page() {
           <SearchInput placeholder='검색' inputRef={inputRef}>
             <button onClick={handleSearch}><IconSearchS /></button>
           </SearchInput>
-          <FilterButton handleOpen={() => { setOpen(true) }} cnt={filterCnt} />
+          <FilterButton handleOpen={() => { setOpenF(true) }} cnt={filterCnt} />
         </div>
         {filterCnt > 0 && <FilterApplied opt='UPDATE' filters={filters} sp={p} updateSP={(value: Object) => setP(value)} />}
       </div>
       <div className={filterCnt > 0 ? "h-[calc(100vh-152px)] mt-[152px]" : "h-[calc(100vh-126px)] mt-[126px]"}>
         <Table type='ORG' defaultData={defaultData} />
       </div>
-      <WriteFab url={`/`} />
-      <Filter open={open} closeFilter={() => setOpen(false)} p={p} updateP={(value: Object) => setP(value)} />
+      <WriteFab handleClick={() => setOpenD(true)} />
+      <Filter open={openF} closeFilter={() => setOpenF(false)} p={p} updateP={(value: Object) => setP(value)} />
+      <OrganizerProfileDialog open={openD} toggleOpen={(o: boolean) => setOpenD(o)}  />
     </>
   )
 }

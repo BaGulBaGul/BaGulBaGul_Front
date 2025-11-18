@@ -78,14 +78,16 @@ export default function Page() {
             <div className='flex flex-col gap-[8px] w-full max-w-[500px]'>
               <p className='text-18 font-semibold'>닉네임을 기입해주세요.</p>
               <p className='text-[12px] text-gray3'>바글바글에서 사용할 닉네임을 지어주세요!</p>
-              <InfoInput opt='nnm' placeholder='bageul01' innerRef={nameRef} checked={nameChecked} setChecked={setNameChecked} />
+              <InfoInput opt='nnm' placeholder='bageul01' innerRef={nameRef}
+                checked={nameChecked} handleChecked={(t: boolean | undefined) => setNameChecked(t)} />
             </div>
           </div>
           <div className={toP1 ? 'slideOutRight animated hidden' : toP2 ? 'flex flex-col items-center slideInRight animated' : 'hidden'}>
             <div className='flex flex-col gap-[8px] w-full max-w-[500px]'>
               <p className='text-18 font-semibold'>이메일을 기입해주세요.</p>
               <p className='text-[12px] text-gray3'>이메일로 필요한 정보 및 알림을 전달드려요!</p>
-              <InfoInput opt='eml' placeholder='bageul01@naver.com' innerRef={emailRef} checked={emailChecked} setChecked={setEmailChecked} />
+              <InfoInput opt='eml' placeholder='bageul01@naver.com' innerRef={emailRef}
+                checked={emailChecked} handleChecked={(t: boolean | undefined) => setEmailChecked(t)} />
             </div>
           </div>
         </div>

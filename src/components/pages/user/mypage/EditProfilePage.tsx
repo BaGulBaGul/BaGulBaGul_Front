@@ -57,11 +57,13 @@ export function EditProfilePage() {
         </div>
         <div className="flex flex-col p-[16px] gap-[8px] w-full text-14 text-black">
           <p>닉네임</p>
-          <InfoInput opt='nnm' placeholder='바글바글에서 사용할 닉네임을 입력해주세요' innerRef={nameRef} defaultValue={userdata.nickname ?? undefined} checked={nameChecked} setChecked={setNameChecked} />
+          <InfoInput opt='nnm' placeholder='바글바글에서 사용할 닉네임을 입력해주세요' innerRef={nameRef} defaultValue={userdata.nickname ?? undefined}
+            checked={nameChecked} handleChecked={(t: boolean | undefined) => setNameChecked(t)} />
         </div>
         <div className="flex flex-col pt-[10px] p-[16px] gap-[8px] w-full text-14 text-black">
           <p>이메일</p>
-          <InfoInput opt='eml' placeholder='bageul01@naver.com' innerRef={emailRef} defaultValue={userdata.email ?? undefined} checked={emailChecked} setChecked={setEmailChecked} />
+          <InfoInput opt='eml' placeholder='bageul01@naver.com' innerRef={emailRef} defaultValue={userdata.email ?? undefined}
+            checked={emailChecked} handleChecked={(t: boolean | undefined) => setEmailChecked(t)} />
         </div>
         <div className="flex flex-col pt-[10px] p-[16px] gap-[8px] w-full text-14 text-black">
           <p>1줄 소개</p>

@@ -4,7 +4,7 @@ import { MutableRefObject, useState } from "react";
 
 interface InfoInputProps {
   opt: 'nnm' | 'eml'; placeholder: string; innerRef: MutableRefObject<any>; defaultValue?: string;
-  checked?: boolean; setChecked?: any;
+  checked?: boolean; handleChecked?: (t: boolean | undefined) => void;
 }
 
 export function InfoInput(props: InfoInputProps) {
@@ -12,31 +12,33 @@ export function InfoInput(props: InfoInputProps) {
   const emailRegEx = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
   const [usableName, setUsableName] = useState({ regex: false, unique: false })
   const handleNameCheck = () => {
-    if (props.innerRef && props.innerRef.current !== null) {
+    if (props.innerRef && props.innerRef.current !== null && !!props.handleChecked) {
       if (!!props.defaultValue && props.innerRef.current.value === props.defaultValue) {
         setUsableName({ regex: true, unique: true })
-        props.setChecked(undefined);
+        props.handleChecked(undefined);
       }
       else if (nameRegEx.test(props.innerRef.current.value)) {
         call(`/api/user/join/check-duplicate-username?username=${props.innerRef.current.value}`, "GET", null)
           .then((response) => {
-            if (response.errorCode === 'C00000') {
+            if (response.errorCode === 'C00000' && !!props.handleChecked) {
               setUsableName({ regex: true, unique: !response.data.duplicate })
-              props.setChecked(!response.data.duplicate);
+              props.handleChecked(!response.data.duplicate);
             }
           })
       } else {
         setUsableName({ regex: false, unique: false })
-        props.setChecked(false);
+        props.handleChecked(false);
       }
     }
   }
   const handleEmailCheck = () => {
-    if (props.innerRef && props.innerRef.current !== null) {
-      if (emailRegEx.test(props.innerRef.current.value)) {
-        props.setChecked(true);
-      } else { props.setChecked(false); }
-    } else { props.setChecked(false); }
+    if (!!props.handleChecked) {
+      if (props.innerRef && props.innerRef.current !== null) {
+        if (emailRegEx.test(props.innerRef.current.value)) {
+          props.handleChecked(true);
+        } else { props.handleChecked(false); }
+      } else { props.handleChecked(false); }
+    }
   }
 
   return (

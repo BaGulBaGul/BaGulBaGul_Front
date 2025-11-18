@@ -5,7 +5,7 @@ import { IconArrowBack } from "../styles/Icon";
 import { FooterButton } from "@/components/common";
 
 interface Props extends PropsWithChildren {
-  trigger?: ReactNode; footerText?: string; handleFooter?: () => void; handleDialogChange?: any; open?: boolean; fullStyle?: string
+  trigger?: ReactNode; footerText?: string; handleFooter?: any; handleDialogChange?: any; open?: boolean; fullStyle?: string
 }
 export function DialogFull({ trigger, footerText, handleFooter, handleDialogChange, open, fullStyle, children }: Props) {
   return (
