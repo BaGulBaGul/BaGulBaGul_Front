@@ -3,12 +3,11 @@ import { useState, useRef } from 'react';
 import { FilterButton, FilterApplied } from '@/components/common/filter';
 import { SearchInput } from '@/components/common/input';
 import { IconSearchS } from '@/components/common/styles/Icon';
-import { Users } from '@/components/pages/admin/_TmpData';
 import { useFilter, useEffectFilterApplied } from '@/hooks/useInFilter';
 import { Filter } from '@/app/(userpage)/admin/user/filter';
 import { WriteFab } from '@/components/common';
-import { User } from '@/components/pages/admin/table/TableConfig';
 import { Table } from '@/components/pages/admin/table/Table';
+import { useListWithPage } from '@/hooks/useInCommon';
 import { OrganizerProfileDialog } from '@/components/pages/admin/table/OrganizerProfileDialog';
 
 export default function Page() {
@@ -31,9 +30,7 @@ export default function Page() {
       }
     }
   }
-  // * ▶️ 유저 정보 API 연결 : 페이지 관련 처리 필요
-  // const organizers = useListWithPage('/api/admin/user/amehuser/?', ['organizers', p])
-  const defaultData: User[] = Users
+  const organizers = useListWithPage('/api/admin/user/amehuser/?', ['organizers', p])
   return (
     <>
       <div className='fixed w-full flex flex-col top-[60px] bg-p-white z-30'>
@@ -46,7 +43,7 @@ export default function Page() {
         {filterCnt > 0 && <FilterApplied opt='UPDATE' filters={filters} sp={p} updateSP={(value: Object) => setP(value)} />}
       </div>
       <div className={filterCnt > 0 ? "h-[calc(100vh-152px)] mt-[152px]" : "h-[calc(100vh-126px)] mt-[126px]"}>
-        <Table type='ORG' defaultData={defaultData} />
+        <Table type='ORG' fetchedData={organizers} />
       </div>
       <WriteFab handleClick={() => setOpenD(true)} />
       <Filter open={openF} closeFilter={() => setOpenF(false)} p={p} updateP={(value: Object) => setP(value)} />

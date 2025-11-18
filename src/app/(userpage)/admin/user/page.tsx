@@ -3,11 +3,10 @@ import { useState, useRef } from 'react';
 import { FilterButton, FilterApplied } from '@/components/common/filter';
 import { SearchInput } from '@/components/common/input';
 import { IconSearchS } from '@/components/common/styles/Icon';
-import { Users } from '@/components/pages/admin/_TmpData';
 import { useFilter, useEffectFilterApplied } from '@/hooks/useInFilter';
 import { Filter } from './filter';
-import { User } from '@/components/pages/admin/table/TableConfig';
 import { Table } from '@/components/pages/admin/table/Table';
+import { useListWithPage } from '@/hooks/useInCommon';
 
 export default function Page() {
   const [p, setP] = useState<any>({ sort: 'createdAt,desc' })
@@ -28,9 +27,7 @@ export default function Page() {
       }
     }
   }
-  // * 유저 정보 API 연결 필요
-  // const users = useListWithPage('/api/admin/user/?', ['users', p])
-  const defaultData: User[] = Users
+  const users = useListWithPage('/api/admin/user/?', ['users', p])
   return (
     <>
       <div className='fixed w-full flex flex-col top-[60px] bg-p-white z-30'>
@@ -43,7 +40,7 @@ export default function Page() {
         {filterCnt > 0 && <FilterApplied opt='UPDATE' filters={filters} sp={p} updateSP={(value: Object) => setP(value)} />}
       </div>
       <div className={filterCnt > 0 ? "h-[calc(100vh-152px)] mt-[152px]" : "h-[calc(100vh-126px)] mt-[126px]"}>
-        <Table type='USR' defaultData={defaultData} />
+        <Table type='USR' fetchedData={users} />
       </div>
       <Filter open={open} closeFilter={() => setOpen(false)} p={p} updateP={(value: Object) => setP(value)} />
     </>
